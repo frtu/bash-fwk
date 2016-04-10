@@ -21,8 +21,3 @@ import() {
 reload() {
   source ~/.bash_profile
 }
-
-# Command utils
-mkcd() {
-  mkdir $1 && cd $1
-}
