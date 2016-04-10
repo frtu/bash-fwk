@@ -15,7 +15,7 @@ load_folder() {
 	fi
 }
 import() {
-  load_file "$LIBS_FOLDER/lib-$1.bash"
+  load_file "$LIBS_FOLDER/$1.bash"
 }
 
 reload() {

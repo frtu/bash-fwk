@@ -1,2 +1,4 @@
+import service-ssh
+
 #load_folder $LIBS_FOLDER
 load_folder $SCRIPTS_FOLDER
