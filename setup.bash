@@ -10,8 +10,8 @@ relink() {
 }
 
 echo "------- SETUP local folders --------"
+relink "$_dir/core/" "$CORE_FOLDER"
 relink "$_dir/libs/" "$LIBS_FOLDER"
-relink "$_dir/services/" "$SERVICES_FOLDER"
 relink "$_dir/scripts/`uname -s`/" "$SCRIPTS_FOLDER"
 
 echo "------- BACKUP --------"

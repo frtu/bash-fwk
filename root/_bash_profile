@@ -5,8 +5,8 @@ export CLICOLOR=1
 export BASH_PROFILE_FILENAME=~/.bash_profile
 export BASH_RC_FILENAME=~/.bashrc
 
+export CORE_FOLDER=~/core
 export LIBS_FOLDER=~/libs
-export SERVICES_FOLDER=~/services
 export SCRIPTS_FOLDER=~/scripts
 
 export PATH=$PATH:$HOME/bin
@@ -21,7 +21,7 @@ load_if_exist() {
 	fi
 }
 # bash-fwk core scripts
-load_if_exist "$LIBS_FOLDER/core.bash"
+load_if_exist "$CORE_FOLDER/base.bash"
 
 # If .bashrc exists, then excute the commands embed in that file
 load_if_exist $BASH_RC_FILENAME
