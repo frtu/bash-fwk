@@ -21,5 +21,5 @@ mv -f $BASH_PROFILE_FILENAME $BASH_PROFILE_FILENAME.bak
 mv -f $BASH_RC_FILENAME $BASH_RC_FILENAME.bak
 
 echo "------- COPY BASH --------"
-cp -f core/_bash_profile $BASH_PROFILE_FILENAME
-cp -f core/_bashrc $BASH_RC_FILENAME
+cp -f root/_bash_profile $BASH_PROFILE_FILENAME
+cp -f root/_bashrc $BASH_RC_FILENAME
