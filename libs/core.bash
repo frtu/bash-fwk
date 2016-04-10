@@ -14,10 +14,15 @@ load_folder() {
 	  echo "Director '$1' does not exists!"
 	fi
 }
+
 import() {
   load_file "$LIBS_FOLDER/$1.bash"
 }
-
 reload() {
   source ~/.bash_profile
+}
+
+# Command utils
+mkcd() {
+  mkdir $1 && cd $1
 }
