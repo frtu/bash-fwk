@@ -1,10 +1,7 @@
-source core/_bash_profile
+source root/_bash_profile
 
 ## If $1 is not passed, set to the current working dir using $PWD
 _dir="${1:-${PWD}}"
-
-LIB_SOURCE_FOLDER="$_dir/libs/"
-SCRIPT_SOURCE_FOLDER="$_dir/scripts/`uname -s`/"
 
 relink() {
 	rm -f "$2"
@@ -13,8 +10,9 @@ relink() {
 }
 
 echo "------- SETUP local folders --------"
-relink "$LIB_SOURCE_FOLDER" "$LIBS_FOLDER"
-relink "$SCRIPT_SOURCE_FOLDER" "$SCRIPTS_FOLDER"
+relink "$_dir/libs/" "$LIBS_FOLDER"
+relink "$_dir/services/" "$SERVICES_FOLDER"
+relink "$_dir/scripts/`uname -s`/" "$SCRIPTS_FOLDER"
 
 echo "------- BACKUP --------"
 mv -f $BASH_PROFILE_FILENAME $BASH_PROFILE_FILENAME.bak
