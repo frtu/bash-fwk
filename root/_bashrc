@@ -1,15 +1,2 @@
-# Load all the libs
-if [ -f "$LIBS_FOLDER" ]; then
-		echo "------- Libs at $LIBS_FOLDER --------"
-		for i in $LIBS_FOLDER/*.bash; do echo "source $i"; source "$i"; done
-	# else
-	#		echo "Libs folder $LIBS_FOLDER isn't mapped !! Think of running setup.bash script"
-fi
-
-# Load all the commands
-if [ -f "$SCRIPTS_FOLDER" ]; then
-		echo "------- Scripts at $SCRIPTS_FOLDER --------"
-		for i in $SCRIPTS_FOLDER/*.bash; do echo "source $i"; source "$i"; done
-	# else
-	#		echo "Scripts folder $SCRIPTS_FOLDER isn't mapped !! Think of running setup.bash script"
-fi
+#load_folder $LIBS_FOLDER
+load_folder $SCRIPTS_FOLDER

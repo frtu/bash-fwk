@@ -14,7 +14,13 @@ alias ll='ls -la'
 alias cp='cp -v'
 alias mv='mv -v'
 
+load_if_exist() {
+	if [ -f "$1" ]; then
+		echo "source $1"; source "$1";
+	fi
+}
+# bash-fwk core scripts
+load_if_exist "$LIBS_FOLDER/core.bash"
+
 # If .bashrc exists, then excute the commands embed in that file
-if [ -f "$BASH_RC_FILENAME" ]; then
-	source "$BASH_RC_FILENAME"
-fi
+load_if_exist $BASH_RC_FILENAME
