@@ -10,7 +10,7 @@ echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoin
 
 ###On Vagrant
 ```
-echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
+echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | vagrant ssh
 ```
 
 ## Your new env
