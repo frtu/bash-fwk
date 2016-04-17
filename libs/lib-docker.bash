@@ -28,11 +28,27 @@ dckbash() {
 	docker run -it $IMAGE_NAME bash
 }
 dckstartdaemon() {
-  	echo "Start docker daemon -d & open port -P : $IMAGE_NAME"
-	docker run -d -P --name $1 $2
+	if [ -z "$2" ]
+    	then
+        	local IMAGE_NAME=$1
+	    else
+    	    local IMAGE_NAME=$2
+  	fi
+  	echo "Start docker daemon -d & open port -P : name=$IMAGE_NAME image=$1 optional_args=$3"
+	docker run -d -P $3 --name $IMAGE_NAME $1
 }
 
 # See running
 dckps() {
 	docker ps
+}
+
+dcknginx() {
+	if [ -n "$1" ]
+	then
+        local OPTIONAL_ARGS="-v $1:/usr/share/nginx/html"
+  	else
+  		echo "You can pass a folder as first argument to indicate where nginx should take his document folder!"
+  	fi
+	dckstartdaemon nginx web "$OPTIONAL_ARGS"
 }

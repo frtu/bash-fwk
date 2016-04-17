@@ -1,9 +1,19 @@
 import lib-docker
 
+dckmload() {
+	if [ -z "$1" ]
+    	then
+        	local TAG_NAME=default
+	    else
+    	    local TAG_NAME=$1
+  	fi
+	eval $(/usr/local/bin/docker-machine env $TAG_NAME)
+}
+
 DOCKER_MACHINE_ROOT=~/.docker/machine
 DOCKER_MACHINES_FOLDER=$DOCKER_MACHINE_ROOT/machines
 if [[ -d $DOCKER_MACHINES_FOLDER ]]; then
-		eval $(/usr/local/bin/docker-machine env default)
+	dckmload
 fi
 
 cddckmachine() {
@@ -37,7 +47,7 @@ dckmstop() {
 dckmrestart() {
 	dckmtemplate "restart" $1
 }
-dckmrestart() {
+dckmrm() {
 	dckmtemplate "rm" $1
 }
 dckmtemplate() {
@@ -54,6 +64,5 @@ dckmtemplate() {
 dckmpatchiso() {
 	cpsafe ~/VMs/_archives_/boot2docker-*.iso $DOCKER_MACHINE_ROOT/cache/boot2docker.iso
 }
-
 
 #Downloading /Users/fred/.docker/machine/cache/boot2docker.iso from https://github.com/boot2docker/boot2docker/releases/download/v1.11.0/boot2docker.iso...
