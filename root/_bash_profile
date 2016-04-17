@@ -9,7 +9,9 @@ export CORE_FOLDER=~/core
 export LIBS_FOLDER=~/libs
 export SCRIPTS_FOLDER=~/scripts
 
-export PATH=$PATH:$HOME/bin
+export PATH=$PATH:\
+/usr/local/bin:\
+$HOME/bin
 
 alias ll='ls -la'
 alias cp='cp -v'
