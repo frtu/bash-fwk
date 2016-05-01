@@ -1,6 +1,7 @@
 #!/bin/sh
 # Loading local keys
-export SSH_ENV="$HOME/.ssh_env"
+export SSH_ROOT="$HOME/.ssh"
+export SSH_ENV="$SSH_ROOT/env"
 
 start_agent() {
      echo "Initialising new SSH agent..."
@@ -13,8 +14,8 @@ start_agent() {
      ssh-add -l
 }
 stop_agent() {
-	ssh-add -D
-	ssh-agent -k
+     ssh-add -D
+     ssh-agent -k
 }
 
 # Source SSH settings, if applicable
