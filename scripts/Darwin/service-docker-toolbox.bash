@@ -38,7 +38,7 @@ dckmconfig() {
 dckmip() {
 	dckmtemplate "ip" $1
 }
-dckmstart() {
+dckmssh() {
 	dckmtemplate "ssh" $1
 }
 dckmstop() {

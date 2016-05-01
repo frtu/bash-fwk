@@ -14,7 +14,7 @@ dckpull() {
 	docker pull $IMAGE_NAME
 }
 dckimagelist() {
-  	echo "List all existing docker images"
+  echo "List all existing docker images"
 	docker images
 }
 dckbash() {
