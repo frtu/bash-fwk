@@ -29,12 +29,11 @@ inst_vagrant() {
   brew install vagrant-completion
 }
 
-inst_maven() {
-  brew install maven
+inst_node() {
+  brew install inst_node
+  npm install -g grunt-cli
 }
-inst_maven3() {
-  brew install maven30
-}
+
 inst_tomcat() {
   brew install tomcat
   export TOMCAT_HOME=/Library/Tomcat
