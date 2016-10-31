@@ -9,3 +9,7 @@ dos2unixfile() {
 	mv $1 "$1.bak"
 	cat "$1.bak" | tr '\n' '\r' > $1
 }
+
+foldersize() {
+	du -h -d 1
+}
