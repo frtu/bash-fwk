@@ -24,7 +24,13 @@ vag_add_win8() {
 
 vag_add_aerospike() {
 	# http://www.aerospike.com/docs/operations/install/vagrant/mac/
-	vag_add aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.1/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.1.box
+	# https://s3-us-west-1.amazonaws.com/aerospike-vagrant/previous_version/virtualbox/as_centos-6.6-x86_64.box
+	# vag_add aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.1/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.1.box
+	vag_add aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.2.3/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.2.3.box
+}
+
+vag_add_centos_puppet() {
+	vag_add puppetlabs/centos-6.6-64-puppet https://atlas.hashicorp.com/puppetlabs/boxes/centos-6.6-64-puppet/versions/1.0.3/providers/virtualbox.box vagrant-puppetlabs-centos-6.6-64-1.0.3.box
 }
 
 vag_add_docker() {
@@ -75,8 +81,9 @@ vag_add() {
 }
 
 vaglist() {
-	ls $VAGRANT_BOXES_FOLDER
-	# vagrant box list
+	# ls $VAGRANT_BOXES_FOLDER
+	vagrant box list
+	vagrant global-status
 }
 
 vag_local_sync() {

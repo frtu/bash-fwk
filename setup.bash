@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "------- BACKUP & CLEAN --------"
 mv -f ~/.bash_profile ~/.bash_profile.bak
 mv -f ~/.bashrc ~/.bashrc.bak
