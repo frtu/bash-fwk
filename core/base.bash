@@ -1,4 +1,9 @@
+BASH_FWK_ROOT=~/git/bash-fwk
 SERVICE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
+
+cdfwk() {
+  cd $BASH_FWK_ROOT
+}
 
 load_file() {
   if [ -f "$1" ]

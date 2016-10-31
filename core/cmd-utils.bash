@@ -27,3 +27,17 @@ tree() {
 del() {
 	find . -name $1 -exec rm {} \;
 }
+
+forline() {
+  while IFS='' read -r line || [[ -n "$line" ]]; do
+      echo "$line"
+  done < "$1"
+}
+
+forlinegrep() {
+  forline $1 | xargs -I {} grep --color "{}" $2
+}
+
+forlinetogrep() {
+  fgrep -f $1 $2
+}
