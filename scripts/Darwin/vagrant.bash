@@ -42,7 +42,8 @@ vag_add_centos() {
 }
 vag_add_ubuntu() {
 	# vag_add precise64 http://files.vagrantup.com/precise64.box
-	vag_add precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-precise64-1.1.0.box
+	#vag_add precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-precise64-1.1.0.box
+	vag_add ubuntu/trusty64 https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20161109.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20161109.box
 }
 vag_add_centos_docker() {
 	vag_add centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box

@@ -30,7 +30,7 @@ inst_vagrant() {
 }
 
 inst_node() {
-  brew install inst_node
+  brew install node
   npm install -g grunt-cli
 }
 
@@ -47,4 +47,6 @@ inst_gvm() {
 }
 lnk_subl() {
   ln -s /Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
+  curl -o ~/Library/Application\ Support/Sublime\ Text\ 2/Installed\ Packages/Package\ Control.sublime-package https://packagecontrol.io/Package%20Control.sublime-package
+  # Emmet
 }
