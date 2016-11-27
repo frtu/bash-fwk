@@ -78,7 +78,7 @@ mvnreponexus() {
       echo "== You must edit the file 'settings_$L_MVN_ID.rename.xml' and add a mirrors.mirror.url the correct repo URL value. Remove the .rename suffix when you're done. =="
       return
   fi
-  mvnrepospecific $L_MVN_ID
+  mvnrepopatch $L_MVN_ID
 }
 
 mvnrepoclean() { # Remove all trace of orginal repo from local repo (avoid SNAPSHOT to search for nexus when you cannot reach it)
