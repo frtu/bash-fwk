@@ -11,3 +11,23 @@ inst_maven() { # Install maven using brew
   brew install maven
 }
 
+mcompile() {
+  mvn compile
+}
+mvndpsrc() {
+  mvn source:jar-no-fork deploy -DskipTests -Denforcer.skip -DaltDeploymentRepository=D-SHC-00355713-release::default::http://D-SHC-00355713:8888/nexus/content/repositories/releases
+}
+
+mvnrun() {
+  mvnsk spring-boot:run 
+}
+
+mvnrepocn() {
+  local L_MVN_SETTINGS_FILE=settings_CN.xml
+
+  # If MVN_SETTINGS_STANDALONE doesn't exist, try to use Maven one
+  if [ ! -f "$MVN_REPO_ROOT/$L_MVN_SETTINGS_FILE" ]; then
+      cp ~/scripts/cache_files/$L_MVN_SETTINGS_FILE $MVN_REPO_ROOT
+  fi
+  mvnreponexus CN	
+}

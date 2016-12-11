@@ -8,6 +8,13 @@ dckmload() {
     	    local TAG_NAME=$1
   	fi
 	eval $(/usr/local/bin/docker-machine env $TAG_NAME)
+	dckmenv
+}
+dckmenv() {
+	env | grep DOCKER
+}
+dckmunset() {
+	unset ${!DOCKER_*}
 }
 
 DOCKER_MACHINE_ROOT=~/.docker/machine
