@@ -1,5 +1,8 @@
 import lib-docker
 
+DOCKER_MACHINE_ROOT=~/.docker/machine
+DOCKER_MACHINES_FOLDER=$DOCKER_MACHINE_ROOT/machines
+
 dckmload() {
 	if [ -z "$1" ]
     	then
@@ -8,22 +11,9 @@ dckmload() {
     	    local TAG_NAME=$1
   	fi
 	eval $(/usr/local/bin/docker-machine env $TAG_NAME)
-	dckmenv
-}
-dckmenv() {
-	env | grep DOCKER
-}
-dckmunset() {
-	unset ${!DOCKER_*}
 }
 
-DOCKER_MACHINE_ROOT=~/.docker/machine
-DOCKER_MACHINES_FOLDER=$DOCKER_MACHINE_ROOT/machines
-if [[ -d $DOCKER_MACHINES_FOLDER ]]; then
-	dckmload
-fi
-
-cddckmachine() {
+cddckinstances() {
 	echo "Going to the folder of all docker machine virtual instance images."
 	cd $DOCKER_MACHINES_FOLDER
 }
