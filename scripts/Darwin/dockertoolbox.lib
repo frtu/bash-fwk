@@ -18,6 +18,11 @@ cddckinstances() {
 	cd $DOCKER_MACHINES_FOLDER
 }
 
+dckmproxy() {
+    echo "Setting proxy $1 in ~/scripts/service_docker_proxy.bash"
+	echo 'DOCKER_OPTS=" --registry-mirror='$1'"' >> ~/scripts/service_docker_proxy.bash
+}
+
 dckmlist() {
 	echo "List all the docker machine instance available. Usually only one : default"
 	#ls $DOCKER_MACHINES_FOLDER
