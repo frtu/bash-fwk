@@ -1,6 +1,11 @@
+USR_BIN=/usr/local/bin
+
 BASH_FWK_ROOT=~/git/bash-fwk
 SERVICE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
 
+cdbin(){
+  cd $USR_BIN
+}
 cdfwk() {
   cd $BASH_FWK_ROOT
 }
