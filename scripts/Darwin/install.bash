@@ -37,6 +37,10 @@ inst_node() {
   npm install -g grunt-cli
 }
 
+inst_gradle() {
+  brew install gradle
+}
+
 inst_tomcat() {
   brew install tomcat
   export TOMCAT_HOME=/Library/Tomcat
