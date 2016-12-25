@@ -30,7 +30,7 @@ dckbash() {
       local IMAGE_NAME=$1
   fi
   echo "Login into a Bash docker images : $IMAGE_NAME"
-	docker run -it $IMAGE_NAME bash
+	docker exec -it $IMAGE_NAME bash
 }
 dckstartdaemon() {
   if [ -z "$2" ]
