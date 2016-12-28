@@ -1,5 +1,5 @@
 export HOMEBREW_REPOSITORY=/usr/local/Homebrew
-export HOMEBREW_CACHE=/Users/frdtu/Library/Caches/Homebrew
+export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
 
 inst_brew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
