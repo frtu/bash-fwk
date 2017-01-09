@@ -2,6 +2,7 @@ import lib-download
 
 
 VAGRANT_BOXES_FOLDER=~/.vagrant.d/boxes
+VAGRANT_MACHINES_SUBFOLDER=./.vagrant/machines
 
 VM_ROOT_FOLDER=~/VMs
 VM_ARCHIVE_FOLDER=$VM_ROOT_FOLDER/_archives_
@@ -42,8 +43,8 @@ vag_add_centos() {
 }
 vag_add_ubuntu() {
 	# vag_add precise64 http://files.vagrantup.com/precise64.box
-	#vag_add precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-precise64-1.1.0.box
-	vag_add ubuntu/trusty64 https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20161109.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20161109.box
+	#vag_add precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-ubuntu-precise64-1.1.0.box
+	vag_add ubuntu/trusty64 https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20161205.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20161205.box
 }
 vag_add_centos_docker() {
 	vag_add centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box
@@ -74,8 +75,8 @@ vag_add() {
 	    else
     	    echo "Vagrant Box file exist, use this one $BOX_FILENAME"
 	fi
-	echo "vagrant box add $BOX_NAME $BOX_FILENAME"
-	vagrant box add $BOX_NAME $BOX_FILENAME
+	echo "vagrant box add $BOX_NAME $BOX_FILENAME --force"
+	vagrant box add $BOX_NAME $BOX_FILENAME --force
 
 	echo "vagrant init $BOX_NAME"
 	vagrant init $BOX_NAME
@@ -83,8 +84,15 @@ vag_add() {
 
 vaglist() {
 	# ls $VAGRANT_BOXES_FOLDER
+	echo "=== Vagrant boxes catalog ==="
 	vagrant box list
-	vagrant global-status
+	echo "=== Vagrant instances ==="
+	vagrant global-status --prune
+
+	if [[ -d $VAGRANT_MACHINES_SUBFOLDER ]]; then
+		echo "== List local vagrant name =="
+		ls $VAGRANT_MACHINES_SUBFOLDER
+	fi
 }
 
 vag_local_sync() {
