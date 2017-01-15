@@ -18,6 +18,9 @@ mvndep() { # list all dependencies, you may want to redirect the output into a f
 mvndepoffline() {
   mvn dependency:go-offline   
 }
+mvnsetversion() {
+  mvnsk versions:set -DnewVersion=$@
+}
 
 mvnrepodefault() {
   if [ -z "$1" ]
