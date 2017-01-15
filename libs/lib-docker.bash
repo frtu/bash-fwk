@@ -32,6 +32,17 @@ dckbash() {
   echo "Login into a Bash docker images : $IMAGE_NAME"
 	docker exec -it $IMAGE_NAME bash
 }
+dckcp() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please supply argument(s) SOURCE DESTINATION (Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES"
+      dckps
+      return -1
+  fi
+  echo "Copy from docker images : $IMAGE_NAME"
+  docker cp $1 $2
+}
+
 dckstartdaemon() {
   if [ -z "$2" ]
     then

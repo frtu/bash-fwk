@@ -10,7 +10,7 @@ dckmload() {
 	    else
     	    local TAG_NAME=$1
   	fi
-	eval $(/usr/local/bin/docker-machine env $TAG_NAME)
+	eval $(docker-machine env $TAG_NAME)
 }
 
 cddckinstances() {
@@ -42,7 +42,7 @@ dckmrestart() {
 dckmlist() {
 	echo "List all the docker machine instance available. Usually only one : default"
 	#ls $DOCKER_MACHINES_FOLDER
-	/usr/local/bin/docker-machine ls
+	docker-machine ls
 }
 dckmip() {
 	dckmtemplate "ip" $1
@@ -54,15 +54,15 @@ dckmconfig() {
 	dckmtemplate "config" $1
 }
 dckmscp() {
-	/usr/local/bin/docker-machine scp $2 $1:$3
+	docker-machine scp $2 $1:$3
 }
 
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
-	/usr/local/bin/docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry $1\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
+	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry $1\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
 }
 dckmregistry() {
-	/usr/local/bin/docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror $1\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
+	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror $1\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
 }
 
 dckmtemplate() {
@@ -72,8 +72,8 @@ dckmtemplate() {
 	    else
     	    local TAG_NAME=$2
   	fi
-  	echo "/usr/local/bin/docker-machine $1 $TAG_NAME"
-	/usr/local/bin/docker-machine $1 $TAG_NAME
+  	echo "docker-machine $1 $TAG_NAME"
+	docker-machine $1 $TAG_NAME
 }
 
 dckmpatchiso() {
