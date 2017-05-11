@@ -9,7 +9,7 @@ start_agent() {
      echo SSH Agent started
      chmod 600 "${SSH_ENV}"
      . "${SSH_ENV}" > /dev/null
-     for i in ~/.ssh/*-rsa; do /usr/bin/ssh-add "$i"; done
+     for i in ~/.ssh/*rsa; do /usr/bin/ssh-add "$i"; done
      echo List of keys
      ssh-add -l
 }
