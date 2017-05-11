@@ -1,4 +1,4 @@
-load_if_exist "$SCRIPTS_FOLDER/dockertoolbox.bash-lib"
+import "lib-dockertoolbox"
 
 BOOT2DOCKER_DEFAULT_INSTANCE=default
 

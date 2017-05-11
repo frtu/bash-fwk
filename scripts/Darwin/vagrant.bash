@@ -46,11 +46,11 @@ vag_add_ubuntu() {
 	#vag_add precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-ubuntu-precise64-1.1.0.box
 	vag_add ubuntu/trusty64 https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20161205.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20161205.box
 }
-vag_add_centos_docker() {
+
+vag_add_docker_centos() {
 	vag_add centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box
 	# vagrant plugin install vagrant-docker-compose
 }
-
 
 vag_add() {
 	echo $@

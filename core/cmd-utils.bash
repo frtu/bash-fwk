@@ -11,6 +11,10 @@ del() {
   find . -name $1 -exec rm {} \;
 }
 
+portlist() {
+  netstat -ntlp | grep LISTEN
+}
+
 cpsafe() {
   if [ -f "$2" ]
   then
