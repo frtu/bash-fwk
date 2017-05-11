@@ -1,4 +1,14 @@
 # Starting & administration
+dckrepo() {
+  if [ -z "$1" ]; then
+      echo "== Please pass the Domain name of your Docker registry. ==" >&2
+      return
+  fi
+
+  echo "export DOCKER_OPTS='$DOCKER_OPTS --insecure-registry $1'" 
+  export DOCKER_OPTS="$DOCKER_OPTS --insecure-registry $1"
+}
+
 dcklist() {
   echo "List all existing docker images"
   docker images

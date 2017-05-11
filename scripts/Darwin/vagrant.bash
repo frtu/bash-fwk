@@ -51,6 +51,16 @@ vag_add_docker_centos() {
 	vag_add centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box
 	# vagrant plugin install vagrant-docker-compose
 }
+vag_add_docker_ubuntu() {
+	BOX_FILENAME=$VM_ARCHIVE_FOLDER/docker-ubuntu-trusty64.box
+	BOX_NAME=docker-ubuntu-trusty64
+
+	echo "vagrant box add $BOX_NAME $BOX_FILENAME"
+	vagrant box add $BOX_NAME $BOX_FILENAME
+
+	echo "vagrant init $BOX_NAME"
+	vagrant init $BOX_NAME
+}
 
 vag_add() {
 	echo $@
