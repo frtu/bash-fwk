@@ -28,6 +28,10 @@ import() {
 reload() {
   source ~/.bash_profile
 }
+redeploy() {
+  source $BASH_FWK_ROOT/setup.bash
+  reload
+}
 
 srv_list() {
   # http://www.cyberciti.biz/faq/unix-linux-extract-filename-and-extension-in-bash/
