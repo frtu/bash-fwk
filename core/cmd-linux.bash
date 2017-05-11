@@ -1,17 +1,7 @@
-USR_BIN=/usr/local/bin
-
-export PATH=$PATH:\
-$USR_BIN:\
-$HOME/bin
-
-cdbin(){
-  cd $USR_BIN
+foldersize() {
+	du -sh ./*
 }
 
 disksize() {
   df -h
-}
-
-foldersize() {
-	du -sh ./*
 }
