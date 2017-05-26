@@ -5,7 +5,17 @@ inst_brew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew tap caskroom/homebrew-cask
   brew install brew-cask
+  brew tap beeftornado/rmtree
 }
+uninst() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please supply which package you want to uninstall"
+      return
+  fi
+  brew rmtree $1
+}
+
 brew_ls() {
   brew list --versions
 }
