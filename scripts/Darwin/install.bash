@@ -1,6 +1,12 @@
-export HOMEBREW_REPOSITORY=/usr/local/Homebrew
+export HOMEBREW_HOME=/usr/local/Library/Homebrew
+export HOMEBREW_REPOSITORY=/usr/local/Cellar
+export HOMEBREW_OPT=/usr/local/opt
 export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
 
+
+cdbrew() {
+  cd $HOMEBREW_REPOSITORY
+}
 inst_brew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew tap caskroom/homebrew-cask
@@ -49,14 +55,6 @@ inst_node() {
 
 inst_gradle() {
   brew install gradle
-}
-
-inst_tomcat() {
-  brew install tomcat
-  export TOMCAT_HOME=/Library/Tomcat
-  sudo ln -s /usr/local/Cellar/tomcat/8.0.18/libexec $TOMCAT_HOME
-  sudo chown -R $USER $TOMCAT_HOME
-  sudo chmod +x $TOMCAT_HOME/bin/*.sh
 }
 
 inst_gvm() {
