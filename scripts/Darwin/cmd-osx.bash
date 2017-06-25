@@ -13,3 +13,9 @@ dos2unixfile() {
 foldersize() {
 	du -h -d 1
 }
+
+tree() {
+	pwd
+	find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+}
+
