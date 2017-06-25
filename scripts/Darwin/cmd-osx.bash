@@ -19,3 +19,26 @@ tree() {
 	find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 }
 
+del() {
+	find . -name $1 -exec rm {} \;
+}
+
+servicels() {
+	launchctl list	
+}
+servicestart() {
+	if [ $# -eq 0 ]; then
+      echo "Add the service name to start !"
+      return
+  	fi
+  	echo "launchctl start $1"
+	launchctl start $1	
+}
+servicestop() {
+	if [ $# -eq 0 ]; then
+      echo "Add the service name to stop !"
+      return
+  	fi
+  	echo "launchctl stop $1"
+	launchctl stop $1	
+}
