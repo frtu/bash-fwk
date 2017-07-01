@@ -18,11 +18,6 @@ cddckinstances() {
 	cd $DOCKER_MACHINES_FOLDER
 }
 
-dckmproxy() {
-    echo "Setting proxy $1 in ~/scripts/service_docker_proxy.bash"
-	echo 'DOCKER_OPTS=" --registry-mirror='$1'"' >> ~/scripts/service_docker_proxy.bash
-}
-
 # https://docs.docker.com/machine/migrate-to-machine/
 dckmcreate() {
 	dckmtemplate "create --driver virtualbox" $1
@@ -38,6 +33,7 @@ dckmstop() {
 }
 dckmrestart() {
 	dckmtemplate "restart" $1
+	dckmload $1
 }
 dckmlist() {
 	echo "List all the docker machine instance available. Usually only one : default"
@@ -45,7 +41,14 @@ dckmlist() {
 	docker-machine ls
 }
 dckmip() {
-	dckmtemplate "ip" $1
+	if [ -z "$1" ]
+    	then
+        	local TAG_NAME=default
+	    else
+    	    local TAG_NAME=$1
+  	fi
+	export DOCKER_MACHINE=`docker-machine ip $TAG_NAME`
+  	echo "docker-machine ip $TAG_NAME => export DOCKER_MACHINE=$DOCKER_MACHINE"
 }
 dckmrm() {
 	dckmtemplate "rm" $1
@@ -59,10 +62,12 @@ dckmscp() {
 
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
-	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry $1\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
+	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
+	dckmrestart
 }
 dckmregistry() {
-	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror $1\"' | sudo tee -a /var/lib/boot2docker/profile && sudo /etc/init.d/docker restart"
+	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
+	dckmrestart
 }
 
 dckmtemplate() {

@@ -1,12 +1,12 @@
 # Starting & administration
-dckrepo() {
+dckproxy() {
   if [ -z "$1" ]; then
       echo "== Please pass the Domain name of your Docker registry. ==" >&2
       return
   fi
-
-  echo "export DOCKER_OPTS='$DOCKER_OPTS --insecure-registry $1'" 
-  export DOCKER_OPTS="$DOCKER_OPTS --insecure-registry $1"
+  echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
+  echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
+  echo 'export DOCKER_OPTS=" --registry-mirror 'https://$1' --insecure-registry 'http://$1'"' > ~/scripts/service_docker_proxy.bash
 }
 
 dcklist() {
