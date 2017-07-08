@@ -1,3 +1,4 @@
 #load_folder $LIBS_FOLDER
 load_folder $CORE_FOLDER
 load_folder $SCRIPTS_FOLDER
+load_folder $LOCAL_SCRIPTS_FOLDER

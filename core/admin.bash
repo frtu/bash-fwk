@@ -4,7 +4,7 @@ relink() {
 	ln -s  "$1" "$2"
 }
 
-deploy() {
+bashdeploy() {
 	## If $1 is not passed, set to the current working dir using $PWD
 	_dir="${1:-${PWD}}"
 
@@ -19,4 +19,11 @@ deploy() {
 	relink "$_dir/core/" "$CORE_FOLDER"
 	relink "$_dir/libs/" "$LIBS_FOLDER"
 	relink "$DISTRO_SCRIPT_FOLDER" "$SCRIPTS_FOLDER"
+}
+bashprofile() {
+	mv -f $BASH_PROFILE_FILENAME $BASH_PROFILE_FILENAME.bak
+	mv -f $BASH_RC_FILENAME $BASH_RC_FILENAME.bak
+
+	cp -f root/_bash_profile $BASH_PROFILE_FILENAME
+	cp -f root/_bashrc $BASH_RC_FILENAME
 }
