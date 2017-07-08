@@ -18,10 +18,6 @@ dckps() {
   docker ps -a
 }
 
-dckhello() {
-	echo "Testing if docker works?"
-	docker run hello-world
-}
 dckpull() {
   if [ -z "$1" ]
     then
@@ -31,6 +27,22 @@ dckpull() {
   fi
 	echo "Fetching new docker images : $IMAGE_NAME"
 	docker pull $IMAGE_NAME
+}
+dckstart() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+      return
+  fi
+  docker start $1
+}
+dcklogs() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+      return
+  fi
+  docker logs $1
 }
 dckbash() {
   if [ -z "$1" ]
@@ -52,7 +64,30 @@ dckcp() {
   echo "Copy from docker images : $IMAGE_NAME"
   docker cp $1 $2
 }
+dckstop() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+      return
+  fi
+  docker stop $1
+}
+dckrm() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+      return
+  fi
 
+  docker stop $1
+  docker rm -f $1
+  docker ps
+}
+
+dckhello() {
+  echo "Testing if docker works?"
+  docker run hello-world
+}
 dckstartdaemon() {
   if [ -z "$2" ]
     then
@@ -71,35 +106,6 @@ dcknginx() {
   		echo "You can pass a folder as first argument to indicate where nginx should take his document folder!"
   fi
 	dckstartdaemon nginx web "$OPTIONAL_ARGS"
-}
-
-dckstart() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
-  fi
-  docker start $1
-}
-dckstop() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
-  fi
-  docker stop $1
-}
-
-dckrm() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
-  fi
-
-  docker stop $1
-  docker rm -f $1
-  docker ps
 }
 
 dckcleanimage() {
