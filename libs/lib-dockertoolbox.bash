@@ -24,6 +24,7 @@ dckmcreate() {
 }
 dckmstart() {
 	dckmtemplate "start" $1
+	dckmload $1
 }
 dckmssh() {
 	dckmtemplate "ssh" $1
@@ -56,18 +57,33 @@ dckmrm() {
 dckmconfig() {
 	dckmtemplate "config" $1
 }
+dckmgencerts() {
+	dckmtemplate "regenerate-certs" $1
+}
 dckmscp() {
 	docker-machine scp $2 $1:$3
 }
 
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
-	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
-	dckmrestart
+	if [ -z "$2" ]
+    	then
+        	local TAG_NAME=default
+	    else
+    	    local TAG_NAME=$2
+  	fi
+	docker-machine ssh $TAG_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
+	dckmrestart $TAG_NAME
 }
 dckmregistry() {
-	docker-machine ssh default "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
-	dckmrestart
+	if [ -z "$2" ]
+    	then
+        	local TAG_NAME=default
+	    else
+    	    local TAG_NAME=$2
+  	fi
+	docker-machine ssh $TAG_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
+	dckmrestart $TAG_NAME
 }
 
 dckmtemplate() {
