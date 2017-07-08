@@ -1,6 +1,9 @@
 import "lib-dockertoolbox"
 
-BOOT2DOCKER_DEFAULT_INSTANCE=default
+if [ -z "$BOOT2DOCKER_DEFAULT_INSTANCE" ]
+  then
+    local BOOT2DOCKER_DEFAULT_INSTANCE=default
+fi
 
 # Load docker toolbox, if a boot2docker instances root folder is found
 if [[ -d $DOCKER_MACHINES_FOLDER ]]; then

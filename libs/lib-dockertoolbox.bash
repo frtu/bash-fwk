@@ -3,6 +3,17 @@ import lib-docker
 DOCKER_MACHINE_ROOT=~/.docker/machine
 DOCKER_MACHINES_FOLDER=$DOCKER_MACHINE_ROOT/machines
 
+dckmloadpersist() {
+	if [ -z "$1" ]
+    	then
+        	local TAG_NAME=default
+	    else
+    	    local TAG_NAME=$1
+  	fi
+  	echo "Persiting BOOT2DOCKER_DEFAULT_INSTANCE=$TAG_NAME!"
+  	echo 'export BOOT2DOCKER_DEFAULT_INSTANCE='$TAG_NAME > $LOCAL_SCRIPTS_FOLDER/env_docker_instance.bash
+  	dckmload $TAG_NAME
+}
 dckmload() {
 	if [ -z "$1" ]
     	then
