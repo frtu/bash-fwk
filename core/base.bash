@@ -1,5 +1,6 @@
 BASH_FWK_ROOT=~/git/bash-fwk
-SERVICE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
+SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
+SERVICE_LOCAL_BASH_PREFIX=$LOCAL_SCRIPTS_FOLDER/service-
 
 cdfwk() {
   cd $BASH_FWK_ROOT
@@ -35,15 +36,15 @@ redeploy() {
 
 srv_list() {
   # http://www.cyberciti.biz/faq/unix-linux-extract-filename-and-extension-in-bash/
-  echo "== Activated services =="
-  for i in $SERVICE_BASH_PREFIX*.bash; do 
-  	[ ! -f "$i" ] && break # SKIP the file pattern when no file matches
-  	FILENAME=${i##*/}
-  	echo ${FILENAME%.*} | cut -d'-' -f2 # Echo BASENAME and keep only the second part after -
+  echo "== List ALL services =="
+  for i in $SERVICE_TEMPLATE_BASH_PREFIX*.bas; do 
+    [ ! -f "$i" ] && break # SKIP the file pattern when no file matches
+    FILENAME=${i##*/}
+    echo ${FILENAME%.*} | cut -d'-' -f2 # Echo BASENAME and keep only the second part after -
   done
 
-  echo "== Deactivated services =="
-  for i in $SERVICE_BASH_PREFIX*.bas; do 
+  echo "== Activated services =="
+  for i in $SERVICE_LOCAL_BASH_PREFIX*.bash; do 
   	[ ! -f "$i" ] && break # SKIP the file pattern when no file matches
   	FILENAME=${i##*/}
   	echo ${FILENAME%.*} | cut -d'-' -f2 # Echo BASENAME and keep only the second part after -
@@ -51,21 +52,22 @@ srv_list() {
 }
 
 srv_activate() {
-  local SERVICE_BASENAME=$SERVICE_BASH_PREFIX$1
+  local SERVICE_BASENAME=$SERVICE_TEMPLATE_BASH_PREFIX$1
+  local SERVICE_TARGET_BASENAME=$SERVICE_LOCAL_BASH_PREFIX$1
   if [ -f "$SERVICE_BASENAME.bas" ]
   then
   	echo "Activate service $1"
-	mv $SERVICE_BASENAME.bas $SERVICE_BASENAME.bash
+	  cp $SERVICE_BASENAME.bas $SERVICE_TARGET_BASENAME.bash
   else
   	echo "'$1' does not exists! Please profile a valide service name using 'srv_list'"
   fi
 }
 srv_deactivate() {
-  local SERVICE_BASENAME=$SERVICE_BASH_PREFIX$1
-  if [ -f "$SERVICE_BASENAME.bash" ]
+  local SERVICE_TARGET_BASENAME=$SERVICE_LOCAL_BASH_PREFIX$1
+  if [ -f "$SERVICE_TARGET_BASENAME.bash" ]
   then
   	echo "Deactivate service $1"
-	mv $SERVICE_BASENAME.bash $SERVICE_BASENAME.bas
+	  rm $SERVICE_TARGET_BASENAME.bash
   else
   	echo "'$1' does not exists! Please profile a valide service name using 'srv_list'"
   fi

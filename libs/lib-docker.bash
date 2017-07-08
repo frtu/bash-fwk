@@ -6,7 +6,7 @@ dckproxy() {
   fi
   echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
   echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
-  echo 'export DOCKER_OPTS=" --registry-mirror 'https://$1' --insecure-registry 'http://$1'"' > ~/scripts/service_docker_proxy.bash
+  echo 'export DOCKER_OPTS=" --registry-mirror 'https://$1' --insecure-registry 'http://$1'"' > $LOCAL_SCRIPTS_FOLDER/docker_proxy.bash
 }
 
 dcklist() {
