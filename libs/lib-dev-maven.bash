@@ -25,9 +25,9 @@ mvnsetversion() {
 mvnrepodefault() {
   if [ -z "$1" ]
     then
-      local L_MVN_SETTINGS_FILE=settings_$MVN_SETTINGS.xml
+      local L_MVN_SETTINGS_FILE=settings-$MVN_SETTINGS.xml
     else
-      local L_MVN_SETTINGS_FILE=settings_$1.xml
+      local L_MVN_SETTINGS_FILE=settings-$1.xml
   fi
 
   if [ ! -f "$MAVEN_HOME/conf/$MVN_SETTINGS" ] 
@@ -45,7 +45,7 @@ mvnrepopatch() {
       echo "== You must pass a first parameter of the target maven settings file. ==" >&2
       return
     else
-      local L_MVN_SETTINGS_FILE=settings_$1.xml
+      local L_MVN_SETTINGS_FILE=settings-$1.xml
   fi
 
   if [ ! -f "$MVN_REPO_ROOT/$L_MVN_SETTINGS_FILE" ] 
@@ -57,7 +57,7 @@ mvnrepopatch() {
 }
 
 mvnrepostandalone() {
-  local L_MVN_SETTINGS_FILE=settings_$MVN_SETTINGS_STANDALONE.xml
+  local L_MVN_SETTINGS_FILE=settings-$MVN_SETTINGS_STANDALONE.xml
 
   # If MVN_SETTINGS_STANDALONE doesn't exist, try to use Maven one
   if [ ! -f "$MVN_REPO_ROOT/$L_MVN_SETTINGS_FILE" ]; then
@@ -73,12 +73,12 @@ mvnreponexus() {
     else
       local L_MVN_ID=$1
   fi
-  local L_MVN_SETTINGS_FILE=settings_$L_MVN_ID.xml
+  local L_MVN_SETTINGS_FILE=settings-$L_MVN_ID.xml
 
   # If MVN_SETTINGS_STANDALONE doesn't exist, try to use Maven one
   if [ ! -f "$MVN_REPO_ROOT/$L_MVN_SETTINGS_FILE" ]; then
       mvnrepodefault "$L_MVN_ID.rename"
-      echo "== You must edit the file 'settings_$L_MVN_ID.rename.xml' and add a mirrors.mirror.url the correct repo URL value. Remove the .rename suffix when you're done. =="
+      echo "== You must edit the file 'settings-$L_MVN_ID.rename.xml' and add a mirrors.mirror.url the correct repo URL value. Remove the .rename suffix when you're done. =="
       return
   fi
   mvnrepopatch $L_MVN_ID

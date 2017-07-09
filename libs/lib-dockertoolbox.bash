@@ -11,7 +11,7 @@ dckmloadpersist() {
     	    local TAG_NAME=$1
   	fi
   	echo "Persiting BOOT2DOCKER_DEFAULT_INSTANCE=$TAG_NAME!"
-  	echo 'export BOOT2DOCKER_DEFAULT_INSTANCE='$TAG_NAME > $LOCAL_SCRIPTS_FOLDER/env_docker_instance.bash
+  	echo 'export BOOT2DOCKER_DEFAULT_INSTANCE='$TAG_NAME > $LOCAL_SCRIPTS_FOLDER/env-docker-instance.bash
   	dckmload $TAG_NAME
 }
 dckmload() {
