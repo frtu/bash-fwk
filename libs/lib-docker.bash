@@ -45,14 +45,23 @@ dcklogs() {
   docker logs $1
 }
 dckbash() {
-  if [ -z "$1" ]
+  if [ $# -eq 0 ]
     then
-      local IMAGE_NAME=ubuntu
-    else
-      local IMAGE_NAME=$1
+      echo "Please supply the argument : IMAGE_NAME. If you don't know any names run 'dckps' and look at the last column NAMES"
+      dckps
+      return -1
   fi
-  echo "Login into a Bash docker images : $IMAGE_NAME"
-	docker exec -it $IMAGE_NAME bash
+
+  local IMAGE_NAME=$1
+  if [ -z "$2" ]
+    then
+      echo "Login into a Bash docker images : $IMAGE_NAME"
+      docker exec -it $IMAGE_NAME bash
+    else
+      shift 1
+      echo "CALL : root@$IMAGE_NAME> $@"
+      echo "$@" | docker exec -i $IMAGE_NAME bash
+  fi
 }
 dckcp() {
   if [ $# -eq 0 ]

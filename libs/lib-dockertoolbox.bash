@@ -38,7 +38,15 @@ dckmstart() {
 	dckmload $1
 }
 dckmssh() {
-	dckmtemplate "ssh" $1
+	local IMAGE_NAME=$1
+	if [ -z "$2" ]
+    	then
+		  dckmtemplate "ssh" $IMAGE_NAME
+	    else
+	      shift 1
+	      echo "CALL : root@$IMAGE_NAME> $@"
+	      echo "$@" | dckmtemplate "ssh" $IMAGE_NAME
+  	fi
 }
 dckmstop() {
 	dckmtemplate "stop" $1
