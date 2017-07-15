@@ -3,28 +3,20 @@
 export SSH_ROOT="$HOME/.ssh"
 export SSH_ENV="$SSH_ROOT/env"
 
-start_agent() {
+sshagentstart() {
      echo "Initialising new SSH agent..."
      /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
      echo SSH Agent started
      chmod 600 "${SSH_ENV}"
      . "${SSH_ENV}" > /dev/null
      for i in ~/.ssh/*rsa; do /usr/bin/ssh-add "$i"; done
-     echo List of keys
-     ssh-add -l
+     sshagentls
 }
-stop_agent() {
+sshagentstop() {
      ssh-add -D
      ssh-agent -k
 }
-
-# Source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-     . "${SSH_ENV}" > /dev/null
-     #ps ${SSH_AGENT_PID} doesn't work under cywgin
-     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-         start_agent;
-     }
-else
-     start_agent;
-fi
+sshagentls() {
+     echo List of keys
+     ssh-add -l
+}
