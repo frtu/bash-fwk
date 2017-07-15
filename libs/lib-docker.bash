@@ -9,7 +9,7 @@ dckproxy() {
   echo 'export DOCKER_OPTS=" --registry-mirror 'https://$1' --insecure-registry 'http://$1'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
 }
 
-dcklist() {
+dckls() {
   echo "List all existing docker images"
   docker images
 }
@@ -81,6 +81,10 @@ dckstop() {
   fi
   docker stop $1
 }
+dckstopall() {
+  docker stop $(docker ps -aq)
+}
+
 dckrm() {
   if [ $# -eq 0 ]
     then
@@ -90,6 +94,18 @@ dckrm() {
   docker stop $1
   docker rm -f $1
   dckps
+}
+
+# https://docs.docker.com/engine/userguide/networking/
+dcknetls() {
+  docker network ls
+  echo "== Inspect bridge ==" 
+  docker network inspect bridge
+  echo "== Inspect host ==" 
+  docker network inspect host
+}
+dcknethosts() {
+  cat /etc/hosts
 }
 
 dckhello() {
@@ -119,7 +135,7 @@ dcknginx() {
 dckcleanimage() {
   if [ $# -eq 0 ]
     then
-      echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dcklist' and look at the column REPOSITORY"
+      echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY"
       return
   fi
   docker rmi $1
