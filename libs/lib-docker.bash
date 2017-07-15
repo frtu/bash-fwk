@@ -29,21 +29,31 @@ dckpull() {
 	docker pull $IMAGE_NAME
 }
 dckstart() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
-  fi
-  docker start $1
+  dcktpl "start" $1
+}
+dckinspect() {
+  dcktpl "inspect" $1
 }
 dcklogs() {
-  if [ $# -eq 0 ]
+  dcktpl "logs" $1
+}
+dckstop() {
+  dcktpl "stop" $1
+}
+dckstopall() {
+  docker stop $(docker ps -aq)
+}
+dcktpl() {
+  if [ -z "$2" ]
     then
       echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
+      dckps
+      return -1
   fi
-  docker logs $1
+  echo "docker $1 $2"
+  docker $1 $2
 }
+
 dckbash() {
   if [ $# -eq 0 ]
     then
@@ -73,18 +83,6 @@ dckcp() {
   echo "Copy from docker images : $IMAGE_NAME"
   docker cp $1 $2
 }
-dckstop() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
-  fi
-  docker stop $1
-}
-dckstopall() {
-  docker stop $(docker ps -aq)
-}
-
 dckrm() {
   if [ $# -eq 0 ]
     then
