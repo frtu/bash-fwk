@@ -29,19 +29,22 @@ dckpull() {
 	docker pull $IMAGE_NAME
 }
 dckstart() {
-  dcktpl "start" $1
+  dcktpl "start" $@
+}
+dckstartall() {
+  dckstart $(docker ps -aq)
 }
 dckinspect() {
-  dcktpl "inspect" $1
+  dcktpl "inspect" $@
 }
 dcklogs() {
-  dcktpl "logs" $1
+  dcktpl "logs" $@
 }
 dckstop() {
-  dcktpl "stop" $1
+  dcktpl "stop" $@
 }
 dckstopall() {
-  docker stop $(docker ps -aq)
+  dckstop $(docker ps -aq)
 }
 dcktpl() {
   if [ -z "$2" ]
@@ -50,8 +53,8 @@ dcktpl() {
       dckps
       return -1
   fi
-  echo "docker $1 $2"
-  docker $1 $2
+  echo "docker $@"
+  docker $@
 }
 
 dckbash() {
@@ -89,8 +92,8 @@ dckrm() {
       echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
       return
   fi
-  docker stop $1
-  docker rm -f $1
+  docker stop $@
+  docker rm -f $@
   dckps
 }
 
@@ -136,5 +139,5 @@ dckcleanimage() {
       echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY"
       return
   fi
-  docker rmi $1
+  docker rmi $@
 }
