@@ -88,6 +88,25 @@ dckmnethosts() {
   	fi
 	dckmssh $IMAGE_NAME "cat /etc/hosts"
 }
+dckmport() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please specify a PORT and optionally an \[IMAGE_NAME\]. If you don't know any names run 'dckmls' and look at the first column NAMES"
+      dckmls
+      return
+  fi
+  local PORT=$1
+  if [ -z "$2" ]
+    then
+        local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+        local IMAGE_NAME=$2
+  fi
+  echo "VBoxManage controlvm $IMAGE_NAME natpf1 \"tcp-port$PORT,tcp,,$PORT,,$PORT\";"
+  #VBoxManage modifyvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
+  VBoxManage controlvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
+}
+
 dckmprofile() {
 	if [ -z "$1" ]
     	then
@@ -103,21 +122,21 @@ dckmconfig() {
 
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
-	if [ -z "$1" ]
+	if [ -z "$2" ]
     	then
         	local IMAGE_NAME=$DOCKER_MACHINE_NAME
 	    else
-    	    local IMAGE_NAME=$1
+    	    local IMAGE_NAME=$2
   	fi
 	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
 	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
 }
 dckmregistry() {
-	if [ -z "$1" ]
+	if [ -z "$2" ]
     	then
         	local IMAGE_NAME=$DOCKER_MACHINE_NAME
 	    else
-    	    local IMAGE_NAME=$1
+    	    local IMAGE_NAME=$2
   	fi
 	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
 	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
