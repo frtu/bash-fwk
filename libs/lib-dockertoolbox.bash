@@ -150,7 +150,8 @@ dckmcreate() {
 	    else
     	    local IMAGE_NAME=$1
   	fi
-	dckmtemplate "create --driver virtualbox" $1
+	dckmtemplate "create --driver virtualbox" $IMAGE_NAME
+  dckmload $IMAGE_NAME
 }
 # Fix & desctructive
 dckmrm() {
