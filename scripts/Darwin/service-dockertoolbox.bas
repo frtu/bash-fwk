@@ -11,3 +11,8 @@ if [[ -d $DOCKER_MACHINES_FOLDER ]]; then
 	dckmstart $BOOT2DOCKER_DEFAULT_INSTANCE
 	dckmload $BOOT2DOCKER_DEFAULT_INSTANCE
 fi
+
+dckmdeactivate() {
+	dckmstop $BOOT2DOCKER_DEFAULT_INSTANCE
+	srv_deactivate dockertoolbox
+}
