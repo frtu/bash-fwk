@@ -11,6 +11,7 @@ dckproxy() {
 
 dckls() {
   echo "List all existing docker images"
+  docker version
   docker images
 }
 # See running
@@ -18,6 +19,9 @@ dckps() {
   docker ps -a
 }
 
+dcksearch() {
+  dcktpl "search" $@
+}
 dckpull() {
   if [ -z "$1" ]
     then
@@ -28,6 +32,7 @@ dckpull() {
 	echo "Fetching new docker images : $IMAGE_NAME"
 	docker pull $IMAGE_NAME
 }
+
 dckstart() {
   dcktpl "start" $@
 }
@@ -39,6 +44,9 @@ dckinspect() {
 }
 dcklogs() {
   dcktpl "logs" $@
+}
+dcktop() {
+  dcktpl "top" $@
 }
 dckstop() {
   dcktpl "stop" $@
@@ -116,12 +124,14 @@ dckhello() {
 dckstartdaemon() {
   if [ -z "$2" ]
     then
-      local IMAGE_NAME=$1
+      local INSTANCE_NAME=$1
     else
-      local IMAGE_NAME=$2
+      local INSTANCE_NAME=$2
   fi
-  echo "Start docker daemon -d & open port -P : name=$IMAGE_NAME image=$1 optional_args=$3"
-	docker run -d -P $3 --name $IMAGE_NAME $1
+  local IMAGE_NAME=$1
+  shift 2
+  echo "Start docker daemon -d & open port -P : instance name=$INSTANCE_NAME image=$IMAGE_NAME optional_args=$@"
+	docker run -d -P $@ --name $INSTANCE_NAME $IMAGE_NAME
 }
 dcknginx() {
 	if [ -n "$1" ]
@@ -131,6 +141,12 @@ dcknginx() {
   		echo "You can pass a folder as first argument to indicate where nginx should take his document folder!"
   fi
 	dckstartdaemon nginx web "$OPTIONAL_ARGS"
+  docker port $1
+  
+  echo "dcklogs $1 : to tail log of this image"
+  echo "dckinspect $1 : to inspect characteristics of this image"
+  echo "dcktop $1 : to top from this image"
+  echo "dckrm $1 : to stop and remove image"
 }
 
 dckcleanimage() {
