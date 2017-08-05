@@ -2,7 +2,7 @@
 dckproxy() {
   if [ -z "$1" ]; then
       echo "== Please pass the Domain name of your Docker registry. ==" >&2
-      return
+      return -1
   fi
   echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
   echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
@@ -55,22 +55,20 @@ dckstopall() {
   dckstop $(docker ps -aq)
 }
 dcktpl() {
-  if [ -z "$2" ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      dckps
-      return -1
+  if [ -z "$2" ]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+    dckps
+    return -1
   fi
   echo "docker $@"
   docker $@
 }
 
 dckbash() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply the argument : IMAGE_NAME. If you don't know any names run 'dckps' and look at the last column NAMES"
-      dckps
-      return -1
+  if [ $# -eq 0 ]; then
+    echo "Please supply the argument : IMAGE_NAME. If you don't know any names run 'dckps' and look at the last column NAMES"
+    dckps
+    return -1
   fi
 
   local IMAGE_NAME=$1
@@ -85,20 +83,18 @@ dckbash() {
   fi
 }
 dckcp() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) SOURCE DESTINATION (Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES"
-      dckps
-      return -1
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) SOURCE DESTINATION (Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES"
+    dckps
+    return -1
   fi
   echo "Copy from docker images : $IMAGE_NAME"
   docker cp $1 $2
 }
 dckrm() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
-      return
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+    return -1
   fi
   docker stop $@
   docker rm -f $@
@@ -136,7 +132,7 @@ dckstartdaemon() {
 dcknginx() {
   if [ $# -eq 0 ]; then
     echo "Please supply argument(s) > dcknginx PATH [PORT] [INSTANCE_NAME]"
-    return
+    return -1
   fi
   if [ -n "$1" ]; then
     OPTIONAL_ARGS="-v $1:/usr/share/nginx/html"
@@ -155,10 +151,9 @@ dcknginx() {
 }
 
 dckcleanimage() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY"
-      return
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY"
+    return -1
   fi
   docker rmi $@
 }

@@ -23,12 +23,12 @@ dckmnginx() {
 # Regular scripts
 dckmload() {
 	if [ -z "$1" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$1
-  	fi
-  	echo "dckmload $IMAGE_NAME"
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$1
+	fi
+	echo "dckmload $IMAGE_NAME"
 	eval $(docker-machine env $IMAGE_NAME)
 }
 dckmloadpersist() {
@@ -49,12 +49,12 @@ dckmrestart() {
 }
 dckmtemplate() {
 	if [ -z "$2" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$2
-  	fi
-  	echo "docker-machine $1 $IMAGE_NAME"
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$2
+	fi
+	echo "docker-machine $1 $IMAGE_NAME"
 	docker-machine $1 $IMAGE_NAME
 }
 
@@ -65,49 +65,48 @@ dckmscp() {
 ## dckmssh IMAGE_NAME [CMD_LINE] [CMD_LINE] [CMD_LINE]
 dckmssh() {
 	if [ -z "$2" ]
-    	then
+  	then
 		  dckmtemplate "ssh" $1
-	    else
-	      local IMAGE_NAME=$1
-	      shift 1
-	      echo "CALL : root@$IMAGE_NAME> $@"
-	      echo "$@" | dckmtemplate "ssh" $IMAGE_NAME
-  	fi
+    else
+      local IMAGE_NAME=$1
+      shift 1
+      echo "CALL : root@$IMAGE_NAME> $@"
+      echo "$@" | dckmtemplate "ssh" $IMAGE_NAME
+	fi
 }
 
 dckmip() {
 	if [ -z "$1" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$1
-  	fi
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$1
+	fi
 	export DOCKER_MACHINE=`docker-machine ip $IMAGE_NAME`
-  	echo "docker-machine ip $IMAGE_NAME => export DOCKER_MACHINE=$DOCKER_MACHINE"
+	echo "docker-machine ip $IMAGE_NAME => export DOCKER_MACHINE=$DOCKER_MACHINE"
 }
 # https://docs.docker.com/engine/userguide/networking/
 dckmnethosts() {
 	if [ -z "$1" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$1
-  	fi
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$1
+	fi
 	dckmssh $IMAGE_NAME "cat /etc/hosts"
 }
 dckmport() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please specify a PORT and optionally an \[IMAGE_NAME\]. If you don't know any names run 'dckmls' and look at the first column NAMES"
-      dckmls
-      return
+  if [ $# -eq 0 ]; then
+    echo "Please specify a PORT and optionally an \[IMAGE_NAME\]. If you don't know any names run 'dckmls' and look at the first column NAMES"
+    dckmls
+    return -1
   fi
   local PORT=$1
   if [ -z "$2" ]
     then
-        local IMAGE_NAME=$DOCKER_MACHINE_NAME
+      local IMAGE_NAME=$DOCKER_MACHINE_NAME
     else
-        local IMAGE_NAME=$2
+      local IMAGE_NAME=$2
   fi
   echo "== Mapping virtualbox port=$PORT image=$IMAGE_NAME => If port already exist, you can ignore VBoxManage raised exception=="
   echo "VBoxManage controlvm $IMAGE_NAME natpf1 \"tcp-port$PORT,tcp,,$PORT,,$PORT\";"
@@ -117,11 +116,11 @@ dckmport() {
 
 dckmprofile() {
 	if [ -z "$1" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$1
-  	fi
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$1
+	fi
 	dckmssh $IMAGE_NAME "cat /var/lib/boot2docker/profile"
 }
 dckmconfig() {
@@ -131,21 +130,21 @@ dckmconfig() {
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
 	if [ -z "$2" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$2
-  	fi
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$2
+	fi
 	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
 	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
 }
 dckmregistry() {
 	if [ -z "$2" ]
-    	then
-        	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-	    else
-    	    local IMAGE_NAME=$2
-  	fi
+  	then
+    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
+    else
+	    local IMAGE_NAME=$2
+	fi
 	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
 	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
 }
@@ -153,30 +152,28 @@ dckmregistry() {
 # https://docs.docker.com/machine/migrate-to-machine/
 dckmcreate() {
 	if [ -z "$1" ]
-    	then
-        	local IMAGE_NAME=default
-	    else
-    	    local IMAGE_NAME=$1
-  	fi
+  	then
+      	local IMAGE_NAME=default
+    else
+  	    local IMAGE_NAME=$1
+	fi
 	dckmtemplate "create --driver virtualbox" $IMAGE_NAME
   dckmload $IMAGE_NAME
 }
 # Fix & desctructive
 dckmrm() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES"
-      dckmls
-      return
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES"
+    dckmls
+    return -1
   fi
   dckmtemplate "rm" $1
 }
 dckmgencerts() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES"
-      dckmls
-      return
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES"
+    dckmls
+    return -1
   fi
   dckmtemplate "regenerate-certs" $1
 }
