@@ -13,6 +13,13 @@ dckmls() {
 	docker-machine ls
 }
 
+dckmnginx() {
+  dcknginx $@
+  if [ -n "$2" ]; then
+    dckmport $2
+  fi
+}
+
 # Regular scripts
 dckmload() {
 	if [ -z "$1" ]
@@ -102,6 +109,7 @@ dckmport() {
     else
         local IMAGE_NAME=$2
   fi
+  echo "== Mapping virtualbox port=$PORT image=$IMAGE_NAME => If port already exist, you can ignore VBoxManage raised exception=="
   echo "VBoxManage controlvm $IMAGE_NAME natpf1 \"tcp-port$PORT,tcp,,$PORT,,$PORT\";"
   #VBoxManage modifyvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
   VBoxManage controlvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";

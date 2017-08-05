@@ -130,18 +130,23 @@ dckstartdaemon() {
   fi
   local IMAGE_NAME=$1
   shift 2
-  echo "Start docker daemon -d & open port -P : instance name=$INSTANCE_NAME image=$IMAGE_NAME optional_args=$@"
-	docker run -d -P $@ --name $INSTANCE_NAME $IMAGE_NAME
+  echo "Start docker daemon > docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME"
+	docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME
 }
 dcknginx() {
-	if [ -n "$1" ]
-	  then
-        local OPTIONAL_ARGS="-v $1:/usr/share/nginx/html"
-  	else
-  		echo "You can pass a folder as first argument to indicate where nginx should take his document folder!"
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) > dcknginx PATH [PORT] [INSTANCE_NAME]"
+    return
   fi
-	dckstartdaemon nginx web "$OPTIONAL_ARGS"
-  docker port $1
+  if [ -n "$1" ]; then
+    OPTIONAL_ARGS="-v $1:/usr/share/nginx/html"
+  fi
+  if [ -n "$2" ]; then
+    OPTIONAL_ARGS="$OPTIONAL_ARGS -p $2:80"
+  fi
+  INSTANCE_NAME=${3:-web}
+	dckstartdaemon nginx $INSTANCE_NAME "$OPTIONAL_ARGS"
+  docker port $INSTANCE_NAME
   
   echo "dcklogs $1 : to tail log of this image"
   echo "dckinspect $1 : to inspect characteristics of this image"
