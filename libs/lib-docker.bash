@@ -126,28 +126,61 @@ dckstartdaemon() {
   fi
   local IMAGE_NAME=$1
   shift 2
+  
   echo "Start docker daemon > docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME"
 	docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME
+
+  return $?
 }
+
 dcknginx() {
   if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) > dcknginx PATH [PORT] [INSTANCE_NAME]"
+    echo "Please supply argument(s) > dcknginx INSTANCE_NAME [PORT] [PATH]"
     return -1
   fi
-  if [ -n "$1" ]; then
-    OPTIONAL_ARGS="-v $1:/usr/share/nginx/html"
+  FOLDER_PATH=${3:-$PWD}
+  dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
+}
+dckphp() {
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) > dckphp INSTANCE_NAME [PORT] [PATH]"
+    return -1
   fi
+  FOLDER_PATH=${3:-$PWD}
+  dckweb "php:7.0-apache" "$FOLDER_PATH:/var/www/html" $@
+}
+dckweb() {
+  # By default image name is "nginx"
+  local IMAGE_NAME=${1:-nginx}
+
+  # Setting the folder name
   if [ -n "$2" ]; then
-    OPTIONAL_ARGS="$OPTIONAL_ARGS -p $2:80"
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -v $2"
   fi
-  INSTANCE_NAME=${3:-web}
-	dckstartdaemon nginx $INSTANCE_NAME "$OPTIONAL_ARGS"
-  docker port $INSTANCE_NAME
-  
-  echo "dcklogs $1 : to tail log of this image"
-  echo "dckinspect $1 : to inspect characteristics of this image"
-  echo "dcktop $1 : to top from this image"
-  echo "dckrm $1 : to stop and remove image"
+
+  # If no name passed, use "web"
+  local INSTANCE_NAME=${3:-web}
+
+  # If no port pass, use dynamic attr port
+  if [ -n "$4" ]; then
+    echo "== Connect to this host using http://localhost:$4 =="
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -p $4:80"
+  fi
+
+  dckstartdaemon $IMAGE_NAME $INSTANCE_NAME "$OPTIONAL_ARGS"
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]
+    then
+      docker port $INSTANCE_NAME
+
+      echo "dcklogs $INSTANCE_NAME : to tail log of this image"
+      echo "dckinspect $INSTANCE_NAME : to inspect characteristics of this image"
+      echo "dcktop $INSTANCE_NAME : to top from this image"
+      echo "dckrm $INSTANCE_NAME : to stop and remove image"
+    else
+      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  =="
+  fi
 }
 
 dckcleanimage() {

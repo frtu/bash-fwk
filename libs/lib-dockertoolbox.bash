@@ -19,6 +19,12 @@ dckmnginx() {
     dckmport $2
   fi
 }
+dckmphp() {
+  dckphp $@
+  if [ -n "$2" ]; then
+    dckmport $2
+  fi
+}
 
 # Regular scripts
 dckmload() {
