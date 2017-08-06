@@ -100,6 +100,39 @@ dckrm() {
   docker rm -f $@
   dckps
 }
+dcksave() {
+  if [ $# -eq 0 ]; then
+    echo "== Please supply argument(s) > dcksave IMAGE_NAME:TAG_NAME [FILENAME_TAR] =="
+    echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG"
+    dckls
+    return -1
+  fi
+  FILENAME_TAR=${2:-docker_save.tar}
+
+  echo "docker save $1 > $FILENAME_TAR"
+  docker save $1 > $FILENAME_TAR
+  gzip $FILENAME_TAR
+  echo "Save image $1 to $FILENAME_TAR.gz"
+}
+dckload() {
+  if [ $# -eq 0 ]; then
+    echo "== Please supply argument(s) > dckload FILENAME_TAR =="
+    return -1
+  fi
+
+  tarfilename=$1
+
+  fileext=${1##*.}
+  if [[ $fileext = "gz" ]]; then
+    echo "Detected fileext=$fileext > gunzip $1"
+    gunzip $1
+    tarfilename=${1%.*}
+  fi
+
+  echo "docker load -i $tarfilename"
+  docker load -i $tarfilename
+  dckls
+}
 
 # https://docs.docker.com/engine/userguide/networking/
 dcknetls() {
