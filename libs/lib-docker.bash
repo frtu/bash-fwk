@@ -131,7 +131,15 @@ dckload() {
 
   echo "docker load -i $tarfilename"
   docker load -i $tarfilename
-  dckls
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]
+    then
+      echo "Import image successfully"
+      dckls
+    else
+      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  =="
+  fi
 }
 
 # https://docs.docker.com/engine/userguide/networking/
@@ -181,6 +189,7 @@ dckphp() {
   fi
   FOLDER_PATH=${3:-$PWD}
   dckweb "php:7.0-apache" "$FOLDER_PATH:/var/www/html" $@
+  #dckweb "php:7.0-fpm" "$FOLDER_PATH:/var/www/html" $@
 }
 dckweb() {
   # By default image name is "nginx"
