@@ -166,17 +166,26 @@ dckstartdaemon() {
   return $?
 }
 
-dcknginx() {
+dckrunjenkins() {
   if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) > dcknginx INSTANCE_NAME [PORT] [PATH]"
+    echo "Please supply argument(s) > dckrunjenkins INSTANCE_NAME [PORT] [PATH]"
+    return -1
+  fi
+  FOLDER_PATH=${3:-$PWD}
+  # -p 8082:8080 -p 50000:50000
+  dckweb "jenkins/jenkins" "$FOLDER_PATH:/var/jenkins_home" $@
+}
+dckrunnginx() {
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) > dckrunnginx INSTANCE_NAME [PORT] [PATH]"
     return -1
   fi
   FOLDER_PATH=${3:-$PWD}
   dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
 }
-dckphp() {
+dckrunphp() {
   if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) > dckphp INSTANCE_NAME [PORT] [PATH]"
+    echo "Please supply argument(s) > dckrunphp INSTANCE_NAME [PORT] [PATH]"
     return -1
   fi
   FOLDER_PATH=${3:-$PWD}
