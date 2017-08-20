@@ -1,4 +1,5 @@
 import lib-docker
+import lib-virtualbox
 
 DOCKER_MACHINE_ROOT=~/.docker/machine
 DOCKER_MACHINES_FOLDER=$DOCKER_MACHINE_ROOT/machines
@@ -28,20 +29,17 @@ dckmphp() {
 
 # Regular scripts
 dckmload() {
-	if [ -z "$1" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$1
-	fi
+	local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
 	echo "dckmload $IMAGE_NAME"
 	eval $(docker-machine env $IMAGE_NAME)
 }
 dckmloadpersist() {
-	dckmload
-  	echo "Persiting BOOT2DOCKER_DEFAULT_INSTANCE=$DOCKER_MACHINE_NAME!"
-  	echo 'export BOOT2DOCKER_DEFAULT_INSTANCE='$DOCKER_MACHINE_NAME > $LOCAL_SCRIPTS_FOLDER/env-docker-instance.bash
+  local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
+	dckmload $IMAGE_NAME
+  echo "Persiting BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME!"
+  echo "export BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME" > $LOCAL_SCRIPTS_FOLDER/env-docker-instance.bash
 }
+
 dckmstart() {
 	dckmtemplate "start" $1
 	dckmload $1
@@ -54,12 +52,8 @@ dckmrestart() {
 	dckmload $1
 }
 dckmtemplate() {
-	if [ -z "$2" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$2
-	fi
+  local IMAGE_NAME=${2:-$DOCKER_MACHINE_NAME}
+
 	echo "docker-machine $1 $IMAGE_NAME"
 	docker-machine $1 $IMAGE_NAME
 }
@@ -82,23 +76,14 @@ dckmssh() {
 }
 
 dckmip() {
-	if [ -z "$1" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$1
-	fi
+  local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
+
 	export DOCKER_MACHINE=`docker-machine ip $IMAGE_NAME`
 	echo "docker-machine ip $IMAGE_NAME => export DOCKER_MACHINE=$DOCKER_MACHINE"
 }
 # https://docs.docker.com/engine/userguide/networking/
 dckmnethosts() {
-	if [ -z "$1" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$1
-	fi
+  local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
 	dckmssh $IMAGE_NAME "cat /etc/hosts"
 }
 dckmport() {
@@ -107,26 +92,15 @@ dckmport() {
     dckmls
     return -1
   fi
+  
   local PORT=$1
-  if [ -z "$2" ]
-    then
-      local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-      local IMAGE_NAME=$2
-  fi
-  echo "== Mapping virtualbox port=$PORT image=$IMAGE_NAME => If port already exist, you can ignore VBoxManage raised exception=="
-  echo "VBoxManage controlvm $IMAGE_NAME natpf1 \"tcp-port$PORT,tcp,,$PORT,,$PORT\";"
-  #VBoxManage modifyvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
-  VBoxManage controlvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
+  local IMAGE_NAME=${2:-$DOCKER_MACHINE_NAME}
+
+  vboxport $IMAGE_NAME $PORT
 }
 
 dckmprofile() {
-	if [ -z "$1" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$1
-	fi
+  local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
 	dckmssh $IMAGE_NAME "cat /var/lib/boot2docker/profile"
 }
 dckmconfig() {
@@ -135,34 +109,22 @@ dckmconfig() {
 
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
-	if [ -z "$2" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$2
-	fi
+  local IMAGE_NAME=${2:-$DOCKER_MACHINE_NAME}
+
 	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
 	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
 }
 dckmregistry() {
-	if [ -z "$2" ]
-  	then
-    	local IMAGE_NAME=$DOCKER_MACHINE_NAME
-    else
-	    local IMAGE_NAME=$2
-	fi
+  local IMAGE_NAME=${2:-$DOCKER_MACHINE_NAME}
+
 	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
 	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
 }
 
 # https://docs.docker.com/machine/migrate-to-machine/
 dckmcreate() {
-	if [ -z "$1" ]
-  	then
-      	local IMAGE_NAME=default
-    else
-  	    local IMAGE_NAME=$1
-	fi
+  local IMAGE_NAME=${1:-default}
+
 	dckmtemplate "create --driver virtualbox" $IMAGE_NAME
   dckmload $IMAGE_NAME
 }
