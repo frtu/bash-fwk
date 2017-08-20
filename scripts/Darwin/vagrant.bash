@@ -66,8 +66,8 @@ vagbadd_docker_centos() {
 }
 
 vagbadd_docker_ubuntu_trusty() {
-	vagbadd williamyeh/ubuntu-trusty64-docker https://vagrantcloud.com/williamyeh/boxes/ubuntu-trusty64-docker/versions/1.12.1.20160830/providers/virtualbox.box vagrant-williamyeh--ubuntu-trusty64-docker-1.12.1.20160830.box
 	vagrant plugin install vagrant-docker-compose
+	vagbadd williamyeh/ubuntu-trusty64-docker https://vagrantcloud.com/williamyeh/boxes/ubuntu-trusty64-docker/versions/1.12.1.20160830/providers/virtualbox.box vagrant-williamyeh--ubuntu-trusty64-docker-1.12.1.20160830.box
 }
 
 vagbadd_docker_ubuntu() {
