@@ -1,4 +1,5 @@
 import lib-download
+import lib-virtualbox
 
 
 VAGRANT_BOXES_FOLDER=~/.vagrant.d/boxes
@@ -29,16 +30,7 @@ vagbls() {
 	vagrant box list
 	echo ""
 	echo "=> Remove any box from Catalog with 'vagbrm [box name]'"
-	echo ""
-	echo "=== Vagrant instances ==="
-	vagrant global-status --prune
-
-	if [[ -d $VAGRANT_MACHINES_SUBFOLDER ]]; then
-		echo "== List local vagrant name =="
-		ls $VAGRANT_MACHINES_SUBFOLDER
-	fi
 }
-
 vagbadd_win8() {
 	# vagbadd Windows8 http://aka.ms/vagrant-win8-ie10 Win8.IE10.For.Vagrant.box
 	vagbadd Windows81 http://aka.ms/vagrant-win81-ie11 Win8.1.IE11.For.Vagrant.box
@@ -131,6 +123,15 @@ vagbrm() {
 # ==================================================
 # Vagrant install and usage
 # ==================================================
+vagls() {
+	vagrant global-status --prune
+
+	if [[ -d $VAGRANT_MACHINES_SUBFOLDER ]]; then
+		echo "== List local vagrant name =="
+		ls $VAGRANT_MACHINES_SUBFOLDER
+	fi
+}
+
 vaginst_script() {
 	INSTALL_SCRIPT="curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash"
     echo "CALL : root@vagrant> $INSTALL_SCRIPT"
