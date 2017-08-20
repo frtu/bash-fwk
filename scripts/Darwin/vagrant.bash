@@ -40,38 +40,44 @@ vagbls() {
 }
 
 vagbadd_win8() {
-	# vag_add Windows8 http://aka.ms/vagrant-win8-ie10 Win8.IE10.For.Vagrant.box
-	vag_add Windows81 http://aka.ms/vagrant-win81-ie11 Win8.1.IE11.For.Vagrant.box
+	# vagbadd Windows8 http://aka.ms/vagrant-win8-ie10 Win8.IE10.For.Vagrant.box
+	vagbadd Windows81 http://aka.ms/vagrant-win81-ie11 Win8.1.IE11.For.Vagrant.box
 }
 
 vagbadd_aerospike() {
 	# http://www.aerospike.com/docs/operations/install/vagrant/mac/
 	# https://s3-us-west-1.amazonaws.com/aerospike-vagrant/previous_version/virtualbox/as_centos-6.6-x86_64.box
-	# vag_add aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.1/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.1.box
-	vag_add aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.2.3/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.2.3.box
+	# vagbadd aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.1/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.1.box
+	vagbadd aerospike/centos-6.5 https://atlas.hashicorp.com/aerospike/boxes/centos-6.5/versions/3.8.2.3/providers/virtualbox.box vagrant-aerospike-centos-6.5-3.8.2.3.box
 }
 
 vagbadd_centos_puppet() {
-	vag_add puppetlabs/centos-6.6-64-puppet https://atlas.hashicorp.com/puppetlabs/boxes/centos-6.6-64-puppet/versions/1.0.3/providers/virtualbox.box vagrant-puppetlabs-centos-6.6-64-1.0.3.box
+	vagbadd puppetlabs/centos-6.6-64-puppet https://atlas.hashicorp.com/puppetlabs/boxes/centos-6.6-64-puppet/versions/1.0.3/providers/virtualbox.box vagrant-puppetlabs-centos-6.6-64-1.0.3.box
 }
 
 vagbadd_docker() {
-	vag_add boot2docker https://atlas.hashicorp.com/hashicorp/boxes/boot2docker/versions/1.7.8/virtualbox.box vagrant-boot2docker-1.7.8.box
+	vagbadd boot2docker https://atlas.hashicorp.com/hashicorp/boxes/boot2docker/versions/1.7.8/virtualbox.box vagrant-boot2docker-1.7.8.box
 	# vagrant plugin install vagrant-docker-compose
 }
 vagbadd_centos() {
-	vag_add centos65 https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box vagrant-centos65-v6.5.3_64.box
+	vagbadd centos65 https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box vagrant-centos65-v6.5.3_64.box
 }
 vagbadd_ubuntu() {
-	# vag_add precise64 http://files.vagrantup.com/precise64.box
-	#vag_add precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-ubuntu-precise64-1.1.0.box
-	vag_add ubuntu/trusty64 https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20161205.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20161205.box
+	# vagbadd precise64 http://files.vagrantup.com/precise64.box
+	#vagbadd precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-ubuntu-precise64-1.1.0.box
+	vagbadd ubuntu/trusty64 https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/20170810.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20170810.box
 }
 
 vagbadd_docker_centos() {
-	vag_add centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box
+	vagbadd centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box
 	# vagrant plugin install vagrant-docker-compose
 }
+
+vagbadd_docker_ubuntu_trusty() {
+	vagbadd ubuntu-trusty64-docker https://vagrantcloud.com/williamyeh/boxes/ubuntu-trusty64-docker/versions/1.12.1.20160830/providers/virtualbox.box vagrant-williamyeh--ubuntu-trusty64-docker-1.12.1.20160830.box
+	# vagrant plugin install vagrant-docker-compose
+}
+
 vagbadd_docker_ubuntu() {
 	BOX_FILENAME=$VM_ARCHIVE_FOLDER/docker-ubuntu-trusty64.box
 	BOX_NAME=docker-ubuntu-trusty64
@@ -126,23 +132,43 @@ vagbrm() {
 # Vagrant install and usage
 # ==================================================
 vaginst_script() {
-	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | vagrant ssh	
+	INSTALL_SCRIPT="curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash"
+    echo "CALL : root@vagrant> $INSTALL_SCRIPT"
+	vagssh "$($INSTALL_SCRIPT)"
 }
-
-vagsync() {
-	cp -R "$BACKUP_ROOT_FOLDER/Vagrant/" .
-  	mkdir -p bash_lib/
-  	cp -R "$BACKUP_ROOT_FOLDER/bash_lib/" bash_lib/
-	# cp $BACKUP_ROOT_FOLDER/bash_lib/_bash_profile bash_lib/
+vagenabledocker() {
+	vagssh "echo 'import "lib-docker"' > ~/scr-local/service-docker.bash"
 }
 
 vagstart() {
-	vagrant up
+	vagtemplate "up"
 }
 vagstop() {
-	vagrant halt
+	vagtemplate "halt"
 }
-vagdestroy() {
-	vagrant destroy
+vagssh() {
+  if [ -z "$1" ]
+    then
+      vagtemplate "ssh"
+    else
+      echo "CALL : root@$IMAGE_NAME> $@"
+      echo "$@" | vagtemplate "ssh"
+  fi
+}
+vagrm() {
+	vagtemplate "destroy"
+}
+
+vagtemplate() {
+  if [ ! -f Vagrantfile ]; then
+    echo "Please run this command in a folder containing Vagrantfile."
+    echo "- Create one using cmd > vagbadd_xx"
+    echo "- Go to an existing folder looking at the last column directory."
+    vagrant global-status --prune
+    return -1
+  fi
+
+  echo "vagrant $1"
+  vagrant $1
 }
 # https://www.hashicorp.com/blog/feature-preview-vagrant-1-6-docker-dev-environments.html
