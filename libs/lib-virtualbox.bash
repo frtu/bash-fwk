@@ -16,8 +16,8 @@ vboxstart() {
     vboxls
     return -1
   fi
-  echo "VBoxManage startvm $1"
-  vboxtemplate "startvm" $1
+  echo "VBoxManage startvm $1 --type headless"
+  VBoxManage startvm $1 --type headless
 }
 vboxstop() {
   if [ $# -eq 0 ]; then
