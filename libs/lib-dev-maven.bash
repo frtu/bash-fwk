@@ -19,7 +19,10 @@ mvndepoffline() {
   mvn dependency:go-offline   
 }
 mvnsetversion() {
-  mvnsk versions:set -DnewVersion=$@
+  mvnsk versions:set -DnewVersion=$1
+}
+mvnsetversionsnapshot() {
+  mvnsk versions:set -DnewVersion=$1-SNAPSHOT
 }
 
 mvnrepodefault() {
