@@ -20,10 +20,10 @@ mvnreleasetag() {
 mvnreleasedeploy() {
   cp release.properties release.properties_BAK
 
-  echo "mvn clean package verify release:prepare"
+  echo "mvn release:prepare"
   mvn release:prepare
 
-  echo "mvn clean package verify release:prepare-with-pom release:perform"
+  echo "mvn clean release:perform"
   mvn clean release:perform
 }
 
