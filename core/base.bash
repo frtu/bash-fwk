@@ -15,16 +15,32 @@ load_file() {
   fi
 }
 load_folder() {
-	if [[ -d $1 ]]
+	if [ -d $1 ]
 	then
 	  echo "------- Loading $1 --------";	for i in $1/*.bash; do echo "source $i"; source "$i"; done
 	else
 	  echo "Director '$1' does not exists!"
 	fi
 }
+dl_completion() {
+  if [ $# -lt 2 ]; then
+    echo "Please specify parameters > 'dl_completion DL_URL BASH_FILENAME'."
+    return -1
+  fi
+
+  local DL_URL=$1
+  local BASH_FILENAME=$2
+  
+  mkdir -p $LOCAL_COMPLETION_FOLDER
+  echo "Download locally $LOCAL_COMPLETION_FOLDER/$BASH_FILENAME"
+  curl -L# $DL_URL > $LOCAL_COMPLETION_FOLDER/$BASH_FILENAME
+}
 
 import() {
   load_file "$LIBS_FOLDER/$1.bash"
+}
+completion() {
+  load_file "$LOCAL_COMPLETION_FOLDER/$1.bash"
 }
 reload() {
   source ~/.bash_profile

@@ -8,6 +8,7 @@ export BASH_RC_FILENAME=~/.bashrc
 export CORE_FOLDER=~/core
 export LIBS_FOLDER=~/libs
 export SCRIPTS_FOLDER=~/scripts
+export LOCAL_COMPLETION_FOLDER=~/scr-completion-local
 export LOCAL_SCRIPTS_FOLDER=~/scr-local
 
 alias ll='ls -la'

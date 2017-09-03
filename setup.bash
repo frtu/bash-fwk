@@ -9,6 +9,10 @@ echo "------- DEPLOY bash --------"
 bashprofile
 
 echo "------- LOCAL bash dir --------"
-echo "create $LOCAL_SCRIPTS_FOLDER/dummy.bash"
+mkdir -p $LOCAL_COMPLETION_FOLDER
 mkdir -p $LOCAL_SCRIPTS_FOLDER
-touch $LOCAL_SCRIPTS_FOLDER/dummy.bash
+#echo "create $LOCAL_SCRIPTS_FOLDER/dummy.bash"
+#touch $LOCAL_SCRIPTS_FOLDER/dummy.bash
+
+echo "------- DL completion --------"
+gcompletion
