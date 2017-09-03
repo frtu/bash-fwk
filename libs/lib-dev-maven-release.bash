@@ -21,17 +21,27 @@ mvnreleasedeploy() {
   cp release.properties release.properties_BAK
 
   echo "mvn clean package verify release:prepare"
-  mvn clean package verify release:prepare
+  mvn release:prepare
 
   echo "mvn clean package verify release:prepare-with-pom release:perform"
-  mvn clean package verify release:prepare-with-pom release:perform
+  mvn clean release:perform
 }
 
 mvnreleasecd() {
+  echo "cd $MVN_RELEASE_REPO"
   cd $MVN_RELEASE_REPO
 }
 mvnreleasesign() {
+  echo "mvn package gpg:sign"
   mvn package gpg:sign
+}
+mvnreleasesigndeploy() {
+  if [ ! -f "$1" ]; then
+    echo "== Please supply argument(s) > mvnreleasesigndeploy PATH_AND_FILES_WITHOUT_EXTENSION (ex : target/myapp-1.0 ) =="
+    return -1
+  fi  
+  echo "mvn gpg:sign-and-deploy-file -DpomFile=$1.pom -Dfile=$1.jar -Durl=http://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype_oss"
+  mvn gpg:sign-and-deploy-file -DpomFile=$1.pom -Dfile=$1.jar -Durl=http://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype_oss
 }
 
 # Rollback

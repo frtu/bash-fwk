@@ -1,33 +1,19 @@
 import lib-dev-maven-release
+# MAC OSX
+export GPG_CMD=gpg2
+import lib-gpg
 
-GPG_HOME=~/.gnupg
+# GPG version 2 may be on your system with the executable name gpg2 . 
+# Either executable can be used for these demonstrations. Both are very compatible with each other. 
+# (If you want to know a million different opinions on which you should be using, do a web search.) 
+# - Version 1 is more tested, and is usually a single monolithic executable. 
+# - Version 2 is compiled with crypto libraries like libgcrypt externally linked, and is designed to work better 
+#    with external password entry tools. That is, gpg2 is designed for graphical environments, while gpg works 
+#    better for automated and command-line use. From the command-line, I use version 1.
 
 inst_gpg() {
   brew install gnupg2
   brew install gpg-agent
-}
-
-# More about signature & commands
-# http://central.sonatype.org/pages/working-with-pgp-signatures.html
-gpgcd() {
-  if [ ! -f "$GPG_HOME/pubring.gpg" ]; then
-  	echo "list-keys will initialize the Public key"
-    gpgls
-  fi  
-  if [ ! -f "$GPG_HOME/secring.gpg" ]; then
-  	echo "Attention no secret key use > gpgkeysgen"
-  	return -1
-  fi
-  cd $GPG_HOME
-}
-gpgkeysls() {
-	gpg2 --list-keys
-}
-gpgkeyspublic() {
-	gpg --list-key | grep ^pub
-}
-gpgkeysgen() {
-	gpg --gen-key
 }
 
 # gpgagentstart() {
