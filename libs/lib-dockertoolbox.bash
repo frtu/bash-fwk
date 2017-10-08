@@ -4,6 +4,8 @@ import lib-virtualbox
 DOCKER_MACHINE_ROOT=~/.docker/machine
 DOCKER_MACHINES_FOLDER=$DOCKER_MACHINE_ROOT/machines
 
+DOCKER_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-docker-instance.bash
+
 cddckinstances() {
 	echo "Going to the folder of all docker machine virtual instance images."
 	cd $DOCKER_MACHINES_FOLDER
@@ -37,7 +39,14 @@ dckmloadpersist() {
   local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
 	dckmload $IMAGE_NAME
   echo "Persiting BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME!"
-  echo "export BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME" > $LOCAL_SCRIPTS_FOLDER/env-docker-instance.bash
+  echo "export BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME" > $DOCKER_PERSIST_FILE
+}
+dckmloadunset() {
+  echo "unset BOOT2DOCKER_DEFAULT_INSTANCE"
+  unset BOOT2DOCKER_DEFAULT_INSTANCE
+  
+  echo "rm $DOCKER_PERSIST_FILE"
+  rm $DOCKER_PERSIST_FILE
 }
 
 dckmstart() {
