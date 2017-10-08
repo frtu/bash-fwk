@@ -8,12 +8,41 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+gdff() {
+  if [ $# -eq 0 ]; then
+    echo "Please specify parameters > 'dff FOLDER_SOURCE FOLDER_TARGET'."
+    return -1
+  fi
+  echo "patch -p$LEVEL -t -i $FILENAME"
+  diff -rupN $1 $2
+}
+gpch() {
+  if [ $# -eq 0 ]; then
+    echo "Please specify parameters > 'pch PATCH_FILE_NAME'."
+    return -1
+  fi
+  local FILENAME=$1
+  local LEVEL=${2:-1}
+  echo "patch -p$LEVEL -t -i $FILENAME"
+  patch -p$LEVEL -t -i $FILENAME
+}
 
 gtag() {
   git tag
 }
 gtagdate() {
   gtag | xargs -L1 git log --pretty=format:"%D %cI" -1 
+}
+
+glog() {
+	local NUMBER=${1:-10}
+	echo "git log --oneline -n $NUMBER"
+	git log --oneline -n $NUMBER
+}
+greset() {
+	local HASH=${1:-HEAD}
+	echo "git reset --hard $HASH"
+	git reset --hard $HASH
 }
 
 gpatch() {
