@@ -1,4 +1,4 @@
-wgetlazy() {
+trwgetlazy() {
   if [ $# -eq 0 ]; then
       echo "wgetlazy FILENAME HTTP_URL [HTTP_PARAMS]"
       exit 1
@@ -18,7 +18,7 @@ wgetlazy() {
   fi
 }
 
-wgetsafe() {
+trwgetsafe() {
   echo "Downloading : wget -O $1 $2"
   wget -O $1.bak $2
   mv $1.bak $1  
