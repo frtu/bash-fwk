@@ -4,6 +4,7 @@ export PATH=$PATH:\
 $USR_BIN:\
 $HOME/bin
 
+# COMMANDS
 cdbin(){
   cd $USR_BIN
 }
@@ -15,14 +16,7 @@ binln() {
 	ln -s "$1/$2" "$USR_BIN/$2"	
 }
 
-disksize() {
-  df -h
-}
-
-foldersize() {
-  du -sh ./*
-}
-
-searchtxt() {
-  grep -r $1 .
+# NETWORK
+portlist() {
+  netstat -ntlp | grep LISTEN
 }
