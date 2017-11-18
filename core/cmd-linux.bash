@@ -20,5 +20,9 @@ disksize() {
 }
 
 foldersize() {
-	du -sh ./*
+  du -sh ./*
+}
+
+searchtxt() {
+  grep -r $1 .
 }
