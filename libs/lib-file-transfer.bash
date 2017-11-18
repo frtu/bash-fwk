@@ -1,3 +1,4 @@
+# ATTENTION wget is not always installed by default. TODO : Should fallback to curl
 # Only download if target doesn't exist
 trwgetlazy() { 
   if [ $# -eq 0 ]; then

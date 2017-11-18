@@ -1,4 +1,4 @@
-import lib-download
+import lib-file-transfer
 import lib-virtualbox
 
 
@@ -100,7 +100,7 @@ vagbadd() {
 	if [ ! -f $BOX_FILENAME ]; 
 		then
 			mkdir -p $VM_ARCHIVE_FOLDER
-			wgetsafe $BOX_FILENAME $2
+			trwgetsafe $BOX_FILENAME $2
 	    else
     	    echo "Vagrant Box file exist, use this one $BOX_FILENAME"
 	fi
