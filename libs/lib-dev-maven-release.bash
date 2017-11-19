@@ -25,6 +25,18 @@ mvnreleasedeploy() {
 
   echo "mvn clean release:perform"
   mvn clean release:perform
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]; then
+      echo "Success! Don't forget to validate your build at :"
+      echo "- https://oss.sonatype.org/index.html#view-repositories;github-releases~browsestorage"
+      echo "- Login, go to Stage Repositories & search for your project"
+      echo "- Review Activity tab, if all is fine, push button Close & Release"
+    else
+      echo "== An error has happen and leave your build at an intermediate state. =="
+      echo "- You've pushed all your change in your repo"
+      echo "- In folder target/checkout/*, you have a non SNAPSHOT version that compiles correctly"
+  fi
 }
 
 mvnreleasecd() {
