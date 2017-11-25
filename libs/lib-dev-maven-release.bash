@@ -61,7 +61,11 @@ mvnreleaseclean() {
   echo "Attention : using this command will erase all release.properties that prevent you to resume any current release !!"
   echo "=> You have 5 sec to Ctrl+C before it runs!"
   sleep 5
+
+  echo "Call 'mvn release:clean' & remove all release.properties and pom.xml.releaseBackup files."
   mvn release:clean
+  find . -type f -name "release.properties*" -exec echo "rm -f {}" \; -exec rm -f {} \;
+  find . -type f -name "pom.xml.releaseBackup" -exec echo "rm -f {}" \; -exec rm -f {} \;
 }
 mvnreleaserollback() {
   mvn release:rollback
