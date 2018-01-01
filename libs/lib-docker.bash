@@ -1,3 +1,5 @@
+import lib-vm
+
 # Starting & administration
 dckproxy() {
   if [ -z "$1" ]; then
@@ -100,37 +102,64 @@ dckrm() {
   docker rm -f $@
   dckps
 }
-dcksave() {
+dckexport() {
   if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > dcksave IMAGE_NAME:TAG_NAME [FILENAME_TAR] =="
+    echo "== Please supply argument(s) > dckexport IMAGE_NAME:TAG_NAME [FILENAME_TAR] =="
     echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG"
     dckls
     return -1
   fi
-  FILENAME_TAR=${2:-docker_save.tar}
+  FILENAME_TAR=$VM_ARCHIVE_FOLDER/docker_${2:-save}.tar.gz
 
-  echo "docker save $1 > $FILENAME_TAR"
-  docker save $1 > $FILENAME_TAR
-  gzip $FILENAME_TAR
-  echo "Save image $1 to $FILENAME_TAR.gz"
+  echo "docker save $1 | gzip > $FILENAME_TAR"
+  docker save $1 | gzip > $FILENAME_TAR
 }
-dckload() {
+dckimportfolder() {
+  if [ ! -d $1 ]; then
+    echo "Please profide a directory for dckimportfolder to import : '$1'"
+    return -1
+  fi
+  FOLDER_PATH=${1:-$PWD}
+  FILTER=$2
+
+  echo "------- Loading $1 --------";
+  for i in $FOLDER_PATH/docker_$FILTER*; 
+  do 
+    echo "docker load -i $i"
+    docker load -i $i
+  done
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]
+    then
+      echo "Import image successfully"
+      dckls
+    else
+      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  =="
+  fi  
+}
+dckimport() {
   if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > dckload FILENAME_TAR =="
+    echo "== Please supply argument(s) > dckimport FILENAME_TAR =="
     return -1
   fi
 
-  tarfilename=$1
-
-  fileext=${1##*.}
-  if [[ $fileext = "gz" ]]; then
-    echo "Detected fileext=$fileext > gunzip $1"
-    gunzip $1
-    tarfilename=${1%.*}
+  VM_NAME=$1
+  # If the local file exist
+  if [ ! -f $VM_NAME ]; then
+    # Add VM_ROOT_FOLDER
+    VM_NAME=$VM_ARCHIVE_FOLDER/$1
+  fi
+  if [ ! -f $VM_NAME ]; then
+    VM_NAME=$VM_ARCHIVE_FOLDER/docker_$1.tar.gz
+  fi
+  if [ ! -f $VM_NAME ]; then
+    echo "Cannot find file '$1' or '$VM_NAME'"
+    return -1
   fi
 
-  echo "docker load -i $tarfilename"
-  docker load -i $tarfilename
+  echo "docker load -i $VM_NAME"
+  docker load -i $VM_NAME
 
   STATUS=$?
   if [ "$STATUS" -eq 0 ]
@@ -240,4 +269,28 @@ dckcleanimage() {
     return -1
   fi
   docker rmi $@
+}
+
+
+dcmpstart() {
+  docker-compose up
+}
+dcmpstartd() {
+  docker-compose up -d
+  dckps
+}
+dcmpstop() {
+  docker-compose down
+}
+
+dcmpps() {
+  docker-compose ps
+}
+dcmplogs() {
+  if [ $# -eq 0 ]; then
+    echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any image run 'dcmpps'"
+    dcmpps
+    return -1
+  fi
+  docker-compose logs $1
 }
