@@ -9,6 +9,7 @@ dckproxy() {
   fi
   echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
   echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
+  
   echo 'export DOCKER_OPTS=" --registry-mirror 'https://$1' --insecure-registry 'http://$1'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
 }
 
@@ -26,12 +27,8 @@ dcksearch() {
   dcktpl "search" $@
 }
 dckpull() {
-  if [ -z "$1" ]
-    then
-      local IMAGE_NAME=ubuntu
-    else
-      local IMAGE_NAME=$1
-  fi
+  local IMAGE_NAME=${1:-ubuntu}
+
 	echo "Fetching new docker images : $IMAGE_NAME"
 	docker pull $IMAGE_NAME
 }
@@ -124,8 +121,8 @@ dckimportfolder() {
     echo "Please profide a directory for dckimportfolder to import : '$1'" >&2
     return -1
   fi
-  FOLDER_PATH=${1:-$PWD}
-  FILTER=$2
+  local FOLDER_PATH=${1:-$PWD}
+  local FILTER=$2
 
   echo "------- Loading $1 --------";
   for i in $FOLDER_PATH/docker_$FILTER*; 
@@ -150,7 +147,7 @@ dckimport() {
     return -1
   fi
 
-  VM_NAME=$1
+  local VM_NAME=$1
   # If the local file exist
   if [ ! -f $VM_NAME ]; then
     # Add VM_ROOT_FOLDER
@@ -160,7 +157,7 @@ dckimport() {
     VM_NAME=$VM_ARCHIVE_FOLDER/docker_$1.tar.gz
   fi
   if [ ! -f $VM_NAME ]; then
-    echo "Cannot find file '$1' or '$VM_NAME'"
+    echo "Cannot find file '$1' or '$VM_NAME'" >&2
     return -1
   fi
 
@@ -194,13 +191,9 @@ dckhello() {
   docker run hello-world
 }
 dckstartdaemon() {
-  if [ -z "$2" ]
-    then
-      local INSTANCE_NAME=$1
-    else
-      local INSTANCE_NAME=$2
-  fi
   local IMAGE_NAME=$1
+  local INSTANCE_NAME=${2:-$1}
+
   shift 2
   
   echo "Start docker daemon > docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME"
@@ -215,7 +208,7 @@ dckrunjenkins() {
     echo "Please supply argument(s) > dckrunjenkins INSTANCE_NAME [PORT] [PATH]" >&2
     return -1
   fi
-  FOLDER_PATH=${3:-$PWD}
+  local FOLDER_PATH=${3:-$PWD}
   # -p 8082:8080 -p 50000:50000
   dckweb "jenkins/jenkins" "$FOLDER_PATH:/var/jenkins_home" $@
 }
@@ -225,7 +218,7 @@ dckrunnginx() {
     echo "Please supply argument(s) > dckrunnginx INSTANCE_NAME [PORT] [PATH]" >&2
     return -1
   fi
-  FOLDER_PATH=${3:-$PWD}
+  local FOLDER_PATH=${3:-$PWD}
   dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
 }
 dckrunphp() {

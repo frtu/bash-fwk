@@ -26,7 +26,7 @@ gbradd() {
       echo "Please supply the BRANCH_NAME to delete as first argument" >&2
       return -1
   fi
-  
+
   local BRANCH_NAME=$1
   local REPO_NAME=$2
 
@@ -103,25 +103,16 @@ gbrremoterm() {
 }
 
 gpatch() {
-	if [ -z "$1" ]
-  	then
-      	local DIFF_NAME=diff
-    else
-  	    local DIFF_NAME=$1
-	fi
-	echo "git diff > $DIFF_NAME.patch"
-	git diff > $DIFF_NAME.patch
+  local DIFF_FILENAME=${1:-diff}
+
+	echo "git diff > $DIFF_FILENAME.patch"
+	git diff > $DIFF_FILENAME.patch
 }
 gpatchapply() {
-	if [ -z "$1" ]
-  	then
-      	local DIFF_NAME=diff
-    else
-  	    local DIFF_NAME=$1
-	fi
+  local DIFF_FILENAME=${1:-diff}
 	
-	if [ -f "$DIFF_NAME.patch" ]; then
-		echo "Applying patch with 'git apply $DIFF_NAME.patch'"
-		git apply $DIFF_NAME.patch
+	if [ -f "$DIFF_FILENAME.patch" ]; then
+		echo "Applying patch with 'git apply $DIFF_FILENAME.patch'"
+		git apply $DIFF_FILENAME.patch
 	fi
 }
