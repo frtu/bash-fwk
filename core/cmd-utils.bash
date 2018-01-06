@@ -34,7 +34,7 @@ searchdir() {
   local SEARCH_PATH=${2:-.}
 
   if [ ! -d "$SEARCH_PATH" ]; then
-    echo "ATTENTION : Parameter SEARCH_PATH=$SEARCH_PATH is NOT a DIRECTORY"
+    echo "ATTENTION : Parameter SEARCH_PATH=$SEARCH_PATH is NOT a DIRECTORY" >&2
     return -1
   fi
 

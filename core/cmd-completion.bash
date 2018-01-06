@@ -6,8 +6,9 @@ completion() {
   load_file "$LOCAL_COMPLETION_FOLDER/$1.bash"
 }
 dl_completion() {
-  if [ $# -lt 2 ]; then
-    echo "Please specify parameters > 'dl_completion DL_URL BASH_FILENAME'."
+  # MIN NUM OF ARG
+  if [[ "$#" < "2" ]]; then
+    echo "Please specify parameters > 'dl_completion DL_URL BASH_FILENAME'." >&2
     return -1
   fi
 

@@ -33,9 +33,9 @@ mvnreleasedeploy() {
       echo "- Login, go to Stage Repositories & search for your project"
       echo "- Review Activity tab, if all is fine, push button Close & Release"
     else
-      echo "== An error has happen and leave your build at an intermediate state. =="
-      echo "- You've pushed all your change in your repo"
-      echo "- In folder target/checkout/*, you have a non SNAPSHOT version that compiles correctly"
+      echo "== An error has happen and leave your build at an intermediate state. ==" >&2
+      echo "- You've pushed all your change in your repo" >&2
+      echo "- In folder target/checkout/*, you have a non SNAPSHOT version that compiles correctly" >&2
   fi
 }
 

@@ -1,13 +1,14 @@
 # ATTENTION wget is not always installed by default. TODO : Should fallback to curl
 # Only download if target doesn't exist
 trwgetlazy() { 
-  if [ $# -eq 0 ]; then
-      echo "wgetlazy FILENAME HTTP_URL [HTTP_PARAMS]"
-      return 1
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "wgetlazy FILENAME HTTP_URL [HTTP_PARAMS]" >&2
+      return -1
   fi
   if [ -f $1 ]; then
-      echo "File exist, use this one $1"
-      return 1
+      echo "File exist, use this one $1" >&2
+      return -1
   fi
 
   #if [ ! -z "$3" ]; then
@@ -33,8 +34,8 @@ trsshpush() {
   echo "ATTENTION : use this command based on ~ with relative folder, since ~ differs on machines"
   
   if [ -z "$SSH_FULL_HOSTPATH" ]; then
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trsshpush SSH_FULL_HOSTPATH LOCAL_RESOURCE'."
-    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME"
+    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trsshpush SSH_FULL_HOSTPATH LOCAL_RESOURCE'." >&2
+    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
   fi
 
@@ -54,22 +55,20 @@ trsshpush() {
   
     printf %s "$COMMAND" | ssh $SSH_FULL_HOSTPATH
   else
-    echo "Please specify required LOCAL_RESOURCE parameters > 'trsshpush SSH_FULL_HOSTPATH LOCAL_RESOURCE'."
-    echo "LOCAL_RESOURCE needs to be a valid file"
+    echo "Please specify required LOCAL_RESOURCE parameters > 'trsshpush SSH_FULL_HOSTPATH LOCAL_RESOURCE'." >&2
+    echo "LOCAL_RESOURCE needs to be a valid file" >&2
     return -1
   fi
 }
 
 trscppush() {
-  if [ -z "$1" ]; then
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'."
-    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME"
+  # MIN NUM OF ARG
+  if [[ "$#" < "2" ]]; then
+  echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
+    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
   fi
-  if [ -z "$2" ]; then
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'."
-    return -1
-  fi
+
   local SSH_FULL_HOSTPATH=$1
   local LOCAL_RESOURCE=$2
   local REMOTE_RESOURCE=${3:-$2}
@@ -86,15 +85,13 @@ trscppush() {
   fi
 }
 trscpget() {
-  if [ -z "$1" ]; then
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscpget SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'."
-    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME"
+  # MIN NUM OF ARG
+  if [[ "$#" < "2" ]]; then
+    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscpget SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
+    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
   fi
-  if [ -z "$2" ]; then
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscpget SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'."
-    return -1
-  fi
+
   local SSH_FULL_HOSTPATH=$1
   local REMOTE_RESOURCE=$2
   local LOCAL_RESOURCE=${3:-$2}

@@ -2,7 +2,8 @@ import lib-vm
 
 # Starting & administration
 dckproxy() {
-  if [ -z "$1" ]; then
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
       echo "== Please pass the Domain name of your Docker registry. ==" >&2
       return -1
   fi
@@ -58,7 +59,7 @@ dckstopall() {
 }
 dcktpl() {
   if [ -z "$2" ]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
     return -1
   fi
@@ -67,8 +68,9 @@ dcktpl() {
 }
 
 dckbash() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply the argument : IMAGE_NAME. If you don't know any names run 'dckps' and look at the last column NAMES"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply the argument : IMAGE_NAME. If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
     return -1
   fi
@@ -85,8 +87,9 @@ dckbash() {
   fi
 }
 dckcp() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) SOURCE DESTINATION (Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) SOURCE DESTINATION (Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
     return -1
   fi
@@ -94,8 +97,9 @@ dckcp() {
   docker cp $1 $2
 }
 dckrm() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     return -1
   fi
   docker stop $@
@@ -103,9 +107,10 @@ dckrm() {
   dckps
 }
 dckexport() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > dckexport IMAGE_NAME:TAG_NAME [FILENAME_TAR] =="
-    echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > dckexport IMAGE_NAME:TAG_NAME [FILENAME_TAR] ==" >&2
+    echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG" >&2
     dckls
     return -1
   fi
@@ -116,7 +121,7 @@ dckexport() {
 }
 dckimportfolder() {
   if [ ! -d $1 ]; then
-    echo "Please profide a directory for dckimportfolder to import : '$1'"
+    echo "Please profide a directory for dckimportfolder to import : '$1'" >&2
     return -1
   fi
   FOLDER_PATH=${1:-$PWD}
@@ -135,12 +140,13 @@ dckimportfolder() {
       echo "Import image successfully"
       dckls
     else
-      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  =="
+      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  ==" >&2
   fi  
 }
 dckimport() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > dckimport FILENAME_TAR =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > dckimport FILENAME_TAR ==" >&2
     return -1
   fi
 
@@ -204,8 +210,9 @@ dckstartdaemon() {
 }
 
 dckrunjenkins() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) > dckrunjenkins INSTANCE_NAME [PORT] [PATH]"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) > dckrunjenkins INSTANCE_NAME [PORT] [PATH]" >&2
     return -1
   fi
   FOLDER_PATH=${3:-$PWD}
@@ -213,16 +220,18 @@ dckrunjenkins() {
   dckweb "jenkins/jenkins" "$FOLDER_PATH:/var/jenkins_home" $@
 }
 dckrunnginx() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) > dckrunnginx INSTANCE_NAME [PORT] [PATH]"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) > dckrunnginx INSTANCE_NAME [PORT] [PATH]" >&2
     return -1
   fi
   FOLDER_PATH=${3:-$PWD}
   dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
 }
 dckrunphp() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) > dckrunphp INSTANCE_NAME [PORT] [PATH]"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) > dckrunphp INSTANCE_NAME [PORT] [PATH]" >&2
     return -1
   fi
   FOLDER_PATH=${3:-$PWD}
@@ -259,13 +268,14 @@ dckweb() {
       echo "dcktop $INSTANCE_NAME : to top from this image"
       echo "dckrm $INSTANCE_NAME : to stop and remove image"
     else
-      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  =="
+      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  ==" >&2
   fi
 }
 
 dckcleanimage() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2
     return -1
   fi
   docker rmi $@
@@ -287,8 +297,9 @@ dcmpps() {
   docker-compose ps
 }
 dcmplogs() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any image run 'dcmpps'"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any image run 'dcmpps'" >&2
     dcmpps
     return -1
   fi

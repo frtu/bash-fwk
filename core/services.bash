@@ -7,12 +7,12 @@ lslibs() {
 
 enablelib() {
   if [ $# -eq 0 ]; then
-    echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable "
+    echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable " >&2
     lslibs
     return -1
   fi
   if [ ! -f "$LIBS_FOLDER/lib-$1.bash" ]; then
-    echo "Service doesn't exist : $1. Please check lib folder!"
+    echo "Service doesn't exist : $1. Please check lib folder!" >&2
     lslibs
     return -1
   fi

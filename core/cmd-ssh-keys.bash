@@ -9,7 +9,7 @@ genkey() {
 pushkey() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
-    echo "Please profide a fully qualified hostname as first parameter!"
+    echo "Please profide a fully qualified hostname as first parameter!" >&2
     return -1
   fi
 
@@ -20,7 +20,7 @@ pushkey() {
 pushkeyfolder() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
-    echo "Please profide a fully qualified hostname as first parameter!"
+    echo "Please profide a fully qualified hostname as first parameter!" >&2
     return -1
   fi
 

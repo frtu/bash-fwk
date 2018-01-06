@@ -21,10 +21,12 @@ gbrls() {
   git branch -a
 }
 gbradd() {
-  if [ $# -le 1 ]; then
-      echo "Please supply the BRANCH_NAME to delete as first argument"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "Please supply the BRANCH_NAME to delete as first argument" >&2
       return -1
   fi
+  
   local BRANCH_NAME=$1
   local REPO_NAME=$2
 
@@ -52,8 +54,9 @@ gbradd() {
   git pull
 }
 gbrrm() {
-  if [ $# -le 0 ]; then
-      echo "Please supply the BRANCH_NAME to delete as first argument"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "Please supply the BRANCH_NAME to delete as first argument" >&2
       return -1
   fi
   local BRANCH_NAME=$1
@@ -70,8 +73,9 @@ gbrremotels() {
   git remote -v
 }
 gbrremoteadd() {
-  if [ $# -eq 0 ]; then
-      echo "Please supply argument(s) \"\[REPO_NAME\] PROJECT_NAME\""
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "Please supply argument(s) \"\[REPO_NAME\] PROJECT_NAME\"" >&2
       return -1
   fi
   local REPO_NAME=$1
@@ -88,8 +92,9 @@ gbrremoteadd() {
   gbrremotels
 }
 gbrremoterm() {
-  if [ $# -eq 0 ]; then
-      echo "Please supply argument(s) \"\[REPO_NAME\] PROJECT_NAME\""
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "Please supply argument(s) \"\[REPO_NAME\] PROJECT_NAME\"" >&2
       return -1
   fi
   local REMOTE_NAME=remote-$1

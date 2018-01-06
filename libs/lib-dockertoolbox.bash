@@ -96,8 +96,9 @@ dckmnethosts() {
 	dckmssh $IMAGE_NAME "cat /etc/hosts"
 }
 dckmport() {
-  if [ $# -eq 0 ]; then
-    echo "Please specify a PORT and optionally an \[IMAGE_NAME\]. If you don't know any names run 'dckmls' and look at the first column NAMES"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please specify a PORT and optionally an \[IMAGE_NAME\]. If you don't know any names run 'dckmls' and look at the first column NAMES" >&2
     dckmls
     return -1
   fi
@@ -139,16 +140,18 @@ dckmcreate() {
 }
 # Fix & desctructive
 dckmrm() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES" >&2
     dckmls
     return -1
   fi
   dckmtemplate "rm" $1
 }
 dckmgencerts() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES"
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckmls' and look at the first column NAMES" >&2
     dckmls
     return -1
   fi

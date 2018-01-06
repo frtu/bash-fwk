@@ -14,11 +14,11 @@ GPG_CMD=${GPG_CMD:-gpg}
 # http://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/
 gpgcd() {
   if [ ! -f "$GPG_HOME/pubring.gpg" ]; then
-  	echo "list-keys will initialize the Public key"
+  	echo "list-keys will initialize the Public key" >&2
     gpgls
   fi  
   if [ ! -f "$GPG_HOME/secring.gpg" ]; then
-  	echo "Attention no secret key use > gpgkeysgen"
+  	echo "Attention no secret key use > gpgkeysgen" >&2
   	return -1
   fi
   cd $GPG_HOME
@@ -44,7 +44,7 @@ gpgkeysprivate() {
 
 gpgsign() {
   if [ ! -f "$1" ]; then
-    echo "== Please supply argument(s) > gpgsign FILENAME =="
+    echo "== Please supply argument(s) > gpgsign FILENAME ==" >&2
     return -1
   fi
   echo $GPG_CMD -ab $1
@@ -56,12 +56,12 @@ gpgsign() {
 }
 gpgverify() {
   if [ ! -f "$1" ]; then
-    echo "== Please supply argument(s) > gpgverify ASC_FILENAME =="
+    echo "== Please supply argument(s) > gpgverify ASC_FILENAME ==" >&2
     return -1
   fi
   fileext=${1##*.}
   if [ ! $fileext = "asc" ]; then
-    echo "== You need to pass an .asc file as first parameter! =="
+    echo "== You need to pass an .asc file as first parameter! ==" >&2
     return -1
   fi
   echo $GPG_CMD --verify $1
@@ -69,8 +69,9 @@ gpgverify() {
 }
 
 gpgexport() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > gpgexport EMAIL@gpg.local =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > gpgexport EMAIL@gpg.local ==" >&2
     gpguid
     return -1
   fi
@@ -78,7 +79,7 @@ gpgexport() {
 }
 gpgimport() {
   if [ ! -f "$1" ]; then
-    echo "== Please supply argument(s) > gpgimport FILENAME =="
+    echo "== Please supply argument(s) > gpgimport FILENAME ==" >&2
     return -1
   fi
   $GPG_CMD --import $1
@@ -88,8 +89,9 @@ gpgimport() {
 }
 
 gpgexportprivate() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > gpgexportprivate EMAIL@gpg.local =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > gpgexportprivate EMAIL@gpg.local ==" >&2
     gpguid
     return -1
   fi
@@ -97,7 +99,7 @@ gpgexportprivate() {
 }
 gpgimportprivate() {
   if [ ! -f "$1" ]; then
-    echo "== Please supply argument(s) > gpgimportprivate FILENAME =="
+    echo "== Please supply argument(s) > gpgimportprivate FILENAME ==" >&2
     return -1
   fi
   $GPG_CMD --allow-secret-key-import --import $1
@@ -106,16 +108,18 @@ gpgimportprivate() {
   gpgkeysprivate
 }
 gpgkeysrevoke() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > gpgkeysrevoke EMAIL@gpg.local =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > gpgkeysrevoke EMAIL@gpg.local ==" >&2
     gpguid
     return -1
   fi
   $GPG_CMD --gen-revoke --armor --output=RevocationCertificate.asc $1
 }
 gpgkeysfingerprint() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > gpgkeysrevoke EMAIL@gpg.local =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > gpgkeysrevoke EMAIL@gpg.local ==" >&2
     gpguid
     return -1
   fi
@@ -124,16 +128,18 @@ gpgkeysfingerprint() {
 
 
 gpgkeysdeploy() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > gpgkeysdeploy KEY_ID/or/EMAIL =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > gpgkeysdeploy KEY_ID/or/EMAIL ==" >&2
     gpguid
     return -1
   fi
   $GPG_CMD --keyserver hkp://pool.sks-keyservers.net --send-keys $1  
 }
 gpgkeysreceive() {
-  if [ $# -eq 0 ]; then
-    echo "== Please supply argument(s) > gpgkeysreceive REMOTE_KEY_ID/or/EMAIL =="
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "== Please supply argument(s) > gpgkeysreceive REMOTE_KEY_ID/or/EMAIL ==" >&2
     return -1
   fi
   $GPG_CMD --keyserver hkp://pool.sks-keyservers.net --recv-keys $1

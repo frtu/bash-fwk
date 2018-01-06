@@ -11,9 +11,10 @@ vboxls() {
 }
 
 vboxstart() {
-  if [ $# -eq 0 ]; then
-    echo "Please specify parameters > 'vboxstart IMAGE_NAME'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\""
-    echo ""
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please specify parameters > 'vboxstart IMAGE_NAME'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
     vboxls
     return -1
   fi
@@ -21,9 +22,10 @@ vboxstart() {
   VBoxManage startvm $1 --type headless
 }
 vboxstop() {
-  if [ $# -eq 0 ]; then
-    echo "Please specify parameters > 'vboxstop IMAGE_NAME'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\""
-    echo ""
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please specify parameters > 'vboxstop IMAGE_NAME'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
     vboxls
     return -1
   fi
@@ -32,14 +34,11 @@ vboxstop() {
 }
 
 vboxmemory() {
-  if [ -z "$1" ]; then
-    echo "Please specify IMAGE_NAME parameter > 'vboxmemory IMAGE_NAME MEMORY_MB'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\""
-    echo ""
+  # MIN NUM OF ARG
+  if [[ "$#" < "2" ]]; then
+    echo "Please specify IMAGE_NAME parameter > 'vboxmemory IMAGE_NAME MEMORY_MB'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
     vboxls
-    return -1
-  fi
-  if [ -z "$2" ]; then
-    echo "Please specify MEMORY_MB parameter > 'vboxmemory IMAGE_NAME MEMORY_MB' in MB"
     return -1
   fi
 
@@ -69,9 +68,10 @@ vboxport() {
   VBoxManage controlvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
 }
 vboxsnapshot() {
-  if [ $# -eq 0 ]; then
-    echo "Please specify parameters > 'vboxsnapshot IMAGE_NAME [SNAPSHOT_NAME] [SNAPSHOT_DESC]'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\""
-    echo ""
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please specify parameters > 'vboxsnapshot IMAGE_NAME [SNAPSHOT_NAME] [SNAPSHOT_DESC]'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
     vboxls
     return -1
   fi
@@ -84,9 +84,10 @@ vboxsnapshot() {
 }
 
 vboxrmsoft() {
-  if [ $# -eq 0 ]; then
-    echo "Please specify parameters > 'vboxrm IMAGE_HASH'. If you don't know any names run 'vboxls' and look at the first column \{INST_HASH\}"
-    echo ""
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please specify parameters > 'vboxrm IMAGE_HASH'. If you don't know any names run 'vboxls' and look at the first column \{INST_HASH\}" >&2
+    echo "" >&2
     vboxls
     return -1
   fi
