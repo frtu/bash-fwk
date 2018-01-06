@@ -1,9 +1,3 @@
-BASH_FWK_ROOT=~/git/bash-fwk
-
-cdfwk() {
-  cd $BASH_FWK_ROOT
-}
-
 load_file() {
   if [ -f "$1" ]; then
   	echo "source $1"
@@ -24,15 +18,15 @@ load_folder() {
 	  echo "Director '$1' does not exists!"
 	fi
 }
-
 import() {
   load_file "$LIBS_FOLDER/$1.bash"
 }
+
 reload() {
   source ~/.bash_profile
 }
-redeploy() {
-  source $BASH_FWK_ROOT/setup.bash
-  reload
+relink() {
+  rm -fR "$2"
+  echo "Linking local folder $2 to source folder $1"
+  ln -s  "$1" "$2"
 }
-
