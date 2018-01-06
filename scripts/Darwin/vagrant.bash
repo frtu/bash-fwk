@@ -1,17 +1,10 @@
 import lib-file-transfer
 import lib-virtualbox
-
+import lib-vm
 
 VAGRANT_BOXES_FOLDER=~/.vagrant.d/boxes
 VAGRANT_MACHINES_SUBFOLDER=./.vagrant/machines
 
-VM_ROOT_FOLDER=~/VMs
-VM_ARCHIVE_FOLDER=$VM_ROOT_FOLDER/_archives_
-
-cdvm() {
-	mkdir -p $VM_ROOT_FOLDER
-	cd $VM_ROOT_FOLDER
-}
 
 # ==================================================
 # Vagrant Box Administration
