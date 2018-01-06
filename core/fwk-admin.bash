@@ -50,7 +50,7 @@ replicate2currentfolder() {
 replicate2remote() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
-      echo "Please supply the REMOTE_HOST to replicate the local scripts to"
+      echo "Please supply the REMOTE_HOST to replicate the local scripts to" >&2
       return -1
   fi
   # ARGS

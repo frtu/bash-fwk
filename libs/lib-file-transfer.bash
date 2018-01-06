@@ -64,7 +64,7 @@ trsshpush() {
 trscppush() {
   # MIN NUM OF ARG
   if [[ "$#" < "2" ]]; then
-  echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
+    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
     echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
   fi

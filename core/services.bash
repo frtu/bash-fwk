@@ -6,7 +6,8 @@ lslibs() {
 }
 
 enablelib() {
-  if [ $# -eq 0 ]; then
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
     echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable " >&2
     lslibs
     return -1
