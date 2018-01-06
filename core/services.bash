@@ -1,3 +1,39 @@
+SERVICE_LOCAL_BASH_PREFIX=$LOCAL_SCRIPTS_FOLDER/service-
+
+# MORE LIGHTWEIGHT SERVICE CAPABILITIES (ONE LINE)
+lslibs() {
+  ll $LIBS_FOLDER/
+}
+
+enablelib() {
+  if [ $# -eq 0 ]; then
+    echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable "
+    lslibs
+    return -1
+  fi
+  if [ ! -f "$LIBS_FOLDER/lib-$1.bash" ]; then
+    echo "Service doesn't exist : $1. Please check lib folder!"
+    lslibs
+    return -1
+  fi
+
+  local LIB_NAME_WITHOUT_PREFIX=$1
+  local TARGET_SERVICE_FILENAME=$SERVICE_LOCAL_BASH_PREFIX$LIB_NAME_WITHOUT_PREFIX.bash
+
+  echo "Enabling service at $TARGET_SERVICE_FILENAME"
+  echo "import lib-$LIB_NAME_WITHOUT_PREFIX" > $TARGET_SERVICE_FILENAME
+}
+
+enablehadoop() {
+  enablelib hadoop
+}
+enabledockertoolbox() {
+  enablelib dockertoolbox
+}
+
+# FILE BASED SERVICE
+
+SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
 srv_list() {
   # http://www.cyberciti.biz/faq/unix-linux-extract-filename-and-extension-in-bash/
   echo "== List ALL services =="
@@ -36,34 +72,3 @@ srv_deactivate() {
   	echo "'$1' does not exists! Please profile a valide service name using 'srv_list'"
   fi
 }
-
-lslibs() {
-  ll $LIBS_FOLDER/
-}
-
-enablelib() {
-  if [ $# -eq 0 ]; then
-    echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable "
-    lslibs
-    return -1
-  fi
-  if [ ! -f "$LIBS_FOLDER/lib-$1.bash" ]; then
-    echo "Service doesn't exist : $1. Please check lib folder!"
-    lslibs
-    return -1
-  fi
-
-  local LIB_NAME_WITHOUT_PREFIX=$1
-  local TARGET_SERVICE_FILENAME=$LOCAL_SCRIPTS_FOLDER/service-$LIB_NAME_WITHOUT_PREFIX.bash
-
-  echo "Enabling service at $TARGET_SERVICE_FILENAME"
-  echo "import lib-$LIB_NAME_WITHOUT_PREFIX" > $TARGET_SERVICE_FILENAME
-}
-
-enablehadoop() {
-  enablelib hadoop
-}
-enabledockertoolbox() {
-  enablelib dockertoolbox
-}
-
