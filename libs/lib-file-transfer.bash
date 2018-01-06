@@ -30,6 +30,8 @@ trsshpush() {
   local SSH_FULL_HOSTPATH=$1
   local LOCAL_RESOURCE=$2
 
+  echo "ATTENTION : use this command based on ~ with relative folder, since ~ differs on machines"
+  
   if [ -z "$SSH_FULL_HOSTPATH" ]; then
     echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trsshpush SSH_FULL_HOSTPATH LOCAL_RESOURCE'."
     echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME"
