@@ -75,10 +75,10 @@ trscppush() {
 
   if [ -d "$LOCAL_RESOURCE" ]; then
     echo scp -r "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
-    sudo scp -r "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
+    scp -r "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
   elif [ -f "$LOCAL_RESOURCE" ]; then
     echo scp "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
-    sudo scp "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
+    scp "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
   else
     echo "$LOCAL_RESOURCE is not valid"
     return -1
@@ -86,7 +86,7 @@ trscppush() {
 }
 trscpget() {
   # MIN NUM OF ARG
-  if [[ "$#" < "2" ]]; then
+  if [ "$#" < "2" ]; then
     echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscpget SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
     echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
@@ -96,14 +96,11 @@ trscpget() {
   local REMOTE_RESOURCE=$2
   local LOCAL_RESOURCE=${3:-$2}
 
-  if [ -d "$LOCAL_RESOURCE" ]; then
-    echo scp -r $SSH_FULL_HOSTPATH:$REMOTE_RESOURCE "$LOCAL_RESOURCE"
-    sudo scp -r $SSH_FULL_HOSTPATH:$REMOTE_RESOURCE "$LOCAL_RESOURCE"
-  elif [ -f "$LOCAL_RESOURCE" ]; then
-    echo scp $SSH_FULL_HOSTPATH:$REMOTE_RESOURCE "$LOCAL_RESOURCE"
-    sudo scp $SSH_FULL_HOSTPATH:$REMOTE_RESOURCE "$LOCAL_RESOURCE"
+  if [ "$LOCAL_RESOURCE" == *\/* ]; then
+    echo scp -r $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
+    scp -r $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
   else
-    echo "$LOCAL_RESOURCE is not valid"
-    return -1
+    echo scp $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
+    scp $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
   fi
 }
