@@ -24,27 +24,31 @@ sshcd() {
 
 sshconfuser() {
   # MIN NUM OF ARG
-  if [[ "$#" < "2" ]]; then
-    echo "Usage: sshconfuser SSH_HOST_ALIAS SSH_HOSTNAME" >&2
+  if [[ "$#" < "3" ]]; then
+    echo "Usage: sshconfuser SSH_HOST_ALIAS USERNAME KEYS_PRI [SSH_HOSTNAME] [SSH_PORT]" >&2
     return -1
   fi
 
   local SSH_HOST_ALIAS=$1
-  local SSH_HOSTNAME=$2
-#  local USERNAME=${3:-$USER}
-  local USERNAME=$3
-#  local KEYS_PRI=${4:-$DEFAULT_KEYS_PRI}
-  local KEYS_PRI=$4
+#  local USERNAME=${2:-$USER}
+  local USERNAME=$2
+#  local KEYS_PRI=${3:-$DEFAULT_KEYS_PRI}
+  local KEYS_PRI=$3
+  local SSH_HOSTNAME=$4
+  local SSH_PORT=$5
 
-  echo "Host ${SSH_HOST_ALIAS}"     >> $SSH_CONFIG
-  echo "  HostName ${SSH_HOSTNAME}" >> $SSH_CONFIG
-#  echo "#  Port NUMBER_TO_SET"    >> $SSH_CONFIG
-  
+  echo "Host ${SSH_HOST_ALIAS}"       >> $SSH_CONFIG
+  if [ -n "${SSH_HOSTNAME}" ]; then
+    echo "  HostName ${SSH_HOSTNAME}" >> $SSH_CONFIG
+  fi
+  if [ -n "${SSH_PORT}" ]; then
+    echo "  Port ${SSH_PORT}"         >> $SSH_CONFIG
+  fi
   if [ -n "${USERNAME}" ]; then
-    echo "  User ${USERNAME}"    >> $SSH_CONFIG
+    echo "  User ${USERNAME}"         >> $SSH_CONFIG
   fi
   if [ -f "${KEYS_PRI}" ]; then
-    echo "  IdentityFile ${KEYS_PRI}"    >> $SSH_CONFIG
+    echo "  IdentityFile ${KEYS_PRI}" >> $SSH_CONFIG
   fi
 }
 
