@@ -11,7 +11,18 @@ DEFAULT_KEYS_NAME="id_rsa"
 DEFAULT_KEYS_PRI="${SSH_ROOT}/${DEFAULT_KEYS_NAME}"
 DEFAULT_KEYS_PUB="$DEFAULT_KEYS_PRI.pub"
 
-sshgenkey() {
+sshkeysls() {
+  echo "Listing keys available in $SSH_ROOT"
+
+  for file in $SSH_ROOT/*.pub ; do 
+    filename=$(basename "$file")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+
+    echo "- $filename"
+  done
+}
+sshkeysgen() {
   local KEYS_NAME=${1:-$DEFAULT_KEYS_NAME}
 
   KEYS_PRI="${SSH_ROOT}/${KEYS_NAME}"
@@ -20,7 +31,7 @@ sshgenkey() {
   ssh-keygen -t rsa -b 4096 -f $KEYS_PRI
 }
 
-# NOT NEEDED when calling sshgenkey. ONLY useful to store authorized_keys or ssh_config
+# NOT NEEDED when calling sshkeysgen. ONLY useful to store authorized_keys or ssh_config
 sshmkdir() {
   if [ ! -d "${SSH_ROOT}" ]; then
     echo "== Create non existing folder : $SSH_ROOT =="
@@ -91,7 +102,7 @@ sshconfusercreatekey() {
 
   if [ ! -f "${SSH_ROOT}/${KEYS_NAME}" ]; then
     echo "== Since ${SSH_ROOT}/${KEYS_NAME} doesn't exist create a new one! ==" >&2
-    sshgenkey ${KEYS_NAME}
+    sshkeysgen ${KEYS_NAME}
   fi
 
   sshconfuser $SSH_CONFIG_ALIAS $USERNAME $KEYS_PRI $SSH_HOSTNAME $SSH_PORT
@@ -157,12 +168,14 @@ sshconfproxy() {
 pushkey() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
-    echo "Usage: pushkey SSH_HOSTNAME [KEYS_PUB]. KEYS_PUB is optional and fix which public key to push" >&2
+    echo "Usage: pushkey SSH_HOSTNAME [KEYS_NAME]. KEYS_NAME is optional and fix which public key to push" >&2
     return -1
   fi
 
   local SSH_HOSTNAME=$1
-  local KEYS_PUB=${2:-$DEFAULT_KEYS_PUB}
+  local KEYS_NAME=${2:-$DEFAULT_KEYS_NAME}
+
+  KEYS_PUB="${SSH_ROOT}/${KEYS_NAME}.pub"
 
   echo "scp -r $KEYS_PUB $SSH_HOSTNAME:$USR_KEYS"
   scp -r $KEYS_PUB $SSH_HOSTNAME:$USR_KEYS
