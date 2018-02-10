@@ -7,37 +7,116 @@ SSH_CONFIG_BASE="/etc/ssh/ssh_config"
 SSH_ROOT="$HOME/.ssh"
 SSH_CONFIG="$HOME/.ssh/config"
 
-DEFAULT_KEYS_PRI="$HOME/.ssh/id-rsa"
-DEFAULT_KEYS_PUB="$KEYS_PRI.pub"
+DEFAULT_KEYS_NAME="id_rsa"
+DEFAULT_KEYS_PRI="${SSH_ROOT}/${DEFAULT_KEYS_NAME}"
+DEFAULT_KEYS_PUB="$DEFAULT_KEYS_PRI.pub"
 
 sshgenkey() {
-  ssh-keygen -f -t rsa -b 4096 -C "$1"     
+  local KEYS_NAME=${1:-$DEFAULT_KEYS_NAME}
+
+  KEYS_PRI="${SSH_ROOT}/${KEYS_NAME}"
+
+  echo "ssh-keygen -t rsa -b 4096 -f $KEYS_PRI"
+  ssh-keygen -t rsa -b 4096 -f $KEYS_PRI
 }
 
+# NOT NEEDED when calling sshgenkey. ONLY useful to store authorized_keys or ssh_config
 sshmkdir() {
-  mkdir -p $SSH_ROOT
-  chmod 700 $SSH_ROOT
+  if [ ! -d "${SSH_ROOT}" ]; then
+    echo "== Create non existing folder : $SSH_ROOT =="
+    mkdir -p $SSH_ROOT
+    chmod 700 $SSH_ROOT
+  fi
 }
 sshcd() {
   cd $SSH_ROOT
 }
 
-sshconfuser() {
+sshportpush() {
   # MIN NUM OF ARG
   if [[ "$#" < "3" ]]; then
-    echo "Usage: sshconfuser SSH_HOST_ALIAS USERNAME KEYS_PRI [SSH_HOSTNAME] [SSH_PORT]" >&2
+    echo "Usage: sshportpush LOCAL_PORT SSH_HOSTNAME SSH_PORT [USERNAME]" >&2
     return -1
   fi
 
-  local SSH_HOST_ALIAS=$1
+  local LOCAL_PORT=$1
+  local SSH_HOSTNAME=$2
+  local SSH_PORT=$3
+  local USERNAME=${4:-$USER}
+
+  echo "ssh -f -N -L $LOCAL_PORT:127.0.0.1:$SSH_PORT $USERNAME@$SSH_HOSTNAME"
+  ssh -f -N -L $LOCAL_PORT:127.0.0.1:$SSH_PORT $USERNAME@$SSH_HOSTNAME
+}
+
+sshconfport() {
+  # MIN NUM OF ARG
+  if [[ "$#" < "3" ]]; then
+    echo "Usage: sshconfport LOCAL_PORT SSH_HOSTNAME SSH_PORT [KEYS_NAME] [USERNAME] [SSH_CONFIG_ALIAS]" >&2
+    return -1
+  fi
+
+  local LOCAL_PORT=$1
+  local SSH_HOSTNAME=$2
+  local REMOTE_PORT=$3
+  local KEYS_NAME=${4:-$DEFAULT_KEYS_NAME}
+  local USERNAME=${5:-$USER}
+  local SSH_CONFIG_ALIAS=${6:-tunnel}
+
+  sshconfusercreatekey ${SSH_CONFIG_ALIAS} ${USERNAME} ${KEYS_NAME} ${SSH_HOSTNAME}
+  echo "  LocalForward ${LOCAL_PORT} 127.0.0.1:${REMOTE_PORT}"   >> $SSH_CONFIG
+
+  FUNCTION_NAME="ssh${SSH_CONFIG_ALIAS}"
+  TARGET_SERVICE_FILENAME=${LOCAL_SCRIPTS_FOLDER}/${FUNCTION_NAME}.bash
+  echo "${FUNCTION_NAME}() {"             > $TARGET_SERVICE_FILENAME
+  echo "  ssh -f -N ${SSH_CONFIG_ALIAS}"  >> $TARGET_SERVICE_FILENAME
+  echo "}"                                >> $TARGET_SERVICE_FILENAME
+
+  reload
+  echo "== Enabling function '${FUNCTION_NAME}' at $TARGET_SERVICE_FILENAME =="
+}
+
+sshconfusercreatekey() {
+  # MIN NUM OF ARG
+  if [[ "$#" < "3" ]]; then
+    echo "Usage: sshconfusercreatekey SSH_CONFIG_ALIAS USERNAME KEYS_NAME [SSH_HOSTNAME] [SSH_PORT]" >&2
+    return -1
+  fi
+
+  local SSH_CONFIG_ALIAS=$1
 #  local USERNAME=${2:-$USER}
   local USERNAME=$2
-#  local KEYS_PRI=${3:-$DEFAULT_KEYS_PRI}
+  local KEYS_NAME=${3:-$DEFAULT_KEYS_NAME}
+  local SSH_HOSTNAME=$4
+  local SSH_PORT=$5
+
+  if [ ! -f "${SSH_ROOT}/${KEYS_NAME}" ]; then
+    echo "== Since ${SSH_ROOT}/${KEYS_NAME} doesn't exist create a new one! ==" >&2
+    sshgenkey ${KEYS_NAME}
+  fi
+
+  sshconfuser $SSH_CONFIG_ALIAS $USERNAME $KEYS_PRI $SSH_HOSTNAME $SSH_PORT
+}
+
+sshconfuser() {
+  # MIN NUM OF ARG
+  if [[ "$#" < "2" ]]; then
+    echo "Usage: sshconfuser SSH_CONFIG_ALIAS USERNAME [KEYS_PRI] [SSH_HOSTNAME] [SSH_PORT]" >&2
+    return -1
+  fi
+
+  local SSH_CONFIG_ALIAS=$1
+#  local USERNAME=${2:-$USER}
+  local USERNAME=$2
   local KEYS_PRI=$3
   local SSH_HOSTNAME=$4
   local SSH_PORT=$5
 
-  echo "Host ${SSH_HOST_ALIAS}"       >> $SSH_CONFIG
+  # Create .ssh if not exist
+  sshmkdir
+  echo "== Write file $SSH_CONFIG =="
+  echo "sshconfuser $SSH_CONFIG_ALIAS $USERNAME $KEYS_PRI $SSH_HOSTNAME $SSH_PORT"
+
+  echo "Host ${SSH_CONFIG_ALIAS}"     >> $SSH_CONFIG
   if [ -n "${SSH_HOSTNAME}" ]; then
     echo "  HostName ${SSH_HOSTNAME}" >> $SSH_CONFIG
   fi
@@ -55,17 +134,21 @@ sshconfuser() {
 sshconfproxy() {
   # MIN NUM OF ARG
   if [[ "$#" < "4" ]]; then
-    echo "Usage: sshconfproxy SSH_HOST_ALIAS SSH_HOSTNAME LOCAL_PORT FWD_HOSTNAME [FWD_PORT]" >&2
+    echo "Usage: sshconfproxy SSH_CONFIG_ALIAS SSH_HOSTNAME LOCAL_PORT FWD_HOSTNAME [FWD_PORT]" >&2
     return -1
   fi
 
-  local SSH_HOST_ALIAS=$1
+  local SSH_CONFIG_ALIAS=$1
   local SSH_HOSTNAME=$2
   local LOCAL_PORT=$3
   local FWD_HOSTNAME=$4
   local FWD_PORT=${5:-22}
 
-  echo "Host ${SSH_HOST_ALIAS}"                               >> $SSH_CONFIG
+  # Create .ssh if not exist
+  sshmkdir
+  echo "== Write file $SSH_CONFIG =="
+
+  echo "Host ${SSH_CONFIG_ALIAS}"                             >> $SSH_CONFIG
   echo "  HostName ${SSH_HOSTNAME}"                           >> $SSH_CONFIG  
   echo "  ProxyCommand ssh ${FWD_HOSTNAME} -W %h:${FWD_PORT}" >> $SSH_CONFIG
   echo "  DynamicForward ${LOCAL_PORT}"                       >> $SSH_CONFIG
