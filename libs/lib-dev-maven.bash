@@ -25,6 +25,31 @@ mvnsetversionsnapshot() {
   mvnsk versions:set -DnewVersion=$1-SNAPSHOT
 }
 
+mvnimportjar() {
+  # MIN NUM OF ARG
+  if [[ "$#" < "3" ]]; then
+      echo "Usage : mvnimportjar GROUP_ID ARTIFACT_ID ARTIFACT_VERSION [FILE_PATH]" >&2
+      return -1
+  fi
+
+  local GROUP_ID=$1
+  local ARTIFACT_ID=$2
+  local ARTIFACT_VERSION=$3
+  local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
+  local FILE_PATH=${4:-$FILE_PREFIX.jar}
+
+  local SOURCE_PATH="${FILE_PREFIX}-sources.jar"
+  local POM_PATH="${FILE_PREFIX}.pom"
+
+  if [ ! -f "$FILE_PATH" ]; then
+    echo "Cannot find $FILE_PATH. Please specify the optional parmater FILE_PATH" >&2
+    echo "Usage : mvnimportjar GROUP_ID ARTIFACT_ID ARTIFACT_VERSION [FILE_PATH]" >&2
+    return -1
+  fi  
+  echo "mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DgeneratePom=true"
+  mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DgeneratePom=true
+}
+
 mvnrepodefault() {
   local MVN_SETTINGS_ID=${1:-$MVN_SETTINGS}
 
