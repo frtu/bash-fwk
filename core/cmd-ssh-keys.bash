@@ -1,6 +1,7 @@
 import lib-file-transfer
 
-USR_KEYS="$HOME/.ssh/authorized_keys"
+# ATTENTION MUST BE ~ since remote may have different path
+USR_KEYS="~/.ssh/authorized_keys"
 
 SSH_CONFIG_BASE="/etc/ssh/ssh_config"
 
@@ -177,8 +178,11 @@ pushkey() {
 
   KEYS_PUB="${SSH_ROOT}/${KEYS_NAME}.pub"
 
-  echo "scp -r $KEYS_PUB $SSH_HOSTNAME:$USR_KEYS"
-  scp -r $KEYS_PUB $SSH_HOSTNAME:$USR_KEYS
+  echo "ssh -o StrictHostKeyChecking=no ${SSH_HOSTNAME} 'mkdir -p ~/.ssh/'"
+  ssh -o StrictHostKeyChecking=no ${SSH_HOSTNAME} 'mkdir -p ~/.ssh/'
+
+  echo "scp -r ${KEYS_PUB} ${SSH_HOSTNAME}:${USR_KEYS}"
+  scp -r ${KEYS_PUB} ${SSH_HOSTNAME}:${USR_KEYS}
 }
 
 pushkeyfolder() {
