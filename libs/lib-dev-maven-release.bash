@@ -2,6 +2,22 @@ import lib-dev-maven
 
 MVN_RELEASE_REPO=target/checkout
 
+mvnreleasevalidate() {
+  mvn test
+  if [ "$?" -eq 0 ]; then
+      echo "Success!"
+    else
+      echo "Failure!"
+  fi
+
+  mvn javadoc:javadoc
+  if [ "$?" -eq 0 ]; then
+      echo "Success!"
+    else
+      echo "Failure!"
+  fi
+}
+
 # Release
 mvnreleasetag() {
   local OPTIONAL_ARGS=-DautoVersionSubmodules=true 

@@ -30,3 +30,7 @@ relink() {
   echo "Linking local folder $2 to source folder $1"
   ln -s  "$1" "$2"
 }
+
+usage() {
+  echo "Usage : ${FUNCNAME[1]} $@" >&2
+}
