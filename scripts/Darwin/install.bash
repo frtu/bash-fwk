@@ -3,10 +3,9 @@ export HOMEBREW_REPOSITORY=/usr/local/Cellar
 export HOMEBREW_OPT=/usr/local/opt
 export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
 
+alias brewcd='cd $HOMEBREW_REPOSITORY'
+alias sdkcd='cd $SDKMAN_DIR'
 
-cdbrew() {
-  cd $HOMEBREW_REPOSITORY
-}
 inst_brew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew tap caskroom/homebrew-cask
@@ -60,7 +59,14 @@ inst_node() {
 
 inst_gradle() {
   #brew install gradle
+  if [ ! -d "$SDKMAN_DIR" ]; then
+    inst_sdk
+  fi
   sdk install gradle 4.5.1
+}
+inst_android() {
+  brew tap caskroom/cask
+  brew cask install android-sdk
 }
 
 inst_gvm() {
