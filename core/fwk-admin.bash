@@ -7,7 +7,7 @@ cdfwk() {
 # LOCAL INSTALLATION CAPABILITIES BASED ON BASH_FWK_ROOT
 redeploy() {
   source $BASH_FWK_ROOT/setup.bash
-  reload
+  refresh
 }
 
 bashdeploy() {
@@ -15,17 +15,29 @@ bashdeploy() {
 	_dir="${1:-${PWD}}"
 
 	DISTRO_SCRIPT_FOLDER="$_dir/scripts/`uname -s`/"
-	if [[ ! -d $DISTRO_SCRIPT_FOLDER ]]; then
-	  echo "Creating new folder $DISTRO_SCRIPT_FOLDER"
-	  mkdir -p $DISTRO_SCRIPT_FOLDER
-	  touch $DISTRO_SCRIPT_FOLDER\CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash
-	fi
+  mkscriptfolder "$DISTRO_SCRIPT_FOLDER"
+  mkscriptfolder "$LOCAL_SCRIPTS_FOLDER"
 
 	echo "------- LINK bash folders --------"
 	relink "$_dir/core/" "$CORE_FOLDER"
 	relink "$_dir/libs/" "$LIBS_FOLDER"
 	relink "$DISTRO_SCRIPT_FOLDER" "$SCRIPTS_FOLDER"
 }
+mkscriptfolder() {
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "Usage : mkfolder FOLDER" >&2
+      return -1
+  fi
+
+  local FOLDER=$1
+  if [ ! -d ${FOLDER} ]; then
+    echo "Creating new folder ${FOLDER}"
+    mkdir -p ${FOLDER}
+    touch ${FOLDER}/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash
+  fi
+}
+
 bashprofile() {
 	mv -f $BASH_PROFILE_FILENAME $BASH_PROFILE_FILENAME.bak
 	mv -f $BASH_RC_FILENAME $BASH_RC_FILENAME.bak
@@ -50,7 +62,7 @@ replicate2currentfolder() {
 replicate2remote() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
-      echo "Please supply the REMOTE_HOST to replicate the local scripts to" >&2
+      echo "Usage : replicate2remote REMOTE_HOST. Replicate the local scripts to REMOTE_HOST" >&2
       return -1
   fi
   # ARGS

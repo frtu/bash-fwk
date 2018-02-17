@@ -22,7 +22,7 @@ import() {
   load_file "$LIBS_FOLDER/$1.bash"
 }
 
-reload() {
+refresh() {
   source ~/.bash_profile
 }
 relink() {
