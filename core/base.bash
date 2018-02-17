@@ -32,5 +32,28 @@ relink() {
 }
 
 usage() {
-  echo "Usage : ${FUNCNAME[1]} $@" >&2
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+      echo "Usage : usage NUMBER_ARG [ARGUMENT_LIST]" >&2
+      return -1
+  fi
+
+  local NUMBER_ARG=$1
+
+  # COUNT NUMBER OF MANDATORY ARGS
+  NUM_MANDATORY_ARGS=0
+  for args in "${@:2}" ; do
+    if [[ ! $args == [* ]]
+      then
+        ((NUM_MANDATORY_ARGS++));
+      else
+        break
+    fi
+  done
+
+  # CHECK
+  if [[ "$NUMBER_ARG" < "$NUM_MANDATORY_ARGS" ]]; then
+    echo "Usage : ${FUNCNAME[1]} ${@:2} => $NUM_MANDATORY_ARGS mandatory argument(s)" >&2
+    return -1
+  fi
 }

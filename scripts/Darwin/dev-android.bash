@@ -19,11 +19,9 @@ adbls() {
   adb devices
 }
 adbaddvendor() {
-  EXPECTED_ARGS=( "VENDOR_ID" )
-  #  OPTIONAL_ARGS=( "[OPTIONAL_ARG]" )
-
-  # ARG CHECK ONE LINER
-  if [[ "$#" < "${#EXPECTED_ARGS[*]}" ]]; then echo "Usage : ${FUNCNAME[0]} ${EXPECTED_ARGS[@]} ${OPTIONAL_ARGS[@]}" >&2 ; return -1 ; fi
+  usage $# "VENDOR_ID"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local VENDOR_ID=$1
 
@@ -34,9 +32,9 @@ adbaddvendor() {
 }
 
 adbinstall() {
-  EXPECTED_ARGS=( "APK_FILE" )
-  # ARG CHECK ONE LINER
-  if [[ "$#" < "${#EXPECTED_ARGS[*]}" ]]; then echo "Usage : ${FUNCNAME[0]} ${EXPECTED_ARGS[@]} ${OPTIONAL_ARGS[@]}" >&2 ; return -1 ; fi
+  usage $# "APK_FILE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local APK_FILE=$1
 
