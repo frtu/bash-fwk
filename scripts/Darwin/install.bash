@@ -21,6 +21,11 @@ uninst() {
   fi
   brew rmtree $1
 }
+inst_sdk() {
+  # http://sdkman.io/
+  curl -s "https://get.sdkman.io" | bash
+  source "~/.sdkman/bin/sdkman-init.sh"
+}
 
 brew_ls() {
   brew list --versions
@@ -54,7 +59,8 @@ inst_node() {
 }
 
 inst_gradle() {
-  brew install gradle
+  #brew install gradle
+  sdk install gradle 4.5.1
 }
 
 inst_gvm() {
