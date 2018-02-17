@@ -23,7 +23,7 @@ uninst() {
 inst_sdk() {
   # http://sdkman.io/
   curl -s "https://get.sdkman.io" | bash
-  source "~/.sdkman/bin/sdkman-init.sh"
+  source "${HOME}/.sdkman/bin/sdkman-init.sh"
 }
 
 brew_ls() {
@@ -59,7 +59,7 @@ inst_node() {
 
 inst_gradle() {
   #brew install gradle
-  if [ ! -d "$SDKMAN_DIR" ]; then
+  if [ -z "$SDKMAN_DIR" ]; then
     inst_sdk
   fi
   sdk install gradle 4.5.1
