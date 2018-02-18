@@ -8,6 +8,16 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+grmcached() {
+  usage $# "ITEM_TO_REMOVE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ITEM_TO_REMOVE=$1
+
+  echo "git rm -r --cached $ITEM_TO_REMOVE"
+  git rm -r --cached $ITEM_TO_REMOVE
+}
 
 gtag() {
   git tag
