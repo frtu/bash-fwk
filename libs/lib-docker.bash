@@ -117,15 +117,16 @@ dckexport() {
   docker save $1 | gzip > $FILENAME_TAR
 }
 dckimportfolder() {
-  if [ ! -d $1 ]; then
-    echo "Please profide a directory for dckimportfolder to import : '$1'" >&2
-    return -1
-  fi
-  local FOLDER_PATH=${1:-$PWD}
-  local FILTER=$2
+  usage $# "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  echo "------- Loading $1 --------";
-  for i in $FOLDER_PATH/docker_$FILTER*; 
+  local DOCKER_IMAGE_FILE_FILTER=$1
+  local FOLDER_PATH=${2:-$VM_ARCHIVE_FOLDER}
+  
+  DCK_IMAGE_PATHS="$FOLDER_PATH/docker_$DOCKER_IMAGE_FILE_FILTER*"
+  echo "------- Loading ${DCK_IMAGE_PATHS} --------";
+  for i in ${DCK_IMAGE_PATHS};
   do 
     echo "docker load -i $i"
     docker load -i $i
