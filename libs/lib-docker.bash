@@ -192,47 +192,51 @@ dckhello() {
   docker run hello-world
 }
 dckstartdaemon() {
+  usage $# "IMAGE_NAME" "[INSTANCE_NAME]" "[DCK_PORT_DECLARATION]" "[MORE_ARG]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local IMAGE_NAME=$1
   local INSTANCE_NAME=${2:-$1}
+  local MORE_ARG=${@:3}
 
-  shift 2
-  
-  echo "Start docker daemon > docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME"
-	docker run --name $INSTANCE_NAME $@ -P -d $IMAGE_NAME
+  echo "Start docker daemon > docker run --name ${INSTANCE_NAME} ${MORE_ARG} -P -d ${IMAGE_NAME}"
+  docker run --name ${INSTANCE_NAME} ${MORE_ARG} -P -d ${IMAGE_NAME}
 
   return $?
 }
 
 dckrunjenkins() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) > dckrunjenkins INSTANCE_NAME [PORT] [PATH]" >&2
-    return -1
-  fi
+  usage $# "INSTANCE_NAME" "[PORT]" "[PATH:PWD]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local FOLDER_PATH=${3:-$PWD}
   # -p 8082:8080 -p 50000:50000
   dckweb "jenkins/jenkins" "$FOLDER_PATH:/var/jenkins_home" $@
 }
 dckrunnginx() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) > dckrunnginx INSTANCE_NAME [PORT] [PATH]" >&2
-    return -1
-  fi
+  usage $# "INSTANCE_NAME" "[PORT]" "[PATH:PWD]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local FOLDER_PATH=${3:-$PWD}
   dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
 }
 dckrunphp() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) > dckrunphp INSTANCE_NAME [PORT] [PATH]" >&2
-    return -1
-  fi
+  usage $# "INSTANCE_NAME" "[PORT]" "[PATH:PWD]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   FOLDER_PATH=${3:-$PWD}
   dckweb "php:7.0-apache" "$FOLDER_PATH:/var/www/html" $@
   #dckweb "php:7.0-fpm" "$FOLDER_PATH:/var/www/html" $@
 }
 dckweb() {
+  usage $# "[IMAGE_NAME:nginx]" "[OPTIONAL_ARGS]" "[INSTANCE_NAME:web]" "[PORT]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   # By default image name is "nginx"
   local IMAGE_NAME=${1:-nginx}
 
@@ -244,32 +248,24 @@ dckweb() {
   # If no name passed, use "web"
   local INSTANCE_NAME=${3:-web}
 
+  local PORT=$4
+
   # If no port pass, use dynamic attr port
-  if [ -n "$4" ]; then
-    echo "== Connect to this host using http://localhost:$4 =="
-    local OPTIONAL_ARGS="$OPTIONAL_ARGS -p $4:80"
+  if [ -n "$PORT" ]; then
+    echo "== Connect to this host using http://localhost:${PORT} =="
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -p ${PORT}:80"
+
+    echo "dckmport $PORT : to expose the port (only needed once per VM)"
   fi
 
   dckstartdaemon $IMAGE_NAME $INSTANCE_NAME "$OPTIONAL_ARGS"
-
-  STATUS=$?
-  if [ "$STATUS" -eq 0 ]
-    then
-      docker port $INSTANCE_NAME
-
-      echo "dcklogs $INSTANCE_NAME : to tail log of this image"
-      echo "dckinspect $INSTANCE_NAME : to inspect characteristics of this image"
-      echo "dcktop $INSTANCE_NAME : to top from this image"
-      echo "dckrm $INSTANCE_NAME : to stop and remove image"
-    else
-      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  ==" >&2
-  fi
 }
 
-dckcleanimage() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) \"REPOSITORY\". If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2
+dckrmimage() {
+  usage $# "REPOSITORY"
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
+    dckls 
     return -1
   fi
   docker rmi $@
@@ -291,9 +287,9 @@ dcmpps() {
   docker-compose ps
 }
 dcmplogs() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any image run 'dcmpps'" >&2
+  usage $# "INSTANCE_NAME"
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any image run 'dcmpps'" >&2
     dcmpps
     return -1
   fi
