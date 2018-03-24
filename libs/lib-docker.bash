@@ -203,6 +203,19 @@ dckstartdaemon() {
   echo "Start docker daemon > docker run --name ${INSTANCE_NAME} ${MORE_ARG} -P -d ${IMAGE_NAME}"
   docker run --name ${INSTANCE_NAME} ${MORE_ARG} -P -d ${IMAGE_NAME}
 
+  STATUS=$?
+  if [ "${STATUS}" -eq 0 ]
+    then
+      docker port ${INSTANCE_NAME}
+
+      echo "dcklogs ${INSTANCE_NAME} : to tail log of this image"
+      echo "dckinspect ${INSTANCE_NAME} : to inspect characteristics of this image"
+      echo "dcktop ${INSTANCE_NAME} : to top from this image"
+      echo "dckrm ${INSTANCE_NAME} : to stop and remove image"
+    else
+      echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  ==" >&2
+  fi
+
   return $?
 }
 
@@ -251,14 +264,14 @@ dckweb() {
   local PORT=$4
 
   # If no port pass, use dynamic attr port
-  if [ -n "$PORT" ]; then
+  if [ -n "${PORT}" ]; then
     echo "== Connect to this host using http://localhost:${PORT} =="
-    local OPTIONAL_ARGS="$OPTIONAL_ARGS -p ${PORT}:80"
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${PORT}:80"
 
-    echo "dckmport $PORT : to expose the port (only needed once per VM)"
+    echo "dckmport ${INSTANCE_NAME} ${PORT} : to expose the port (only needed once per VM)"
   fi
 
-  dckstartdaemon $IMAGE_NAME $INSTANCE_NAME "$OPTIONAL_ARGS"
+  dckstartdaemon ${IMAGE_NAME} ${INSTANCE_NAME} "${OPTIONAL_ARGS}"
 }
 
 dckrmimage() {
