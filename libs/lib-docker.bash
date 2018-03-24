@@ -274,6 +274,27 @@ dckweb() {
   dckstartdaemon ${IMAGE_NAME} ${INSTANCE_NAME} "${OPTIONAL_ARGS}"
 }
 
+dckrunmysql() {
+  usage $# "[IMAGE_NAME:mysql\:5.7.17]" "[INSTANCE_NAME:mysql]" "[PORT:password]" "[PATH:3306]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  # By default image name is "mysql:5.7.17"
+  local IMAGE_NAME=${1:-mysql\:5.7.17}
+  # If no name passed, use "mysql"
+  local INSTANCE_NAME=${2:-mysql}
+  local PASSWORD=${3:-password}
+  local PORT=${4:-3306}
+
+  # https://hub.docker.com/_/mysql/
+  dckstartdaemon ${IMAGE_NAME} ${INSTANCE_NAME} "-e MYSQL_ROOT_PASSWORD=${PASSWORD} -p ${PORT}:3306"
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]; then
+    echo "dckmport ${INSTANCE_NAME} ${PORT} : to expose the port (only needed once per VM)"
+  fi
+}
+
 dckrmimage() {
   usage $# "REPOSITORY"
   if [[ "$?" -ne 0 ]]; then 
