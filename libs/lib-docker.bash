@@ -124,7 +124,7 @@ dckimportfolder() {
   local DOCKER_IMAGE_FILE_FILTER=$1
   local FOLDER_PATH=${2:-$VM_ARCHIVE_FOLDER}
   
-  DCK_IMAGE_PATHS="$FOLDER_PATH/docker_$DOCKER_IMAGE_FILE_FILTER*"
+  DCK_IMAGE_PATHS="$FOLDER_PATH/docker_*$DOCKER_IMAGE_FILE_FILTER*"
   echo "------- Loading ${DCK_IMAGE_PATHS} --------";
   for i in ${DCK_IMAGE_PATHS};
   do 
