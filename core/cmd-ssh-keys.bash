@@ -143,10 +143,10 @@ sshconfuser() {
   fi
 }
 
-sshconfproxy() {
+sshproxyconf() {
   # MIN NUM OF ARG
   if [[ "$#" < "4" ]]; then
-    echo "Usage: sshconfproxy SSH_CONFIG_ALIAS SSH_HOSTNAME LOCAL_PORT FWD_HOSTNAME [FWD_PORT]" >&2
+    echo "Usage: sshproxyconf SSH_CONFIG_ALIAS SSH_HOSTNAME LOCAL_PORT FWD_HOSTNAME [FWD_PORT]" >&2
     return -1
   fi
 
@@ -164,6 +164,24 @@ sshconfproxy() {
   echo "  HostName ${SSH_HOSTNAME}"                           >> $SSH_CONFIG  
   echo "  ProxyCommand ssh ${FWD_HOSTNAME} -W %h:${FWD_PORT}" >> $SSH_CONFIG
   echo "  DynamicForward ${LOCAL_PORT}"                       >> $SSH_CONFIG
+}
+
+sshproxy() {
+  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "LOCAL_PORT" "FWD_HOSTNAME" "[FWD_PORT]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SSH_CONFIG_ALIAS=$1
+  local SSH_HOSTNAME=$2
+  local LOCAL_PORT=$3
+  local FWD_HOSTNAME=$4
+  local FWD_PORT=${5:-22}
+
+  # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
+  echo "Connecting to ${SSH_CONFIG_ALIAS} ${LOCAL_PORT}"
+  ssh -o ProxyCommand="ssh -W %h:${FWD_PORT} ${FWD_HOSTNAME}" ${SSH_HOSTNAME}
+  
+  # ssh -J -D ${LOCAL_PORT} ${FWD_HOSTNAME}:${FWD_PORT} ${SSH_HOSTNAME}
 }
 
 pushkey() {
