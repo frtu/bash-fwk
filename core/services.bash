@@ -25,11 +25,14 @@ enablelib() {
   echo "import lib-$LIB_NAME_WITHOUT_PREFIX" > $TARGET_SERVICE_FILENAME
 }
 
-enablehadoop() {
-  enablelib hadoop
-}
 enabledockertoolbox() {
   enablelib dockertoolbox
+}
+enablekafka() {
+  enablelib dck-kafka
+}
+enablehadoop() {
+  enablelib hadoop
 }
 
 # FILE BASED SERVICE
