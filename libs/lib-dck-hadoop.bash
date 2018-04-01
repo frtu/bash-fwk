@@ -45,12 +45,31 @@ dhinit() {
   echo "echo \"== Connect to RESOURCE_MGR using http://localhost:${RESOURCE_MGR_PORT} ==\"" >> $FILENAME_TO_PERSIST
 }
 
+# FIXME : Add script at startup
+dhscript() {
+  COMMAND=`{
+    echo "tee /etc/bashrc <<EOF";
+    echo "alias ll='ls -la'"
+    echo 'export PATH=$PATH:$HADOOP_PREFIX/bin'
+    echo "EOF";
+  }`
+  printf %s "$COMMAND" | docker exec -i ${DCK_INSTANCE_NAME} bash
+
+  cd $HADOOP_PREFIX
+  bin/hadoop version
+}
+
 dhstart() {
   local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
   dckstart ${DCK_INSTANCE_NAME}  
 
   local FILENAME_TO_PERSIST=${SERVICE_LOCAL_BASH_PREFIX}dh-instance-${DCK_INSTANCE_NAME}-env.bash
   cat $FILENAME_TO_PERSIST
+}
+
+dhbash() {
+  local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
+  dckbash ${DCK_INSTANCE_NAME}  
 }
 
 dhstop() {
