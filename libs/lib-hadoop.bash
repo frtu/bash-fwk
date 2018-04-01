@@ -6,7 +6,12 @@ alias hdu='hadoop fs -du -h '
 # https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-hdfs/HdfsQuotaAdminGuide.html
 alias hquota='hadoop fs -count -q -h -v '
 
+alias hmkdir='hdfs dfs -mkdir '
+
 alias hput='hdfs dfs -put '
+alias hget='hdfs dfs -get '
+alias hcat='hdfs dfs -cat '
+
 
 hdirsize() {
   usage $# "HDFS_FOLDER" "[OPTIONAL_ARG]"

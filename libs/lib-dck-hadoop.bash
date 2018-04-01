@@ -1,7 +1,9 @@
 import lib-docker
 
-# Based on Centos 6.5 : https://github.com/sequenceiq/hadoop-docker/blob/master/Dockerfile
 # Hadoop : 2.7.0 2015-04-10T18:40Z
+# - https://hub.docker.com/r/sequenceiq/hadoop-docker/
+# Based on Centos 6.5 : 
+# - https://github.com/sequenceiq/hadoop-docker/blob/master/Dockerfile
 DCK_IMAGE_HADOOP=sequenceiq/hadoop-docker:2.7.0
 
 dhmcreate(){
@@ -86,8 +88,9 @@ dhscriptbase() {
   local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
   COMMAND=`{
     echo "tee ${INNER_BASE_PATH} <<EOF";
-    echo 'export PATH=$PATH:$HADOOP_PREFIX/bin'
-    echo 'cdhadoop() { cd ${HADOOP_PREFIX}; }'
+    echo 'export HADOOP_HOME=$HADOOP_PREFIX'
+    echo 'export PATH=$PATH:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin'
+    echo 'hcdhadoop() { cd ${HADOOP_PREFIX}; }'
     echo "EOF";
   }`
   printf %s "$COMMAND" | docker exec -i ${DCK_INSTANCE_NAME} bash
