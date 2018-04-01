@@ -4,15 +4,20 @@ export HADOOP_CONFIG=${HADOOP_HOME}/etc/hadoop
 export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
 
 # https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
-hnamenodeformat() {
-  hdfs namenode -format
-}
+alias hnamenodeformat='hdfs namenode -format'
+
+alias hsafeleave='hdfs dfsadmin -safemode leave'
+alias hreport='hdfs dfsadmin -report'
 
 hnamenode() {
-  start-dfs.sh
+  hdfs namenode &
 }
 hnamenodestop() {
   stop-dfs.sh
+}
+
+hdatanode() {
+  hdfs datanode &
 }
 hnodemgr() {
   start-yarn.sh

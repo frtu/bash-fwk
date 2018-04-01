@@ -28,23 +28,29 @@ dhmstop() {
 }
 
 dhinit() {
-  echo "Usage : ${FUNCNAME[0]} [DCK_INSTANCE_NAME] [VOLUME] [NAMENODE_UI_PORT] [RESOURCE_MGR_PORT] [HISTORY_SERVER_PORT] [DATANODE_PORT] [NODE_MGR_PORT]"
+  echo "Usage : ${FUNCNAME[0]} [DCK_INSTANCE_NAME] [VOLUME] [NAMENODE_UI_PORT] [RESOURCE_MGR_UI_PORT] [FS_PORT] [HISTORY_SERVER_PORT] [DATANODE_PORT] [NODE_MGR_PORT] [RESOURCE_MGR_PORT]"
   echo "- ${FUNCNAME[0]} hadoop \$PWD => Map the local folder to the /root for convenience"
 
   local DCK_INSTANCE_NAME=${1:-hadoop}
   local VOLUME=$2
 
   local NAMENODE_UI_PORT=${3:-50070}
-  local RESOURCE_MGR_PORT=${4:-8088}
-  local HISTORY_SERVER_PORT=${5:-8188}
-  local DATANODE_PORT=${6:-8042}
-  local NODE_MGR_PORT=${7:-50075}
+  local RESOURCE_MGR_UI_PORT=${4:-8088}
+  local FS_PORT=${5:-9000}
+
+  local HISTORY_SERVER_PORT=${6:-8188}
+  local DATANODE_PORT=${7:-8042}
+  local NODE_MGR_PORT=${8:-50075}
+  local RESOURCE_MGR_PORT=${9:-8032}
 
   local OPTIONAL_ARGS="-p ${NAMENODE_UI_PORT}:50070"
-  OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${RESOURCE_MGR_PORT}:8088"
+  OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${RESOURCE_MGR_UI_PORT}:8088"
+  OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${FS_PORT}:9000"
+
   OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${HISTORY_SERVER_PORT}:8188"
   OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${DATANODE_PORT}:8042"
-  #OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${NODE_MGR_PORT}:50075"
+  OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${NODE_MGR_PORT}:50075"
+  OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${RESOURCE_MGR_PORT}:8032"
 
   local FILENAME_TO_PERSIST=${SERVICE_LOCAL_BASH_PREFIX}dh-instance-${DCK_INSTANCE_NAME}-env.bash
 
@@ -60,14 +66,16 @@ dhinit() {
 
   dckstartdaemon ${DCK_IMAGE_HADOOP} ${DCK_INSTANCE_NAME} "${OPTIONAL_ARGS}"
   dckmport ${NAMENODE_UI_PORT}
-  dckmport ${RESOURCE_MGR_PORT}
+  dckmport ${RESOURCE_MGR_UI_PORT}
+  dckmport ${FS_PORT}
 
   echo "== Enabling docker env at ${FILENAME_TO_PERSIST} =="
   echo "" >> $FILENAME_TO_PERSIST
   echo "export DCK_INSTANCE_NAME_HADOOP=${DCK_INSTANCE_NAME}" >> $FILENAME_TO_PERSIST
 
   echo "echo \"== Connect to NAMENODE_UI using http://localhost:${NAMENODE_UI_PORT} ==\"" >> $FILENAME_TO_PERSIST
-  echo "echo \"== Connect to RESOURCE_MGR using http://localhost:${RESOURCE_MGR_PORT} ==\"" >> $FILENAME_TO_PERSIST
+  echo "echo \"== Connect to RESOURCE_MGR using http://localhost:${RESOURCE_MGR_UI_PORT} ==\"" >> $FILENAME_TO_PERSIST
+  echo "echo \"== Connect to HDFS using hdfs://localhost:${FS_PORT} ==\"" >> $FILENAME_TO_PERSIST
 }
 
 INNER_BASE_PATH=/root/scr-local/base.bash
@@ -88,9 +96,14 @@ dhscriptbase() {
   local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
   COMMAND=`{
     echo "tee ${INNER_BASE_PATH} <<EOF";
+    
     echo 'export HADOOP_HOME=$HADOOP_PREFIX'
     echo 'export PATH=$PATH:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin'
     echo 'hcdhadoop() { cd ${HADOOP_PREFIX}; }'
+    echo 'echo "=============================="'
+    echo 'jps'
+    echo 'echo "=============================="'
+
     echo "EOF";
   }`
   printf %s "$COMMAND" | docker exec -i ${DCK_INSTANCE_NAME} bash
