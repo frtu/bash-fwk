@@ -52,7 +52,7 @@ dhinit() {
 
     echo "echo \"> cd${DCK_INSTANCE_NAME}() : Go to the mapped volume of hadoop /root \"" > $FILENAME_TO_PERSIST
     echo "" >> $FILENAME_TO_PERSIST
-    echo "cd${DCK_INSTANCE_NAME}() {  cd ${VOLUME}; }" >> $FILENAME_TO_PERSIST
+    echo "cd${DCK_INSTANCE_NAME}() { cd ${VOLUME}; }" >> $FILENAME_TO_PERSIST
     source $FILENAME_TO_PERSIST
   fi
 
@@ -68,12 +68,26 @@ dhinit() {
   echo "echo \"== Connect to RESOURCE_MGR using http://localhost:${RESOURCE_MGR_PORT} ==\"" >> $FILENAME_TO_PERSIST
 }
 
+INNER_BASE_PATH=/root/scr-local/base.bash
 dhscript() {
   local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
+  local BASH_SCRIPT=${2:-/root/.bashrc}
   COMMAND=`{
-    echo "tee /root/.bashrc <<EOF";
+    echo "tee ${BASH_SCRIPT} <<EOF";
     echo "alias ll='ls -la'"
+    echo "source ${INNER_BASE_PATH}"
+    echo "EOF";
+  }`
+  printf %s "$COMMAND" | docker exec -i ${DCK_INSTANCE_NAME} bash
+
+  dhscriptpath
+}
+dhscriptbase() {
+  local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
+  COMMAND=`{
+    echo "tee ${INNER_BASE_PATH} <<EOF";
     echo 'export PATH=$PATH:$HADOOP_PREFIX/bin'
+    echo 'cdhadoop() { cd ${HADOOP_PREFIX}; }'
     echo "EOF";
   }`
   printf %s "$COMMAND" | docker exec -i ${DCK_INSTANCE_NAME} bash
