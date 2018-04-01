@@ -113,7 +113,7 @@ dckexport() {
   fi
 
   local DCK_IMAGE_NAME=$1
-  
+
   # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
   DCK_IMAGE_ID=${DCK_IMAGE_NAME//\//_}
   DCK_IMAGE_ID=${DCK_IMAGE_ID//\:/-}
@@ -145,31 +145,30 @@ dckimportfolder() {
       dckls
     else
       echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  ==" >&2
-  fi  
+  fi
 }
 dckimport() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "== Please supply argument(s) > dckimport FILENAME_TAR ==" >&2
+  usage $# "DCK_IMAGE_FILENAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DCK_IMAGE_FILENAME=$1
+  # If the local file doesn't exist
+  if [ ! -f ${DCK_IMAGE_FILENAME} ]; then
+    # Add folder VM_ARCHIVE_FOLDER
+    DCK_IMAGE_FILENAME=${VM_ARCHIVE_FOLDER}/$1
+  fi
+  if [ ! -f ${DCK_IMAGE_FILENAME} ]; then
+    DCK_IMAGE_FILENAME="${VM_ARCHIVE_FOLDER}/docker_$1.tar.gz"
+  fi
+
+  if [ ! -f ${DCK_IMAGE_FILENAME} ]; then
+    echo "Cannot find file '$1' or '${DCK_IMAGE_FILENAME}'" >&2
     return -1
   fi
 
-  local VM_NAME=$1
-  # If the local file exist
-  if [ ! -f $VM_NAME ]; then
-    # Add VM_ROOT_FOLDER
-    VM_NAME=$VM_ARCHIVE_FOLDER/$1
-  fi
-  if [ ! -f $VM_NAME ]; then
-    VM_NAME=$VM_ARCHIVE_FOLDER/docker_$1.tar.gz
-  fi
-  if [ ! -f $VM_NAME ]; then
-    echo "Cannot find file '$1' or '$VM_NAME'" >&2
-    return -1
-  fi
-
-  echo "docker load -i $VM_NAME"
-  docker load -i $VM_NAME
+  echo "docker load -i ${DCK_IMAGE_FILENAME}"
+  docker load -i ${DCK_IMAGE_FILENAME}
 
   STATUS=$?
   if [ "$STATUS" -eq 0 ]
