@@ -1,3 +1,5 @@
+alias hversion='hadoop version'
+
 alias hls='hadoop fs -ls '
 alias hdu='hadoop fs -du -h '
 

@@ -30,18 +30,23 @@ enablelib() {
   source $TARGET_SERVICE_FILENAME
 }
 
+# Local env
+enablehadoop() {
+  enablelib hadoop-admin
+}
+
+# For Docker host
 enabledockertoolbox() {
   enablelib dockertoolbox
 }
-enablekafka() {
+enabledckkafka() {
   enablelib dck-kafka
 }
-enablehadoop() {
+enabledckhadoop() {
   enablelib dck-hadoop
 }
 
 # FILE BASED SERVICE
-
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
 srv_list() {
   # http://www.cyberciti.biz/faq/unix-linux-extract-filename-and-extension-in-bash/
