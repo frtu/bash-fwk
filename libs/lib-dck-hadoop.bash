@@ -84,7 +84,7 @@ dhstart() {
   dckstart ${DCK_INSTANCE_NAME}
 
   local FILENAME_TO_PERSIST=${SERVICE_LOCAL_BASH_PREFIX}dh-instance-${DCK_INSTANCE_NAME}-env.bash
-  cat $FILENAME_TO_PERSIST
+  source $FILENAME_TO_PERSIST
 }
 
 dhbash() {
