@@ -24,6 +24,7 @@ enablelib() {
   echo "Enabling service at ${TARGET_SERVICE_FILENAME}"
   echo "import lib-${LIB_NAME_WITHOUT_PREFIX}" > $TARGET_SERVICE_FILENAME
   echo "" >> $TARGET_SERVICE_FILENAME
+  # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
   echo "export SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-}=${TARGET_SERVICE_FILENAME}" >> $TARGET_SERVICE_FILENAME
 }
 
@@ -34,7 +35,7 @@ enablekafka() {
   enablelib dck-kafka
 }
 enablehadoop() {
-  enablelib hadoop
+  enablelib dck-hadoop
 }
 
 # FILE BASED SERVICE
