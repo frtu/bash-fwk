@@ -26,13 +26,17 @@ dhmstop() {
 }
 
 dhinit() {
-  local DCK_INSTANCE_NAME=${1:-hadoop}
+  echo "Usage : ${FUNCNAME[0]} [DCK_INSTANCE_NAME] [VOLUME] [NAMENODE_UI_PORT] [RESOURCE_MGR_PORT] [HISTORY_SERVER_PORT] [DATANODE_PORT] [NODE_MGR_PORT]"
+  echo "- ${FUNCNAME[0]} hadoop \$PWD => Map the local folder to the /root for convenience"
 
-  local NAMENODE_UI_PORT=${2:-50070}
-  local RESOURCE_MGR_PORT=${3:-8088}
-  local HISTORY_SERVER_PORT=${4:-8188}
-  local DATANODE_PORT=${5:-8042}
-  local NODE_MGR_PORT=${6:-50075}
+  local DCK_INSTANCE_NAME=${1:-hadoop}
+  local VOLUME=$2
+
+  local NAMENODE_UI_PORT=${3:-50070}
+  local RESOURCE_MGR_PORT=${4:-8088}
+  local HISTORY_SERVER_PORT=${5:-8188}
+  local DATANODE_PORT=${6:-8042}
+  local NODE_MGR_PORT=${7:-50075}
 
   local OPTIONAL_ARGS="-p ${NAMENODE_UI_PORT}:50070"
   OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${RESOURCE_MGR_PORT}:8088"
@@ -40,12 +44,22 @@ dhinit() {
   OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${DATANODE_PORT}:8042"
   #OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${NODE_MGR_PORT}:50075"
 
+  local FILENAME_TO_PERSIST=${SERVICE_LOCAL_BASH_PREFIX}dh-instance-${DCK_INSTANCE_NAME}-env.bash
+
+  if [ -n "$VOLUME" ]; then
+    echo "=> A Volume has been defined '$VOLUME'. Map it to the /root folder inside the VM"
+    OPTIONAL_ARGS="${OPTIONAL_ARGS} -v ${VOLUME}:/root/"
+
+    echo "echo \"> cd${DCK_INSTANCE_NAME}() : Go to the mapped volume of hadoop /root \"" > $FILENAME_TO_PERSIST
+    echo "" >> $FILENAME_TO_PERSIST
+    echo "cd${DCK_INSTANCE_NAME}() {  cd ${VOLUME}; }" >> $FILENAME_TO_PERSIST
+    source $FILENAME_TO_PERSIST
+  fi
+
   dckstartdaemon ${DCK_IMAGE_HADOOP} ${DCK_INSTANCE_NAME} "${OPTIONAL_ARGS}"
   dckmport ${NAMENODE_UI_PORT}
   dckmport ${RESOURCE_MGR_PORT}
 
-
-  local FILENAME_TO_PERSIST=${SERVICE_LOCAL_BASH_PREFIX}dh-instance-${DCK_INSTANCE_NAME}-env.bash
   echo "== Enabling docker env at ${FILENAME_TO_PERSIST} =="
   echo "" >> $FILENAME_TO_PERSIST
   echo "export DCK_INSTANCE_NAME_HADOOP=${DCK_INSTANCE_NAME}" >> $FILENAME_TO_PERSIST
