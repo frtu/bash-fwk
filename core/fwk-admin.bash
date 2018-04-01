@@ -49,11 +49,18 @@ bashprofile() {
 # REPLICATE EXISTING INSTALL TO CURRENT FOLDER (useful for Vagrant)
 replicate2currentfolder() {
   mkdir -p libs/
+  cp -R $LIBS_FOLDER/* libs/
+
   mkdir -p core/
+  cp -R $CORE_FOLDER/* core/
+
+  mkdir -p scr-local/
+  touch scr-local/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash
+
   mkdir -p scripts/
-  cp -R $LIBS_FOLDER libs/
-  cp -R $CORE_FOLDER core/
-  cp -R $SCRIPTS_FOLDER scripts/
+  #cp -R $SCRIPTS_FOLDER/* scripts/
+  touch scripts/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash
+  
   cp ~/.bash_profile .
   cp ~/.bashrc .
 }
@@ -70,6 +77,7 @@ replicate2remote() {
 
   scp -r $LIBS_FOLDER $REMOTE_HOST:~/
   scp -r $CORE_FOLDER $REMOTE_HOST:~/
+  scp -r $LOCAL_SCRIPTS_FOLDER $REMOTE_HOST:~/
   scp -r $SCRIPTS_FOLDER $REMOTE_HOST:~/
   scp -r ~/.bash_profile $REMOTE_HOST:~/
   scp -r ~/.bashrc $REMOTE_HOST:~/
