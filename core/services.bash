@@ -26,6 +26,8 @@ enablelib() {
   echo "" >> $TARGET_SERVICE_FILENAME
   # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
   echo "export SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-}=${TARGET_SERVICE_FILENAME}" >> $TARGET_SERVICE_FILENAME
+
+  source $TARGET_SERVICE_FILENAME
 }
 
 enabledockertoolbox() {
