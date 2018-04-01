@@ -1,6 +1,13 @@
+import lib-docker
+
+# Based on Centos 6.5 : https://github.com/sequenceiq/hadoop-docker/blob/master/Dockerfile
+# Hadoop : 2.7.0 2015-04-10T18:40Z
 DCK_IMAGE_HADOOP=sequenceiq/hadoop-docker:2.7.0
 
 dhmcreate(){
+  # Loading optional dockertoolbox
+  import lib-dockertoolbox
+
   dckmcreate hadoop
 
   # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
@@ -8,6 +15,8 @@ dhmcreate(){
   DCK_IMAGE_ID=${DCK_IMAGE_ID//\:/-}
 
   dckimport ${DCK_IMAGE_ID}
+
+  echo "if not done, enable dockertoolbox permanently with > enabledockertoolbox"
 }
 dhmstart() {
   dckmstart hadoop
@@ -41,27 +50,24 @@ dhinit() {
   echo "" >> $FILENAME_TO_PERSIST
   echo "export DCK_INSTANCE_NAME_HADOOP=${DCK_INSTANCE_NAME}" >> $FILENAME_TO_PERSIST
 
-  echo "echo \"== Connect to NAMENODE_UI using http://localhost:${NAMENODE_UI_PORT} ==\"" > $FILENAME_TO_PERSIST
+  echo "echo \"== Connect to NAMENODE_UI using http://localhost:${NAMENODE_UI_PORT} ==\"" >> $FILENAME_TO_PERSIST
   echo "echo \"== Connect to RESOURCE_MGR using http://localhost:${RESOURCE_MGR_PORT} ==\"" >> $FILENAME_TO_PERSIST
 }
 
-# FIXME : Add script at startup
 dhscript() {
+  local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
   COMMAND=`{
-    echo "tee /etc/bashrc <<EOF";
+    echo "tee /root/.bashrc <<EOF";
     echo "alias ll='ls -la'"
     echo 'export PATH=$PATH:$HADOOP_PREFIX/bin'
     echo "EOF";
   }`
   printf %s "$COMMAND" | docker exec -i ${DCK_INSTANCE_NAME} bash
-
-  cd $HADOOP_PREFIX
-  bin/hadoop version
 }
 
 dhstart() {
   local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
-  dckstart ${DCK_INSTANCE_NAME}  
+  dckstart ${DCK_INSTANCE_NAME}
 
   local FILENAME_TO_PERSIST=${SERVICE_LOCAL_BASH_PREFIX}dh-instance-${DCK_INSTANCE_NAME}-env.bash
   cat $FILENAME_TO_PERSIST
@@ -69,7 +75,7 @@ dhstart() {
 
 dhbash() {
   local DCK_INSTANCE_NAME=${1:-$DCK_INSTANCE_NAME_HADOOP}
-  dckbash ${DCK_INSTANCE_NAME}  
+  dckbash ${DCK_INSTANCE_NAME} ${@:2}
 }
 
 dhstop() {
