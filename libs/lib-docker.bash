@@ -104,17 +104,23 @@ dckrm() {
   dckps
 }
 dckexport() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "== Please supply argument(s) > dckexport IMAGE_NAME:TAG_NAME [FILENAME_TAR] ==" >&2
+  usage $# "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG" >&2
     dckls
     return -1
   fi
-  FILENAME_TAR=$VM_ARCHIVE_FOLDER/docker_${2:-save}.tar.gz
 
-  echo "docker save $1 | gzip > $FILENAME_TAR"
-  docker save $1 | gzip > $FILENAME_TAR
+  local DCK_IMAGE_NAME=$1
+  
+  # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+  DCK_IMAGE_ID=${DCK_IMAGE_NAME//\//_}
+  DCK_IMAGE_ID=${DCK_IMAGE_ID//\:/-}
+  local FILENAME_TAR=$VM_ARCHIVE_FOLDER/docker_${2:-$DCK_IMAGE_ID}.tar.gz
+
+  echo "docker save ${DCK_IMAGE_NAME} | gzip > $FILENAME_TAR"
+  docker save ${DCK_IMAGE_NAME} | gzip > $FILENAME_TAR
 }
 dckimportfolder() {
   usage $# "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"
