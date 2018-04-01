@@ -65,22 +65,25 @@ dcktpl() {
 }
 
 dckbash() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply the argument : IMAGE_NAME. If you don't know any names run 'dckps' and look at the last column NAMES" >&2
-    dckps
+  usage $# "IMAGE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+    dckls
     return -1
   fi
 
   local IMAGE_NAME=$1
+
+  # run in LOGIN MODE : https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization#bash
   if [ -z "$2" ]
     then
       echo "Login into a Bash docker images : $IMAGE_NAME"
-      docker exec -it $IMAGE_NAME bash
+      docker exec -it $IMAGE_NAME bash -l
     else
-      shift 1
-      echo "CALL : root@$IMAGE_NAME> $@"
-      echo "$@" | docker exec -i $IMAGE_NAME bash
+      local COMMANDS=${@:2}
+      echo "CALL : root@$IMAGE_NAME> ${COMMANDS}"
+      echo "${COMMANDS}" | docker exec -i $IMAGE_NAME bash -l
   fi
 }
 dckcp() {
@@ -197,7 +200,7 @@ dckhello() {
   docker run hello-world
 }
 dckstartdaemon() {
-  usage $# "IMAGE_NAME" "[INSTANCE_NAME]" "[DCK_PORT_DECLARATION]" "[MORE_ARG]"
+  usage $# "IMAGE_NAME" "[INSTANCE_NAME]" "[MORE_ARG]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
@@ -205,8 +208,8 @@ dckstartdaemon() {
   local INSTANCE_NAME=${2:-$1}
   local MORE_ARG=${@:3}
 
-  echo "Start docker daemon > docker run --name ${INSTANCE_NAME} ${MORE_ARG} -P -d ${IMAGE_NAME}"
-  docker run --name ${INSTANCE_NAME} ${MORE_ARG} -P -d ${IMAGE_NAME}
+  echo "Start docker daemon > docker run -d --name ${INSTANCE_NAME} ${MORE_ARG} -P ${IMAGE_NAME}"
+  docker run -d --name ${INSTANCE_NAME} ${MORE_ARG} -P ${IMAGE_NAME}
 
   STATUS=$?
   if [ "${STATUS}" -eq 0 ]
