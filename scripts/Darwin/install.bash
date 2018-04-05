@@ -3,8 +3,22 @@ export HOMEBREW_REPOSITORY=/usr/local/Cellar
 export HOMEBREW_OPT=/usr/local/opt
 export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
 
+export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
+
 alias brewcd='cd $HOMEBREW_REPOSITORY'
 alias sdkcd='cd $SDKMAN_DIR'
+
+eclipsecd() {
+  cd ${ECLIPSE_HOME}
+}
+eclipseplugin() {
+  usage $# "PLUGIN_FILEPATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local PLUGIN_FILEPATH=$1
+  cp $PLUGIN_FILEPATH ${ECLIPSE_HOME}/plugins/
+}
 
 inst_brew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -52,6 +66,12 @@ inst_vagrant() {
   brew install vagrant-completion
 }
 
+inst_pip() {
+  local PIP_MODULE=${1:-regex}
+  curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
+  easy_install pip
+  pip install $PIP_MODULE
+}
 inst_node() {
   brew install node
   npm install -g grunt-cli
