@@ -21,3 +21,12 @@ binln() {
 portlist() {
   netstat -ntlp | grep LISTEN
 }
+
+linuxdesc() {
+  echo "====== Kernel version ======"
+  uname -mrs
+  echo "====== Linux Distro ======"
+  cat /etc/*-release
+  echo "====== Kernel & GCC build ======"
+  cat /proc/version
+}
