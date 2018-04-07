@@ -76,6 +76,9 @@ dhinit() {
   echo "echo \"== Connect to NAMENODE_UI using http://localhost:${NAMENODE_UI_PORT} ==\"" >> $FILENAME_TO_PERSIST
   echo "echo \"== Connect to RESOURCE_MGR using http://localhost:${RESOURCE_MGR_UI_PORT} ==\"" >> $FILENAME_TO_PERSIST
   echo "echo \"== Connect to HDFS using hdfs://localhost:${FS_PORT} ==\"" >> $FILENAME_TO_PERSIST
+
+  echo "Initialize local bash script & path for hadoop"
+  dhscript
 }
 
 INNER_BASE_PATH=/root/scr-local/base.bash
