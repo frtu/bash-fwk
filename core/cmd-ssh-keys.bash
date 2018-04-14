@@ -144,17 +144,16 @@ sshconfuser() {
 }
 
 sshproxyconf() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "4" ]]; then
-    echo "Usage: sshproxyconf SSH_CONFIG_ALIAS SSH_HOSTNAME LOCAL_PORT FWD_HOSTNAME [FWD_PORT]" >&2
-    return -1
-  fi
+  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "FWD_HOSTNAME" "[FWD_PORT]" "[LOCAL_PORT]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local SSH_CONFIG_ALIAS=$1
   local SSH_HOSTNAME=$2
-  local LOCAL_PORT=$3
-  local FWD_HOSTNAME=$4
-  local FWD_PORT=${5:-22}
+  local FWD_HOSTNAME=$3
+  local FWD_PORT=${4:-22}
+
+  local LOCAL_PORT=$5
 
   # Create .ssh if not exist
   sshmkdir
@@ -163,19 +162,27 @@ sshproxyconf() {
   echo "Host ${SSH_CONFIG_ALIAS}"                             >> $SSH_CONFIG
   echo "  HostName ${SSH_HOSTNAME}"                           >> $SSH_CONFIG  
   echo "  ProxyCommand ssh ${FWD_HOSTNAME} -W %h:${FWD_PORT}" >> $SSH_CONFIG
-  echo "  DynamicForward ${LOCAL_PORT}"                       >> $SSH_CONFIG
+
+  if [ -n "${LOCAL_PORT}" ]; then
+    echo "  DynamicForward ${LOCAL_PORT}"                       >> $SSH_CONFIG
+  fi
 }
 
 sshproxy() {
-  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "LOCAL_PORT" "FWD_HOSTNAME" "[FWD_PORT]"
+  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "FWD_HOSTNAME" "[FWD_PORT]" "[LOCAL_PORT]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local SSH_CONFIG_ALIAS=$1
   local SSH_HOSTNAME=$2
-  local LOCAL_PORT=$3
-  local FWD_HOSTNAME=$4
-  local FWD_PORT=${5:-22}
+  local FWD_HOSTNAME=$3
+  local FWD_PORT=${4:-22}
+
+  local LOCAL_PORT=$5
+
+  if [ -n "${LOCAL_PORT}" ]; then
+    local EXTRA_ARGS="-ND localhost:${LOCAL_PORT}"
+  fi
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
   echo "Connecting to ${SSH_CONFIG_ALIAS} ${LOCAL_PORT}"
@@ -185,19 +192,24 @@ sshproxy() {
 }
 
 sshproxync() {
-  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "LOCAL_PORT" "FWD_HOSTNAME" "[FWD_PORT]"
+  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "FWD_HOSTNAME" "[FWD_PORT]" "[LOCAL_PORT]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local SSH_CONFIG_ALIAS=$1
   local SSH_HOSTNAME=$2
-  local LOCAL_PORT=$3
-  local FWD_HOSTNAME=$4
-  local FWD_PORT=${5:-22}
+  local FWD_HOSTNAME=$3
+  local FWD_PORT=${4:-22}
+
+  local LOCAL_PORT=$5
+
+  if [ -n "${LOCAL_PORT}" ]; then
+    local EXTRA_ARGS="-ND localhost:${LOCAL_PORT}"
+  fi
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
-  echo "Connecting to ${SSH_CONFIG_ALIAS} ${LOCAL_PORT}"
-  ssh -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}
+  echo "ssh ${EXTRA_ARGS} -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}"
+  ssh ${EXTRA_ARGS} -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}
 }
 
 pushkey() {
