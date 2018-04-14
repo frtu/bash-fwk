@@ -184,6 +184,22 @@ sshproxy() {
   # ssh -J -D ${LOCAL_PORT} ${FWD_HOSTNAME}:${FWD_PORT} ${SSH_HOSTNAME}
 }
 
+sshproxync() {
+  usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "LOCAL_PORT" "FWD_HOSTNAME" "[FWD_PORT]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SSH_CONFIG_ALIAS=$1
+  local SSH_HOSTNAME=$2
+  local LOCAL_PORT=$3
+  local FWD_HOSTNAME=$4
+  local FWD_PORT=${5:-22}
+
+  # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
+  echo "Connecting to ${SSH_CONFIG_ALIAS} ${LOCAL_PORT}"
+  ssh -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}
+}
+
 pushkey() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
