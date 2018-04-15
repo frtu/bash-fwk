@@ -204,8 +204,9 @@ sshproxync() {
   local LOCAL_PORT=$5
 
   if [ -n "${LOCAL_PORT}" ]; then
-    # https://help.ubuntu.com/community/SSH/OpenSSH/PortForwarding
-    local EXTRA_ARGS="-ND localhost:${LOCAL_PORT}"
+    # https://network23.org/inputisevil/2015/09/05/dynamic-port-forwarding-with-ssh-and-socks5/#2e9f
+    echo ">> ATTENTION -N stops SSH from executing commands! Prompt is deactivated!"
+    local EXTRA_ARGS="-ND ${LOCAL_PORT}"
   fi
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
