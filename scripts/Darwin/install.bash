@@ -68,8 +68,12 @@ inst_vagrant() {
 
 inst_pip() {
   local PIP_MODULE=${1:-regex}
+  echo "Type your sudo password to be able to skip Permission denied into /Library/Python/ directory"
+  echo "> curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python"
   curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
-  easy_install pip
+  echo "> easy_install pip"
+  /usr/local/bin/easy_install pip
+  echo "> pip install $PIP_MODULE"
   pip install $PIP_MODULE
 }
 inst_node() {
