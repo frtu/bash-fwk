@@ -3,8 +3,12 @@ Framework for BASH startup, loading and utils
 
 
 ## One line download and install
-### Locally
+### Locally Ubunty
+	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl-ubuntu.bash)" | bash
+
+### Locally (require 'git')
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
+
 
 ### On Vagrant
 

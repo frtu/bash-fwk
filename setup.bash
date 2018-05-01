@@ -8,5 +8,5 @@ echo "------- DEPLOY bash --------"
 bashdeploy
 bashprofile
 
-echo "------- DL completion --------"
-gcompletion
+#echo "------- DL completion --------"
+#gcompletion
