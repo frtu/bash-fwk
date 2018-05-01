@@ -32,12 +32,14 @@ adbaddvendor() {
 }
 
 adbinstall() {
-  usage $# "APK_FILE"
+  usage $# "APK_FILE" "[EXTRA_ARGS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
+  echo "== At the end append -r for forcing install =="
 
   local APK_FILE=$1
+  local EXTRA_ARGS=${@:2}
 
-  echo "adb install ${APK_FILE}"
-  adb install ${APK_FILE}
+  echo "adb install ${EXTRA_ARGS} ${APK_FILE}"
+  adb install ${EXTRA_ARGS} ${APK_FILE}
 }
