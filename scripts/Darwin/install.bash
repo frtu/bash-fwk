@@ -3,10 +3,17 @@ export HOMEBREW_REPOSITORY=/usr/local/Cellar
 export HOMEBREW_OPT=/usr/local/opt
 export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
 
+export SUBL_HOME=/Applications/Sublime\ Text.app
 export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
 
 alias brewcd='cd $HOMEBREW_REPOSITORY'
 alias sdkcd='cd $SDKMAN_DIR'
+
+lnk_subl() {
+  ln -s "$SUBL_HOME/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
+  # curl -o ~/Library/Application\ Support/Sublime\ Text\ 2/Installed\ Packages/Package\ Control.sublime-package https://packagecontrol.io/Package%20Control.sublime-package
+  # Emmet
+}
 
 eclipsecd() {
   cd ${ECLIPSE_HOME}
@@ -95,9 +102,4 @@ inst_android() {
 
 inst_gvm() {
   curl -s get.gvmtool.net | bash
-}
-lnk_subl() {
-  ln -s /Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
-  curl -o ~/Library/Application\ Support/Sublime\ Text\ 2/Installed\ Packages/Package\ Control.sublime-package https://packagecontrol.io/Package%20Control.sublime-package
-  # Emmet
 }

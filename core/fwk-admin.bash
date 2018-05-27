@@ -24,13 +24,12 @@ bashdeploy() {
 	relink "$DISTRO_SCRIPT_FOLDER" "$SCRIPTS_FOLDER"
 }
 mkscriptfolder() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "Usage : mkfolder FOLDER" >&2
-      return -1
-  fi
+  usage $# "FOLDER"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local FOLDER=$1
+
   if [ ! -d ${FOLDER} ]; then
     echo "Creating new folder ${FOLDER}"
     mkdir -p ${FOLDER}
@@ -69,12 +68,10 @@ replicate2currentfolder() {
 
 # REPLICATE EXISTING INSTALL TO REMOTE HOST (if remote cannot use git)
 replicate2remote() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "Usage : replicate2remote REMOTE_HOST. Replicate the local scripts to REMOTE_HOST" >&2
-      return -1
-  fi
-  # ARGS
+  usage $# "REMOTE_HOST"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local REMOTE_HOST=$1
 
   scp -r $LIBS_FOLDER $REMOTE_HOST:~/
