@@ -80,6 +80,24 @@ sshkeyspush() {
   echo "scp -r ${KEY_PUB} ${SSH_HOSTNAME}:${AUTH_KEYS}"
   scp -r ${KEY_PUB} ${SSH_HOSTNAME}:${AUTH_KEYS}
 }
+sshkeyspushpair() {
+  usage $# "SSH_HOSTNAME" "[KEY_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "-- To list all key names run 'sshkeysls' --" >&2
+    sshkeysls
+    return -1
+  fi
+
+  local SSH_HOSTNAME=$1
+  local KEY_NAME=${2:-$DEFAULT_KEY_NAME}
+
+  sshkeyspush ${SSH_HOSTNAME} ${KEY_NAME}
+
+  KEY_PRI="${SSH_ROOT}/${KEY_NAME}"
+  echo "scp ${KEY_PRI} ${SSH_HOSTNAME}:~/.ssh/${KEY_NAME}"
+  scp ${KEY_PRI} ${SSH_HOSTNAME}:~/.ssh/${KEY_NAME}
+}
 sshkeyspushlocalauth() {
   usage $# "SSH_HOSTNAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
