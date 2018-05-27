@@ -89,23 +89,28 @@ trscppush() {
   fi
 }
 trscpget() {
-  usage $# "SSH_FULL_HOSTPATH" "REMOTE_RESOURCE" "[LOCAL_RESOURCE]"
+  usage $# "SSH_FULL_HOSTPATH" "REMOTE_RESOURCE" "[LOCAL_RESOURCE]" "[KEY_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscpget SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
-    echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
+    echo "- SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
+    echo "- LOCAL_RESOURCE MUST ends with / if that's a folder" >&2
     return -1
   fi
 
   local SSH_FULL_HOSTPATH=$1
   local REMOTE_RESOURCE=$2
   local LOCAL_RESOURCE=${3:-$2}
+  local KEY_NAME=$4
 
-  if [ "$LOCAL_RESOURCE" == *\/* ]; then
-    echo scp -r $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
-    scp -r $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
-  else
-    echo scp $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
-    scp $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
+  if [[ "$LOCAL_RESOURCE" == *\/ ]]; then
+    local EXTRA_ARGS="-r"
   fi
+
+  if [ -n "${KEY_NAME}" ]; then
+    KEY_PRI="${SSH_ROOT}/${KEY_NAME}"
+    local EXTRA_ARGS="-i ${KEY_PRI} ${EXTRA_ARGS}"
+  fi
+
+  echo "scp ${EXTRA_ARGS} $SSH_FULL_HOSTPATH:\"$REMOTE_RESOURCE\" \"$LOCAL_RESOURCE\""
+  scp ${EXTRA_ARGS} $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE" "$LOCAL_RESOURCE"
 }
