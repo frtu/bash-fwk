@@ -1,13 +1,16 @@
 # ATTENTION wget is not always installed by default. TODO : Should fallback to curl
 # Only download if target doesn't exist
 trwgetlazy() { 
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "wgetlazy FILENAME HTTP_URL [HTTP_PARAMS]" >&2
-      return -1
-  fi
-  if [ -f $1 ]; then
-      echo "File exist, use this one $1" >&2
+  usage $# "FILENAME" "HTTP_URL" "[HTTP_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local FILENAME=$1
+  local HTTP_URL=$2
+  local HTTP_PARAMS=$3
+
+  if [ -f $FILENAME ]; then
+      echo "Skip wget since file exist, use this one $FILENAME" >&2
       return -1
   fi
 
@@ -15,8 +18,8 @@ trwgetlazy() {
       #HTTP_PARAMS=--header "$3"
   #fi
 
-  echo "wget --no-cookies --no-check-certificate -O $1 $HTTP_PARAMS $2"
-  wget --no-cookies --no-check-certificate -O $1 --header "$3" $HTTP_PARAMS $2
+  echo "wget --no-cookies --no-check-certificate -O ${FILENAME} --header "${HTTP_PARAMS}" $HTTP_PARAMS ${HTTP_URL}"
+  wget --no-cookies --no-check-certificate -O ${FILENAME} --header "${HTTP_PARAMS}" $HTTP_PARAMS ${HTTP_URL}
 }
 # Download using "*_downloading" extension, and remove only if succeed
 trwgetsafe() {
@@ -62,8 +65,9 @@ trsshpush() {
 }
 
 trscppush() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "2" ]]; then
+  usage $# "SSH_FULL_HOSTPATH" "LOCAL_RESOURCE" "[REMOTE_RESOURCE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
     echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH LOCAL_RESOURCE [REMOTE_RESOURCE]'." >&2
     echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
@@ -85,8 +89,9 @@ trscppush() {
   fi
 }
 trscpget() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "2" ]]; then
+  usage $# "SSH_FULL_HOSTPATH" "REMOTE_RESOURCE" "[LOCAL_RESOURCE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
     echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscpget SSH_FULL_HOSTPATH REMOTE_RESOURCE [LOCAL_RESOURCE]'." >&2
     echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
