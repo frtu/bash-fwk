@@ -13,7 +13,7 @@ alias hquota='hadoop fs -count -q -h -v '
 alias hput='hdfs dfs -put '
 alias hget='hdfs dfs -get '
 alias hcat='hdfs dfs -cat '
-
+alias htext='hdfs dfs -text '
 
 hdirsize() {
   usage $# "HDFS_FOLDER" "[OPTIONAL_ARG]"
