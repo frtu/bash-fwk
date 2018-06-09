@@ -266,7 +266,7 @@ sshproxync() {
     # https://network23.org/inputisevil/2015/09/05/dynamic-port-forwarding-with-ssh-and-socks5/#2e9f
     echo ">> ATTENTION -N stops SSH from executing commands! Prompt is deactivated!"
     # -D : open on a local port for distant forward
-    local EXTRA_ARGS="-ND ${LOCAL_PORT}"
+    local EXTRA_ARGS="-D ${LOCAL_PORT}"
   fi
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts#ProxyCommand_with_Netcat
