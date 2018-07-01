@@ -15,7 +15,7 @@ droidinstall() {
   mkdir -p ${ANDROID_HOME}
 }
 
-adbls() {
+adbdevices() {
   adb devices
 }
 adbaddvendor() {
@@ -42,4 +42,7 @@ adbinstall() {
 
   echo "adb install ${EXTRA_ARGS} ${APK_FILE}"
   adb install ${EXTRA_ARGS} ${APK_FILE}
+}
+adbls() {
+  adb shell pm list packages | awk -F ":" '{print $2}' | sort
 }
