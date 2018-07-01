@@ -45,6 +45,10 @@ enabledckkafka() {
 enabledckhadoop() {
   enablelib dck-hadoop
 }
+enablessh() {
+  srv_activate ssh
+  refresh
+}
 
 # FILE BASED SERVICE
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
