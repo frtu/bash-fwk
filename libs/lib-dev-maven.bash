@@ -50,10 +50,10 @@ mvnimportjar() {
   mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DgeneratePom=true
 }
 
-mvnrepodefault() {
+mvnrepoinit() {
   local MVN_SETTINGS_ID=${1:-$MVN_SETTINGS}
 
-  L_MVN_SETTINGS_FILE=settings-$MVN_SETTINGS.xml
+  L_MVN_SETTINGS_FILE=settings-$MVN_SETTINGS_ID.xml
   if [ ! -f "$MAVEN_HOME/conf/$MVN_SETTINGS" ] 
     then
       echo "== Couldn't find default setting at '$MAVEN_HOME/conf/$MVN_SETTINGS'. Please set MAVEN_HOME correctly! ==" >&2
@@ -85,7 +85,7 @@ mvnrepostandalone() {
 
   # If MVN_SETTINGS_STANDALONE doesn't exist, try to use Maven one
   if [ ! -f "$MVN_REPO_ROOT/$L_MVN_SETTINGS_FILE" ]; then
-      mvnrepodefault $MVN_SETTINGS_STANDALONE
+      mvnrepoinit $MVN_SETTINGS_STANDALONE
   fi
   mvnrepopatch $MVN_SETTINGS_STANDALONE
 }
@@ -96,7 +96,7 @@ mvnreponexus() {
   L_MVN_SETTINGS_FILE=settings-$MVN_SETTINGS_ID.xml
   # If MVN_SETTINGS_STANDALONE doesn't exist, try to use Maven one
   if [ ! -f "$MVN_REPO_ROOT/$L_MVN_SETTINGS_FILE" ]; then
-      mvnrepodefault "$MVN_SETTINGS_ID.rename"
+      mvnrepoinit "$MVN_SETTINGS_ID.rename"
       echo "== You must edit the file 'settings-$MVN_SETTINGS_ID.rename.xml' and add a mirrors.mirror.url the correct repo URL value. Remove the .rename suffix when you're done. =="
       return -1
   fi
