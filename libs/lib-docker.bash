@@ -35,6 +35,7 @@ dckpull() {
 
 dckstart() {
   dcktpl "start" $@
+  dckbash $1
 }
 dckstartall() {
   dckstart $(docker ps -aq)
@@ -198,6 +199,25 @@ dcknethosts() {
 dckhello() {
   echo "Testing if docker works?"
   docker run hello-world
+}
+
+dckcreate() {
+  usage $# "IMAGE_NAME" "INSTANCE_NAME" "[MORE_ARG]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
+    dckls 
+    return -1
+  fi
+
+  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$2
+  local MORE_ARG=${@:3}
+
+  echo "docker run --name ${INSTANCE_NAME} ${MORE_ARG} -ti ${IMAGE_NAME}"
+
+  echo "=> NEXT TIME USE > dckstart ${INSTANCE_NAME}"
+  docker run --name ${INSTANCE_NAME} ${MORE_ARG} -ti ${IMAGE_NAME}
 }
 dckstartdaemon() {
   usage $# "IMAGE_NAME" "[INSTANCE_NAME]" "[MORE_ARG]"
