@@ -49,6 +49,10 @@ enablessh() {
   srv_activate ssh
   refresh
 }
+enabledockertoolbox() {
+  srv_activate dockertoolbox
+  refresh
+}
 
 # FILE BASED SERVICE
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-

@@ -325,14 +325,30 @@ dckrunmysql() {
 
 dckrmimage() {
   usage $# "REPOSITORY"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
     dckls 
     return -1
   fi
+
+  echo "docker rmi $@"
   docker rmi $@
 }
 
+dckbuild() {
+  usage $# "IMAGE_NAME[:TAG_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "It is HIGHLY recommended to name the image that you will create. You can optionally append a :TAG_NAME" >&2 
+    return -1
+  fi
+
+  local IMAGE_NAME=$1
+
+  echo "docker build -t ${IMAGE_NAME} ."
+  docker build -t ${IMAGE_NAME} .
+}
 
 dcmpstart() {
   docker-compose up
