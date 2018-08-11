@@ -5,6 +5,8 @@ MVN_SETTINGS=settings.xml
 MVN_SETTINGS_STANDALONE=STANDALONE
 MVN_SETTINGS_NEXUS_DEFAULT=NEXUS
 
+DEPENDENCY_GAV=com.github.ferstl:depgraph-maven-plugin:3.2.0
+
 mvnsk() { # Skip all tests and enforcer
   mvn -DskipTests -Denforcer.skip $@
 }
@@ -14,6 +16,44 @@ mvnsrc() { # Download in local repo all the source
 }
 mvndep() { # list all dependencies, you may want to redirect the output into a file
   mvn dependency:tree
+}
+mvndepgraph() {
+  usage $# "[CONFIG_FILE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "[CONFIG_FILE], [FOR MORE PARAM : -Dincludes=gav*]"
+  echo "PARAM : https://github.com/ferstl/depgraph-maven-plugin"
+
+  local CONFIG_FILE=$1
+  if [ -f "${CONFIG_FILE}" ]; then
+    # https://github.com/ferstl/depgraph-maven-plugin/blob/master/src/main/resources/default-style.json
+    # https://github.com/ferstl/depgraph-maven-plugin/wiki/Styling
+    EXTRA_PARAM=-DcustomStyleConfiguration=${CONFIG_FILE}
+  fi  
+
+  # https://ferstl.github.io/depgraph-maven-plugin/plugin-info.html
+  echo "mvn ${DEPENDENCY_GAV}:graph -DcreateImage=true -DshowGroupIds=true ${EXTRA_PARAM} ${@:2}"
+  mvn ${DEPENDENCY_GAV}:graph -DcreateImage=true -DshowGroupIds=true ${EXTRA_PARAM} ${@:2}
+}
+mvndepaggregate() {
+  usage $# "[CONFIG_FILE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "[CONFIG_FILE], [FOR MORE PARAM : -Dincludes=gav*]"
+  echo "PARAM : https://github.com/ferstl/depgraph-maven-plugin"
+
+  local CONFIG_FILE=$1
+  if [ -f "${CONFIG_FILE}" ]; then
+    # https://github.com/ferstl/depgraph-maven-plugin/blob/master/src/main/resources/default-style.json
+    # https://github.com/ferstl/depgraph-maven-plugin/wiki/Styling
+    EXTRA_PARAM=-DcustomStyleConfiguration=${CONFIG_FILE}
+  fi  
+
+  # https://ferstl.github.io/depgraph-maven-plugin/plugin-info.html
+  echo "mvn ${DEPENDENCY_GAV}:aggregate -DcreateImage=true -DshowGroupIds=true ${EXTRA_PARAM} ${@:2}"
+  mvn ${DEPENDENCY_GAV}:aggregate -DcreateImage=true -DshowGroupIds=true ${EXTRA_PARAM} ${@:2}
 }
 mvndepoffline() {
   mvn dependency:go-offline   

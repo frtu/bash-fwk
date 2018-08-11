@@ -100,6 +100,23 @@ inst_android() {
   brew cask install android-sdk
 }
 
+inst_graphviz() {
+  brew install graphviz
+}
+graphviz() {
+  usage $# "DOT_FILE" "[IMAGE_FORMAT]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DOT_FILE=$1
+  local IMAGE_FORMAT=${2:-png}
+
+  BASENAME=${DOT_FILE%%.*}
+
+  # https://www.graphviz.org/doc/info/command.html
+  echo "dot -T${IMAGE_FORMAT} ${DOT_FILE} -o ${BASENAME}.${IMAGE_FORMAT}"
+  dot -T${IMAGE_FORMAT} ${DOT_FILE} -o ${BASENAME}.${IMAGE_FORMAT}
+}
 inst_gvm() {
   curl -s get.gvmtool.net | bash
 }
