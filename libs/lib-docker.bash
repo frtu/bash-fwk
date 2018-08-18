@@ -88,14 +88,18 @@ dckbash() {
   fi
 }
 dckcp() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) SOURCE DESTINATION (Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES" >&2
-    dckps
-    return -1
-  fi
-  echo "Copy from docker images : $IMAGE_NAME"
-  docker cp $1 $2
+  usage $# "SOURCE" "DESTINATION"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "(Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+     dckps
+     return -1
+   fi
+  local SOURCE=$1
+  local DESTINATION=$2
+
+  echo "Copy from/to docker images : ${SOURCE} => ${DESTINATION}"
+  docker cp ${SOURCE} ${DESTINATION}
 }
 dckrm() {
   # MIN NUM OF ARG
