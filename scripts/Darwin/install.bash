@@ -99,6 +99,17 @@ inst_android() {
   brew tap caskroom/cask
   brew cask install android-sdk
 }
+inst_caffe() {
+  # http://caffe.berkeleyvision.org/install_osx.html
+  brew install -vd snappy leveldb gflags glog szip lmdb
+  brew install hdf5 opencv
+
+  brew install --with-python3 --without-python --build-from-source --with-python -vd protobuf
+  brew install --with-python3 --without-python --build-from-source -vd boost boost-python
+
+  ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.dylib /anaconda3/lib/libboost_python3.dylib
+  ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.a /anaconda3/lib/libboost_python3.dylib
+}
 
 inst_graphviz() {
   brew install graphviz
