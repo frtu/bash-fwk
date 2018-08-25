@@ -2,15 +2,16 @@ import lib-vm
 
 # Starting & administration
 dckproxy() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "== Please pass the Domain name of your Docker registry. ==" >&2
-      return -1
-  fi
+  usage $# "DOCKER_REGISTRY_DOMAIN_NAME"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DOCKER_REGISTRY_DOMAIN_NAME=$1
+
   echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
   echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
   
-  echo 'export DOCKER_OPTS=" --registry-mirror 'https://$1' --insecure-registry 'http://$1'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
+  echo 'export DOCKER_OPTS=" --registry-mirror 'https://${DOCKER_REGISTRY_DOMAIN_NAME}' --insecure-registry 'http://${DOCKER_REGISTRY_DOMAIN_NAME}'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
 }
 
 dckls() {

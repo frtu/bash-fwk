@@ -119,16 +119,26 @@ dckmconfig() {
 
 # https://github.com/boot2docker/boot2docker#insecure-registry
 dckmregistryinsecure() {
+  usage $# "DOCKER_REGISTRY_DOMAIN_NAME" "[IMAGE_NAME:DOCKER_MACHINE_NAME]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DOCKER_REGISTRY_DOMAIN_NAME=$1
   local IMAGE_NAME=${2:-$DOCKER_MACHINE_NAME}
 
-	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
-	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
+	dckmssh ${IMAGE_NAME} "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --insecure-registry http://${DOCKER_REGISTRY_DOMAIN_NAME}\"' | sudo tee -a /var/lib/boot2docker/profile"
+	echo "DON'T FORGET TO RESTART using : dckmrestart ${IMAGE_NAME}"
 }
 dckmregistry() {
+  usage $# "DOCKER_REGISTRY_DOMAIN_NAME" "[IMAGE_NAME:DOCKER_MACHINE_NAME]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DOCKER_REGISTRY_DOMAIN_NAME=$1
   local IMAGE_NAME=${2:-$DOCKER_MACHINE_NAME}
 
-	dckmssh $IMAGE_NAME "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://$1\"' | sudo tee -a /var/lib/boot2docker/profile"
-	echo "DON'T FORGET TO RESTART using : dckmrestart IMAGE_NAME"
+	dckmssh ${IMAGE_NAME} "echo $'EXTRA_ARGS=\"\$EXTRA_ARGS --registry-mirror https://${DOCKER_REGISTRY_DOMAIN_NAME}\"' | sudo tee -a /var/lib/boot2docker/profile"
+	echo "DON'T FORGET TO RESTART using : dckmrestart ${IMAGE_NAME}"
 }
 
 # https://docs.docker.com/machine/migrate-to-machine/
