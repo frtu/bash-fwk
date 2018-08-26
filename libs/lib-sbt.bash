@@ -1,0 +1,3 @@
+sbtscala() {
+  sbt "console"
+}

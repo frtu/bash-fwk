@@ -53,6 +53,9 @@ enabledockertoolbox() {
   srv_activate dockertoolbox
   refresh
 }
+enablesbt() {
+  enablelib sbt
+}
 
 # FILE BASED SERVICE
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-

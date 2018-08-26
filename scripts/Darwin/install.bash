@@ -131,3 +131,10 @@ graphviz() {
 inst_gvm() {
   curl -s get.gvmtool.net | bash
 }
+
+inst_sbt() {
+  # https://www.scala-sbt.org/download.html
+  brew install sbt@1
+  sbt about
+  enablesbt
+}
