@@ -102,7 +102,7 @@ trscpget() {
   local LOCAL_RESOURCE=${3:-$2}
   local KEY_NAME=$4
 
-  if [[ "$REMOTE_RESOURCE" == *\/ ]]; then
+  if [[ "$LOCAL_RESOURCE" == *\/ ]] || [["$REMOTE_RESOURCE" == *\/ ]]; then
     local EXTRA_ARGS="-r"
   fi
 
