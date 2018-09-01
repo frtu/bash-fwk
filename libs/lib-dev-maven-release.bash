@@ -8,6 +8,7 @@ mvnreleasevalidate() {
       echo "Success!"
     else
       echo "Failure!"
+      return -1
   fi
 
   mvn javadoc:javadoc
@@ -15,21 +16,28 @@ mvnreleasevalidate() {
       echo "Success!"
     else
       echo "Failure!"
+      return -1
   fi
 }
 
 # Release
-mvnreleasetag() {
-  local OPTIONAL_ARGS=-DautoVersionSubmodules=true 
-  
+mvnreleasetagversion() {
   # Setting the next release version : 0.1.0
   if [ -n "$1" ]; then
-    OPTIONAL_ARGS="$OPTIONAL_ARGS -DreleaseVersion=$1 -Dtag=version-$1"
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -DreleaseVersion=$1 -Dtag=v$1"
   fi
   # Setting the following release version : 1.0.0
   if [ -n "$2" ]; then
-    OPTIONAL_ARGS="$OPTIONAL_ARGS -DdevelopmentVersion=$2-SNAPSHOT"
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -DdevelopmentVersion=$2-SNAPSHOT"
   fi
+  mvnreleasetag ${OPTIONAL_ARGS}
+}
+mvnreleasetagsk() {
+  mvnreleasetag -DignoreSnapshots=true -Darguments=\"-Dmaven.javadoc.skip=true -DskipTests -Dfindbugs.skip=true -Dpmd.skip=true\"
+}
+mvnreleasetag() {
+  local OPTIONAL_ARGS="-DautoVersionSubmodules=true $@"
+  
   echo "mvn clean release:prepare $OPTIONAL_ARGS"
   mvn clean release:prepare $OPTIONAL_ARGS
 }
