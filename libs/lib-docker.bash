@@ -252,8 +252,50 @@ dckstartdaemon() {
   return $?
 }
 
+dckrunjenkinsnode() {
+  usage $# "INSTANCE_NAME:jenkins-nodejs" "[FOLDER_PATH]" "[PORT_JENKINS:8080]" "[PORT_SONARQUBE:9000]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local INSTANCE_NAME=${1:-jenkins-nodejs}
+  local FOLDER_PATH=$2
+  local PORT_JENKINS=${3:-8080}
+  local PORT_SONARQUBE=${4:-9000}
+
+  # https://hub.docker.com/r/schlechtweg/jenkins-nodejs/
+  # local NEW_ARGS='--privileged --restart=always -e DOCKER_DAEMON_ARGS="-H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock"'
+
+  # If a path is passed, create the basic folder structure
+  if [ -n "${FOLDER_PATH}" ]; then
+    echo "== Create base folder at ${FOLDER_PATH} =="
+    mkdir -p "${FOLDER_PATH}/jenkins_home"
+    mkdir -p "${FOLDER_PATH}/sonarqube_home/conf"
+    mkdir -p "${FOLDER_PATH}/sonarqube_home/data"
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -v ${FOLDER_PATH}/jenkins_home:/var/lib/jenkins"
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -v ${FOLDER_PATH}/sonarqube_home/conf:/var/lib/sonarqube-6.4/conf"
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -v ${FOLDER_PATH}/sonarqube_home/data:/var/lib/sonarqube-6.4/data"
+  fi
+
+  # If no port pass, use dynamic attr port
+  if [ -n "${PORT_JENKINS}" ]; then
+    echo "== Connect to JENKINS using http://localhost:${PORT_JENKINS} =="
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${PORT_JENKINS}:8080"
+
+    echo "> dckmport ${PORT_JENKINS} : to expose the port (only needed once per VM)"
+  fi
+  if [ -n "${PORT_SONARQUBE}" ]; then
+    echo "== Connect to SONARQUBE using http://localhost:${PORT_SONARQUBE} =="
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${PORT_SONARQUBE}:9000"
+
+    echo "> dckmport ${PORT_SONARQUBE} : to expose the port (only needed once per VM)"
+  fi
+  dckstartdaemon "schlechtweg/jenkins-nodejs" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}" "${NEW_ARGS}"
+
+  echo "GET THE PASSWORD BY TYPING"
+  echo "dckbash ${INSTANCE_NAME} cat /var/lib/jenkins/secrets/initialAdminPassword"
+}
 dckrunjenkins() {
-  usage $# "INSTANCE_NAME" "[PORT]" "[PATH:PWD]"
+  usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
@@ -262,7 +304,7 @@ dckrunjenkins() {
   dckweb "jenkins/jenkins" "$FOLDER_PATH:/var/jenkins_home" $@
 }
 dckrunnginx() {
-  usage $# "INSTANCE_NAME" "[PORT]" "[PATH:PWD]"
+  usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
@@ -270,7 +312,7 @@ dckrunnginx() {
   dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
 }
 dckrunphp() {
-  usage $# "INSTANCE_NAME" "[PORT]" "[PATH:PWD]"
+  usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
@@ -301,14 +343,14 @@ dckweb() {
     echo "== Connect to this host using http://localhost:${PORT} =="
     local OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${PORT}:80"
 
-    echo "dckmport ${INSTANCE_NAME} ${PORT} : to expose the port (only needed once per VM)"
+    echo "dckmport ${PORT} : to expose the port (only needed once per VM)"
   fi
 
   dckstartdaemon ${IMAGE_NAME} ${INSTANCE_NAME} "${OPTIONAL_ARGS}"
 }
 
 dckrunmysql() {
-  usage $# "[IMAGE_NAME:mysql\:5.7.17]" "[INSTANCE_NAME:mysql]" "[PORT:password]" "[PATH:3306]"
+  usage $# "[IMAGE_NAME:mysql\:5.7.17]" "[INSTANCE_NAME:mysql]" "[PASSWORD:password]" "[PORT:3306]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
