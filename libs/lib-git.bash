@@ -31,7 +31,7 @@ gbrls() {
   git branch -a
 }
 gbradd() {
-  usage $# "BRANCH_NAME" "REPO_NAME"
+  usage $# "BRANCH_NAME:master" "[REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
@@ -99,8 +99,11 @@ gbrremoteadd() {
 
   gbrremotels
 
-  if [ -n "$BRANCH_NAME" ] ; then
-    gbradd ${BRANCH_NAME} ${REPO_NAME}
+  if [ -n "$BRANCH_NAME" ]
+    then
+      gbradd ${BRANCH_NAME} ${REPO_NAME}
+    else
+      echo "ADD A NEW BRANCH WITH > gbradd {BRANCH_NAME} ${REPO_NAME}"
   fi
 }
 gbrremoterm() {
