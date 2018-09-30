@@ -371,7 +371,7 @@ dckrunmysql() {
 }
 
 dckrmimage() {
-  usage $# "REPOSITORY"
+  usage $# "IMAGE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
