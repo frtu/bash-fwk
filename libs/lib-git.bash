@@ -62,18 +62,29 @@ gbradd() {
   git pull
 }
 gbrrm() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "Please supply the BRANCH_NAME to delete as first argument" >&2
-      return -1
-  fi
+  usage $# "BRANCH_NAME" "[FALLBACK_BRANCH_AFTER_DELETE:master]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local BRANCH_NAME=$1
+  local FALLBACK_BRANCH_AFTER_DELETE=${2:-master}
 
-  echo "git checkout master"
-  git checkout master
+  echo "git checkout ${FALLBACK_BRANCH_AFTER_DELETE}"
+  git checkout ${FALLBACK_BRANCH_AFTER_DELETE}
 
-  echo "git branch -D $BRANCH_NAME"
-  git branch -D $BRANCH_NAME
+  echo "git branch -D ${BRANCH_NAME}"
+  git branch -D ${BRANCH_NAME}
+}
+gbrmv() {
+  usage $# "OLD_BRANCH_NAME" "NEW_BRANCH_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local OLD_BRANCH_NAME=$1
+  local NEW_BRANCH_NAME=$2
+
+  echo "git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}"
+  git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}
 }
 
 gbrremotels() {
@@ -107,27 +118,36 @@ gbrremoteadd() {
   fi
 }
 gbrremoterm() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "Please supply argument(s) \"\[REPO_NAME\] PROJECT_NAME\"" >&2
-      return -1
-  fi
+  usage $# "REMOTE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local REMOTE_NAME=remote-$1
   echo "git remote remove $REMOTE_NAME"
   git remote remove $REMOTE_NAME
 }
 
 gpatch() {
-  local DIFF_FILENAME=${1:-diff}
+  usage $# "DIFF_FILENAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local DIFF_FILENAME=${1:-diff}
 	echo "git diff > $DIFF_FILENAME.patch"
 	git diff > $DIFF_FILENAME.patch
 }
 gpatchapply() {
-  local DIFF_FILENAME=${1:-diff}
-	
+  usage $# "DIFF_FILENAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DIFF_FILENAME=${1:-diff}	
 	if [ -f "$DIFF_FILENAME.patch" ]; then
 		echo "Applying patch with 'git apply $DIFF_FILENAME.patch'"
 		git apply $DIFF_FILENAME.patch
 	fi
+  if [ -f "$DIFF_FILENAME" ]; then
+    echo "Applying patch with 'git apply $DIFF_FILENAME'"
+    git apply $DIFF_FILENAME
+  fi
 }
