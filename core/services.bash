@@ -53,8 +53,13 @@ enabledockertoolbox() {
   srv_activate dockertoolbox
   refresh
 }
+
+# Dev tools
 enablesbt() {
   enablelib sbt
+}
+enablemvngen() {
+  enablelib dev-maven-archetype
 }
 
 # FILE BASED SERVICE
