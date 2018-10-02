@@ -1,5 +1,5 @@
 #!/bin/sh
-ARCHETYPE_VERSION=0.3.0
+ARCHETYPE_VERSION=0.3.1
 
 mvngenlocal() {
   usage $# "ARCHETYPE:kafka" "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
