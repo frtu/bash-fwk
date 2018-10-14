@@ -9,14 +9,15 @@ DEPENDENCY_GAV=com.github.ferstl:depgraph-maven-plugin:3.2.0
 ARCHETYPE_VERSION=0.3.0
 
 mvnsk() { # Skip all tests and enforcer
+  echo "mvn -DskipTests -Denforcer.skip $@"
   mvn -DskipTests -Denforcer.skip $@
 }
 
 mvnsrc() { # Download in local repo all the source
-  mvn dependency:resolve -Dclassifier=sources
+  mvnsk dependency:resolve -Dclassifier=sources
 }
 mvndep() { # list all dependencies, you may want to redirect the output into a file
-  mvn dependency:tree
+  mvnsk dependency:tree
 }
 mvndepgraph() {
   usage $# "[CONFIG_FILE]"
@@ -57,7 +58,7 @@ mvndepaggregate() {
   mvn ${DEPENDENCY_GAV}:aggregate -DcreateImage=true -DshowGroupIds=true ${EXTRA_PARAM} ${@:2}
 }
 mvndepoffline() {
-  mvn dependency:go-offline   
+  mvnsk dependency:go-offline   
 }
 mvnsetversion() {
   mvnsk versions:set -DnewVersion=$1
