@@ -57,6 +57,10 @@ brew_unlk() {
   brew unlink $1
 }
 
+inst_git() {
+  xcode-select --install
+  xcode-select --reset
+}
 inst_wget() {
   brew install wget
 }
