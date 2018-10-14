@@ -1,5 +1,7 @@
 GPG_HOME=~/.gnupg
 
+export GPG_TTY=$(tty)
+
 # GPG version 2 may be on your system with the executable name gpg2 . 
 # Either executable can be used for these demonstrations. Both are very compatible with each other. 
 # (If you want to know a million different opinions on which you should be using, do a web search.) 

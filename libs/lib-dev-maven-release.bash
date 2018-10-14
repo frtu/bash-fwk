@@ -68,8 +68,8 @@ mvnreleasecd() {
   cd $MVN_RELEASE_REPO
 }
 mvnreleasesign() {
-  echo "mvn package gpg:sign"
-  mvn package gpg:sign
+  echo "mvn clean package gpg:sign $@"
+  mvn clean package gpg:sign $@
 }
 mvnreleasesigndeploy() {
   if [ ! -f "$1" ]; then

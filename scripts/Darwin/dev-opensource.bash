@@ -1,6 +1,6 @@
 import lib-dev-maven-release
 # MAC OSX
-export GPG_CMD=gpg2
+#export GPG_CMD=gpg2
 import lib-gpg
 
 # GPG version 2 may be on your system with the executable name gpg2 . 
@@ -13,7 +13,8 @@ import lib-gpg
 
 inst_gpg() {
   brew install gnupg2
-  brew install gpg-agent
+  # brew install gpg-agent
+  # ln -s /usr/local/Cellar/gnupg/2.2.10/bin/gpg /usr/local/bin/gpg2
 }
 
 # gpgagentstart() {
