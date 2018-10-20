@@ -63,12 +63,25 @@ trsshpush() {
     return -1
   fi
 }
+trscpproxypush() {
+  usage $# "FWD_HOSTNAME" "SSH_FULL_HOSTPATH" "LOCAL_RESOURCE" "[REMOTE_RESOURCE]" "[FWD_PORT]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local FWD_HOSTNAME=$1
+  local SSH_FULL_HOSTPATH=$2
+  local LOCAL_RESOURCE=$3
+  local REMOTE_RESOURCE=${4:-$3}
+  local FWD_PORT=${5:-22}
+
+  # https://unix.stackexchange.com/questions/355640/how-to-scp-via-an-intermediate-machine
+  trscppush "$SSH_FULL_HOSTPATH" "$LOCAL_RESOURCE" "$REMOTE_RESOURCE" "ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}"
+}
 trscppush() {
-  usage $# "SSH_FULL_HOSTPATH" "LOCAL_RESOURCE" "[REMOTE_RESOURCE]"
+  usage $# "SSH_FULL_HOSTPATH" "LOCAL_RESOURCE" "[REMOTE_RESOURCE]" "[PROXY_CMD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
-    echo "Please specify required SSH_FULL_HOSTPATH parameters > 'trscppush SSH_FULL_HOSTPATH LOCAL_RESOURCE [REMOTE_RESOURCE]'." >&2
+    echo "Please specify required SSH_FULL_HOSTPATH parameters > '${FUNCNAME[1]} SSH_FULL_HOSTPATH LOCAL_RESOURCE [REMOTE_RESOURCE]'." >&2
     echo "SSH_FULL_HOSTPATH can be IP, SSH_HOSTNAME or USER@SSH_HOSTNAME" >&2
     return -1
   fi
@@ -77,15 +90,22 @@ trscppush() {
   local LOCAL_RESOURCE=$2
   local REMOTE_RESOURCE=${3:-$2}
 
+  local PROXY_CMD=${@:4}
+
+  # Check resource type based on local resource
   if [ -d "$LOCAL_RESOURCE" ]; then
-    echo scp -r "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
-    scp -r "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
-  elif [ -f "$LOCAL_RESOURCE" ]; then
-    echo scp "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
-    scp "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
-  else
+    local EXTRA_ARGS="-r $EXTRA_ARGS"
+  elif [ ! -f "$LOCAL_RESOURCE" ]; then
     echo "$LOCAL_RESOURCE is not valid"
     return -1
+  fi
+
+  if [ -n "${PROXY_CMD}" ]; then
+    echo "scp ${EXTRA_ARGS} -o ProxyCommand=\"${PROXY_CMD}\" \"$LOCAL_RESOURCE\" $SSH_FULL_HOSTPATH:\"$REMOTE_RESOURCE\""
+    scp ${EXTRA_ARGS} -o ProxyCommand="${PROXY_CMD}" "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
+  else
+    echo "scp ${EXTRA_ARGS} \"$LOCAL_RESOURCE\" $SSH_FULL_HOSTPATH:\"$REMOTE_RESOURCE\""
+    scp ${EXTRA_ARGS} "$LOCAL_RESOURCE" $SSH_FULL_HOSTPATH:"$REMOTE_RESOURCE"
   fi
 }
 trscpget() {
@@ -102,6 +122,7 @@ trscpget() {
   local LOCAL_RESOURCE=${3:-$2}
   local KEY_NAME=$4
 
+  # Guess resource type based on remote url (please don't forget the / to indicate folder!)
   if [[ "$LOCAL_RESOURCE" == *\/ ]] || [["$REMOTE_RESOURCE" == *\/ ]]; then
     local EXTRA_ARGS="-r"
   fi
