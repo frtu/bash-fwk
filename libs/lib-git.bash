@@ -19,7 +19,12 @@ grmcached() {
   git rm -r --cached $ITEM_TO_REMOVE
 }
 
+gsub(){
+  echo "git submodule update --init"
+  git submodule update --init
+}
 gtag() {
+  echo "git tag"
   git tag
 }
 gtagdate() {
@@ -88,7 +93,7 @@ gbrmv() {
 }
 
 gbrremotels() {
-  echo "List all remote branches"
+  echo "List all remote branches > git remote -v"
   git remote -v
 }
 gbrremoteadd() {

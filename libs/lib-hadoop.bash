@@ -3,7 +3,8 @@ alias hversion='hdfs version'
 
 alias hls='hdfs dfs -ls '
 alias hmkdir='hdfs dfs -mkdir '
-alias hcp='hdfs dfs -copyFromLocal '
+alias hcpto='hdfs dfs -copyToLocal '
+alias hcpfrom='hdfs dfs -copyFromLocal '
 
 alias hdu='hdfs dfs -du -h '
 
