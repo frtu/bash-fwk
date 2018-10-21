@@ -56,6 +56,10 @@ mvnreleasedeploy() {
       echo "- https://oss.sonatype.org/index.html#view-repositories;github-releases~browsestorage"
       echo "- Login, go to Stage Repositories & search for your project"
       echo "- Review Activity tab, if all is fine, push button Close & Release"
+      echo ""
+      echo "SIGNATURE : If some signatures fail to be uploaded, run :"
+      echo "> mvnreleasecd"
+      echo "> mvnreleasesign deploy"
     else
       echo "== An error has happen and leave your build at an intermediate state. ==" >&2
       echo "- You've pushed all your change in your repo" >&2
