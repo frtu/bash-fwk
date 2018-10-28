@@ -1,13 +1,23 @@
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 completion $GIT_COMPLETION_BASENAME
 
+GIT_ENV_FILE=$LOCAL_SCRIPTS_FOLDER/env-git.bash
+
 # Git branch in prompt.
 export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33m\]\W\[\033[m\]\$(parse_git_branch)\$"
 
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
+gpersist() {
+  usage $# "GITHUB_ROOT_URL:github.com"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local GITHUB_ROOT_URL=$1
+  echo "Persiting GITHUB_ROOT_URL=${GITHUB_ROOT_URL}!"
+  echo "export PERSISTED_GITHUB_ROOT_URL=$GITHUB_ROOT_URL" > $GIT_ENV_FILE
+}
 grmcached() {
   usage $# "ITEM_TO_REMOVE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -19,10 +29,75 @@ grmcached() {
   git rm -r --cached $ITEM_TO_REMOVE
 }
 
+gcl() {
+  local REPO_NAME=$1
+  local PROJECT_NAME=$2
+  local BRANCH_NAME=$3
+  local GITHUB_ROOT_URL=${4:-github.com}
+
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
+  # Take into account PERSISTED_GITHUB_ROOT_URL
+  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
+    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  fi
+
+  if [ -z $PROJECT_NAME ]; then
+    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
+    return -1
+  fi
+  
+  local FOLDER_NAME=$PROJECT_NAME-$REPO_NAME
+
+  echo "git clone git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git ${FOLDER_NAME}"
+  git clone git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git ${FOLDER_NAME}
+  cd ${FOLDER_NAME}/
+
+  if [ -n "$BRANCH_NAME" ]; then
+      echo "git checkout ${BRANCH_NAME}"
+      git checkout ${BRANCH_NAME}
+  fi
+  gsub
+}
+
 gsub(){
   echo "git submodule update --init"
   git submodule update --init
 }
+gsubadd(){
+  local REPO_NAME=$1
+  local PROJECT_NAME=$2
+  local BRANCH_NAME=$3
+  local GITHUB_ROOT_URL=${4:-github.com}
+
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
+  # Take into account PERSISTED_GITHUB_ROOT_URL
+  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
+    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  fi
+
+  if [ -z $PROJECT_NAME ]; then
+    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
+    return -1
+  fi
+
+  local EXTRA_ARGS="--force"
+  if [ -n "$BRANCH_NAME" ]; then
+    local EXTRA_ARGS="-b ${BRANCH_NAME} ${EXTRA_ARGS}"
+  fi
+  echo "git submodule add ${EXTRA_ARGS} git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
+  git submodule add ${EXTRA_ARGS} git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
+}
+
 gtag() {
   echo "git tag"
   git tag
@@ -97,19 +172,24 @@ gbrremotels() {
   git remote -v
 }
 gbrremoteadd() {
-  usage $# "REPO_NAME" "GITHUB_PROJECT" "[GITHUB_ROOT_URL:github.com]" "[BRANCH_NAME]"
+  usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local REPO_NAME=$1
-  local GITHUB_PROJECT=$2
-  local GITHUB_ROOT_URL=${3:-github.com}
-  local BRANCH_NAME=$4
+  local PROJECT_NAME=$2
+  local BRANCH_NAME=$3
+  local GITHUB_ROOT_URL=${4:-github.com}
 
   local REMOTE_NAME=repo-$REPO_NAME
 
-  echo "git remote add $REMOTE_NAME git@$GITHUB_ROOT_URL:$REPO_NAME/$GITHUB_PROJECT.git"
-  git remote add $REMOTE_NAME git@$GITHUB_ROOT_URL:$REPO_NAME/$GITHUB_PROJECT.git
+  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
+    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  fi
+
+  echo "git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
+  git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
   echo "git fetch $REMOTE_NAME"
   git fetch $REMOTE_NAME
 
@@ -122,6 +202,7 @@ gbrremoteadd() {
       echo "ADD A NEW BRANCH WITH > gbradd {BRANCH_NAME} ${REPO_NAME}"
   fi
 }
+
 gbrremoterm() {
   usage $# "REMOTE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
