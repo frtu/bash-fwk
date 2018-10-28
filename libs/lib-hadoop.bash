@@ -16,6 +16,17 @@ alias hget='hdfs dfs -get '
 alias hcat='hdfs dfs -cat '
 alias htext='hdfs dfs -text '
 
+sparkrun() {
+  usage $# "SPARK_JAR" "[OPTIONAL_ARG]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SPARK_JAR=$1
+
+  echo "spark-submit --master yarn $SPARK_JAR ${@:2}"
+  spark-submit --master yarn $SPARK_JAR ${@:2}
+}
+
 hdirsize() {
   usage $# "HDFS_FOLDER" "[OPTIONAL_ARG]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
