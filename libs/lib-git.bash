@@ -46,6 +46,7 @@ gcl() {
     local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
   fi
 
+  ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
     return -1
@@ -85,8 +86,9 @@ gsubadd(){
     local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
   fi
 
+  ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
-    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
+    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
     return -1
   fi
 
@@ -167,26 +169,34 @@ gbrmv() {
   git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}
 }
 
-gbrremotels() {
+gremotels() {
   echo "List all remote branches > git remote -v"
   git remote -v
 }
-gbrremoteadd() {
-  usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
+gremoteadd() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
   local GITHUB_ROOT_URL=${4:-github.com}
 
-  local REMOTE_NAME=repo-$REPO_NAME
-
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
+  # Take into account PERSISTED_GITHUB_ROOT_URL
   if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
     echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
     local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
   fi
+
+  ## USAGE IF NO PROJECT_NAME
+  if [ -z $PROJECT_NAME ]; then
+    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
+    return -1
+  fi
+
+  local REMOTE_NAME=repo-$REPO_NAME
 
   echo "git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
   git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
@@ -202,8 +212,25 @@ gbrremoteadd() {
       echo "ADD A NEW BRANCH WITH > gbradd {BRANCH_NAME} ${REPO_NAME}"
   fi
 }
+gremotemerge() {
+  usage $# "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
-gbrremoterm() {
+  local REPO_NAME=$1
+  local PROJECT_NAME=$2
+  local BRANCH_NAME=$3
+  local GITHUB_ROOT_URL=${4:-github.com}
+
+  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
+    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  fi
+
+  echo "git pull git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git ${BRANCH_NAME}"
+  git pull git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git ${BRANCH_NAME}
+}
+gremoterm() {
   usage $# "REMOTE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
