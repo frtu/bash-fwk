@@ -45,6 +45,9 @@ enabledckkafka() {
 enabledckhadoop() {
   enablelib dck-hadoop
 }
+enabledckspark() {
+  enablelib dck-spark
+}
 enablessh() {
   srv_activate ssh
   refresh
