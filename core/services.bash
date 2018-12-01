@@ -52,9 +52,10 @@ enablessh() {
   srv_activate ssh
   refresh
 }
-enabledockertoolbox() {
-  srv_activate dockertoolbox
+enabledockerlinux() {
+  srv_activate docker
   refresh
+  inst_docker
 }
 
 # Dev tools
