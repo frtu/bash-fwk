@@ -91,13 +91,23 @@ inst_node() {
   brew install node
   npm install -g grunt-cli
 }
+inst_nvm() {
+  local VERSION=${1:-v10.13.0}
+  echo "VERSION=${VERSION} => Change it by passing a first paramter"
+
+  wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+  nvm install ${VERSION}
+}
 
 inst_gradle() {
+  local VERSION=${1:-4.5.1}
+  echo "VERSION=${VERSION} => Change it by passing a first paramter"
+
   #brew install gradle
   if [ -z "$SDKMAN_DIR" ]; then
     inst_sdk
   fi
-  sdk install gradle 4.5.1
+  sdk install gradle ${VERSION}
 }
 inst_android() {
   brew tap caskroom/cask
