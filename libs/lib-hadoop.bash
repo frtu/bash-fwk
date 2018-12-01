@@ -5,7 +5,7 @@ alias hls='hdfs dfs -ls '
 alias hmkdir='hdfs dfs -mkdir '
 alias hcpget='hdfs dfs -copyToLocal '
 alias hcpput='hdfs dfs -copyFromLocal '
-alias hcpput='hdfs dfs -copyFromLocal -f '
+alias hcpputf='hdfs dfs -copyFromLocal -f '
 
 alias hdu='hdfs dfs -du -h '
 
