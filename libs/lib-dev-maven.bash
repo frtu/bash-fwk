@@ -6,6 +6,7 @@ MVN_SETTINGS_STANDALONE=STANDALONE
 MVN_SETTINGS_NEXUS_DEFAULT=NEXUS
 
 DEPENDENCY_GAV=com.github.ferstl:depgraph-maven-plugin:3.2.0
+SCHEMA_REGISTRY_GAV=io.confluent:kafka-schema-registry-maven-plugin:3.3.0
 
 mvnsk() { # Skip all tests and enforcer
   echo "mvn -DskipTests -Denforcer.skip $@"
@@ -148,4 +149,20 @@ mvnrepoclean() { # Remove all trace of orginal repo from local repo (avoid SNAPS
   find $MVN_REPO_ROOT/repository -type f -name "_remote.repositories" -exec echo {} \; -exec rm -f {} \;
   find $MVN_REPO_ROOT/repository -type f -name "resolver-status.properties" -exec echo {} \; -exec rm -f {} \;
   find $MVN_REPO_ROOT/repository -type f -name "maven-metadata-nexus.*" -exec echo {} \; -exec rm -f {} \;
+}
+
+mvnschemaregister() {
+  usage $# "[SCHEMA_REGISTRY_URL]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SCHEMA_REGISTRY_URL=$1
+  if [ -n "${SCHEMA_REGISTRY_URL}" ]; then
+    # https://github.com/ferstl/depgraph-maven-plugin/blob/master/src/main/resources/default-style.json
+    # https://github.com/ferstl/depgraph-maven-plugin/wiki/Styling
+    local EXTRA_PARAM=-Dschemaregistry.url=${SCHEMA_REGISTRY_URL}
+  fi  
+
+  echo "mvn ${SCHEMA_REGISTRY_GAV}:register -Dmaven.repo.remote=https://packages.confluent.io/maven/ ${EXTRA_PARAM} ${@:2}"
+  mvn ${SCHEMA_REGISTRY_GAV}:register -Dmaven.repo.remote=https://packages.confluent.io/maven/ ${EXTRA_PARAM} ${@:2}
 }
