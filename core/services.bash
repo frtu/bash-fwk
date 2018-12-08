@@ -35,6 +35,10 @@ enablehadoop() {
   enablelib hadoop-admin
   binappend ${HADOOP_HOME}/bin
 }
+enablespark() {
+  enablehadoop
+  enablelib spark
+}
 
 # For Docker host
 enabledockertoolbox() {

@@ -1,7 +1,11 @@
 import lib-hadoop
 
+export HADOOP_BIN=${HADOOP_HOME}/bin
 export HADOOP_CONFIG=${HADOOP_HOME}/etc/hadoop
 export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
+
+alias hcd='cd ${HADOOP_HOME}'
+alias hcdlog='cd ${HADOOP_LOG_DIR}'
 
 # https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
 alias hnamenodeformat='hdfs namenode -format'
@@ -37,7 +41,4 @@ hconfigmapred() {
 }
 hconfigyarn() {
   vi ${HADOOP_CONFIG}/yarn-site.xml
-}
-hcdlog() {
-  cd ${HADOOP_LOG_DIR}
 }
