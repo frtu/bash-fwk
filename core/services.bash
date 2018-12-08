@@ -33,6 +33,7 @@ enablelib() {
 # Local env
 enablehadoop() {
   enablelib hadoop-admin
+  binappend ${HADOOP_HOME}/bin
 }
 
 # For Docker host
