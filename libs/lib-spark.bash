@@ -4,7 +4,7 @@ export LIVY_HOME=/apps/livy-server-0.3.0
 export LIVY_CONF_DIR=${LIVY_HOME}/bin
 
 alias scd='cd ${SPARK_HOME}'
-alias scdlivy='cd ${LIVY_CONF_DIR}'
+alias scdlivy='cd ${LIVY_HOME}'
 
 srun() {
   usage $# "SPARK_JAR" "[OPTIONAL_ARG]"
