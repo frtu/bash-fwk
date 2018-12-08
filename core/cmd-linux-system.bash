@@ -16,6 +16,14 @@ binln() {
   fi
   ln -s "$1/$2" "$USR_BIN/$2"	
 }
+binappend() {
+  usage $# "NEW_PATH_FOLDER"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local NEW_PATH_FOLDER=$1
+  echo "export PATH=\$PATH:$NEW_PATH_FOLDER" >> ~/.bash_profile
+}
 
 # NETWORK
 portlist() {
