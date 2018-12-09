@@ -18,13 +18,14 @@ dsstart() {
 }
 
 dsnstart() {
-  usage $# "INSTANCE_NAME:spark-notebook" "[LIVY_PORT]"
+  usage $# "INSTANCE_NAME:spark-notebook" "[LIVY_PORT]" "[USER_HOME:jovyan]"
 
   local INSTANCE_NAME=${1:-sparkmagic}
   local LIVY_PORT=${2:-$8998}
+  local USER_HOME=${3:-jovyan}
 
   # https://github.com/jupyter-incubator/sparkmagic/blob/master/docker-compose.yml
-  local OPTIONAL_ARGS="-p ${LIVY_PORT}:8998"
+  local OPTIONAL_ARGS="-p ${LIVY_PORT}:8998  -v $PWD:/home/${USER_HOME}/data"
   dckstartdaemon peralozac/sparkmagic_spark:latest ${INSTANCE_NAME} ${OPTIONAL_ARGS}
   dcklogs ${INSTANCE_NAME}
 
