@@ -1,10 +1,11 @@
 import lib-hadoop
 
 export HADOOP_BIN=${HADOOP_HOME}/bin
-export HADOOP_CONFIG=${HADOOP_HOME}/etc/hadoop
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
 export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
 
 alias hcd='cd ${HADOOP_HOME}'
+alias hcdconf='cd ${HADOOP_CONF_DIR}'
 alias hcdlog='cd ${HADOOP_LOG_DIR}'
 
 # https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
@@ -31,14 +32,14 @@ hnodemgrstop() {
 }
 
 hconfigcore() {
-  vi ${HADOOP_CONFIG}/core-site.xml
+  vi ${HADOOP_CONF_DIR}/core-site.xml
 }
 hconfigsite() {
-  vi ${HADOOP_CONFIG}/hdfs-site.xml
+  vi ${HADOOP_CONF_DIR}/hdfs-site.xml
 }
 hconfigmapred() {
-  vi ${HADOOP_CONFIG}/mapred-site.xml
+  vi ${HADOOP_CONF_DIR}/mapred-site.xml
 }
 hconfigyarn() {
-  vi ${HADOOP_CONFIG}/yarn-site.xml
+  vi ${HADOOP_CONF_DIR}/yarn-site.xml
 }
