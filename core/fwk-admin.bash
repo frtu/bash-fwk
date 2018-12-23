@@ -13,8 +13,10 @@ redeploy() {
 bashdeploy() {
 	## If $1 is not passed, set to the current working dir using $PWD
 	_dir="${1:-${PWD}}"
+  system=`uname -s`
+  system="${system%-*}"
 
-	DISTRO_SCRIPT_FOLDER="$_dir/scripts/`uname -s`/"
+	DISTRO_SCRIPT_FOLDER="$_dir/scripts/$system/"
   mkscriptfolder "$DISTRO_SCRIPT_FOLDER"
   mkscriptfolder "$LOCAL_SCRIPTS_FOLDER"
 
