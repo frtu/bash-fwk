@@ -70,6 +70,39 @@ enablesbt() {
 enablemvngen() {
   enablelib dev-maven-archetype
 }
+enablejava() {
+  usage $# "JAVA_HOME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local JAVA_HOME=$1
+  if [ -d "$JAVA_HOME" ]
+    then
+      local SERVICE_SCR_java=${SERVICE_LOCAL_BASH_PREFIX}dev-java.bash
+      echo "Creating file $SERVICE_SCR_java"
+      echo "export JAVA_HOME=\"$JAVA_HOME\"" > $SERVICE_SCR_java
+      echo "export PATH=\$PATH:\"\$JAVA_HOME/bin\"" >> $SERVICE_SCR_java
+    else
+      echo "First parameter JAVA_HOME=$JAVA_HOME isn't a directory containing bin\java cmd !!"
+      return -1
+  fi
+}
+enablemvn() {
+  usage $# "MAVEN_HOME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local MAVEN_HOME=$1
+  if [ -f "$MAVEN_HOME/bin/mvn" ]
+    then
+      enablelib dev-maven
+      echo "export MAVEN_HOME=\"$MAVEN_HOME\"" >> $SERVICE_SCR_devmaven
+      echo "export PATH=\$PATH:\"\$MAVEN_HOME/bin\"" >> $SERVICE_SCR_devmaven
+    else
+      echo "First parameter MAVEN_HOME=$MAVEN_HOME isn't a directory containing bin\mvn cmd !!"
+      return -1
+  fi
+}
 
 # FILE BASED SERVICE
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
