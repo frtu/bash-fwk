@@ -264,3 +264,33 @@ gpatchapply() {
     git apply $DIFF_FILENAME
   fi
 }
+gconfls() {
+  local CONF_PARAM=${1:---list}
+  echo "git config $CONF_PARAM"
+  git config $CONF_PARAM
+}
+gconfset() {
+  usage $# "CONF_PARAM_NAME" "CONF_PARAM_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local CONF_PARAM_NAME=$1
+  local CONF_PARAM_VALUE=$2
+
+  echo "git config --global $CONF_PARAM_NAME $CONF_PARAM_VALUE"
+  git config --global $CONF_PARAM_NAME $CONF_PARAM_VALUE
+}
+gconfsetname() {
+  usage $# "NAME_PARAM_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  gconfset user.name $1
+}
+gconfsetemail() {
+  usage $# "EMAIL_PARAM_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  gconfset user.email $1
+}
