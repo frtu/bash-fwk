@@ -69,14 +69,14 @@ mvnsetversionsnapshot() {
 
 mvndljar() {
   if [[ "$#" < "1" ]]; then
-      usage $# "GROUP_ID|GAV" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
+      usage $# "GROUP_ID|GAV" "ARTIFACT_ID" "ARTIFACT_VERSION" "[TARGET_FOLDER]"
       return -1
   fi
 
-  if [[ "$#" < "2" ]]
+  if [[ "$#" < "3" ]]
     then
       if [[ ! $1 == *\:* ]]; then
-        usage $# "GROUP_ID|GAV" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
+        usage $# "GROUP_ID|GAV" "ARTIFACT_ID" "ARTIFACT_VERSION" "[TARGET_FOLDER]"
         return -1
       fi
 
@@ -85,17 +85,23 @@ mvndljar() {
 
       local GROUP_ID="${GROUP_ARTIFACT%\:*}"
       local ARTIFACT_ID="${GROUP_ARTIFACT##*\:}"
+
+      local TARGET_FOLDER=$2
     else
       local GROUP_ID=$1
       local ARTIFACT_ID=$2
       local ARTIFACT_VERSION=$3
+      local TARGET_FOLDER=$4
   fi
   local GROUP_ID=`echo "$GROUP_ID" | sed 's/\./\//g'`
-  local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
-  local FILE_PATH=${4:-$FILE_PREFIX.jar}      
+  local FILE_PATH=$ARTIFACT_ID-$ARTIFACT_VERSION.jar
 
-  echo "wget http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}"
-  wget http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}
+  if [ -n "$TARGET_FOLDER" ]; then
+    local EXTRA_ARGS="--directory-prefix=${TARGET_FOLDER} ${EXTRA_ARGS}"
+  fi
+
+  echo "wget ${EXTRA_ARGS} http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}"
+  wget ${EXTRA_ARGS} http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}
 }
 
 mvnimportjar() {
