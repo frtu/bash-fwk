@@ -68,11 +68,9 @@ mvnsetversionsnapshot() {
 }
 
 mvnimportjar() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "3" ]]; then
-      echo "Usage : mvnimportjar GROUP_ID ARTIFACT_ID ARTIFACT_VERSION [FILE_PATH]" >&2
-      return -1
-  fi
+  usage $# "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local GROUP_ID=$1
   local ARTIFACT_ID=$2
@@ -106,11 +104,9 @@ mvnrepoinit() {
 }
 
 mvnrepopatch() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-      echo "== You must pass a first parameter of the target maven settings file. ==" >&2
-      return -1
-  fi
+  usage $# "SETTING_SUFFIX"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local L_MVN_SETTINGS_FILE=settings-$1.xml
 
