@@ -9,53 +9,123 @@ vboxls() {
       VBoxManage list runningvms
   fi
 }
-
-vboxstart() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please specify parameters > 'vboxstart IMAGE_NAME'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+vboxinfo() {
+  usage $# "IMAGE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
     echo "" >&2
-    vboxls
-    return -1
-  fi
-  echo "VBoxManage startvm $1 --type headless"
-  VBoxManage startvm $1 --type headless
-}
-vboxstop() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please specify parameters > 'vboxstop IMAGE_NAME'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
-    echo "" >&2
-    vboxls
-    return -1
-  fi
-  echo "VBoxManage controlvm $1 poweroff"
-  VBoxManage controlvm $1 poweroff
-}
-
-vboxmemory() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "2" ]]; then
-    echo "Please specify IMAGE_NAME parameter > 'vboxmemory IMAGE_NAME MEMORY_MB'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
-    echo "" >&2
-    vboxls
+    vboxls -a
     return -1
   fi
 
   local IMAGE_NAME=$1
+  echo "VBoxManage showvminfo ${IMAGE_NAME} --machinereadable"
+  VBoxManage showvminfo ${IMAGE_NAME} --machinereadable
+}
+
+vboxstart() {
+  usage $# "IMAGE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
+
+  local IMAGE_NAME=$1
+  echo "VBoxManage startvm ${IMAGE_NAME} --type headless"
+  VBoxManage startvm ${IMAGE_NAME} --type headless
+}
+vboxstop() {
+  usage $# "IMAGE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
+
+  local IMAGE_NAME=$1
+  echo "VBoxManage controlvm ${IMAGE_NAME} poweroff"
+  VBoxManage controlvm ${IMAGE_NAME} poweroff
+}
+
+#vboxcreate() {
+#  usage $# "IMAGE_NAME" "BASE_FOLDER" "[CPU_NB]" "[MEMORY_MB]"
+#  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+#  if [[ "$?" -ne 0 ]]; then return -1; fi
+#
+#  local IMAGE_NAME=$1
+#  local BASE_FOLDER=$2
+#  local CPU_NB=${3:-1}
+#  local MEMORY_MB=${4:-1024}
+#
+#  echo "VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME}"
+#  VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME}
+#  #VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME} --r
+#
+#  echo "VBoxManage modifyvm ${IMAGE_NAME} --firmware bios --bioslogofadein off --bioslogofadeout off --bioslogodiiosbootmenu disabled --ostype Linux26_64 --cpus ${CPU_NB} --memory ${MEMORY_MB} --acpi on --ioapic on --rtcuseutc on --natdnshostresolver1 off --natdnsproxy1 on --cpuhotplug off -on --hwvirtex on --nestedpaging on --largepages on --vtxvpid on --accelerate3d off --boot1 dvd"
+#  VBoxManage modifyvm ${IMAGE_NAME} --firmware bios --bioslogofadein off --bioslogofadeout off --bioslogodiiosbootmenu disabled --ostype Linux26_64 --cpus ${CPU_NB} --memory ${MEMORY_MB} --acpi on --ioapic on --rtcuseutc on --natdnshostresolver1 off --natdnsproxy1 on --cpuhotplug off -on --hwvirtex on --nestedpaging on --largepages on --vtxvpid on --accelerate3d off --boot1 dvd
+#
+#  echo "VBoxManage modifyvm ${IMAGE_NAME} --nic1 nat --nictype1 82540EM --cableconnected1 on"
+#  VBoxManage modifyvm ${IMAGE_NAME} --nic1 nat --nictype1 82540EM --cableconnected1 on
+#}
+vboxstorage() {
+  usage $# "IMAGE_NAME" "IMAGE_FILEPATH" "[PORT_NUMBER]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
+
+  local IMAGE_NAME=$1
+  local IMAGE_FILEPATH=$2
+  local PORT_NUMBER=${3:-0}
+
+  if [ ! -f "$IMAGE_FILEPATH" ]; then
+    echo "File doesn't exist $IMAGE_FILEPATH"
+    return -1
+  fi
+
+  echo "VBoxManage storagectl ${IMAGE_NAME} --name SATA --add sata --hostiocache on"
+  VBoxManage storagectl ${IMAGE_NAME} --name SATA --add sata --hostiocache on
+
+  extension="${IMAGE_FILEPATH##*.}"
+  if [ "$extension" == "iso" ]; then
+    echo "VBoxManage storageattach ${IMAGE_NAME} --storagectl SATA --port ${PORT_NUMBER} --device 0 --type dvddrive --medium ${IMAGE_FILEPATH}"
+    VBoxManage storageattach ${IMAGE_NAME} --storagectl SATA --port ${PORT_NUMBER} --device 0 --type dvddrive --medium ${IMAGE_FILEPATH}
+  fi
+  if [ "$extension" == "vmdk" ]; then
+    echo "VBoxManage storageattach ${IMAGE_NAME} --storagectl SATA --port ${PORT_NUMBER} --device 0 --type hdd --medium ${IMAGE_FILEPATH}"
+    VBoxManage storageattach ${IMAGE_NAME} --storagectl SATA --port ${PORT_NUMBER} --device 0 --type hdd --medium ${IMAGE_FILEPATH}
+  fi
+}
+vboxmemory() {
+  usage $# "IMAGE_NAME" "MEMORY_MB"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
   local MEMORY_MB=$2
 
+  echo "VBoxManage modifyvm $IMAGE_NAME --memory $MEMORY_MB"
   VBoxManage modifyvm $IMAGE_NAME --memory $MEMORY_MB
 }
 vboxport() {
-  if [ -z "$1" ]; then
-    echo "Please specify IMAGE_NAME parameter > 'vboxport IMAGE_NAME PORT'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\""
-    echo ""
-    vboxls
-    return -1
-  fi
-  if [ -z "$2" ]; then
-    echo "Please specify PORT parameter > 'vboxport IMAGE_NAME PORT'. Must be a number between 1024 < PORT < 65535!"
+  usage $# "IMAGE_NAME" "PORT"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "- IMAGE_NAME : see 'vboxls'" >&2
+    echo "- PORT : Must be a number between 1024 < PORT < 65535!" >&2
+    echo "" >&2
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
     return -1
   fi
 
@@ -67,12 +137,54 @@ vboxport() {
   #VBoxManage modifyvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
   VBoxManage controlvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
 }
-vboxsnapshot() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please specify parameters > 'vboxsnapshot IMAGE_NAME [SNAPSHOT_NAME] [SNAPSHOT_DESC]'. If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+vboxnetdhcp() {
+  echo "VBoxManage list dhcpservers"
+  VBoxManage list dhcpservers
+}
+vboxnetls() {
+  echo "VBoxManage list hostonlyifs"
+  VBoxManage list hostonlyifs
+}
+vboxnetcreate() {
+  echo "VBoxManage hostonlyif create"
+  VBoxManage hostonlyif create
+}
+vboxnetrm() {
+  usage $# "NETWORK_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxnetls'" >&2
     echo "" >&2
-    vboxls
+    vboxnetls
+    return -1
+  fi
+
+  local NETWORK_NAME=$1
+  echo "VBoxManage hostonlyif remove ${NETWORK_NAME}"
+  VBoxManage hostonlyif remove ${NETWORK_NAME}
+}
+vboxnetconfig() {
+  usage $# "NETWORK_NAME" "[IP]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxnetls'" >&2
+    echo "" >&2
+    vboxnetls
+    return -1
+  fi
+
+  local NETWORK_NAME=$1
+  local IP=${2:-192.168.99.1}
+  echo "VBoxManage hostonlyif ipconfig ${NETWORK_NAME} --ip ${IP} --netmask 255.255.255.0"
+  VBoxManage hostonlyif ipconfig ${NETWORK_NAME} --ip ${IP} --netmask 255.255.255.0
+}
+vboxsnapshot() {
+  usage $# "IMAGE_NAME" "[SNAPSHOT_NAME]" "[SNAPSHOT_DESC]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
     return -1
   fi
 
@@ -82,18 +194,12 @@ vboxsnapshot() {
   echo "VBoxManage snapshot $IMAGE_NAME take $SNAPSHOT_NAME --description \"$SNAPSHOT_DESC\""
   VBoxManage snapshot $IMAGE_NAME take $SNAPSHOT_NAME --description "$SNAPSHOT_DESC"
 }
-
 vboxrmsoft() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please specify parameters > 'vboxrm IMAGE_HASH'. If you don't know any names run 'vboxls' and look at the first column \{INST_HASH\}" >&2
-    echo "" >&2
-    vboxls
-    return -1
-  fi
+  usage $# "IMAGE_HASH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local IMAGE_HASH=$1
-  
   echo "Only remove from VBox listing > VBoxManage unregistervm $IMAGE_HASH --delete"
   VBoxManage unregistervm $IMAGE_HASH --delete
 }
