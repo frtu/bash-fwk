@@ -67,6 +67,37 @@ mvnsetversionsnapshot() {
   mvnsk versions:set -DnewVersion=$1-SNAPSHOT
 }
 
+mvndljar() {
+  if [[ "$#" < "1" ]]; then
+      usage $# "GROUP_ID|GAV" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
+      return -1
+  fi
+
+  if [[ "$#" < "2" ]]
+    then
+      if [[ ! $1 == *\:* ]]; then
+        usage $# "GROUP_ID|GAV" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
+        return -1
+      fi
+
+      local ARTIFACT_VERSION="${1##*\:}"
+      local GROUP_ARTIFACT="${1%\:*}"
+
+      local GROUP_ID="${GROUP_ARTIFACT%\:*}"
+      local ARTIFACT_ID="${GROUP_ARTIFACT##*\:}"
+    else
+      local GROUP_ID=$1
+      local ARTIFACT_ID=$2
+      local ARTIFACT_VERSION=$3
+  fi
+  local GROUP_ID=`echo "$GROUP_ID" | sed 's/\./\//g'`
+  local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
+  local FILE_PATH=${4:-$FILE_PREFIX.jar}      
+
+  echo "wget http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}"
+  wget http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}
+}
+
 mvnimportjar() {
   usage $# "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
