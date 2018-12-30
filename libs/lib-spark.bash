@@ -17,7 +17,16 @@ srun() {
   echo "spark-submit --master yarn $SPARK_JAR ${@:2}"
   spark-submit --master yarn $SPARK_JAR ${@:2}
 }
-sdljar() {
+
+sjarls() {
+  if [ -n "$1" ]
+    then
+  	  ll ${SPARK_HOME}/jars/ | grep $1
+  	else
+  	  ll ${SPARK_HOME}/jars/
+  fi
+}
+sjardl() {
   usage $# "JAR_GAV"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
