@@ -384,7 +384,7 @@ dckrmimage() {
 }
 
 dckbuild() {
-  usage $# "IMAGE_NAME[:TAG_NAME]"
+  usage $# "IMAGE_NAME[:TAG_NAME]" "[DOCKERFILE_NAME]" "[ROOT_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "It is HIGHLY recommended to name the image that you will create. You can optionally append a :TAG_NAME" >&2 
@@ -392,9 +392,17 @@ dckbuild() {
   fi
 
   local IMAGE_NAME=$1
+  local DOCKERFILE_NAME=$2
+  local ROOT_PATH=${3:-.}
 
-  echo "docker build -t ${IMAGE_NAME} ."
-  docker build -t ${IMAGE_NAME} .
+  local OPTIONAL_ARGS="-t ${IMAGE_NAME}"
+
+  if [ -n "${DOCKERFILE_NAME}" ]; then
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} --file ${DOCKERFILE_NAME}"
+  fi
+
+  echo "docker build ${OPTIONAL_ARGS} ${ROOT_PATH}"
+  docker build ${OPTIONAL_ARGS} ${ROOT_PATH}
 }
 
 dcmpstart() {
