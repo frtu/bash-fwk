@@ -3,8 +3,10 @@ import lib-dev-maven
 
 export LIVY_HOME=/apps/livy-server-0.3.0
 export LIVY_CONF_DIR=${LIVY_HOME}/bin
+export HIVE_STORE_ROOT_FOLDER=${SPARK_HOME}/spark-warehouse/
 
 alias scd='cd ${SPARK_HOME}'
+alias scdhive='cd ${HIVE_STORE_ROOT_FOLDER}'
 alias scdlivy='cd ${LIVY_HOME}'
 
 srun() {
