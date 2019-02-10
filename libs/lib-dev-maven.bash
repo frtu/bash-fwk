@@ -16,6 +16,9 @@ mvnsk() { # Skip all tests and enforcer
 mvnsrc() { # Download in local repo all the source
   mvnsk dependency:resolve -Dclassifier=sources
 }
+mvndoc() {
+  mvnsk javadoc:javadoc
+}
 mvnrun() {
   mvnsk exec:java
 }

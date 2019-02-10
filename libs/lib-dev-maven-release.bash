@@ -3,7 +3,7 @@ import lib-dev-maven
 MVN_RELEASE_REPO=target/checkout
 
 mvnreleasevalidate() {
-  mvn test
+  mvn clean test
   if [ "$?" -eq 0 ]; then
       echo "Success!"
     else
