@@ -10,7 +10,7 @@ sshagentstart() {
      echo "SSH Agent started"
      chmod 600 "${SSH_ENV}"
      . "${SSH_ENV}" > /dev/null
-     sshagentaddfiles
+     sshagentadd
      sshagentls
 }
 sshagentstop() {
