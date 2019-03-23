@@ -7,3 +7,6 @@ trimjson() {
 trimhivejson() {
   trimfirstandlast $@ | trimjson
 }
+wrapquote() {
+  sed 's/^/"/;s/$/"/' $@
+}
