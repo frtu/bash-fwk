@@ -62,6 +62,23 @@ enabledockerlinux() {
   refresh
   inst_docker
 }
+enableml() {
+  usage $# "MAGIC_LEAP_SDK_VERSION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local MAGIC_LEAP_SDK_VERSION=$1
+  local ML_HOME=${HOME}/MagicLeap/mlsdk/${MAGIC_LEAP_SDK_VERSION}
+  if [ -d "$ML_HOME" ]
+    then
+      local TARGET_SERVICE_FILENAME=${SERVICE_LOCAL_BASH_PREFIX}env-dev-magicleap.bash
+      echo "export ML_VERSION=${MAGIC_LEAP_SDK_VERSION}" > $TARGET_SERVICE_FILENAME
+      enablelib dev-magicleap
+    else
+      echo "First parameter doesn't allow to point to a valid ML_HOME=$ML_HOME!!"
+      return -1
+  fi  
+}
 
 # Dev tools
 enablesbt() {
