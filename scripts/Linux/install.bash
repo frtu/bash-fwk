@@ -3,7 +3,7 @@ import lib-ssocks
 inst_pip() {
   sudo apt-get -y install python3-pip
 }
-inst_ss() {
+inst_ssocks() {
   usage $# "PASSWORD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -28,4 +28,7 @@ inst_ss() {
     else
       echo "== Install error, please read logs. ==" >&2
   fi
+}
+inst_youtube() {
+  sudo apt-get -y install youtube-dl
 }
