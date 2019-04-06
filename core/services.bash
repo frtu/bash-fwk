@@ -76,9 +76,10 @@ enableml() {
   local ML_HOME=${HOME}/MagicLeap/mlsdk/${MAGIC_LEAP_SDK_VERSION}
   if [ -d "$ML_HOME" ]
     then
-      local TARGET_SERVICE_FILENAME=${SERVICE_LOCAL_BASH_PREFIX}env-dev-magicleap.bash
-      echo "export ML_VERSION=${MAGIC_LEAP_SDK_VERSION}" > $TARGET_SERVICE_FILENAME
-      enablelib dev-magicleap
+      enablelib dev-magicleap "export ML_VERSION=${MAGIC_LEAP_SDK_VERSION}"
+      if [ -n "$MLCERT" ]; then
+        mbcertpersist ${MLCERT}
+      fi
     else
       echo "First parameter doesn't allow to point to a valid ML_HOME=$ML_HOME!!"
       return -1

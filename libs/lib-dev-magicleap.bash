@@ -120,13 +120,17 @@ mbcertpersist() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local CERT_PATH=${PWD}/$1
+  local CERT_PATH=$1
+  if [ ! -f "$CERT_PATH" ]; then
+    CERT_PATH=${PWD}/$1
+  fi
   if [ ! -f "$CERT_PATH" ]; then
     echo "Certificate file doesn't exist : $1!" >&2
     return -1
   fi
 
-  local TARGET_SERVICE_FILENAME=${SERVICE_LOCAL_BASH_PREFIX}env-dev-magicleap.bash
+  local TARGET_SERVICE_FILENAME=${SERVICE_LOCAL_BASH_PREFIX}dev-magicleap.bash
+  echo "Patching file ${TARGET_SERVICE_FILENAME} with MLCERT=${CERT_PATH}"
   echo "export MLCERT=${CERT_PATH}" >> $TARGET_SERVICE_FILENAME
 }
 
