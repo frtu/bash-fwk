@@ -6,23 +6,28 @@ lslibs() {
 }
 
 enablelib() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
+  usage $# "LIB_NAME_WITHOUT_PREFIX" "[RESOLUTION:1080p|720p]" "[EXTRA_ARGS:-f 600|-t 10|-w]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
     echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable " >&2
     lslibs
     return -1
-  fi
-  if [ ! -f "$LIBS_FOLDER/lib-$1.bash" ]; then
-    echo "Service doesn't exist : $1. Please check lib folder!" >&2
+  fi    
+
+  local LIB_NAME_WITHOUT_PREFIX=$1
+
+  if [ ! -f "$LIBS_FOLDER/lib-$LIB_NAME_WITHOUT_PREFIX.bash" ]; then
+    echo "Service doesn't exist : ${LIB_NAME_WITHOUT_PREFIX}. Please check lib folder!" >&2
     lslibs
     return -1
   fi
 
-  local LIB_NAME_WITHOUT_PREFIX=$1
+  local EXTRA_ARGS=${@:2}
   local TARGET_SERVICE_FILENAME=$SERVICE_LOCAL_BASH_PREFIX$LIB_NAME_WITHOUT_PREFIX.bash
 
   echo "Enabling service at ${TARGET_SERVICE_FILENAME}"
-  echo "import lib-${LIB_NAME_WITHOUT_PREFIX}" > $TARGET_SERVICE_FILENAME
+  echo "${EXTRA_ARGS}" > $TARGET_SERVICE_FILENAME
+  echo "import lib-${LIB_NAME_WITHOUT_PREFIX}" >> $TARGET_SERVICE_FILENAME
   echo "" >> $TARGET_SERVICE_FILENAME
   # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
   echo "export SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-}=${TARGET_SERVICE_FILENAME}" >> $TARGET_SERVICE_FILENAME
@@ -85,7 +90,12 @@ enablesbt() {
   enablelib sbt
 }
 enablemvngen() {
-  enablelib dev-maven-archetype
+  usage $# "ARCHETYPE_VERSION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ARCHETYPE_VERSION=$1
+  enablelib dev-maven-archetype "export ARCHETYPE_VERSION=${ARCHETYPE_VERSION}"
 }
 enablejava() {
   usage $# "JAVA_HOME"

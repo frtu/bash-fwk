@@ -1,6 +1,4 @@
 #!/bin/sh
-ARCHETYPE_VERSION=0.3.6
-
 mvngenlocal() {
   usage $# "ARCHETYPE:plt-kafka|plt-spark|avro" "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
