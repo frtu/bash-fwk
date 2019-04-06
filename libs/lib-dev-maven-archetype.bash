@@ -34,4 +34,7 @@ mvngen() {
   echo "mvn archetype:generate -DarchetypeGroupId=com.github.frtu.archetype -DarchetypeArtifactId=${ARCHETYPE}-project-archetype -DarchetypeVersion=${ARCHETYPE_VERSION} ${OPTIONAL_ARGS}"
   mvn archetype:generate -DarchetypeGroupId=com.github.frtu.archetype -DarchetypeArtifactId=${ARCHETYPE}-project-archetype -DarchetypeVersion=${ARCHETYPE_VERSION} ${OPTIONAL_ARGS}
 }
-
+mvninst() {
+  echo "mvn clean install"
+  mvn clean install
+}

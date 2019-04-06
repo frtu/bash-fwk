@@ -107,6 +107,20 @@ gtag() {
 gtagdate() {
   gtag | xargs -L1 git log --pretty=format:"%D %cI" -1 
 }
+gtagpush() {
+  usage $# "TAG_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "==== Please push an existing tag ! Check existing tag using 'gtag' ===="
+    gtag
+    return -1; 
+  fi
+
+  local TAG_NAME=$1
+
+  echo "git push origin ${TAG_NAME}:${TAG_NAME}"
+  git push origin ${TAG_NAME}:${TAG_NAME}
+}
 
 gbrls() {
   echo "git branch -a"
