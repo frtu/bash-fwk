@@ -134,6 +134,30 @@ mbcertpersist() {
   echo "export MLCERT=${CERT_PATH}" >> $TARGET_SERVICE_FILENAME
 }
 
+#https://creator.magicleap.com/learn/tutorials/capture-service
+mlvideo() {
+  usage $# "DEST_FILE" "[RESOLUTION:1080p|720p]" "[EXTRA_ARGS:-f 600|-t 10|-w]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DEST_FILE=$1
+  local RESOLUTION=$2
+  local EXTRA_ARGS=${@:3}
+
+  if [ -n "${RESOLUTION}" ]; then
+    EXTRA_ARGS=-q ${RESOLUTION} ${EXTRA_ARGS}
+  fi
+
+  echo "mldb ${EXTRA_ARGS} install -u ${MPK_FILE}"
+  mldb capture video ${EXTRA_ARGS} ${DEST_FILE} 
+}
+mlvideopull() {
+  mldb pull -D /C1/videos
+}
+mlimagepull() {
+  mldb pull -D /C1/photos
+}
+
 # https://creator.magicleap.com/learn/guides/magic-leap-builder-user-guide
 mbdevice() {
   usage $# "PACKAGE_FILE" "[TARGET:device|release_device|debug_device]"
