@@ -72,6 +72,14 @@ Windows specific scripts are on folder "scripts\MINGW64_NT-6.3\"
 - dev-maven.bash : set MAVEN_HOME & import previous maven lib
 - service-dockertoolbox.bash : start docker-machine default at startup
 
+### Ubuntu
+
+Install SSocks :
+
+- inst_ssocks
+- ll /usr/local/lib/ => check the python folder
+- sudo vi /usr/local/lib/python3.7/dist-packages/shadowsocks/crypto/openssl.py
+- Replace the 2 occurence of EVP_CIPHER_CTX_cleanup => EVP_CIPHER_CTX_reset
 
 ## Tech details
 - setup.bash : is the shell installer script
