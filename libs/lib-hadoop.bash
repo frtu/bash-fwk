@@ -1,3 +1,5 @@
+import lib-hive
+
 # https://hadoop.apache.org/docs/r2.7.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html
 alias hversion='hdfs version'
 
@@ -17,6 +19,26 @@ alias hget='hdfs dfs -get '
 alias hcat='hdfs dfs -cat '
 alias htext='hdfs dfs -text '
 
+hdircsv() {
+  usage $# "HDFS_FOLDER" "FILENAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local HDFS_FOLDER=$1
+  local FILENAME=$2
+
+  echo "QUOTA REM_QUOTA SPACE_QUOTA REM_SPACE_QUOTA DIR_COUNT FILE_COUNT CONTENT_SIZE PATHNAME" > $FILENAME
+  hdirsize ${HDFS_FOLDER} | trimspacetab >> $FILENAME
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]
+    then
+      echo "== Sub folder sizes imported to file ${FILENAME} from folder ${HDFS_FOLDER} =="
+      cat $FILENAME
+    else
+      echo "== An error has happen." >&2
+  fi
+}
 hdirsize() {
   usage $# "HDFS_FOLDER" "[OPTIONAL_ARG]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -56,6 +78,6 @@ hdirtpl() {
   local HDFS_FOLDER=$1
   local HDFS_MANY_ARGS_CMD=${@:2}
 
-  echo "hdfs dfs -ls ${HDFS_FOLDER} | awk -v COMMAND=\"$HDFS_MANY_ARGS_CMD \" '{system(COMMAND \$8)}'"
+  echo "hdfs dfs -ls ${HDFS_FOLDER} | awk -v COMMAND=\"$HDFS_MANY_ARGS_CMD \" '{system(COMMAND \$8)}'" >&2
   hdfs dfs -ls ${HDFS_FOLDER} | awk -v COMMAND="$HDFS_MANY_ARGS_CMD " '{system(COMMAND $8)}'
 }
