@@ -1,3 +1,7 @@
+trimspacetab() {
+  # Remove all the leading space & duplicated space in the middle
+  sed 's/^[ \t]*//; s/  */ /g' $@
+}
 trimfirstandlast() {
   sed 's/.$//; s/^.//' $@
 }
