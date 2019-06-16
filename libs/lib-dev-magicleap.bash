@@ -148,8 +148,24 @@ mlvideo() {
     EXTRA_ARGS=-q ${RESOLUTION} ${EXTRA_ARGS}
   fi
 
-  echo "mldb ${EXTRA_ARGS} install -u ${MPK_FILE}"
+  echo "mldb capture video ${EXTRA_ARGS} ${DEST_FILE}"
   mldb capture video ${EXTRA_ARGS} ${DEST_FILE} 
+}
+mlimage() {
+  usage $# "DEST_FILE" "[RESOLUTION:1080p|720p]" "[EXTRA_ARGS:-r]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DEST_FILE=$1
+  local RESOLUTION=$2
+  EXTRA_ARGS=${@:3}
+
+  if [ -n "${RESOLUTION}" ]; then
+    EXTRA_ARGS=-q ${RESOLUTION} ${EXTRA_ARGS}
+  fi
+
+  echo "mldb capture image ${EXTRA_ARGS} ${DEST_FILE}"
+  mldb capture image ${EXTRA_ARGS} ${DEST_FILE} 
 }
 mlvideopull() {
   mldb pull -D /C1/videos
