@@ -90,6 +90,9 @@ inst_pip() {
 inst_node() {
   brew install node
   npm install -g grunt-cli
+  
+  enablelib dev-node
+  njv
 }
 inst_nvm() {
   local VERSION=${1:-v10.13.0}
