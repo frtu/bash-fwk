@@ -34,12 +34,21 @@ inst_youtube() {
 }
 
 inst_node() {
+  usage $# "VERSION:10/12"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local VERSION=$1
+
   sudo apt-get install curl
-  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+  curl -sL https://deb.nodesource.com/setup_${VERSION}.x | sudo -E bash -
 
   sudo apt update
   sudo apt-get install nodejs
 
   enablelib dev-node
-  njv
+  njversion
+}
+inst_node10() {
+  inst_node 10
 }

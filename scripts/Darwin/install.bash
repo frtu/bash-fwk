@@ -92,7 +92,7 @@ inst_node() {
   npm install -g grunt-cli
   
   enablelib dev-node
-  njv
+  njversion
 }
 inst_nvm() {
   local VERSION=${1:-v10.13.0}
