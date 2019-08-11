@@ -52,3 +52,6 @@ inst_node() {
 inst_node10() {
   inst_node 10
 }
+uninst_node() {
+  sudo apt-get purge nodejs && sudo apt-get autoremove --purge
+}
