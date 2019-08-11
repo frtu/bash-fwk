@@ -32,3 +32,14 @@ inst_ssocks() {
 inst_youtube() {
   sudo apt-get -y install youtube-dl
 }
+
+inst_node() {
+  sudo apt-get install curl
+  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+
+  sudo apt update
+  sudo apt-get install nodejs
+
+  enablelib dev-node
+  njv
+}
