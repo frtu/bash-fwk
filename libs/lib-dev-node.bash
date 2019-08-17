@@ -19,7 +19,7 @@ njbuildNdeploy() {
   njbuild
 
   echo "> npm install -g serve"
-  npm install -g serve
+  sudo npm install -g serve
   echo "> serve -s build&"
   serve -s build&
 }
