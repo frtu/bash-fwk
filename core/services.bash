@@ -66,6 +66,7 @@ enabledockerlinux() {
   srv_activate docker
   refresh
   inst_docker
+  refresh
 }
 enableml() {
   usage $# "MAGIC_LEAP_SDK_VERSION"
