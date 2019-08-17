@@ -37,24 +37,7 @@ You can list them and activate them on needs.
 - srv_activate : activate any srv name
 - srv_deactivate : deactivate any srv name 
 
-
-### Framework
-
-The main functionality file is "core\base.bash". It provides these commands : 
-
-- import
-- reload (if you constantly edit your bash on an editor, reload them in the command line with it)
-
-Create your own commands grouped by file (docker.bash) :
-
-- scripts\\[your distro] : contains all linux distro specific scripts (fixed by uname -s) => see below section
-
-To accelerate adoption, bash-fwk coms with pre-packaged library script that you can use if you need it in "libs\", here the most interesting ones :
-
-- libs\lib-dev-maven.bash : maven & all kinds of nexus repo commands & clean up
-- libs\lib-docker.bash : standards docker commands starting with "dck"
-- libs\lib-ssh.bash : start ssh-agent and register all keys in ".ssh/" folder
-
+## Platform specifics
 
 ### Mac OSX
 
@@ -77,5 +60,5 @@ Windows specific scripts are on folder "scripts\MINGW64_NT-6.3\"
 See [bash-fwk linux scripts](https://github.com/frtu/bash-fwk/tree/master/scripts/Linux)
 
 ## Tech details
-- setup.bash : is the shell installer script
-- autoinstaller4curl.bash : remote installer that git clone this repo and launch setup.bash
+
+To understand or contribute, just check [bash-fwk core framework](https://github.com/frtu/bash-fwk/tree/master/core)
