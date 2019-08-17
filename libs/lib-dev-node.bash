@@ -3,6 +3,8 @@ njversion() {
   node -v
   echo "> npm -v"
   npm -v
+  echo "> node -p process.versions"
+  node -p process.versions
 }
 
 njinststart() {
