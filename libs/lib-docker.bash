@@ -295,14 +295,44 @@ dckrunjenkinsnode() {
   echo "dckbash ${INSTANCE_NAME} cat /var/lib/jenkins/secrets/initialAdminPassword"
 }
 dckrunjenkins() {
-  usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
+  usage $# "INSTANCE_NAME:jenkins" "[FOLDER_PATH]" "[PORT_JENKINS:8080]" "[PORT_INBOUND_AGENT:50000]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
+ 
+  local INSTANCE_NAME=${1:-jenkins}
+  local FOLDER_PATH=$2
+  local PORT_JENKINS=${3:-8080}
+  local PORT_INBOUND_AGENT=${4:-50000}
 
-  local FOLDER_PATH=${3:-$PWD}
-  # -p 8082:8080 -p 50000:50000
-  dckweb "jenkins/jenkins" "$FOLDER_PATH:/var/jenkins_home" $@
+  # https://github.com/jenkinsci/docker
+
+  # If a path is passed, create the basic folder structure
+  if [ -n "${FOLDER_PATH}" ]; then
+    echo "== Create base folder at ${FOLDER_PATH} =="
+    mkdir -p "${FOLDER_PATH}/jenkins_home"
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -v ${FOLDER_PATH}/jenkins_home:/var/lib/jenkins"
+  fi
+
+  # If no port pass, use dynamic attr port
+  if [ -n "${PORT_JENKINS}" ]; then
+    echo "== Connect to JENKINS using http://localhost:${PORT_JENKINS} =="
+    
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${PORT_JENKINS}:8080"    
+    echo "> dckmport ${PORT_JENKINS} : to expose the port (only needed once per VM)"
+  fi
+
+  # If no port pass, use dynamic attr port
+  if [ -n "${PORT_INBOUND_AGENT}" ]; then
+    local OPTIONAL_ARGS="${OPTIONAL_ARGS} -p ${PORT_INBOUND_AGENT}:50000"
+    echo "> dckmport ${PORT_INBOUND_AGENT} : to expose the port (only needed once per VM)"
+  fi
+
+  dckstartdaemon "jenkins/jenkins:lts" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}"
+
+  echo "GET THE PASSWORD BY TYPING"
+  echo "dckbash ${INSTANCE_NAME} cat /var/jenkins_home/secrets/initialAdminPassword"
 }
+
 dckrunnginx() {
   usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
