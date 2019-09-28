@@ -33,6 +33,11 @@ inst_brew() {
   brew install brew-cask
   brew tap beeftornado/rmtree
 }
+update_brew() {
+  brew upgrade
+  brew cask upgrade
+}
+
 uninst() {
   if [ $# -eq 0 ]
     then
