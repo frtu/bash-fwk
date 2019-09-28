@@ -40,3 +40,28 @@ linuxdesc() {
   echo "====== Kernel & GCC build ======"
   cat /proc/version
 }
+
+envls() {
+  if [ -z "$1" ]
+    then
+      env
+    else
+      env | grep "$1"
+  fi
+}
+envrm() {
+  usage $# "ENV_NAME_TO_REMOVE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'envls KEYWORD' or 'envls'." >&2
+    echo "" >&2
+    envls
+    return -1
+  fi
+
+  local ENV_NAME_TO_REMOVE=$1
+
+  echo "unset $ENV_NAME_TO_REMOVE"
+  unset $ENV_NAME_TO_REMOVE
+}
+
