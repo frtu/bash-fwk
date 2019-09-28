@@ -62,10 +62,10 @@ enablessh() {
   srv_activate ssh
   refresh
 }
-enabledockerlinux() {
+enabledockerubuntu() {
   srv_activate docker
   refresh
-  inst_docker
+  inst_docker_ubuntu
   refresh
 }
 enableml() {
