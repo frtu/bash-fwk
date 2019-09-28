@@ -24,6 +24,12 @@ k8mssh() {
     echo "$@" | k8mtemplate "ssh" $IMAGE_NAME
   fi
 }
+k8mlogs() {
+  minikube logs
+}
+k8mmutenotification() {
+  k8mtemplate "config" set WantUpdateNotification false
+}
 
 k8mstop() {
   k8mtemplate "stop" $@
@@ -52,6 +58,16 @@ k8mload() {
   minikube docker-env ${OPTIONAL_ARGS} | grep "DOCKER_HOST"
   eval $(minikube docker-env ${OPTIONAL_ARGS})
 }
+k8munload() {
+  local IMAGE_NAME=$1
+  echo "${FUNCNAME} ${IMAGE_NAME}"
+
+  if [ -n "$1" ]; then
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -p $1"
+  fi
+  minikube docker-env -u ${OPTIONAL_ARGS}
+  eval $(minikube docker-env -u ${OPTIONAL_ARGS})
+}
 k8mloadpersist() {
   local IMAGE_NAME=$1
   if [ -n "$1" ]; then
@@ -62,10 +78,23 @@ k8mloadpersist() {
 
   k8mload $IMAGE_NAME
 }
-k8mloadunset() {
+k8mloadpersistrm() {
   echo "unset MINIKUBE_DEFAULT_INSTANCE"
   unset MINIKUBE_DEFAULT_INSTANCE
   
   echo "rm $MINIKUBE_PERSIST_FILE"
   rm $MINIKUBE_PERSIST_FILE
+}
+
+k8env() {
+  kubectl get nodes
+}
+k8ls() {
+  kubectl get pod
+}
+k8info() {
+  kubectl describe pod hello-minikube
+}
+k8hello() {
+  kubectl run hello-minikube --image=k8s.gcr.io/echoserver:1.10 --port=8080
 }
