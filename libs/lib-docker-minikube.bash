@@ -1,13 +1,25 @@
 MINIKUBE_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-minikube-instance.bash
 
 k8mstart() {
-	k8mtemplate "start" $@
+  k8mtemplate "start" $@
 }
+k8mssh() {
+  if [ -z "$2" ]
+  then
+    k8mtemplate "ssh" $1
+  else
+    local IMAGE_NAME=$1
+    shift 1
+    echo "CALL : root@$IMAGE_NAME> $@"
+    echo "$@" | k8mtemplate "ssh" $IMAGE_NAME
+  fi
+}
+
 k8mstop() {
-	k8mtemplate "stop" $@
+  k8mtemplate "stop" $@
 }
 k8mrm() {
-	k8mtemplate "delete" $@
+  k8mtemplate "delete" $@
 }
 k8mtemplate() {
   local EXTRA_PARAMS=${@:2}
@@ -34,16 +46,4 @@ k8mloadunset() {
   
   echo "rm $MINIKUBE_PERSIST_FILE"
   rm $MINIKUBE_PERSIST_FILE
-}
-
-k8mssh() {
-	if [ -z "$2" ]
-  	then
-	  k8mtemplate "ssh" $1
-    else
-      local IMAGE_NAME=$1
-      shift 1
-      echo "CALL : root@$IMAGE_NAME> $@"
-      echo "$@" | k8mtemplate "ssh" $IMAGE_NAME
-	fi
 }
