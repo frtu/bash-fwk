@@ -76,7 +76,26 @@ inst_vagrant() {
   brew tap homebrew/completions
   brew install vagrant-completion
 }
+inst_k8s() {
+  usage $# "[PROXY]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local PROXY=$1
+  if [ -z "$PROXY" ]; then
+    export HTTP_PROXY=http://${PROXY}
+    export HTTPS_PROXY=http://${PROXY}
+    export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+  fi
+  
+  echo 'brew cask install minikube'
+  brew cask install minikube
+
+  echo 'enablelib docker-minikube'
+  enablelib docker-minikube
+
+  refresh
+}
 inst_pip() {
   local PIP_MODULE=${1:-regex}
   echo "Type your sudo password to be able to skip Permission denied into /Library/Python/ directory"
@@ -106,7 +125,9 @@ inst_gradle() {
   local VERSION=${1:-4.5.1}
   echo "VERSION=${VERSION} => Change it by passing a first paramter"
 
-  #brew install gradle
+  # brew update && brew install gradle
+
+  ## OR using sdkman
   if [ -z "$SDKMAN_DIR" ]; then
     inst_sdk
   fi
