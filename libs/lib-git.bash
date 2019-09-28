@@ -308,3 +308,10 @@ gconfsetemail() {
 
   gconfset user.email "$1"
 }
+gconfsetproxy() {
+  usage $# "PROXY_PARAM_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  gconfset http.proxy "$1"
+}
