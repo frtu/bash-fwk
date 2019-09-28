@@ -32,12 +32,12 @@ dckmphp() {
 # Regular scripts
 dckmload() {
 	local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
-	echo "dckmload $IMAGE_NAME"
+	echo "${FUNCNAME} ${IMAGE_NAME}"
 	eval $(docker-machine env $IMAGE_NAME)
 }
 dckmloadpersist() {
   local IMAGE_NAME=${1:-$DOCKER_MACHINE_NAME}
-	dckmload $IMAGE_NAME
+  dckmload $IMAGE_NAME
   echo "Persiting BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME!"
   echo "export BOOT2DOCKER_DEFAULT_INSTANCE=$IMAGE_NAME" > $DOCKER_PERSIST_FILE
 }
