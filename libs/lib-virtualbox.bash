@@ -1,4 +1,7 @@
 # https://www.virtualbox.org/manual/ch08.html
+vbox() {
+  VBoxManage --version
+}
 vboxls() {
   if [ "$1" == "-a" ]
     then
@@ -53,26 +56,28 @@ vboxstop() {
   VBoxManage controlvm ${IMAGE_NAME} poweroff
 }
 
-#vboxcreate() {
-#  usage $# "IMAGE_NAME" "BASE_FOLDER" "[CPU_NB]" "[MEMORY_MB]"
-#  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-#  if [[ "$?" -ne 0 ]]; then return -1; fi
-#
-#  local IMAGE_NAME=$1
-#  local BASE_FOLDER=$2
-#  local CPU_NB=${3:-1}
-#  local MEMORY_MB=${4:-1024}
-#
-#  echo "VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME}"
-#  VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME}
-#  #VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME} --r
-#
-#  echo "VBoxManage modifyvm ${IMAGE_NAME} --firmware bios --bioslogofadein off --bioslogofadeout off --bioslogodiiosbootmenu disabled --ostype Linux26_64 --cpus ${CPU_NB} --memory ${MEMORY_MB} --acpi on --ioapic on --rtcuseutc on --natdnshostresolver1 off --natdnsproxy1 on --cpuhotplug off -on --hwvirtex on --nestedpaging on --largepages on --vtxvpid on --accelerate3d off --boot1 dvd"
-#  VBoxManage modifyvm ${IMAGE_NAME} --firmware bios --bioslogofadein off --bioslogofadeout off --bioslogodiiosbootmenu disabled --ostype Linux26_64 --cpus ${CPU_NB} --memory ${MEMORY_MB} --acpi on --ioapic on --rtcuseutc on --natdnshostresolver1 off --natdnsproxy1 on --cpuhotplug off -on --hwvirtex on --nestedpaging on --largepages on --vtxvpid on --accelerate3d off --boot1 dvd
-#
-#  echo "VBoxManage modifyvm ${IMAGE_NAME} --nic1 nat --nictype1 82540EM --cableconnected1 on"
-#  VBoxManage modifyvm ${IMAGE_NAME} --nic1 nat --nictype1 82540EM --cableconnected1 on
-#}
+vboxcreate() {
+  usage $# "IMAGE_NAME" "BASE_FOLDER" "[CPU_NB]" "[MEMORY_MB]" "[NETWORK:82540EM|virtio]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local BASE_FOLDER=$2
+  local CPU_NB=${3:-1}
+  local MEMORY_MB=${4:-1024}
+  # virtio | 82540EM
+  local NETWORK=${5:-82540EM}
+
+  echo "VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME}"
+  VBoxManage createvm --basefolder ${BASE_FOLDER}/${IMAGE_NAME} --name ${IMAGE_NAME}  --register
+
+  echo "VBoxManage modifyvm ${IMAGE_NAME} --firmware bios --bioslogofadein off --bioslogofadeout off --bioslogodisplaytime 0 --biosbootmenu disabled --ostype Linux26_64 --cpus ${CPU_NB} --memory ${MEMORY_MB} --acpi on --ioapic on --rtcuseutc on --natdnshostresolver1 on --natdnsproxy1 off --cpuhotplug off --pae on --hpet on --hwvirtex on --nestedpaging on --largepages on --vtxvpid on --accelerate3d off --boot1 dvd"
+  VBoxManage modifyvm ${IMAGE_NAME} --firmware bios --bioslogofadein off --bioslogofadeout off --bioslogodisplaytime 0 --biosbootmenu disabled --ostype Linux26_64 --cpus ${CPU_NB} --memory ${MEMORY_MB} --acpi on --ioapic on --rtcuseutc on --natdnshostresolver1 on --natdnsproxy1 off --cpuhotplug off --pae on --hpet on --hwvirtex on --nestedpaging on --largepages on --vtxvpid on --accelerate3d off --boot1 dvd
+
+  echo "VBoxManage modifyvm ${IMAGE_NAME} --nic1 nat --nictype1 ${NETWORK} --cableconnected1 on"
+  VBoxManage modifyvm ${IMAGE_NAME} --nic1 nat --nictype1 ${NETWORK} --cableconnected1 on
+}
+
 vboxstorage() {
   usage $# "IMAGE_NAME" "IMAGE_FILEPATH" "[PORT_NUMBER]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -105,6 +110,22 @@ vboxstorage() {
     VBoxManage storageattach ${IMAGE_NAME} --storagectl SATA --port ${PORT_NUMBER} --device 0 --type hdd --medium ${IMAGE_FILEPATH}
   fi
 }
+vboxmount() {
+  usage $# "IMAGE_NAME" "HOST_FOLDER_PATH" "TARGET_FOLDER_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local HOST_FOLDER_PATH=$2
+  local TARGET_FOLDER_NAME=$3
+
+  VBoxManage guestproperty set ${IMAGE_NAME} /VirtualBox/GuestAdd/SharedFolders/MountPrefix /
+  VBoxManage guestproperty set ${IMAGE_NAME} /VirtualBox/GuestAdd/SharedFolders/MountDir /
+
+  echo "Mapping '${HOST_FOLDER_PATH}' -> '${TARGET_FOLDER_NAME}'"
+  VBoxManage guestproperty sharedfolder add ${IMAGE_NAME} --name ${TARGET_FOLDER_NAME} --hostpath ${HOST_FOLDER_PATH} --automount
+}
+
 vboxmemory() {
   usage $# "IMAGE_NAME" "MEMORY_MB"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -137,10 +158,26 @@ vboxport() {
   #VBoxManage modifyvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
   VBoxManage controlvm $IMAGE_NAME natpf1 "tcp-port$PORT,tcp,,$PORT,,$PORT";
 }
+
 vboxnetdhcp() {
   echo "VBoxManage list dhcpservers"
   VBoxManage list dhcpservers
 }
+vboxnetdhcpconf() {
+  usage $# "IMAGE_NAME" "DHCP_IP" "NETMASK" "LOWER_IP" "UPPER_IP"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local DHCP_IP=$2
+  local NETMASK=$3
+  local LOWER_IP=$4
+  local UPPER_IP=$5
+
+  echo "VBoxManage dhcpserver modify --netname HostInterfaceNetworking-vboxnet0 --ip ${DHCP_IP} --netmask ${NETMASK} --lowerip ${LOWER_IP} --upperip ${UPPER_IP} --enable"
+  VBoxManage dhcpserver modify --netname HostInterfaceNetworking-vboxnet0 --ip ${DHCP_IP} --netmask ${NETMASK} --lowerip ${LOWER_IP} --upperip ${UPPER_IP} --enable
+}
+
 vboxnetls() {
   echo "VBoxManage list hostonlyifs"
   VBoxManage list hostonlyifs
@@ -149,6 +186,7 @@ vboxnetcreate() {
   echo "VBoxManage hostonlyif create"
   VBoxManage hostonlyif create
 }
+
 vboxnetrm() {
   usage $# "NETWORK_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
