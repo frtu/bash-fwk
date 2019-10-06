@@ -40,6 +40,9 @@ k8mrm() {
 k8mtemplate() {
   local EXTRA_PARAMS=${@:2}
 
+  if [ -n "$EXTRA_KUBE_PARAMS" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS $EXTRA_KUBE_PARAMS"
+  fi
   if [ -n "$MINIKUBE_DEFAULT_INSTANCE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -p $MINIKUBE_DEFAULT_INSTANCE"
   fi
@@ -70,9 +73,16 @@ k8munload() {
 }
 k8mloadpersist() {
   local IMAGE_NAME=$1
-  if [ -n "$1" ]; then
+  local EXTRA_KUBE_PARAMS=${@:2}
+
+  if [ -n "$IMAGE_NAME" ]; then
     echo "Persiting MINIKUBE_DEFAULT_INSTANCE=$IMAGE_NAME!"
     echo "export MINIKUBE_DEFAULT_INSTANCE=$IMAGE_NAME" > $MINIKUBE_PERSIST_FILE
+    source $MINIKUBE_PERSIST_FILE
+  fi
+  if [ -n "$EXTRA_KUBE_PARAMS" ]; then
+    echo "Add EXTRA_KUBE_PARAMS=$EXTRA_KUBE_PARAMS!"
+    echo "export EXTRA_KUBE_PARAMS=$EXTRA_KUBE_PARAMS" >> $MINIKUBE_PERSIST_FILE
     source $MINIKUBE_PERSIST_FILE
   fi
 
