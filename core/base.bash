@@ -52,7 +52,13 @@ usage() {
   done
 
   # CHECK
+  if [[ "$NUM_MANDATORY_ARGS" -eq "0" ]]; then
+    # Display usage
+    echo "Usage : ${FUNCNAME[1]} ${@:2} => DISPLAY OPTIONAL ARGS"
+  fi
+
   if [[ "$NUMBER_ARG" < "$NUM_MANDATORY_ARGS" ]]; then
+    # Display usage in stderr and EXIT
     echo "Usage : ${FUNCNAME[1]} ${@:2} => $NUM_MANDATORY_ARGS mandatory argument(s)" >&2
     return -1
   fi
