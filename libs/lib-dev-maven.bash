@@ -10,7 +10,7 @@ SCHEMA_REGISTRY_GAV=io.confluent:kafka-schema-registry-maven-plugin:3.3.0
 
 mvnsk() { # Skip all tests and enforcer
   echo "mvn -DskipTests -Denforcer.skip $@"
-  mvn -DskipTests -Denforcer.skip $@
+  mvn -DskipTests -Denforcer.skip -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true $@
 }
 
 mvnsrc() { # Download in local repo all the source
