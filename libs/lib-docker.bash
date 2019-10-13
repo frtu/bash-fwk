@@ -80,12 +80,12 @@ dckbash() {
   # run in LOGIN MODE : https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization#bash
   if [ -z "$2" ]
     then
-      echo "Login into a Bash docker images : $IMAGE_NAME"
-      docker exec -it $IMAGE_NAME bash -l
+      echo "Login into a Bash docker images : ${IMAGE_NAME}"
+      docker exec -it ${IMAGE_NAME} bash -l
     else
       local COMMANDS=${@:2}
-      echo "CALL : root@$IMAGE_NAME> ${COMMANDS}"
-      echo "${COMMANDS}" | docker exec -i $IMAGE_NAME bash -l
+      echo "CALL : root@${IMAGE_NAME}> ${COMMANDS}"
+      echo "${COMMANDS}" | docker exec -i ${IMAGE_NAME} bash -l
   fi
 }
 dckcp() {
