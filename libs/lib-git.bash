@@ -1,5 +1,5 @@
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-completion $GIT_COMPLETION_BASENAME
+# completion $GIT_COMPLETION_BASENAME
 
 GIT_ENV_FILE=$LOCAL_SCRIPTS_FOLDER/env-git.bash
 
@@ -35,22 +35,25 @@ gcl() {
   local BRANCH_NAME=$3
   local GITHUB_ROOT_URL=${4:-github.com}
 
-  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
-  if [[ $1 == *\/* ]]; then
-    local PROJECT_NAME="${1##*\/}"
-    local REPO_NAME="${1%\/*}"
-  fi
-  # Take into account PERSISTED_GITHUB_ROOT_URL
+  # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
   if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
     echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
     local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
   fi
 
+  ##################################
+  # PARSE REPO_NAME/PROJECT_NAME
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
-    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
+    usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
     return -1
   fi
+  ##################################  
   
   local FOLDER_NAME=$PROJECT_NAME-$REPO_NAME
 
@@ -75,22 +78,25 @@ gsubadd(){
   local BRANCH_NAME=$3
   local GITHUB_ROOT_URL=${4:-github.com}
 
-  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
-  if [[ $1 == *\/* ]]; then
-    local PROJECT_NAME="${1##*\/}"
-    local REPO_NAME="${1%\/*}"
-  fi
-  # Take into account PERSISTED_GITHUB_ROOT_URL
+  # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
   if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
     echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
     local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
   fi
 
+  ##################################
+  # PARSE REPO_NAME/PROJECT_NAME
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
     return -1
   fi
+  ##################################
 
   local EXTRA_ARGS="--force"
   if [ -n "$BRANCH_NAME" ]; then
@@ -193,22 +199,25 @@ gremoteadd() {
   local BRANCH_NAME=$3
   local GITHUB_ROOT_URL=${4:-github.com}
 
-  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
-  if [[ $1 == *\/* ]]; then
-    local PROJECT_NAME="${1##*\/}"
-    local REPO_NAME="${1%\/*}"
-  fi
-  # Take into account PERSISTED_GITHUB_ROOT_URL
+  # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
   if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
     echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
     local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
   fi
 
+  ##################################
+  # PARSE REPO_NAME/PROJECT_NAME
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
     return -1
   fi
+  ##################################
 
   local REMOTE_NAME=repo-$REPO_NAME
 

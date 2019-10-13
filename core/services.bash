@@ -6,33 +6,38 @@ lslibs() {
 }
 
 enablelib() {
-  usage $# "LIB_NAME_WITHOUT_PREFIX" "[RESOLUTION:1080p|720p]" "[EXTRA_ARGS:-f 600|-t 10|-w]"
+  usage $# "LIB_NAME_WITHOUT_PREFIX" "[ADDITIONAL_SETTINGS:export RESOLUTION=720p]"
+  ##################################
+  # CHECK NO PARAMS
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable " >&2
     lslibs
     return -1
   fi    
-
+  ##################################
   local LIB_NAME_WITHOUT_PREFIX=$1
-
+  local OUTPUT_SERVICE_FILENAME=$SERVICE_LOCAL_BASH_PREFIX$LIB_NAME_WITHOUT_PREFIX.bash
+  ##################################
+  # CHECK PARAMS WRONG
   if [ ! -f "$LIBS_FOLDER/lib-$LIB_NAME_WITHOUT_PREFIX.bash" ]; then
     echo "Service doesn't exist : ${LIB_NAME_WITHOUT_PREFIX}. Please check lib folder!" >&2
     lslibs
     return -1
   fi
+  ##################################
 
-  local EXTRA_ARGS=${@:2}
-  local TARGET_SERVICE_FILENAME=$SERVICE_LOCAL_BASH_PREFIX$LIB_NAME_WITHOUT_PREFIX.bash
+  local ADDITIONAL_SETTINGS=${@:2}
 
-  echo "Enabling service at ${TARGET_SERVICE_FILENAME}"
-  echo "${EXTRA_ARGS}" > $TARGET_SERVICE_FILENAME
-  echo "import lib-${LIB_NAME_WITHOUT_PREFIX}" >> $TARGET_SERVICE_FILENAME
-  echo "" >> $TARGET_SERVICE_FILENAME
+  echo "Enabling service at ${OUTPUT_SERVICE_FILENAME}"
+  echo "echo \"- Loading '${OUTPUT_SERVICE_FILENAME}'. Env name SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-} capture this service filename\"" > $OUTPUT_SERVICE_FILENAME
+  echo "${ADDITIONAL_SETTINGS}" >> $OUTPUT_SERVICE_FILENAME
+  echo "import lib-${LIB_NAME_WITHOUT_PREFIX}" >> $OUTPUT_SERVICE_FILENAME
+  echo "" >> $OUTPUT_SERVICE_FILENAME
   # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-  echo "export SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-}=${TARGET_SERVICE_FILENAME}" >> $TARGET_SERVICE_FILENAME
+  echo "export SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-}=${OUTPUT_SERVICE_FILENAME}" >> $OUTPUT_SERVICE_FILENAME
 
-  source $TARGET_SERVICE_FILENAME
+  source $OUTPUT_SERVICE_FILENAME
 }
 
 # Local env
