@@ -208,13 +208,17 @@ gremoteadd() {
   fi
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
-    usage $# "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
+    usage $# "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME:origin]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
     return -1
   fi
   ##################################
 
   echo "git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
   git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
+
+  echo "git push -u origin master"
+  git push -u origin master
+
   echo "git fetch $REMOTE_NAME"
   git fetch $REMOTE_NAME
 

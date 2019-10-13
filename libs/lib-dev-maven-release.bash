@@ -22,13 +22,18 @@ mvnreleasevalidate() {
 
 # Release
 mvnreleasetagversion() {
+  usage $# "[RELEASE_VERSION]" "[FOLLOWING_VERSION_WITHOUT_SNAPSHOT]"
+
+  local RELEASE_VERSION=$1
+  local FOLLOWING_VERSION_WITHOUT_SNAPSHOT=$2
+
   # Setting the next release version : 0.1.0
-  if [ -n "$1" ]; then
-    local OPTIONAL_ARGS="$OPTIONAL_ARGS -DreleaseVersion=$1 -Dtag=v$1"
+  if [ -n "$RELEASE_VERSION" ]; then
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -DreleaseVersion=${RELEASE_VERSION} -Dtag=v${RELEASE_VERSION}"
   fi
   # Setting the following release version : 1.0.0
-  if [ -n "$2" ]; then
-    local OPTIONAL_ARGS="$OPTIONAL_ARGS -DdevelopmentVersion=$2-SNAPSHOT"
+  if [ -n "$FOLLOWING_VERSION_WITHOUT_SNAPSHOT" ]; then
+    local OPTIONAL_ARGS="$OPTIONAL_ARGS -DdevelopmentVersion=${FOLLOWING_VERSION_WITHOUT_SNAPSHOT}-SNAPSHOT"
   fi
   mvnreleasetag ${OPTIONAL_ARGS}
 }

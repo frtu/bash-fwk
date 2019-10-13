@@ -87,3 +87,20 @@ gremoteaddbr "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github
 * Configure user name : ```gconfsetname "NAME_PARAM_VALUE"```
 * Configure email : ```gconfsetemail "EMAIL_PARAM_VALUE"```
 * Configure proxy : ```gconfsetproxy "PROXY_PARAM_VALUE"```
+
+## Library 'dev-maven-release'
+
+### Validation commands
+
+Validate phase allow to run everything that can interrupt or break the Release phase :
+
+* Run Unit Tests & Javadoc : ```mvnreleasevalidate```
+
+### Release commands
+
+* Create a git tag with the specified version : ```mvnreleasetagversion "[RELEASE_VERSION]" "[FOLLOWING_VERSION_WITHOUT_SNAPSHOT]"```
+
+You can also use the skip everything syntax : ```mvnreleasetagsk```
+
+* Deploy to nexus repository : ```mvnreleasedeploy```
+
