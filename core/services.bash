@@ -39,6 +39,31 @@ enablelib() {
 
   source $OUTPUT_SERVICE_FILENAME
 }
+disablelib() {
+  usage $# "LIB_NAME_WITHOUT_PREFIX"
+  ##################################
+  # CHECK NO PARAMS
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "Please supply the argument WITHOUT the prefix 'lib-' : LIB_NAME_WITHOUT_PREFIX to enable " >&2
+    lslibs
+    return -1
+  fi    
+  ##################################
+  local LIB_NAME_WITHOUT_PREFIX=$1
+  local OUTPUT_SERVICE_FILENAME=$SERVICE_LOCAL_BASH_PREFIX$LIB_NAME_WITHOUT_PREFIX.bash
+  ##################################
+  # CHECK PARAMS WRONG
+  if [ ! -f "$LIBS_FOLDER/lib-$LIB_NAME_WITHOUT_PREFIX.bash" ]; then
+    echo "Service doesn't exist : ${LIB_NAME_WITHOUT_PREFIX}. Please check lib folder!" >&2
+    lslibs
+    return -1
+  fi
+  ##################################
+
+  echo "Removing lib '$LIB_NAME_WITHOUT_PREFIX'"
+  rm -v $OUTPUT_SERVICE_FILENAME
+}
 
 # Local env
 enablehadoop() {

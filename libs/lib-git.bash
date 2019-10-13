@@ -190,10 +190,37 @@ gbrmv() {
 }
 
 gremotels() {
-  echo "List all remote branches > git remote -v"
+  echo "List all remote repositories > git remote -v"
   git remote -v
 }
 gremoteadd() {
+  local REPO_NAME=$1
+  local PROJECT_NAME=$2
+  local REMOTE_NAME=${3:-origin}
+  local GITHUB_ROOT_URL=${4:-github.com}
+
+  ##################################
+  # PARSE REPO_NAME/PROJECT_NAME
+  # Check if first parameter contains is already REPO_NAME/PROJECT_NAME
+  if [[ $1 == *\/* ]]; then
+    local PROJECT_NAME="${1##*\/}"
+    local REPO_NAME="${1%\/*}"
+  fi
+  ## USAGE IF NO PROJECT_NAME
+  if [ -z $PROJECT_NAME ]; then
+    usage $# "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
+    return -1
+  fi
+  ##################################
+
+  echo "git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
+  git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
+  echo "git fetch $REMOTE_NAME"
+  git fetch $REMOTE_NAME
+
+  gremotels
+}
+gremoteaddbr() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
@@ -220,20 +247,14 @@ gremoteadd() {
   ##################################
 
   local REMOTE_NAME=repo-$REPO_NAME
-
-  echo "git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
-  git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
-  echo "git fetch $REMOTE_NAME"
-  git fetch $REMOTE_NAME
-
-  gbrremotels
+  gremoteadd ${REPO_NAME} ${PROJECT_NAME} ${REMOTE_NAME} ${GITHUB_ROOT_URL}
 
   if [ -n "$BRANCH_NAME" ]
     then
       gbradd ${BRANCH_NAME} ${REPO_NAME}
     else
       echo "ADD A NEW BRANCH WITH > gbradd {BRANCH_NAME} ${REPO_NAME}"
-  fi
+  fi  
 }
 gremotemerge() {
   usage $# "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"
