@@ -1,17 +1,49 @@
+import lib-k8s
+
 MINIKUBE_ROOT=~/.minikube
+MINIKUBE_MACHINES_FOLDER=$MINIKUBE_ROOT/machines
 MINIKUBE_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-minikube-instance.bash
 
 cdk8s() {
   cd $MINIKUBE_ROOT
 }
 
+k8menv() {
+  echo "------- Host CMD version --------";
+  minikube version
+
+  echo "------- VM internal version --------";
+  minikube ssh cat /etc/VERSION
+
+  echo "------- Virtual box --------";
+  cat ~/.minikube/machines/minikube/config.json | grep DriverName
+}
 k8mstart() {
+  usage $# "[IMAGE_NAME]" "[REGISTRY_URL]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   local IMAGE_NAME=$1
+  local REGISTRY_URL=$2
+
   if [ -n "$IMAGE_NAME" ]; then
-  	k8mloadpersist $IMAGE_NAME
+    local EXTRA_PARAMS="$EXTRA_PARAMS -p ${IMAGE_NAME}"
+  fi
+  if [ -n "$REGISTRY_URL" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --registry-mirror=${REGISTRY_URL}"
   fi
 
-  k8mtemplate "start" $@
+  k8mtemplate "start" "${EXTRA_PARAMS}"
+
+  echo "------- Help --------";
+  echo "k8mdashboard ${IMAGE_NAME} : to display dashboard"
+  echo "k8mlogs ${IMAGE_NAME} : to see logs"
+  echo "k8mssh ${IMAGE_NAME} : to SSH"
+  echo "k8mstop ${IMAGE_NAME} : to stop"
+  echo "k8mrm ${IMAGE_NAME} : to stop and remove image"
+}
+k8mdashboard() {
+  k8mtemplate "dashboard" $@
 }
 k8mssh() {
   if [ -z "$2" ]
@@ -25,7 +57,7 @@ k8mssh() {
   fi
 }
 k8mlogs() {
-  minikube logs
+  k8mtemplate "logs" $@
 }
 k8mmutenotification() {
   k8mtemplate "config" set WantUpdateNotification false
@@ -92,19 +124,10 @@ k8mloadpersistrm() {
   echo "unset MINIKUBE_DEFAULT_INSTANCE"
   unset MINIKUBE_DEFAULT_INSTANCE
   
+  echo "unset EXTRA_KUBE_PARAMS"
+  unset EXTRA_KUBE_PARAMS
+  
   echo "rm $MINIKUBE_PERSIST_FILE"
   rm $MINIKUBE_PERSIST_FILE
 }
 
-k8env() {
-  kubectl get nodes
-}
-k8ls() {
-  kubectl get pod
-}
-k8info() {
-  kubectl describe pod hello-minikube
-}
-k8hello() {
-  kubectl run hello-minikube --image=k8s.gcr.io/echoserver:1.10 --port=8080
-}
