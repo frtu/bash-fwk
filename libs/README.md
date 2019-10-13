@@ -56,10 +56,12 @@ gremoteaddbr "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github
 #### Remote repo
 
 * List all remote repositories : ```gremotels```
+* Merge another remote branch into local : ```gremotemerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"```
 * Remove particular remote repository : ```gremoterm "REMOTE_NAME"```
 
 
 ### Local commands
+
 #### Git tags
 
 * List tags : ```gtag```
@@ -73,3 +75,15 @@ gremoteaddbr "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github
 * Rename a branch : ```gbrmv "OLD_BRANCH_NAME" "NEW_BRANCH_NAME"```
 * Remove a branch : ```gbrrm "BRANCH_NAME" "[FALLBACK_BRANCH_AFTER_DELETE:master]"```
 
+#### Git patches
+
+* Generate a diff file from local change : ```gpatch "DIFF_FILENAME"```
+* Apply diff file into local repo : ```gpatchapply "DIFF_FILENAME"```
+
+#### Configuration
+
+* List all local configurations : ```gconfls```
+* Set a new configuration : ```gconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Configure user name : ```gconfsetname "NAME_PARAM_VALUE"```
+* Configure email : ```gconfsetemail "EMAIL_PARAM_VALUE"```
+* Configure proxy : ```gconfsetproxy "PROXY_PARAM_VALUE"```
