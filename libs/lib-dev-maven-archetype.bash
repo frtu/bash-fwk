@@ -1,6 +1,6 @@
 #!/bin/sh
 mvngenlocal() {
-  usage $# "ARCHETYPE:plt-kafka|plt-spark|avro" "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
+  usage $# "ARCHETYPE:base|plt-kafka|plt-spark|avro" "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
@@ -9,7 +9,7 @@ mvngenlocal() {
   mvngen $1 $2 $3 $VERSION -DarchetypeCatalog=local ${@:5}
 }
 mvngen() {
-  usage $# "ARCHETYPE:plt-kafka|plt-spark|avro" "[GID]" "[AID]" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
+  usage $# "ARCHETYPE:base|plt-kafka|plt-spark|avro" "[GID]" "[AID]" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 

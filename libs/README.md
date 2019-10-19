@@ -99,6 +99,32 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 * Configure email : ```gconfsetemail "EMAIL_PARAM_VALUE"```
 * Configure proxy : ```gconfsetproxy "PROXY_PARAM_VALUE"```
 
+## Library 'dev-maven-archetype'
+
+### Install
+
+* Enable Maven Archetype generator library with the [dedicated version](https://search.maven.org/search?q=g:com.github.frtu.archetype) : ```enablemvngen "ARCHETYPE_VERSION"```
+
+### Usage
+
+Allow to generate all kinds of projects :
+
+* Base project with parent pom : ```mvngen base "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+
+For Stream Processing : 
+
+* Kafka Publisher with parent pom : ```mvngen plt-kafka "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Spark Consumer with parent pom : ```mvngen plt-spark "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Simple Avro Data model project : ```mvngen avro "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+
+### Local dev
+
+Replace ```mvngen``` -> ```mvngenlocal``` to use local repository for archetypes :
+
+* Ex : ```mvngenlocal base "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Clean and install plugin : ```mvninst```
+
+
 ## Library 'dev-maven-release'
 
 ### Validation commands
