@@ -115,3 +115,36 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 * Deploy to nexus repository : ```mvnreleasedeploy```
 
+
+## Library 'docker'
+
+### Image repository
+
+* List all local images : ```dckls```
+* Pull locally remote image ```dckpull [IMAGE_NAME]```
+* Search remote ```dcksearch [IMAGE_NAME]```
+
+### Administrate docker instances
+
+Base commands :
+
+* List all existing instances : ```dckps```
+* Start existing instance : ```dckstart [IMAGE_NAME]```
+* Read instance console : ```dcklogs [IMAGE_NAME]```
+* Stop existing instance : ```dckstop [IMAGE_NAME]```
+* Remove existing instance : ```dckrm [IMAGE_NAME]```
+
+Status :
+
+* Check instance definition : ```dckinspect [IMAGE_NAME]```
+* Check health : ```dcktop [IMAGE_NAME]```
+
+(ATTENTION) Long commands :
+
+* Start ALL existing instances : ```dckstartall```
+* Stop ALL running instances : ```dckstopall```
+
+### Interacting with instance
+
+* Copy a file IN or OUT the docker instance : ```dckcp "SOURCE" "DESTINATION"```
+* Open a command line into docker instance : ```dckbash [IMAGE_NAME]```

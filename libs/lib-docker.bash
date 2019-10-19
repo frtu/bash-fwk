@@ -1,39 +1,27 @@
 import lib-vm
 
-# Starting & administration
-dckproxy() {
-  usage $# "DOCKER_REGISTRY_DOMAIN_NAME"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local DOCKER_REGISTRY_DOMAIN_NAME=$1
-
-  echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
-  echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
-  
-  echo 'export DOCKER_OPTS=" --registry-mirror 'https://${DOCKER_REGISTRY_DOMAIN_NAME}' --insecure-registry 'http://${DOCKER_REGISTRY_DOMAIN_NAME}'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
-}
-
 dckls() {
   echo "List all existing docker images"
   docker version
   docker images
 }
+dckpull() {
+  usage $# "IMAGE_NAME"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  echo "Fetching new docker image : $IMAGE_NAME"
+  docker pull $IMAGE_NAME
+}
+dcksearch() {
+  dcktpl "search" $@
+}
+
 # See running
 dckps() {
   docker ps -a
 }
-
-dcksearch() {
-  dcktpl "search" $@
-}
-dckpull() {
-  local IMAGE_NAME=${1:-ubuntu}
-
-	echo "Fetching new docker images : $IMAGE_NAME"
-	docker pull $IMAGE_NAME
-}
-
 dckstart() {
   dcktpl "start" $@
   dckbash $1
@@ -41,20 +29,20 @@ dckstart() {
 dckstartall() {
   dckstart $(docker ps -aq)
 }
-dckinspect() {
-  dcktpl "inspect" $@
-}
 dcklogs() {
   dcktpl "logs" $@
-}
-dcktop() {
-  dcktpl "top" $@
 }
 dckstop() {
   dcktpl "stop" $@
 }
 dckstopall() {
   dckstop $(docker ps -aq)
+}
+dckinspect() {
+  dcktpl "inspect" $@
+}
+dcktop() {
+  dcktpl "top" $@
 }
 dcktpl() {
   if [ -z "$2" ]; then
@@ -65,7 +53,32 @@ dcktpl() {
   echo "docker $@"
   docker $@
 }
+dckrm() {
+  # MIN NUM OF ARG
+  if [[ "$#" < "1" ]]; then
+    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+    return -1
+  fi
+  docker stop $@
+  docker rm -f $@
+  dckps
+}
 
+# Interaction
+dckcp() {
+  usage $# "SOURCE" "DESTINATION"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "(Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+     dckps
+     return -1
+   fi
+  local SOURCE=$1
+  local DESTINATION=$2
+
+  echo "Copy from/to docker images : ${SOURCE} => ${DESTINATION}"
+  docker cp ${SOURCE} ${DESTINATION}
+}
 dckbash() {
   usage $# "IMAGE_NAME" "[COMMANDS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -88,30 +101,21 @@ dckbash() {
       echo "${COMMANDS}" | docker exec -i ${IMAGE_NAME} bash -l
   fi
 }
-dckcp() {
-  usage $# "SOURCE" "DESTINATION"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then 
-    echo "(Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES" >&2
-     dckps
-     return -1
-   fi
-  local SOURCE=$1
-  local DESTINATION=$2
 
-  echo "Copy from/to docker images : ${SOURCE} => ${DESTINATION}"
-  docker cp ${SOURCE} ${DESTINATION}
+# Starting & administration
+dckproxy() {
+  usage $# "DOCKER_REGISTRY_DOMAIN_NAME"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DOCKER_REGISTRY_DOMAIN_NAME=$1
+
+  echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
+  echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
+  
+  echo 'export DOCKER_OPTS=" --registry-mirror 'https://${DOCKER_REGISTRY_DOMAIN_NAME}' --insecure-registry 'http://${DOCKER_REGISTRY_DOMAIN_NAME}'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
 }
-dckrm() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
-    return -1
-  fi
-  docker stop $@
-  docker rm -f $@
-  dckps
-}
+
 dckexport() {
   usage $# "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
