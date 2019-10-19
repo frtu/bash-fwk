@@ -27,9 +27,9 @@ You can also use the long syntax to :
 gcl "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
 ```
 
-#### Link local to remote repository
+#### Link local to ONE remote repository
 
-Link to a remote git repo using **REPO\_NAME/PROJECT\_NAME** you copy from browser :
+Simple link to a remote git repo using **REPO\_NAME/PROJECT\_NAME** you copy from browser :
 
 ```
 gremoteadd "REPO_NAME/PROJECT_NAME"
@@ -37,26 +37,36 @@ gremoteadd "REPO_NAME/PROJECT_NAME"
 
 You can also use the long syntax to :
 
-* checkout a particular name if you have **MANY origin** (you can script) 
+* checkout a particular remote repo 
 * pass an Enterprise Github URL (by default use 'github.com')
+* pass a remote branch name (use 'master' by default)
 
 ```
-gremoteadd "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME:origin]" "[GITHUB_ROOT_URL:github.com]"
+gremoteadd "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME:origin]" "[GITHUB_ROOT_URL:github.com]" "[BRANCH_NAME:master]"
 ```
 
-You can also use the long syntax to :
+#### Link local to MANY remote repositories
 
+You have work a lot with forks, you will have **many remote origins** you want to distinguish with origin prefix 'repo-'.
+
+* One of the forked repository name
+* project name
 * checkout a particular branch (you can script) 
 * pass an Enterprise Github URL (by default use 'github.com')
 
 ```
-gremoteaddbr "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
+gremotemultiadd "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github.com]"
+```
+
+* Merge another remote branch into local : 
+
+```
+gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"
 ```
 
 #### Remote repo
 
 * List all remote repositories : ```gremotels```
-* Merge another remote branch into local : ```gremotemerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"```
 * Remove particular remote repository : ```gremoterm "REMOTE_NAME"```
 
 
@@ -64,14 +74,15 @@ gremoteaddbr "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:github
 
 #### Git tags
 
-* List tags : ```gtag```
-* List tags & ISO date : ```gtagdate```
+* List tags : ```gtagls```
+* List tags & ISO date : ```gtaglsdate```
 * Push a local tag to remote ```gtagpush "TAG_NAME"```
 
 #### Git branches
 
 * List all branches : ```gbrls```
-* Create a new branch : ```gbradd "BRANCH_NAME:master" "[REPO_NAME:origin]"```
+* Use an existing branch : ```gbr "BRANCH_OR_TAG_NAME:master"```
+* Create a non-existing branch : ```gbrcreate "BRANCH_NAME:develop" "[REPO_NAME:origin]"```
 * Rename a branch : ```gbrmv "OLD_BRANCH_NAME" "NEW_BRANCH_NAME"```
 * Remove a branch : ```gbrrm "BRANCH_NAME" "[FALLBACK_BRANCH_AFTER_DELETE:master]"```
 

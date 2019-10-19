@@ -118,19 +118,19 @@ gsubadd(){
   git submodule add ${EXTRA_ARGS} git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
 }
 
-gtag() {
+gtagls() {
   echo "git tag"
   git tag
 }
-gtagdate() {
-  gtag | xargs -L1 git log --pretty=format:"%D %cI" -1 
+gtaglsdate() {
+  gtagls | xargs -L1 git log --pretty=format:"%D %cI" -1 
 }
 gtagpush() {
   usage $# "TAG_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
-    echo "==== Please push an existing tag ! Check existing tag using 'gtag' ===="
-    gtag
+    echo "==== Please push an existing tag ! Check existing tag using 'gtagls' ===="
+    gtagls
     return -1; 
   fi
 
@@ -144,7 +144,22 @@ gbrls() {
   echo "git branch -a"
   git branch -a
 }
-gbradd() {
+gbr() {
+  usage $# "BRANCH_OR_TAG_NAME:master"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "==== Please use 'gtagls' to select an existing tag ===="
+    gtagls
+    echo "==== Please use 'gbrls' to select an existing branch (remove '/remotes/repo/' for a remote branch) ===="
+    gbrls
+    return -1; 
+  fi
+
+  local BRANCH_OR_TAG_NAME=$1
+  echo "git checkout ${BRANCH_OR_TAG_NAME}"
+  git checkout ${BRANCH_OR_TAG_NAME}
+}
+gbrcreate() {
   usage $# "BRANCH_NAME:master" "[REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -164,14 +179,14 @@ gbradd() {
       fi
       echo "git branch $NEW_BRANCH_NAME repo-$REPO_NAME/$BRANCH_NAME"
       git branch $NEW_BRANCH_NAME $NEW_REPO_NAME/$BRANCH_NAME
-      echo "git checkout $NEW_BRANCH_NAME"
-      git checkout $NEW_BRANCH_NAME
+
+      gbr $NEW_BRANCH_NAME
 
     else
       echo "git branch $BRANCH_NAME"
       git branch $BRANCH_NAME
-      echo "git checkout $BRANCH_NAME"
-      git checkout $BRANCH_NAME
+
+      gbr $BRANCH_NAME
   fi
   git pull
 }
@@ -210,6 +225,7 @@ gremoteadd() {
   local PROJECT_NAME=$2
   local REMOTE_NAME=${3:-origin}
   local GITHUB_ROOT_URL=${4:-github.com}
+  local BRANCH_NAME=${5:-master}
 
   ##################################
   # PARSE REPO_NAME/PROJECT_NAME
@@ -220,23 +236,28 @@ gremoteadd() {
   fi
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
-    usage $# "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME:origin]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
+    usage $# "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME:origin]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]" "[BRANCH_NAME:master]"
     return -1
   fi
   ##################################
+  ## USAGE IF NO PROJECT_NAME
+  if [ ! -d .git ]; then
+    echo "git init"
+    git init
+  fi
 
   echo "git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git"
   git remote add $REMOTE_NAME git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
-
-  echo "git push -u origin master"
-  git push -u origin master
 
   echo "git fetch $REMOTE_NAME"
   git fetch $REMOTE_NAME
 
   gremotels
+
+  echo "== First time link to a default branch > git checkout ${BRANCH_NAME} =="
+  gbr ${BRANCH_NAME}
 }
-gremoteaddbr() {
+gremotemultiadd() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
@@ -273,12 +294,12 @@ gremoteaddbr() {
 
   if [ -n "$BRANCH_NAME" ]
     then
-      gbradd ${BRANCH_NAME} ${REPO_NAME}
+      gbrcreate ${BRANCH_NAME} ${REPO_NAME}
     else
-      echo "ADD A NEW BRANCH WITH > gbradd {BRANCH_NAME} ${REPO_NAME}"
+      echo "ADD A NEW BRANCH WITH > gbrcreate {BRANCH_NAME} ${REPO_NAME}"
   fi  
 }
-gremotemerge() {
+gremotemultimerge() {
   usage $# "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
