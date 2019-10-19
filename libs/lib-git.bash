@@ -33,12 +33,18 @@ gcl() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
-  local GITHUB_ROOT_URL=${4:-github.com}
+  local GITHUB_ROOT_URL=$4
 
-  # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
-  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
-    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
-    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  if [ -z "$GITHUB_ROOT_URL" ]; then
+      # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
+      if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]
+        then
+          echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+          local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+        else
+          local GITHUB_ROOT_URL="github.com"
+          echo "Use DEFAULT value : ${GITHUB_ROOT_URL}"
+      fi
   fi
 
   ##################################
@@ -76,12 +82,18 @@ gsubadd(){
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
-  local GITHUB_ROOT_URL=${4:-github.com}
+  local GITHUB_ROOT_URL=$4
 
-  # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
-  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
-    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
-    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  if [ -z "$GITHUB_ROOT_URL" ]; then
+      # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
+      if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]
+        then
+          echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+          local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+        else
+          local GITHUB_ROOT_URL="github.com"
+          echo "Use DEFAULT value : ${GITHUB_ROOT_URL}"
+      fi
   fi
 
   ##################################
@@ -228,12 +240,18 @@ gremoteaddbr() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
-  local GITHUB_ROOT_URL=${4:-github.com}
+  local GITHUB_ROOT_URL=$4
 
-  # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
-  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
-    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
-    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  if [ -z "$GITHUB_ROOT_URL" ]; then
+      # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
+      if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]
+        then
+          echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+          local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+        else
+          local GITHUB_ROOT_URL="github.com"
+          echo "Use DEFAULT value : ${GITHUB_ROOT_URL}"
+      fi
   fi
 
   ##################################
@@ -268,11 +286,18 @@ gremotemerge() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local BRANCH_NAME=$3
-  local GITHUB_ROOT_URL=${4:-github.com}
+  local GITHUB_ROOT_URL=$4
 
-  if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]; then
-    echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
-    local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+  if [ -z "$GITHUB_ROOT_URL" ]; then
+      # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
+      if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]
+        then
+          echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+          local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+        else
+          local GITHUB_ROOT_URL="github.com"
+          echo "Use DEFAULT value : ${GITHUB_ROOT_URL}"
+      fi
   fi
 
   echo "git pull git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git ${BRANCH_NAME}"
