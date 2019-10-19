@@ -14,6 +14,13 @@ Framework for BASH startup, loading and utils
 
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | vagrant ssh
 
+### Specificity on Debian
+
+```	
+apt update && apt upgrade && apt install curl && apt -y install curl
+
+echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl-debian.bash)" | bash
+```	
 
 ## Your new env
 
