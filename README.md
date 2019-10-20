@@ -17,10 +17,9 @@ Framework for BASH startup, loading and utils
 ### Specificity on Debian
 
 ```	
-apt update && apt upgrade && apt install curl && apt -y install curl
-
-echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl-debian.bash)" | bash
+apt-get update && apt-get upgrade && apt-get -y install curl git
 ```	
+Then you can refer to section [Locally (require 'git')](https://github.com/frtu/bash-fwk#locally-require-git)
 
 ## Your new env
 

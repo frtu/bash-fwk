@@ -1,5 +1,5 @@
-apt update && apt -y upgrade
-apt install curl && apt -y install git
+apt-get update && apt-get -y upgrade
+apt-get -y install curl git
 
 BASH_FWK_ROOT=~/git/bash-fwk
 git clone https://github.com/frtu/bash-fwk.git $BASH_FWK_ROOT
