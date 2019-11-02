@@ -35,6 +35,16 @@ gcl() {
   local BRANCH_NAME=$3
   local GITHUB_ROOT_URL=$4
 
+  if [[ $1 == http* ]]; then
+    echo "git clone $1"
+    git clone $1
+    
+    local END_URL="${1##*\/}"
+    local FOLDER_NAME="${END_URL%.*}"
+    cd ${FOLDER_NAME}/
+    return
+  fi
+
   if [ -z "$GITHUB_ROOT_URL" ]; then
       # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
       if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]
