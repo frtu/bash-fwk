@@ -224,8 +224,20 @@ gremoteadd() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
   local REMOTE_NAME=${3:-origin}
-  local GITHUB_ROOT_URL=${4:-github.com}
+  local GITHUB_ROOT_URL=$4
   local BRANCH_NAME=${5:-master}
+
+  if [ -z "$GITHUB_ROOT_URL" ]; then
+      # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
+      if [ -n "$PERSISTED_GITHUB_ROOT_URL" ]
+        then
+          echo "Use PERSISTED_GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}"
+          local GITHUB_ROOT_URL=${PERSISTED_GITHUB_ROOT_URL}
+        else
+          local GITHUB_ROOT_URL="github.com"
+          echo "Use DEFAULT value : ${GITHUB_ROOT_URL}"
+      fi
+  fi
 
   ##################################
   # PARSE REPO_NAME/PROJECT_NAME
