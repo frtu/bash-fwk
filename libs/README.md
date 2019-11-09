@@ -147,23 +147,23 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 ### Image repository
 
 * List all local images : ```dckls```
-* Pull locally remote image ```dckpull [IMAGE_NAME]```
-* Search remote ```dcksearch [IMAGE_NAME]```
+* Pull locally remote image ```dckpull "IMAGE_NAME"```
+* Search remote ```dcksearch "IMAGE_NAME"```
 
 ### Administrate docker instances
 
 Base commands :
 
 * List all existing instances : ```dckps```
-* Start existing instance : ```dckstart [IMAGE_NAME]```
-* Read instance console : ```dcklogs [IMAGE_NAME]```
-* Stop existing instance : ```dckstop [IMAGE_NAME]```
-* Remove existing instance : ```dckrm [IMAGE_NAME]```
+* Start existing instance : ```dckstart "INSTANCE_NAME"```
+* Read instance console : ```dcklogs "INSTANCE_NAME"```
+* Stop existing instance : ```dckstop "INSTANCE_NAME"```
+* Remove existing instance : ```dckrm "INSTANCE_NAME"```
 
 Status :
 
-* Check instance definition : ```dckinspect [IMAGE_NAME]```
-* Check health : ```dcktop [IMAGE_NAME]```
+* Check instance definition : ```dckinspect "INSTANCE_NAME"```
+* Check health : ```dcktop "INSTANCE_NAME"```
 
 (ATTENTION) Long commands :
 
@@ -173,4 +173,10 @@ Status :
 ### Interacting with instance
 
 * Copy a file IN or OUT the docker instance : ```dckcp "SOURCE" "DESTINATION"```
-* Open a command line into docker instance : ```dckbash [IMAGE_NAME]```
+* Open a BASH command line into docker instance : ```dckbash "INSTANCE_NAME" "[COMMANDS]"```
+* Open an SH command line into docker instance : ```dcksh "INSTANCE_NAME" "[COMMANDS]"```
+
+If you just want to check an image, these funtions will create and remove a temporary instance of this image : 
+
+* Open a BASH command line into docker image : ```dckimagebash "IMAGE_NAME"```
+* Open an SH command line into docker image : ```dckimagesh "IMAGE_NAME"```

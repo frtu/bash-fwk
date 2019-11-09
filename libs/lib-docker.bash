@@ -11,10 +11,15 @@ dckpull() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local IMAGE_NAME=$1
-  echo "Fetching new docker image : $IMAGE_NAME"
+
+  echo "docker pull $IMAGE_NAME"
   docker pull $IMAGE_NAME
 }
 dcksearch() {
+  usage $# "IMAGE_NAME"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   dcktpl "search" $@
 }
 
@@ -24,7 +29,6 @@ dckps() {
 }
 dckstart() {
   dcktpl "start" $@
-  dckbash $1
 }
 dckstartall() {
   dckstart $(docker ps -aq)
@@ -46,7 +50,7 @@ dcktop() {
 }
 dcktpl() {
   if [ -z "$2" ]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+    echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
     return -1
   fi
@@ -56,7 +60,7 @@ dcktpl() {
 dckrm() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
-    echo "Please supply argument(s) \"IMAGE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+    echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     return -1
   fi
   docker stop $@
@@ -130,7 +134,7 @@ dckbashtpl() {
 }
 # Shell into an existing IMAGE_NAME
 dckimagesh() {
-  usage $# "IMAGE_NAME" "[COMMANDS]"
+  usage $# "IMAGE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
@@ -141,7 +145,7 @@ dckimagesh() {
   dckimagebashtpl "sh" $@
 }
 dckimagebash() {
-  usage $# "IMAGE_NAME" "[COMMANDS]"
+  usage $# "IMAGE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
@@ -152,7 +156,7 @@ dckimagebash() {
   dckimagebashtpl "bash" $@
 }
 dckimagebashtpl() {
-  usage $# "BASH_CMD" "IMAGE_NAME" "[COMMANDS]"
+  usage $# "BASH_CMD" "IMAGE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     if [[ "$#" > "0" ]]
