@@ -180,3 +180,9 @@ If you just want to check an image, these funtions will create and remove a temp
 
 * Open a BASH command line into docker image : ```dckimagebash "IMAGE_NAME"```
 * Open an SH command line into docker image : ```dckimagesh "IMAGE_NAME"```
+
+### Network & Bridge
+
+* List all existing networks : ```dcknetls```
+* List all existing networks, inspect bridge & host : ```dcknetlsfull```
+* Remove existing network : ```dcknetrm "NETWORK_NAME_OR_IDs"```

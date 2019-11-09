@@ -267,11 +267,30 @@ dckimport() {
 
 # https://docs.docker.com/engine/userguide/networking/
 dcknetls() {
+  echo "docker network ls"
   docker network ls
+}
+dcknetlsfull() {
+  dcknetls
   echo "== Inspect bridge ==" 
   docker network inspect bridge
   echo "== Inspect host ==" 
   docker network inspect host
+}
+# https://docs.docker.com/engine/reference/commandline/network_rm/
+dcknetrm() {
+  usage $# "NETWORK_NAME_OR_IDs"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dcknetls'" >&2
+    dcknetls
+    return -1
+  fi
+
+  echo "docker network rm $@"
+  docker network rm $@
+
+  dcknetls
 }
 dcknethosts() {
   cat /etc/hosts
