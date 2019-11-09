@@ -79,27 +79,95 @@ dckcp() {
   echo "Copy from/to docker images : ${SOURCE} => ${DESTINATION}"
   docker cp ${SOURCE} ${DESTINATION}
 }
-dckbash() {
-  usage $# "IMAGE_NAME" "[COMMANDS]"
+# Shell into an existing INSTANCE_NAME
+dcksh() {
+  usage $# "INSTANCE_NAME" "[COMMANDS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+    dckps
+    return -1
+  fi
+
+  dckbashtpl "sh" $@
+}
+dckbash() {
+  usage $# "INSTANCE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+    dckps
+    return -1
+  fi
+
+  dckbashtpl "bash" $@
+}
+dckbashtpl() {
+  usage $# "BASH_CMD" "INSTANCE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    if [[ "$#" > "0" ]]
+      then 
+        echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
+        dckps
+    fi
+    return -1
+  fi
+
+  local BASH_CMD=$1
+  local INSTANCE_NAME=$2
+
+  # run in LOGIN MODE : https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization#bash
+  if [ -z "$3" ]
+    then
+      echo "Login into a Bash docker images : ${INSTANCE_NAME}"
+      docker exec -it ${INSTANCE_NAME} ${BASH_CMD} -l
+    else
+      local COMMANDS=${@:3}
+      echo "CALL : root@${INSTANCE_NAME}> ${COMMANDS}"
+      echo "${COMMANDS}" | docker exec -i ${INSTANCE_NAME} ${BASH_CMD} -l
+  fi
+}
+# Shell into an existing IMAGE_NAME
+dckimagesh() {
+  usage $# "IMAGE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
     dckls
     return -1
   fi
 
-  local IMAGE_NAME=$1
-
-  # run in LOGIN MODE : https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization#bash
-  if [ -z "$2" ]
-    then
-      echo "Login into a Bash docker images : ${IMAGE_NAME}"
-      docker exec -it ${IMAGE_NAME} bash -l
-    else
-      local COMMANDS=${@:2}
-      echo "CALL : root@${IMAGE_NAME}> ${COMMANDS}"
-      echo "${COMMANDS}" | docker exec -i ${IMAGE_NAME} bash -l
+  dckimagebashtpl "sh" $@
+}
+dckimagebash() {
+  usage $# "IMAGE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
+    dckls
+    return -1
   fi
+
+  dckimagebashtpl "bash" $@
+}
+dckimagebashtpl() {
+  usage $# "BASH_CMD" "IMAGE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    if [[ "$#" > "0" ]]
+      then 
+        echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
+        dckls
+    fi
+    return -1
+  fi
+
+  local BASH_CMD=$1
+  local IMAGE_NAME=$2
+
+  echo "Login into a Bash docker images : ${IMAGE_NAME}"
+  docker run --rm -ti --entrypoint ${BASH_CMD} ${IMAGE_NAME}
 }
 
 # Starting & administration
