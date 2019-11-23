@@ -24,3 +24,7 @@ uninst() {
 
   $CLEANUP_TOOL
 }
+
+inst_wget() {
+  inst wget
+}
