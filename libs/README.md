@@ -14,6 +14,14 @@ Usage ```import lib-inst```
 
 ## Library 'git'
 
+Usage ```import lib-git```
+
+### Basic
+
+* Pull from remote repo : ```gl "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"```
+* Push to remote repo : ```gh "[REMOTE_REPO_NAME:origin]"```
+
+
 ### Remote
 #### Clone repository
 

@@ -29,6 +29,22 @@ grmcached() {
   git rm -r --cached $ITEM_TO_REMOVE
 }
 
+gl() {
+  usage $# "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "git pull $@"
+  git pull $@
+}
+gh() {
+  usage $# "[REMOTE_REPO_NAME:origin]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "git push $@"
+  git push $@
+}
 gcl() {
   local REPO_NAME=$1
   local PROJECT_NAME=$2
