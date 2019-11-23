@@ -7,6 +7,11 @@ All the bash commands you can activate with :
 * Persist import : ```enablelib *``` (*like ```enablelib git```*)
 * Remove persisted import : ```disablelib *``` (*like ```disablelib git```*)
 
+## Library 'inst'
+Usage ```import lib-inst```
+
+* Install anything : ```inst "PACKAGE"```
+
 ## Library 'git'
 
 ### Remote
