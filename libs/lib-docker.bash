@@ -346,7 +346,42 @@ dckrundaemon() {
 
   return $?
 }
+dckrunjavaenv() {
+  usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local IMAGE_NAME=$1
+  local PORT=8080
+  local INSTANCE_NAME="${IMAGE_NAME%\:*}"
 
+  local OPTIONAL_ARGS=""
+  for SYS_ENV in "${@:2}"; do
+    OPTIONAL_ARGS="${OPTIONAL_ARGS} -e ${SYS_ENV}"
+  done
+
+  dckrunjava "${IMAGE_NAME}" "${PORT}" "${INSTANCE_NAME}" "--rm ${OPTIONAL_ARGS}"
+}
+dckrunjava() {
+  usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]" "[SYS_ENV_PREFIXED_BY_-e]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local IMAGE_NAME=$1
+  local PORT=${2:-8080}
+  local INSTANCE_NAME=$3
+  local SYS_ENV=${@:4}
+
+  # If no INSTANCE_NAME use IMAGE_NAME PREFIX
+  if [ -z "${INSTANCE_NAME}" ]; then
+    INSTANCE_NAME="${IMAGE_NAME%\:*}"
+  fi
+  local OPTIONAL_ARGS="${SYS_ENV} -p ${PORT}:8080"
+
+  echo "== Connect to ${INSTANCE_NAME} using http://localhost:${PORT} =="
+  echo "If port not exposed (only needed once per VM) > dckmport ${PORT}"
+  dckrundaemon "${IMAGE_NAME}" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}"
+}
 dckrunjenkinsnode() {
   usage $# "INSTANCE_NAME:jenkins-nodejs" "[FOLDER_PATH]" "[PORT_JENKINS:8080]" "[PORT_SONARQUBE:9000]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
