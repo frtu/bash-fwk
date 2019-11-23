@@ -4,11 +4,11 @@ MINIKUBE_ROOT=~/.minikube
 MINIKUBE_MACHINES_FOLDER=$MINIKUBE_ROOT/machines
 MINIKUBE_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-minikube-instance.bash
 
-cdk8s() {
+cdkm() {
   cd $MINIKUBE_ROOT
 }
 
-k8menv() {
+kmenv() {
   echo "------- Host CMD version --------";
   minikube version
 
@@ -18,61 +18,85 @@ k8menv() {
   echo "------- Virtual box --------";
   cat ~/.minikube/machines/minikube/config.json | grep DriverName
 }
-k8mstart() {
-  usage $# "[IMAGE_NAME]" "[REGISTRY_URL]"
+kmstart() {
+  usage $# "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local IMAGE_NAME=$1
   local REGISTRY_URL=$2
+  local EXTRA_PARAMS=${@:3}
 
   if [ -n "$IMAGE_NAME" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -p ${IMAGE_NAME}"
   fi
-  if [ -n "$REGISTRY_URL" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS --registry-mirror=${REGISTRY_URL}"
+
+  if [[ $REGISTRY_URL == https* ]]
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS --registry-mirror=${REGISTRY_URL}"
+    else
+      if [[ $REGISTRY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --insecure-registry=${REGISTRY_URL}" ; fi
   fi
 
-  k8mtemplate "start" "${EXTRA_PARAMS}"
+  kmtemplate "start" "${EXTRA_PARAMS}"
 
   echo "------- Help --------";
-  echo "k8mdashboard ${IMAGE_NAME} : to display dashboard"
-  echo "k8mlogs ${IMAGE_NAME} : to see logs"
-  echo "k8mssh ${IMAGE_NAME} : to SSH"
-  echo "k8mstop ${IMAGE_NAME} : to stop"
-  echo "k8mrm ${IMAGE_NAME} : to stop and remove image"
+  echo "kmdashboard ${IMAGE_NAME} : to display dashboard"
+  echo "kmlogs ${IMAGE_NAME} : to see logs"
+  echo "kmssh ${IMAGE_NAME} : to SSH"
+  echo "kmstop ${IMAGE_NAME} : to stop"
+  echo "kmrm ${IMAGE_NAME} : to stop and remove image"
 }
-k8mhello() {
-  k8mtemplate "service" "hello-minikube"
+kmstartproxy() {
+  usage $# "[IMAGE_NAME]" "[REGISTRY_URL]" "[PROXY_URL]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local REGISTRY_URL=$2
+  local PROXY_URL=$3
+  local EXTRA_PARAMS=${@:4}
+
+  if [[ $PROXY_URL == https* ]] 
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTPS_PROXY=${PROXY_URL}"
+    else
+      if [[ $PROXY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTP_PROXY=${PROXY_URL}" ; fi
+  fi
+
+  kmstart "${IMAGE_NAME}" "${REGISTRY_URL}" "${EXTRA_PARAMS} --v 9999"
 }
-k8mdashboard() {
-  k8mtemplate "dashboard" $@
+kmhello() {
+  kmtemplate "service" "hello-minikube"
 }
-k8mssh() {
+kmdashboard() {
+  kmtemplate "dashboard" $@
+}
+kmssh() {
   if [ -z "$2" ]
   then
-    k8mtemplate "ssh" $1
+    kmtemplate "ssh" $1
   else
     local IMAGE_NAME=$1
     shift 1
     echo "CALL : root@$IMAGE_NAME> $@"
-    echo "$@" | k8mtemplate "ssh" $IMAGE_NAME
+    echo "$@" | kmtemplate "ssh" $IMAGE_NAME
   fi
 }
-k8mlogs() {
-  k8mtemplate "logs" $@
+kmlogs() {
+  kmtemplate "logs" $@
 }
-k8mmutenotification() {
-  k8mtemplate "config" set WantUpdateNotification false
+kmmutenotification() {
+  kmtemplate "config" set WantUpdateNotification false
 }
 
-k8mstop() {
-  k8mtemplate "stop" $@
+kmstop() {
+  kmtemplate "stop" $@
 }
-k8mrm() {
-  k8mtemplate "delete" $@
+kmrm() {
+  kmtemplate "delete" $@
 }
-k8mtemplate() {
+kmtemplate() {
   local EXTRA_PARAMS=${@:2}
 
   if [ -n "$EXTRA_KUBE_PARAMS" ]; then
@@ -86,7 +110,7 @@ k8mtemplate() {
   minikube $1 ${EXTRA_PARAMS}
 }
 
-k8mload() {
+kmload() {
   local IMAGE_NAME=$1
   echo "${FUNCNAME} ${IMAGE_NAME}"
 
@@ -96,7 +120,7 @@ k8mload() {
   minikube docker-env ${OPTIONAL_ARGS} | grep "DOCKER_HOST"
   eval $(minikube docker-env ${OPTIONAL_ARGS})
 }
-k8munload() {
+kmunload() {
   local IMAGE_NAME=$1
   echo "${FUNCNAME} ${IMAGE_NAME}"
 
@@ -106,7 +130,7 @@ k8munload() {
   minikube docker-env -u ${OPTIONAL_ARGS}
   eval $(minikube docker-env -u ${OPTIONAL_ARGS})
 }
-k8mloadpersist() {
+kmloadpersist() {
   local IMAGE_NAME=$1
   local EXTRA_KUBE_PARAMS=${@:2}
 
@@ -121,9 +145,9 @@ k8mloadpersist() {
     source $MINIKUBE_PERSIST_FILE
   fi
 
-  k8mload $IMAGE_NAME
+  kmload $IMAGE_NAME
 }
-k8mloadpersistrm() {
+kmloadpersistrm() {
   echo "unset MINIKUBE_DEFAULT_INSTANCE"
   unset MINIKUBE_DEFAULT_INSTANCE
   
