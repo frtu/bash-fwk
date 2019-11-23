@@ -3,12 +3,16 @@ Framework for BASH startup, loading and utils
 
 
 ## One line download and install
+
 ### Locally Ubuntu
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl-ubuntu.bash)" | bash
+
+If already installed, use quick fwk install copy : ```fwkinst```
 
 ### Locally (require 'git')
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
 
+If already installed, use quick fwk install copy : ```fwkinstubuntu ```
 
 ### On Vagrant
 
@@ -22,11 +26,15 @@ apt-get update && apt-get upgrade && apt-get -y install curl git
 
 Then you can refer to section [Locally (require 'git')](https://github.com/frtu/bash-fwk#locally-require-git)
 
+If already installed, use quick fwk install copy : ```fwkdeb ```
+
 ##### Net tools
 
 ```	
 apt-get update && apt-get upgrade && apt-get -y install net-tools nmap netcat
 ```	
+If already installed, use quick fwk install copy : ```fwknet ```
+
 
 ## Your new env
 

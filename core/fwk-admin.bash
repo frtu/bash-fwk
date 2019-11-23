@@ -3,6 +3,19 @@ BASH_FWK_ROOT=~/git/bash-fwk
 cdfwk() {
   cd $BASH_FWK_ROOT
 }
+fwkinst() {
+  pbcopy < $BASH_FWK_ROOT/core/fwkinst-git
+}
+fwkinstubuntu() {
+  pbcopy < $BASH_FWK_ROOT/core/fwkinst-ubuntu
+}
+fwkdeb() {
+  pbcopy < $BASH_FWK_ROOT/core/fwkdeb
+}
+fwknet() {
+  pbcopy < $BASH_FWK_ROOT/core/fwknet
+}
+
 
 # LOCAL INSTALLATION CAPABILITIES BASED ON BASH_FWK_ROOT
 redeploy() {
