@@ -42,6 +42,9 @@ k8mstart() {
   echo "k8mstop ${IMAGE_NAME} : to stop"
   echo "k8mrm ${IMAGE_NAME} : to stop and remove image"
 }
+k8mhello() {
+  k8mtemplate "service" "hello-minikube"
+}
 k8mdashboard() {
   k8mtemplate "dashboard" $@
 }

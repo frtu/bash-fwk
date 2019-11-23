@@ -1,3 +1,7 @@
+kchello() {
+  kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
+}
+
 kcls() {
   echo "------- Running instances --------";
   kubectl get nodes
@@ -29,6 +33,10 @@ kclsdeployments() {
 kclsevents() {
   usage $# "[NAMESPACE]"
   kcgettemplate "events" $@
+}
+kclsapi() {
+  usage $# "[NAMESPACE]"
+  kcgettemplate "apiservice" $@
 }
 kcgettemplate() {
   usage $# "OBJECT" "[NAMESPACE]" "[OPTION:wide|yaml]"
@@ -181,7 +189,7 @@ kcbash() {
   if [ -z "$2" ]
     then
       echo "Login into a Bash : ${POD_NAME}"
-      kcbash ${POD_NAME} /bin/dash
+      kcbash ${POD_NAME} /bin/bash
     else
       local COMMANDS=${@:2}
       echo "kubectl exec -it ${POD_NAME} -- ${COMMANDS}"
@@ -232,6 +240,21 @@ kcpodlogs() {
   kubectl logs ${EXTRA_PARAMS} ${POD_NAME}
 }
 
+kcpodid() {
+  usage $# "POD_NAME" "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
+    return -1
+  fi
+
+  local POD_NAME=$1
+  local NAMESPACE=$2
+
+  echo "kubectl describe pod ${POD_NAME} -n ${NAMESPACE}"
+  kcpodinfo ${POD_NAME} ${NAMESPACE} | grep 'Container ID'
+}
 kcpodlabel() {
   echo "kubectl get pods --show-labels"
   kubectl get pods --show-labels

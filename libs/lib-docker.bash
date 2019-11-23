@@ -319,7 +319,7 @@ dckcreate() {
   echo "=> NEXT TIME USE > dckstart ${INSTANCE_NAME}"
   docker run --name ${INSTANCE_NAME} ${MORE_ARG} -ti ${IMAGE_NAME}
 }
-dckstartdaemon() {
+dckrundaemon() {
   usage $# "IMAGE_NAME" "[INSTANCE_NAME]" "[MORE_ARG]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -384,7 +384,7 @@ dckrunjenkinsnode() {
 
     echo "> dckmport ${PORT_SONARQUBE} : to expose the port (only needed once per VM)"
   fi
-  dckstartdaemon "schlechtweg/jenkins-nodejs" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}" "${NEW_ARGS}"
+  dckrundaemon "schlechtweg/jenkins-nodejs" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}" "${NEW_ARGS}"
 
   echo "GET THE PASSWORD BY TYPING"
   echo "dckbash ${INSTANCE_NAME} cat /var/lib/jenkins/secrets/initialAdminPassword"
@@ -422,7 +422,7 @@ dckrunjenkins() {
     echo "> dckmport ${PORT_INBOUND_AGENT} : to expose the port (only needed once per VM)"
   fi
 
-  dckstartdaemon "jenkins/jenkins:lts" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}"
+  dckrundaemon "jenkins/jenkins:lts" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}"
 
   echo "GET THE PASSWORD BY TYPING"
   echo "dckbash ${INSTANCE_NAME} cat /var/jenkins_home/secrets/initialAdminPassword"
@@ -471,7 +471,7 @@ dckweb() {
     echo "dckmport ${PORT} : to expose the port (only needed once per VM)"
   fi
 
-  dckstartdaemon ${IMAGE_NAME} ${INSTANCE_NAME} "${OPTIONAL_ARGS}"
+  dckrundaemon ${IMAGE_NAME} ${INSTANCE_NAME} "${OPTIONAL_ARGS}"
 }
 
 dckrunmysql() {
@@ -487,7 +487,7 @@ dckrunmysql() {
   local PORT=${4:-3306}
 
   # https://hub.docker.com/_/mysql/
-  dckstartdaemon ${IMAGE_NAME} ${INSTANCE_NAME} "-e MYSQL_ROOT_PASSWORD=${PASSWORD} -p ${PORT}:3306"
+  dckrundaemon ${IMAGE_NAME} ${INSTANCE_NAME} "-e MYSQL_ROOT_PASSWORD=${PASSWORD} -p ${PORT}:3306"
 
   STATUS=$?
   if [ "$STATUS" -eq 0 ]; then
