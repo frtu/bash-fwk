@@ -136,7 +136,7 @@ gtaglsdate() {
   gtagls | xargs -L1 git log --pretty=format:"%D %cI" -1 
 }
 gtagpush() {
-  usage $# "TAG_NAME"
+  usage $# "TAG_NAME" "[REMOTE_REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "==== Please push an existing tag ! Check existing tag using 'gtagls' ===="
@@ -146,8 +146,26 @@ gtagpush() {
 
   local TAG_NAME=$1
 
-  echo "git push origin ${TAG_NAME}:${TAG_NAME}"
-  git push origin ${TAG_NAME}:${TAG_NAME}
+  echo "git push ${REMOTE_REPO_NAME} ${TAG_NAME}:${TAG_NAME}"
+  git push ${REMOTE_REPO_NAME} ${TAG_NAME}:${TAG_NAME}
+}
+gtagrm() {
+  usage $# "TAG_NAME" "[REMOTE_REPO_NAME:origin]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "==== Please specify a tag to remove ! Check existing tag using 'gtagls' ===="
+    gtagls
+    return -1; 
+  fi
+
+  local TAG_NAME=$1
+  local REMOTE_REPO_NAME=${2:-origin}
+
+  echo "git tag -d ${TAG_NAME}"
+  git tag -d ${TAG_NAME}
+
+  echo "git push ${REMOTE_REPO_NAME} :refs/tags/${TAG_NAME}"
+  git push ${REMOTE_REPO_NAME} :refs/tags/${TAG_NAME}
 }
 
 gbrls() {
@@ -170,12 +188,12 @@ gbr() {
   git checkout ${BRANCH_OR_TAG_NAME}
 }
 gbrcreate() {
-  usage $# "BRANCH_NAME:master" "[REPO_NAME:origin]"
+  usage $# "BRANCH_NAME:master" "[REMOTE_REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local BRANCH_NAME=$1
-  local REPO_NAME=$2
+  local REMOTE_REPO_NAME=$2
 
   if [ -n "$REPO_NAME" ]
     then

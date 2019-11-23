@@ -44,7 +44,7 @@ mvnreleasetag() {
   local OPTIONAL_ARGS="-DautoVersionSubmodules=true $@"
   
   echo "mvn clean release:prepare $OPTIONAL_ARGS"
-  mvn clean release:prepare $OPTIONAL_ARGS
+  mvnsk clean release:prepare $OPTIONAL_ARGS
 }
 mvnreleasedeploy() {
   cp release.properties release.properties_BAK
