@@ -15,8 +15,8 @@ kcls() {
   kclsdeployments
 }
 kclsnamespaces() {
-  echo "kubectl get namespaces"
-  kubectl get namespaces
+  echo "kubectl get namespaces $@"
+  kubectl get namespaces $@
 }
 kclspods() {
   usage $# "[NAMESPACE]"
@@ -197,6 +197,81 @@ kcbash() {
   fi
 }
 
+alias kcnsls=kclsnamespaces
+alias kcnslsfull='kclsnamespaces --show-labels'
+
+alias kcnsset='kcctxnamespace'
+
+kcnsyaml() {
+  usage $# "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
+    kcnspls
+    return -1
+  fi
+
+  local NAMESPACE=$1
+  kcnsdump ${NAMESPACE} yaml
+}
+kcnsjson() {
+  usage $# "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
+    kcnspls
+    return -1
+  fi
+
+  local NAMESPACE=$1
+  kcnsdump ${NAMESPACE} json
+}
+kcnsdump() {
+  usage $# "NAMESPACE" "FORMAT:json|yaml"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
+    kcnspls
+    return -1
+  fi
+
+  local NAMESPACE=$1
+  local FORMAT=$2
+  kclsnamespaces ${NAMESPACE} -o ${FORMAT}
+}
+
+kcnscreate() {
+  kcnstpl "create" $@
+}
+kcnsinfo() {
+  kcnstpl "describe" $@
+}
+kcnsvi() {
+  kcnstpl "edit" $@
+}
+kcnsrm() {
+  kcnstpl "delete" $@
+  kcnsls
+}
+kcnstpl() {
+  usage $# "CMD" "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
+    kcnspls
+    return -1
+  fi
+
+  local CMD=$1
+  local NAMESPACE=$2
+
+  echo "kubectl ${CMD} namespace ${NAMESPACE} ${@:3}"
+  kubectl ${CMD} namespace ${NAMESPACE} ${@:3}
+}
+
+alias kcpodls='kubectl get pods'
+alias kcpodlsfull='kcpodls --all-namespaces -o wide'
+
 kcpodtop() {
   usage $# "POD_NAME"
    # MIN NUM OF ARG
@@ -263,8 +338,8 @@ kcpodyaml() {
   usage $# "POD_NAME" "NAMESPACE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
-    kclspods
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
     return -1
   fi
 
@@ -277,8 +352,8 @@ kcpodinfo() {
   usage $# "POD_NAME" "NAMESPACE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
-    kclspods
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
     return -1
   fi
 
@@ -291,8 +366,8 @@ kcpodtemplate() {
   usage $# "CMD" "POD_NAME" "NAMESPACE" "[OPTION:yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
-    kclspods
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
     return -1
   fi
 
