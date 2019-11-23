@@ -11,6 +11,12 @@ All the bash commands you can activate with :
 Usage ```import lib-inst```
 
 * Install anything : ```inst "PACKAGE"```
+* Uninstall anything : ```uninst "PACKAGE"```
+
+Common installer for all distribution :
+
+* wget : ```inst_wget```
+
 
 ## Library 'git'
 
