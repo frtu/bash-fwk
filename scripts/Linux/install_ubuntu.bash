@@ -1,8 +1,5 @@
 import lib-ssocks
 
-export INSTALL_TOOL=apt
-import lib-inst
-
 inst_pip() {
   apt -y install python3-pip
 }

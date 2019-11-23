@@ -21,8 +21,6 @@ uninst() {
 
   echo "$UNINSTALL_TOOL $@"
   $UNINSTALL_TOOL $@
-}
 
-inst_net() {
-  inst net-tools
+  $CLEANUP_TOOL
 }
