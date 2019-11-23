@@ -19,7 +19,14 @@ Framework for BASH startup, loading and utils
 ```	
 apt-get update && apt-get upgrade && apt-get -y install curl git
 ```	
+
 Then you can refer to section [Locally (require 'git')](https://github.com/frtu/bash-fwk#locally-require-git)
+
+##### Net tools
+
+```	
+apt-get update && apt-get upgrade && apt-get -y install net-tools nmap netcat
+```	
 
 ## Your new env
 

@@ -40,6 +40,17 @@ linuxdesc() {
   echo "====== Kernel & GCC build ======"
   cat /proc/version
 }
+tcp() {
+  usage $# "ETHERNET_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    ifconfig
+    return -1
+  fi
+
+  local ETHERNET_NAME=$1
+  sudo tcpdump -i ${ETHERNET_NAME} -vvv
+}
 
 envls() {
   if [ -z "$1" ]
