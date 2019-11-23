@@ -272,6 +272,26 @@ kcnstpl() {
 alias kcpodls='kubectl get pods'
 alias kcpodlsfull='kcpodls --all-namespaces -o wide'
 
+kcpodlabel() {
+  echo "kubectl get pods --show-labels"
+  kubectl get pods --show-labels
+}
+kcpodid() {
+  usage $# "POD_NAME" "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
+    return -1
+  fi
+
+  local POD_NAME=$1
+  local NAMESPACE=$2
+
+  echo "kubectl describe pod ${POD_NAME} -n ${NAMESPACE}"
+  kcpodinfo ${POD_NAME} ${NAMESPACE} | grep 'Container ID'
+}
+
 kcpodtop() {
   usage $# "POD_NAME"
    # MIN NUM OF ARG
@@ -315,25 +335,6 @@ kcpodlogs() {
   kubectl logs ${EXTRA_PARAMS} ${POD_NAME}
 }
 
-kcpodid() {
-  usage $# "POD_NAME" "NAMESPACE"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
-    kcpodlsfull
-    return -1
-  fi
-
-  local POD_NAME=$1
-  local NAMESPACE=$2
-
-  echo "kubectl describe pod ${POD_NAME} -n ${NAMESPACE}"
-  kcpodinfo ${POD_NAME} ${NAMESPACE} | grep 'Container ID'
-}
-kcpodlabel() {
-  echo "kubectl get pods --show-labels"
-  kubectl get pods --show-labels
-}
 kcpodyaml() {
   usage $# "POD_NAME" "NAMESPACE"
    # MIN NUM OF ARG
@@ -357,10 +358,7 @@ kcpodinfo() {
     return -1
   fi
 
-  local POD_NAME=$1
-  local NAMESPACE=$2
-
-  kcpodtemplate "describe" ${POD_NAME} ${NAMESPACE}
+  kcpodtemplate "describe" $@
 }
 kcpodtemplate() {
   usage $# "CMD" "POD_NAME" "NAMESPACE" "[OPTION:yaml]"
