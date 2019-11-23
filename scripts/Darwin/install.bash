@@ -7,6 +7,7 @@ export SUBL_HOME=/Applications/Sublime\ Text.app
 export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
 
 export INSTALL_TOOL=brew
+export UNINSTALL_TOOL="brew rmtree"
 export CHECK_SUDO=false
 import lib-inst
 
@@ -24,14 +25,6 @@ inst_sdk() {
 inst_update() {
   brew upgrade
   brew cask upgrade
-}
-uninst() {
-  usage $# "PACKAGE"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  echo "brew rmtree $@"
-  brew rmtree $@
 }
 
 

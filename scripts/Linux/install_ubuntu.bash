@@ -88,5 +88,6 @@ inst_node10() {
   inst_node 10
 }
 uninst_node() {
-  apt purge nodejs && apt autoremove --purge
+  uninst nodejs
+  apt autoremove --purge
 }
