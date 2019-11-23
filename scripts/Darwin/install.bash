@@ -98,6 +98,13 @@ inst_k8s() {
 
   refresh
 }
+inst_helm() {
+  inst kubernetes-helm
+}
+inst_kubectl() {
+  inst kubectl
+}
+
 inst_pip() {
   local PIP_MODULE=${1:-regex}
   echo "Type your sudo password to be able to skip Permission denied into /Library/Python/ directory"

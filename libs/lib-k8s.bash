@@ -360,6 +360,17 @@ kcpodinfo() {
 
   kcpodtemplate "describe" $@
 }
+kcpodrm() {
+  usage $# "POD_NAME" "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
+    return -1
+  fi
+
+  kcpodtemplate "delete" $@
+}
 kcpodtemplate() {
   usage $# "CMD" "POD_NAME" "NAMESPACE" "[OPTION:yaml]"
    # MIN NUM OF ARG
@@ -406,8 +417,8 @@ kcrm() {
 
   local RESOURCE=$1
 
-  echo "kubectl delete pod,service ${RESOURCE}"
-  kubectl delete pod,service ${RESOURCE}
+  echo "kubectl delete pod,service,deployment ${RESOURCE}"
+  kubectl delete pod,service,deployment ${RESOURCE}
 }
 kcrmall() {
   usage $# "NAMESPACE"
@@ -420,6 +431,6 @@ kcrmall() {
 
   local NAMESPACE=$1
 
-  echo "kubectl -n ${NAMESPACE} delete po,svc --all "
-  kubectl -n ${NAMESPACE} delete po,svc --all 
+  echo "kubectl -n ${NAMESPACE} delete po,svc,deployment --all "
+  kubectl -n ${NAMESPACE} delete po,svc,deployment --all 
 }
