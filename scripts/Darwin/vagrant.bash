@@ -52,6 +52,9 @@ vagbadd_ubuntu() {
 	#vagbadd precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-ubuntu-precise64-1.1.0.box
 	vagbadd ubuntu/trusty64 https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/20170810.0.0/providers/virtualbox.box vagrant-ubuntu-trusty64-20170810.box
 }
+vagbadd_ubuntu18() {
+	vagbadd generic/ubuntu1804 https://vagrantcloud.com/generic/boxes/ubuntu1804/versions/2.0.4/providers/virtualbox.box vagrant-ubuntu1804-2.0.4.box
+}
 
 vagbadd_docker_centos() {
 	vagbadd centos2docker https://atlas.hashicorp.com/blacklabelops/boxes/dockerdev/versions/1.0.5/providers/virtualbox.box vagrant-centos2docker-1.0.5.box
