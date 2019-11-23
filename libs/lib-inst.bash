@@ -1,6 +1,6 @@
-if [[ -z "$INSTALL_TOOL" ]] ; then local INSTALL_TOOL="apt" ; fi
+if [[ -z "$INSTALL_TOOL" ]] ; then INSTALL_TOOL="apt -y" ; fi
 
-if [[ $(id -u) -ne 0 ]] ; then alias apt='sudo apt' ; fi
+if [[ -z "$CHECK_SUDO" && $(id -u) -ne 0 ]] ; then INSTALL_TOOL="sudo $INSTALL_TOOL" ; fi
 
 inst() {
   usage $# "PACKAGE"
@@ -9,7 +9,4 @@ inst() {
 
   echo "$INSTALL_TOOL install $@"
   $INSTALL_TOOL install $@
-}
-inst_helm() {
-  inst kubernetes-helm
 }

@@ -6,6 +6,35 @@ export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
 export SUBL_HOME=/Applications/Sublime\ Text.app
 export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
 
+export INSTALL_TOOL=brew
+export CHECK_SUDO=false
+import lib-inst
+
+inst_brew() {
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  brew tap caskroom/homebrew-cask
+  brew install brew-cask
+  brew tap beeftornado/rmtree
+}
+inst_sdk() {
+  # http://sdkman.io/
+  curl -s "https://get.sdkman.io" | bash
+  source "${HOME}/.sdkman/bin/sdkman-init.sh"
+}
+inst_update() {
+  brew upgrade
+  brew cask upgrade
+}
+uninst() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "brew rmtree $@"
+  brew rmtree $@
+}
+
+
 alias brewcd='cd $HOMEBREW_REPOSITORY'
 alias sdkcd='cd $SDKMAN_DIR'
 
@@ -25,31 +54,6 @@ eclipseplugin() {
 
   local PLUGIN_FILEPATH=$1
   cp $PLUGIN_FILEPATH ${ECLIPSE_HOME}/plugins/
-}
-
-inst_brew() {
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew tap caskroom/homebrew-cask
-  brew install brew-cask
-  brew tap beeftornado/rmtree
-}
-update_brew() {
-  brew upgrade
-  brew cask upgrade
-}
-
-uninst() {
-  if [ $# -eq 0 ]
-    then
-      echo "Please supply which package you want to uninstall"
-      return
-  fi
-  brew rmtree $1
-}
-inst_sdk() {
-  # http://sdkman.io/
-  curl -s "https://get.sdkman.io" | bash
-  source "${HOME}/.sdkman/bin/sdkman-init.sh"
 }
 
 brew_ls() {
