@@ -1,0 +1,6 @@
+echo "=== Loading Ubuntu ==="
+
+export INSTALL_TOOL="apt -y"
+export UNINSTALL_TOOL="apt purge"
+export CLEANUP_TOOL="apt autoremove --purge"
+

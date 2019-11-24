@@ -24,6 +24,9 @@ uninst() {
 
   $CLEANUP_TOOL
 }
+upd() {
+  $INSTALL_TOOL update $@
+}
 
 inst_wget() {
   inst wget

@@ -1,0 +1,4 @@
+echo "=== Loading Centos ==="
+
+export INSTALL_TOOL="yum -y"
+export UNINSTALL_TOOL="yum autoremove"
