@@ -12,6 +12,7 @@ Usage ```import lib-inst```
 
 * Install anything : ```inst "PACKAGE"```
 * Uninstall anything : ```uninst "PACKAGE"```
+* Update library : ```upd```
 
 Common installer for all distribution :
 
@@ -95,7 +96,8 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 
 * List tags : ```gtagls```
 * List tags & ISO date : ```gtaglsdate```
-* Push a local tag to remote ```gtagpush "TAG_NAME"```
+* Push a local tag to remote ```gtagpush "TAG_NAME" "[REMOTE_REPO_NAME:origin]"```
+* Remove a tag ```gtagrm "TAG_NAME" "[REMOTE_REPO_NAME:origin]"```
 
 #### Git branches
 
@@ -205,3 +207,8 @@ If you just want to check an image, these funtions will create and remove a temp
 * List all existing networks : ```dcknetls```
 * List all existing networks, inspect bridge & host : ```dcknetlsfull```
 * Remove existing network : ```dcknetrm "NETWORK_NAME_OR_IDs"```
+
+### Extra support
+
+* Run Tomcat image : ```dckrunjava "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]"```
+* Run temporary Tomcat image port 8080 with System env : ```dckrunjavaenv "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"```
