@@ -5,15 +5,21 @@ dckls() {
   docker version
   docker images
 }
-dckpull() {
+dckpullsk() {
   usage $# "IMAGE_NAME"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local IMAGE_NAME=$1
+  dckpull ${IMAGE_NAME} "–disable-content-trust"
+}
+dckpull() {
+  usage $# "IMAGE_NAME" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  echo "docker pull $IMAGE_NAME"
-  docker pull $IMAGE_NAME
+  echo "docker pull $@"
+  docker pull $@
 }
 dcksearch() {
   usage $# "IMAGE_NAME"
@@ -204,6 +210,8 @@ dckexport() {
   DCK_IMAGE_ID=${DCK_IMAGE_ID//\:/-}
   local FILENAME_TAR=$VM_ARCHIVE_FOLDER/docker_${2:-$DCK_IMAGE_ID}.tar.gz
 
+  mkdir -p $VM_ARCHIVE_FOLDER/
+
   echo "docker save ${DCK_IMAGE_NAME} | gzip > $FILENAME_TAR"
   docker save ${DCK_IMAGE_NAME} | gzip > $FILENAME_TAR
 }
@@ -298,7 +306,7 @@ dcknethosts() {
 
 dckhello() {
   echo "Testing if docker works?"
-  docker run hello-world
+  docker run --rm hello-world
 }
 
 dckcreate() {
