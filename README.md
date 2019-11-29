@@ -4,37 +4,36 @@ Framework for BASH startup, loading and utils
 
 ## One line download and install
 
-### Locally Ubuntu
-	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl-ubuntu.bash)" | bash
-
-If already installed, use quick fwk install copy : ```fwkinst```
-
 ### Locally (require 'git')
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
 
-If already installed, use quick fwk install copy : ```fwkinstubuntu ```
+If already installed, use quick fwk install copy : ```fwkinst```
+
+### Locally on Ubuntu
+	sudo apt-get update && sudo apt-get install git && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
+
+If already installed, use quick fwk install copy : ```fwkubuntu ```
+
+### Locally on Debian
+
+```	
+apt-get update && apt-get -y install curl git && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
+```	
+
+If already installed, use quick fwk install copy : ```fwkdeb ```
+
 
 ### On Vagrant
 
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | vagrant ssh
 
-### Specificity on Debian
+
+### Net tools
 
 ```	
-apt-get update && apt-get upgrade && apt-get -y install curl git
-```	
-
-Then you can refer to section [Locally (require 'git')](https://github.com/frtu/bash-fwk#locally-require-git)
-
-If already installed, use quick fwk install copy : ```fwkdeb ```
-
-##### Net tools
-
-```	
-apt-get update && apt-get upgrade && apt-get -y install net-tools nmap netcat
+apt update && apt -y install net-tools nmap netcat telnet curl
 ```	
 If already installed, use quick fwk install copy : ```fwknet ```
-
 
 ## Your new env
 

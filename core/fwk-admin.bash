@@ -6,11 +6,11 @@ cdfwk() {
 fwkinst() {
   pbcopy < $BASH_FWK_ROOT/core/fwkinst-git
 }
-fwkinstubuntu() {
+fwkubuntu() {
   pbcopy < $BASH_FWK_ROOT/core/fwkinst-ubuntu
 }
 fwkdeb() {
-  pbcopy < $BASH_FWK_ROOT/core/fwkdeb
+  pbcopy < $BASH_FWK_ROOT/core/fwkinst-deb
 }
 fwknet() {
   pbcopy < $BASH_FWK_ROOT/core/fwknet
@@ -30,6 +30,8 @@ bashdeploy() {
   system="${system%-*}"
 
 	DISTRO_SCRIPT_FOLDER="$_dir/scripts/$system/"
+  echo "Mapping folder > ${DISTRO_SCRIPT_FOLDER}"
+  
   mkscriptfolder "$DISTRO_SCRIPT_FOLDER"
   mkscriptfolder "$LOCAL_SCRIPTS_FOLDER"
 

@@ -1,11 +1,11 @@
 if [ -f /etc/redhat-release ]; then
-  source ext_centos
+  source $SCRIPTS_FOLDER/ext_centos
 fi
 if [ -f /etc/lsb-release ]; then
-  source ext_ubuntu
+  source $SCRIPTS_FOLDER/ext_debian
 fi
 import lib-inst
 
 inst_net() {
-  inst net-tools nmap netcat telnet
+  inst net-tools nmap netcat telnet curl ${NET_PKG_EXTRA}
 }

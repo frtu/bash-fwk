@@ -11,4 +11,4 @@ bashprofile
 #echo "------- DL completion --------"
 #gcompletion
 
-source ~/.bash_profile
+#source ~/.bash_profile

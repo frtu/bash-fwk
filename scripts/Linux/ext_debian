@@ -1,6 +1,7 @@
-echo "=== Loading Ubuntu ==="
+echo "=== Loading Debian ==="
 
 export INSTALL_TOOL="apt -y"
 export UNINSTALL_TOOL="apt purge"
 export CLEANUP_TOOL="apt autoremove --purge"
 
+export NET_PKG_EXTRA="iputils-ping"

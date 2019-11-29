@@ -1,1 +1,1 @@
-apt-get update && apt-get upgrade && apt-get -y install net-tools nmap netcat
+apt update && apt -y install net-tools nmap netcat telnet curl 

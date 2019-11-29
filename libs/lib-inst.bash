@@ -27,6 +27,9 @@ uninst() {
 upd() {
   $INSTALL_TOOL update $@
 }
+upg() {
+  $INSTALL_TOOL upgrade $@
+}
 
 inst_wget() {
   inst wget
