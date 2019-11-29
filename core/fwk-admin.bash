@@ -12,6 +12,9 @@ fwkubuntu() {
 fwkdeb() {
   pbcopy < $BASH_FWK_ROOT/core/fwkinst-deb
 }
+fwkvag() {
+  source $BASH_FWK_ROOT/core/fwkinst-vag
+}
 fwknet() {
   pbcopy < $BASH_FWK_ROOT/core/fwknet
 }

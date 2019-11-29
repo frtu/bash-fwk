@@ -1,0 +1,1 @@
+cat $BASH_FWK_ROOT/autoinstaller4curl.bash | vagrant ssh

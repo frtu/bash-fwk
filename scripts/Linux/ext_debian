@@ -1,7 +1,14 @@
 echo "=== Loading Debian ==="
 
+# https://wiki.debian.org/DebianPackageManagement#Apt
 export INSTALL_TOOL="apt -y"
+
+# remove package while leaving its configuration files
+# export UNINSTALL_TOOL="apt remove"
+# remove package and its configuration
 export UNINSTALL_TOOL="apt purge"
+
+# remove auto-installed packages which are no longer required
 export CLEANUP_TOOL="apt autoremove --purge"
 
 export NET_PKG_EXTRA="iputils-ping"

@@ -23,10 +23,11 @@ apt-get update && apt-get -y install curl git && echo "$(curl -fsSL https://raw.
 If already installed, use quick fwk install copy : ```fwkdeb ```
 
 
-### On Vagrant
+### Into Vagrant
 
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | vagrant ssh
 
+If already installed, use quick fwk install copy : ```fwkvag ```
 
 ### Net tools
 
