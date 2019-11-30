@@ -19,6 +19,9 @@ inst_cn_minikube() {
   kmenv
 }
 
+kmstartcnvbox() {
+  kmstartcn --vm-driver=virtualbox
+}
 kmstartcn() {
   kmstart "minikube" "${DOCKER_REGISTRY_CN}" " --image-mirror-country cn" $@
 }
