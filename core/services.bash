@@ -121,14 +121,6 @@ enableml() {
 enablesbt() {
   enablelib sbt
 }
-enablemvngen() {
-  usage $# "ARCHETYPE_VERSION"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local ARCHETYPE_VERSION=$1
-  enablelib dev-maven-archetype "export ARCHETYPE_VERSION=${ARCHETYPE_VERSION}"
-}
 enablejava() {
   usage $# "JAVA_HOME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -161,6 +153,14 @@ enablemvn() {
       echo "First parameter MAVEN_HOME=$MAVEN_HOME isn't a directory containing bin\mvn cmd !!"
       return -1
   fi
+}
+enablemvngen() {
+  usage $# "ARCHETYPE_VERSION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ARCHETYPE_VERSION=$1
+  enablelib dev-maven-archetype "export ARCHETYPE_VERSION=${ARCHETYPE_VERSION}"
 }
 
 # FILE BASED SERVICE
