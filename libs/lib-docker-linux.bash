@@ -1,4 +1,7 @@
 import lib-docker
+import lib-systemctl
+
+#alias docker-compose='sudo docker-compose'
 
 # Ubuntu Repo : https://download.docker.com/linux/ubuntu/dists/
 # Centos Repo : https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
@@ -14,11 +17,33 @@ export DOCKER_CONFIG=/etc/docker/daemon.json
 cddckimages() {
   cd $DOCKER_IMAGES_FOLDER
 }
-dckrestart() {
+
+activatedck() {
+  sudo usermod -aG docker $USER
+  activate docker
+}
+## Follow https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+dcksrvcheck() {
+  status docker
+}
+dcksrvstatus() {
+  status docker
+}
+dcksrvstart() {
   # ubuntu 14
   # sudo service docker restart
   # ubuntu 16
-  sudo systemctl start docker
+  start docker
+}
+dcksrvstop() {
+  stop docker
+}
+dcksrvrestart() {
+  restart docker
+}
+
+inst_dck() {
+  inst docker.io
 }
 
 # https://github.com/docker/compose/releases/download/1.11.2/docker-compose-Linux-x86_64

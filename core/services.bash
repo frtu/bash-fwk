@@ -87,10 +87,9 @@ enablessh() {
   srv_activate ssh
   refresh
 }
-enabledockerubuntu() {
-  srv_activate docker
-  refresh
-  inst_docker_ubuntu
+enabledocker() {
+  enablelib docker-linux
+  inst_docker
   refresh
 }
 enableml() {

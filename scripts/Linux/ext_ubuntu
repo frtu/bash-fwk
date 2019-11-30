@@ -15,7 +15,7 @@ inst_docker() {
 inst_minikube_standalone() {
   echo "Install Docker to allow K8S to work on standalone"
   echo "-------------------------------------------------"
-  inst_docker_ubuntu
+  inst_docker
 
   echo "Install Minikube"
   echo "-------------------------------------------------"
