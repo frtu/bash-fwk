@@ -18,15 +18,32 @@ trwgetlazy() {
       #HTTP_PARAMS=--header "$3"
   #fi
 
-  echo "wget --no-cookies --no-check-certificate -O ${FILENAME} --header "${HTTP_PARAMS}" $HTTP_PARAMS ${HTTP_URL}"
-  wget --no-cookies --no-check-certificate -O ${FILENAME} --header "${HTTP_PARAMS}" $HTTP_PARAMS ${HTTP_URL}
+  echo "Downloading : wget --no-cookies --no-check-certificate -O ${FILENAME} --header "${HTTP_PARAMS}" $HTTP_PARAMS ${HTTP_URL}"
+  wget --no-cookies --no-check-certificate -O "${FILENAME}_downloading" --header "${HTTP_PARAMS}" $HTTP_PARAMS ${HTTP_URL}
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]; then
+    mv ${FILENAME}_downloading ${FILENAME} 
+    echo "Done : ${FILENAME}"
+  fi
 }
 # Download using "*_downloading" extension, and remove only if succeed
 trwgetsafe() {
-  echo "Downloading : wget -O $1 $2"
-  wget -O $1_downloading $2
-  mv $1_downloading $1  
-  echo "Done : $1"
+  usage $# "FILENAME" "HTTP_URL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local FILENAME=$1
+  local HTTP_URL=$2
+
+  echo "Downloading : wget -O ${FILENAME} ${HTTP_URL}"
+  wget -O "${FILENAME}_downloading" ${HTTP_URL}
+  
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]; then
+    mv ${FILENAME}_downloading ${FILENAME} 
+    echo "Done : ${FILENAME}"
+  fi
 }
 
 # Using echo & tee over SSH to transfer a file

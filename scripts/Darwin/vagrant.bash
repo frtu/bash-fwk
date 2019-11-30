@@ -78,33 +78,37 @@ vagbadd_docker_ubuntu() {
 }
 
 vagbadd() {
-	echo $@
-	if [ $# -eq 0 ]; then
-      echo "vagbadd BOX_NAME [BOX_URL] [BOX_FILENAME]"
-      return
-  	fi
+  usage $# "BOX_NAME" "[BOX_URL]" "[BOX_FILENAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  	local BOX_NAME=$1
-   	if [ -z "$3" ]
-    	then
-        	local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$1.box
-	    else
-    	    local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$3
-  	fi
+  local BOX_NAME=$1
+  local BOX_URL=$2
 
-	# Download file ONLY if it doesn't exist
-	if [ ! -f $BOX_FILENAME ]; 
-		then
-			mkdir -p $VM_ARCHIVE_FOLDER
-			trwgetsafe $BOX_FILENAME $2
-	    else
-    	    echo "Vagrant Box file exist, use this one $BOX_FILENAME"
-	fi
-	echo "vagrant box add $BOX_NAME $BOX_FILENAME --force"
-	vagrant box add $BOX_NAME $BOX_FILENAME --force
+  if [ -z "$3" ]; then
+    local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$1.box
+  else
+    local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$3
+  fi
 
-	echo "vagrant init $BOX_NAME"
-	vagrant init $BOX_NAME
+  # Download file ONLY if it doesn't exist
+  if [ ! -f $BOX_FILENAME ]; then
+    mkdir -p $VM_ARCHIVE_FOLDER
+    if [ -n "$SKIP" ]
+      then
+	    trwgetlazy $BOX_FILENAME $BOX_URL
+      else
+	    trwgetsafe $BOX_FILENAME $BOX_URL
+    fi
+  else
+    echo "Vagrant Box file exist, use this one $BOX_FILENAME"
+  fi
+
+  echo "vagrant box add $BOX_NAME $BOX_FILENAME --force"
+  vagrant box add $BOX_NAME $BOX_FILENAME --force
+
+  echo "vagrant init $BOX_NAME"
+  vagrant init $BOX_NAME
 }
 vagbrm() {
 	if [ $# -eq 0 ]; then
