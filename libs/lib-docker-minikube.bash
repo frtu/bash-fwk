@@ -27,10 +27,6 @@ kmstart() {
   local REGISTRY_URL=$2
   local EXTRA_PARAMS=${@:3}
 
-  if [ -n "$IMAGE_NAME" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -p ${IMAGE_NAME}"
-  fi
-
   if [[ $REGISTRY_URL == https* ]]
     then
       local EXTRA_PARAMS="$EXTRA_PARAMS --registry-mirror=${REGISTRY_URL}"
@@ -38,7 +34,7 @@ kmstart() {
       if [[ $REGISTRY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --insecure-registry=${REGISTRY_URL}" ; fi
   fi
 
-  kmtemplate "start" "${EXTRA_PARAMS}"
+  kmtemplate "start" "${IMAGE_NAME}" "${EXTRA_PARAMS}"
 
   echo "------- Help --------";
   echo "kmdashboard ${IMAGE_NAME} : to display dashboard"
