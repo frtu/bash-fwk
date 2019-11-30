@@ -1,8 +1,11 @@
 import lib-vm
 
+dckinfo() {
+  docker version
+}
+
 dckls() {
   echo "List all existing docker images"
-  docker version
   docker images
 }
 dckpullsk() {

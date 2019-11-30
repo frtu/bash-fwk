@@ -1,5 +1,10 @@
 # https://www.baeldung.com/kubernetes-helm
+hminfo() { 
+  hmtpl "version"
+}
+
 hminit() { 
+  echo "== Initialize Helm server (Tiller) into the current K8s context =="
   hmtpl "init" $@
 }
 hmcreate() { 
