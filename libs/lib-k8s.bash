@@ -3,16 +3,15 @@ kchello() {
 }
 
 kcls() {
-  echo "------- Running instances --------";
-  kubectl get nodes
+  usage $# "[NAMESPACE]"
   echo "------- Namespaces --------";
-  kclsnamespaces
+  kclsnamespaces $@
   echo "------- Pods --------";
-  kclspods
+  kclspods $@
   echo "------- Services --------";
-  kclsservices
+  kclsservices $@
   echo "------- Deployment --------";
-  kclsdeployments
+  kclsdeployments $@
 }
 kclsnamespaces() {
   echo "kubectl get namespaces $@"
@@ -39,11 +38,11 @@ kclsapi() {
   kcgettemplate "apiservice" $@
 }
 kcgettemplate() {
-  usage $# "OBJECT" "[NAMESPACE]" "[OPTION:wide|yaml]"
+  usage $# "RESOURCE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local OBJECT=$1
+  local RESOURCE=$1
   local NAMESPACE=$2
   local OPTION=$3
   local ADDITIONAL_PARAMS=${@:4}
@@ -58,8 +57,8 @@ kcgettemplate() {
       local EXTRA_PARAMS="$EXTRA_PARAMS -o $OPTION"
   fi
 
-  echo "kubectl get ${OBJECT} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
-  kubectl get ${OBJECT} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
+  echo "kubectl get ${RESOURCE} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
+  kubectl get ${RESOURCE} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
 }
 
 kcctx() {

@@ -97,13 +97,24 @@ kmrm() {
   kmtemplate "delete" $@
 }
 kmtemplate() {
-  local EXTRA_PARAMS=${@:2}
+  usage $# "CMD" "[CONTEXT:kcctx()]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local CMD=$1
+  local CONTEXT=$2
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$CONTEXT" ]
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS -p ${CONTEXT}"
+    else
+      if [ -n "$MINIKUBE_DEFAULT_INSTANCE" ]; then
+        local EXTRA_PARAMS="$EXTRA_PARAMS -p ${MINIKUBE_DEFAULT_INSTANCE}"
+      fi
+  fi
   if [ -n "$EXTRA_KUBE_PARAMS" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS $EXTRA_KUBE_PARAMS"
-  fi
-  if [ -n "$MINIKUBE_DEFAULT_INSTANCE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -p $MINIKUBE_DEFAULT_INSTANCE"
   fi
 
   echo "minikube $1 ${EXTRA_PARAMS}"
