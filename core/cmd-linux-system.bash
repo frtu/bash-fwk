@@ -33,12 +33,14 @@ portlist() {
 }
 
 linuxdesc() {
-  echo "====== Kernel version ======"
+  echo "====== Kernel version > uname -mrs ======"
   uname -mrs
-  echo "====== Linux Distro ======"
+  echo "====== Linux Distro > cat /etc/*-release ======"
   cat /etc/*-release
-  echo "====== Kernel & GCC build ======"
+  echo "====== Kernel & GCC build > cat /proc/version ======"
   cat /proc/version
+  echo "====== Others > ${SYS_INFO} ======"
+  ${SYS_INFO}
 }
 tcp() {
   usage $# "ETHERNET_NAME"

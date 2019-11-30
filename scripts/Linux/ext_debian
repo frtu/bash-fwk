@@ -1,5 +1,7 @@
 echo "=== Loading Debian ==="
 
+export SYS_INFO="cat /etc/debian_version"
+
 # https://wiki.debian.org/DebianPackageManagement#Apt
 export INSTALL_TOOL="apt -y"
 
