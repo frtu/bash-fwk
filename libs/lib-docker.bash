@@ -552,6 +552,7 @@ dckrmimage() {
 
   echo "docker rmi $@"
   docker rmi $@
+  dckls
 }
 
 dckbuild() {
