@@ -34,7 +34,7 @@ inst_minikube_standalone_ubuntu() {
 
 inst_java() {
   inst default-jdk
-  inst maven
+  inst_maven
 }
 inst_pip() {
   apt -y install python3-pip

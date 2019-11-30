@@ -7,10 +7,6 @@ export MAVEN_HOME=/usr/local/opt/maven/libexec
 # export MAVEN_OPTS="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Xmx512m" 
 # -Djavax.net.ssl.trustStore=~/keystore.jks -Djavax.net.ssl.trustStorePassword=123456 "
 
-inst_maven() { # Install maven using brew
-  brew install maven
-}
-
 mcompile() {
   mvn compile
 }

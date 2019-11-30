@@ -35,3 +35,6 @@ upg() {
 inst_wget() {
   inst wget
 }
+inst_maven() {
+  inst maven
+}
