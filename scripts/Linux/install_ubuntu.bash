@@ -1,44 +1,6 @@
 import lib-ssocks
+import lib-docker-minikube
 
-inst_docker_ubuntu() {
-  # FOLOW : https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce
-  apt install apt-transport-https ca-certificates curl software-properties-common
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  sudo apt-key fingerprint 0EBFCD88
-  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  apt update
-  apt install -y docker-ce
-  sudo docker run hello-world
-  sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-}
-inst_minikube_standalone_ubuntu() {
-  echo "Install Docker to allow K8S to work on standalone"
-  echo "-------------------------------------------------"
-  inst_docker_ubuntu
-
-  echo "Install Minikube"
-  echo "-------------------------------------------------"
-  sudo apt-get update && sudo apt-get install -y apt-transport-https
-  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-  echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-  sudo apt-get update
-  sudo apt-get install -y kubectl
-
-  curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
-  sudo mkdir -p /usr/local/bin/
-  sudo install minikube /usr/local/bin/
-
-  k8mloadpersist minikube --vm-driver=none
-}
-
-inst_java() {
-  inst default-jdk
-  inst_maven
-}
-inst_pip() {
-  apt -y install python3-pip
-}
 inst_ssocks() {
   usage $# "PASSWORD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -64,9 +26,6 @@ inst_ssocks() {
     else
       echo "== Install error, please read logs. ==" >&2
   fi
-}
-inst_youtube() {
-  apt -y install youtube-dl
 }
 inst_node() {
   usage $# "VERSION:10/12"
