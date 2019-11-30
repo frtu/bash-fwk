@@ -1,9 +1,5 @@
 import lib-ssocks
 
-inst_java() {
-  inst default-jdk
-  inst maven
-}
 inst_docker_ubuntu() {
   # FOLOW : https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce
   apt install apt-transport-https ca-certificates curl software-properties-common
@@ -36,6 +32,10 @@ inst_minikube_standalone_ubuntu() {
   k8mloadpersist minikube --vm-driver=none
 }
 
+inst_java() {
+  inst default-jdk
+  inst maven
+}
 inst_pip() {
   apt -y install python3-pip
 }
