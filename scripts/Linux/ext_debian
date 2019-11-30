@@ -13,4 +13,4 @@ export UNINSTALL_TOOL="apt purge"
 # remove auto-installed packages which are no longer required
 export CLEANUP_TOOL="apt autoremove --purge"
 
-export NET_PKG_EXTRA="iputils-ping"
+export NET_PKG_EXTRA="netcat iputils-ping"

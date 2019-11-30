@@ -7,5 +7,5 @@ fi
 import lib-inst
 
 inst_net() {
-  inst net-tools nmap netcat telnet curl ${NET_PKG_EXTRA}
+  inst net-tools nmap telnet curl ${NET_PKG_EXTRA}
 }
