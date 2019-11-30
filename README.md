@@ -22,6 +22,13 @@ apt-get update && apt-get -y install curl git && echo "$(curl -fsSL https://raw.
 
 If already installed, use quick fwk install copy : ```fwkdeb ```
 
+### Locally on CentOS
+
+```	
+sudo yum install -y git && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
+```	
+
+If already installed, use quick fwk install copy : ```fwkcentos ```
 
 ### Into Vagrant
 
