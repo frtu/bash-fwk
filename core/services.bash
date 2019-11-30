@@ -74,11 +74,6 @@ enablespark() {
   enablehadoop
   enablelib spark
 }
-
-# For Docker host
-enabledockertoolbox() {
-  enablelib dockertoolbox
-}
 enabledckkafka() {
   enablelib dck-kafka
 }

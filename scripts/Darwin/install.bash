@@ -63,8 +63,10 @@ inst_git() {
   xcode-select --install
   xcode-select --reset
 }
-inst_wget() {
-  brew install wget
+# For Docker host
+enabledockertoolbox() {
+  enablelib dockertoolbox
+  srv_activate dockertoolbox
 }
 inst_vagrant() {
   # brew install Caskroom/cask/virtualbox
