@@ -12,12 +12,23 @@ Usage ```import lib-inst```
 
 * Install anything : ```inst "PACKAGE"```
 * Uninstall anything : ```uninst "PACKAGE"```
-* Update library : ```upd```
+* Update library metadata : ```upd```
+* Upgrade all libraries : ```upg```
 
 Common installer for all distribution :
 
 * wget : ```inst_wget```
+* maven : ```inst_maven```
+* Misc net tools (ONLY Linux) : ```inst_net```
 
+## Library 'systemctl'
+Usage ```import lib-systemctl```
+
+* Enable a system service : ```activate "PACKAGE"```
+* Get status of a system service : ```status "PACKAGE"```
+* Start of a system service : ```start "PACKAGE"```
+* Stop of a system service : ```stop "PACKAGE"```
+* Restart of a system service : ```restart "PACKAGE"```
 
 ## Library 'git'
 
