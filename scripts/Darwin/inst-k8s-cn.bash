@@ -23,5 +23,5 @@ kmstartcnvbox() {
   kmstartcn --vm-driver=virtualbox
 }
 kmstartcn() {
-  kmstart "minikube" "${DOCKER_REGISTRY_CN}" " --image-mirror-country cn" $@
+  kmstartreg "minikube" "${DOCKER_REGISTRY_CN}" " --image-mirror-country cn" $@
 }

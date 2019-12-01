@@ -8,7 +8,7 @@ cdkm() {
   cd $MINIKUBE_ROOT
 }
 
-kmenv() {
+kminfo() {
   echo "------- Host CMD version --------";
   minikube version
 
@@ -18,7 +18,18 @@ kmenv() {
   echo "------- Virtual box --------";
   cat ~/.minikube/machines/minikube/config.json | grep DriverName
 }
-kmstart() {
+kmstartdriver() {
+  usage $# "DRIVER_NAME:virtualbox|none" "IMAGE_NAME" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DRIVER_NAME=$1
+  local IMAGE_NAME=$2
+  local EXTRA_PARAMS=${@:3}
+
+  kmstart ${IMAGE_NAME} --vm-driver=${DRIVER_NAME} ${EXTRA_PARAMS}
+}
+kmstartreg() {
   usage $# "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -33,6 +44,15 @@ kmstart() {
     else
       if [[ $REGISTRY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --insecure-registry=${REGISTRY_URL}" ; fi
   fi
+  kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS}"
+}
+kmstart() {
+  usage $# "[IMAGE_NAME]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local EXTRA_PARAMS=${@:2}
 
   kmtemplate "start" "${IMAGE_NAME}" "${EXTRA_PARAMS}"
 
@@ -44,14 +64,13 @@ kmstart() {
   echo "kmrm ${IMAGE_NAME} : to stop and remove image"
 }
 kmstartproxy() {
-  usage $# "[IMAGE_NAME]" "[REGISTRY_URL]" "[PROXY_URL]"
+  usage $# "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local IMAGE_NAME=$1
-  local REGISTRY_URL=$2
-  local PROXY_URL=$3
-  local EXTRA_PARAMS=${@:4}
+  local PROXY_URL=$2
+  local EXTRA_PARAMS=${@:3}
 
   if [[ $PROXY_URL == https* ]] 
     then
@@ -60,7 +79,7 @@ kmstartproxy() {
       if [[ $PROXY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTP_PROXY=${PROXY_URL}" ; fi
   fi
 
-  kmstart "${IMAGE_NAME}" "${REGISTRY_URL}" "${EXTRA_PARAMS} --v 9999"
+  kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS} --v 9999"
 }
 kmhello() {
   kmtemplate "service" "hello-minikube"

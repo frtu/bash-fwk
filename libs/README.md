@@ -34,7 +34,7 @@ Usage ```import lib-systemctl```
 
 Usage ```import lib-git```
 
-### Basic
+### Base commands
 
 * Pull from remote repo : ```gl "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"```
 * Push to remote repo : ```gh "[REMOTE_REPO_NAME:origin]"```
@@ -176,6 +176,8 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 ## Library 'docker'
 
+Usage ```import lib-docker```
+
 ### Image repository
 
 * List all local images : ```dckls```
@@ -186,6 +188,7 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 Base commands :
 
+* Get Docker version : ```dckinfo```
 * List all existing instances : ```dckps```
 * Start existing instance : ```dckstart "INSTANCE_NAME"```
 * Read instance console : ```dcklogs "INSTANCE_NAME"```
@@ -223,3 +226,16 @@ If you just want to check an image, these funtions will create and remove a temp
 
 * Run Tomcat image : ```dckrunjava "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]"```
 * Run temporary Tomcat image port 8080 with System env : ```dckrunjavaenv "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"```
+
+## Library 'docker-minikube'
+
+Usage ```import lib-docker-minikube```
+
+### Base commands
+
+* Get Minikube version and others info : ```kminfo```
+* **Start Minikube** using IMAGE_NAME (if not exists, create automatically) : ```kmstart "[IMAGE_NAME]" "[EXTRA_PARAMS]"```
+* Start Minikube with the **specific driver** (virtualbox | none | ..) using IMAGE_NAME : ```kmstartdriver "DRIVER_NAME" "IMAGE_NAME" "[EXTRA_PARAMS]"```
+* Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
+* Start Minikube using **specific proxy** : ```kmstartproxy "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
+
