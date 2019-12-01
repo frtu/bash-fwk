@@ -46,6 +46,26 @@ kmstartreg() {
   fi
   kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS}"
 }
+kmstartproxy() {
+  usage $# "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local PROXY_URL=$2
+  local EXTRA_PARAMS=${@:3}
+
+  # https://minikube.sigs.k8s.io/docs/reference/networking/proxy/
+  if [[ $PROXY_URL == https* ]] 
+    then
+      EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTPS_PROXY=${PROXY_URL}"
+    else
+      if [[ $PROXY_URL == http* ]] ; then EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTP_PROXY=${PROXY_URL}" ; fi
+  fi
+  EXTRA_PARAMS="$EXTRA_PARAMS --docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24"
+
+  kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS} --v 9999"
+}
 kmstart() {
   usage $# "[IMAGE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -62,24 +82,6 @@ kmstart() {
   echo "kmssh ${IMAGE_NAME} : to SSH"
   echo "kmstop ${IMAGE_NAME} : to stop"
   echo "kmrm ${IMAGE_NAME} : to stop and remove image"
-}
-kmstartproxy() {
-  usage $# "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local IMAGE_NAME=$1
-  local PROXY_URL=$2
-  local EXTRA_PARAMS=${@:3}
-
-  if [[ $PROXY_URL == https* ]] 
-    then
-      local EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTPS_PROXY=${PROXY_URL}"
-    else
-      if [[ $PROXY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --docker-env HTTP_PROXY=${PROXY_URL}" ; fi
-  fi
-
-  kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS} --v 9999"
 }
 kmhello() {
   kmtemplate "service" "hello-minikube"
