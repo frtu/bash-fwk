@@ -19,7 +19,7 @@ kminfo() {
   cat ~/.minikube/machines/minikube/config.json | grep DriverName
 }
 kmstartdriver() {
-  usage $# "DRIVER_NAME:virtualbox|none" "IMAGE_NAME" "[EXTRA_PARAMS]"
+  usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "IMAGE_NAME" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
