@@ -22,15 +22,6 @@ import() {
   load_file "$LIBS_FOLDER/$1.bash"
 }
 
-refresh() {
-  source ~/.bash_profile
-}
-relink() {
-  rm -fR "$2"
-  echo "Linking local folder $2 to source folder $1"
-  ln -s  "$1" "$2"
-}
-
 usage() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
@@ -62,4 +53,28 @@ usage() {
     echo "Usage : ${FUNCNAME[1]} ${@:2} => $NUM_MANDATORY_ARGS mandatory argument(s)" >&2
     return -1
   fi
+}
+
+refresh() {
+  source ~/.bash_profile
+}
+relink() {
+  usage $# "SOURCE_FOLDER" "LOCAL_LINK_NAME" "[FORCE:false]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local SOURCE_FOLDER=$1
+  local LOCAL_LINK_NAME=$2
+  local FORCE=$3
+
+  if [[ -d "${LOCAL_LINK_NAME}" ]]; then
+    if [[ -z "${FORCE}" ]]; then
+      echo "'${LOCAL_LINK_NAME}' is an EXISTING directory! Are you sure of the parameters order?" >&2
+      return -1
+    fi
+  fi
+
+  rm -fR "${LOCAL_LINK_NAME}"
+  echo "Linking local folder $2 to source folder ${SOURCE_FOLDER}"
+  ln -s  "${SOURCE_FOLDER}" "${LOCAL_LINK_NAME}"
 }
