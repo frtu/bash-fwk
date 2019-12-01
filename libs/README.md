@@ -227,9 +227,9 @@ If you just want to check an image, these funtions will create and remove a temp
 * Run Tomcat image : ```dckrunjava "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]"```
 * Run temporary Tomcat image port 8080 with System env : ```dckrunjavaenv "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"```
 
-## Library 'docker-minikube'
+## Library 'k8s-minikube'
 
-Usage ```import lib-docker-minikube```
+Usage ```import lib-k8s-minikube```
 
 ### Base commands
 

@@ -1,4 +1,4 @@
-import lib-docker-minikube
+import lib-k8s-minikube
 
 export DOCKER_REGISTRY_CN=https://docker.mirrors.ustc.edu.cn
 
