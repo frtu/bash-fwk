@@ -2,7 +2,7 @@ kchello() {
   kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
 }
 
-kcinfo() {
+kc() {
   echo "------- CLI and Server version --------";
   kubectl version
   echo "------- List contexts (or 'clusters') --------";

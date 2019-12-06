@@ -1,5 +1,5 @@
 # https://www.baeldung.com/kubernetes-helm
-hminfo() { 
+hm() { 
   hmtpl "version"
 }
 

@@ -12,7 +12,7 @@ vboxls() {
       VBoxManage list runningvms
   fi
 }
-vboxinfo() {
+vboxinspect() {
   usage $# "IMAGE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then

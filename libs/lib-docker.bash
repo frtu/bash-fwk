@@ -1,6 +1,6 @@
 import lib-vm
 
-dckinfo() {
+dck() {
   docker version
 }
 

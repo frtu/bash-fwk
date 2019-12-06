@@ -188,7 +188,7 @@ Usage ```import lib-docker```
 
 Base commands :
 
-* Get Docker version : ```dckinfo```
+* Get Docker version : ```dck```
 * List all existing instances : ```dckps```
 * Start existing instance : ```dckstart "INSTANCE_NAME"```
 * Read instance console : ```dcklogs "INSTANCE_NAME"```
@@ -233,9 +233,8 @@ Usage ```import lib-k8s-minikube```
 
 ### Base commands
 
-* Get Minikube version and others info : ```kminfo```
+* Get Minikube version and others info : ```km```
 * **Start Minikube** using IMAGE_NAME (if not exists, create automatically) : ```kmstart "[IMAGE_NAME]" "[EXTRA_PARAMS]"```
 * Start Minikube with the **specific driver** (virtualbox | none | ..) using IMAGE_NAME : ```kmstartdriver "DRIVER_NAME" "IMAGE_NAME" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific proxy** : ```kmstartproxy "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
-

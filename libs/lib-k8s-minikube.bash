@@ -8,7 +8,7 @@ cdkm() {
   cd $MINIKUBE_ROOT
 }
 
-kminfo() {
+km() {
   echo "------- Host CMD version --------";
   minikube version
 
