@@ -8,6 +8,8 @@ cdkm() {
   cd $MINIKUBE_ROOT
 }
 
+alias kmls=kcctx
+
 km() {
   echo "------- Host CMD version --------";
   minikube version
@@ -49,8 +51,6 @@ kmstartreg() {
 }
 kmstartproxy() {
   usage $# "[INSTANCE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local INSTANCE_NAME=$1
   local PROXY_URL=$2
@@ -69,8 +69,6 @@ kmstartproxy() {
 }
 kmstart() {
   usage $# "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local INSTANCE_NAME=$1
   local EXTRA_PARAMS=${@:2}
@@ -92,9 +90,7 @@ kmdashboard() {
 }
 
 kmssh() {
-  usage $# "INSTANCE_NAME" "[COMMANDS]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  usage $# "[INSTANCE_NAME]" "[COMMANDS]"
 
   local INSTANCE_NAME=$1
   if [ -z "$2" ]
@@ -107,30 +103,25 @@ kmssh() {
   fi
 }
 kmip() {
-  usage $# "INSTANCE_NAME"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
+  usage $# "[INSTANCE_NAME]"
   kmtemplate "ip" $@
 }
 kmlogs() {
-  usage $# "INSTANCE_NAME"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
+  usage $# "[INSTANCE_NAME]"
   kmtemplate "logs" $@
 }
 kmstop() {
-  usage $# "INSTANCE_NAME"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
+  usage $# "[INSTANCE_NAME]"
   kmtemplate "stop" $@
 }
 kmrm() {
   usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a INSTANCE_NAME you want to delete : If you don't know any names run 'kmls'" >&2
+    kmls
+    return -1
+  fi
 
   kmtemplate "delete" $@
 }

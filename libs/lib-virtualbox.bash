@@ -144,7 +144,12 @@ vboxstorage() {
 vboxmount() {
   usage $# "INSTANCE_NAME" "HOST_FOLDER_PATH" "TARGET_FOLDER_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
 
   local INSTANCE_NAME=$1
   local HOST_FOLDER_PATH=$2
@@ -153,15 +158,29 @@ vboxmount() {
   VBoxManage guestproperty set ${INSTANCE_NAME} /VirtualBox/GuestAdd/SharedFolders/MountPrefix /
   VBoxManage guestproperty set ${INSTANCE_NAME} /VirtualBox/GuestAdd/SharedFolders/MountDir /
 
-  echo "Mapping '${HOST_FOLDER_PATH}' -> '${TARGET_FOLDER_NAME}'"
   echo "> VBoxManage sharedfolder add ${INSTANCE_NAME} --name ${TARGET_FOLDER_NAME} --hostpath ${HOST_FOLDER_PATH} --automount"
   VBoxManage sharedfolder add ${INSTANCE_NAME} --name ${TARGET_FOLDER_NAME} --hostpath ${HOST_FOLDER_PATH} --automount
+
+  STATUS=$?
+  if [ "$STATUS" -eq 0 ]
+    then
+      echo ""
+      echo "Mount successful : '${HOST_FOLDER_PATH}' -> '${TARGET_FOLDER_NAME}'"
+    else
+      echo "" >&2
+      echo "== ERROR : You may need to stop your instance using cmd 'vboxstop ${INSTANCE_NAME}'. Error code=$STATUS  ==" >&2
+  fi
 }
 
 vboxmemory() {
   usage $# "INSTANCE_NAME" "MEMORY_MB"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
 
   local INSTANCE_NAME=$1
   local MEMORY_MB=$2

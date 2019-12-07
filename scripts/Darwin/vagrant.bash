@@ -175,6 +175,8 @@ vagtemplate() {
 
 vagexport() {
   usage $# "[BOX_NAME]" "[BOX_FILENAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local BOX_NAME=$1
   local BOX_FILENAME=$2

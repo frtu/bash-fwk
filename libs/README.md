@@ -247,14 +247,14 @@ All start commands (if not exists, create automatically) :
 Other base commands :
 
 * Get Minikube version and others info : ```km```
-* Open a **SSH** command into minikube instance : ```kmssh "INSTANCE_NAME" "[COMMANDS]"```
+* Open a **SSH** command into minikube instance : ```kmssh "[INSTANCE_NAME]" "[COMMANDS]"```
 * See **Logs** of this INSTANCE_NAME : ```kmlogs "[INSTANCE_NAME]"```
 * **Stop** this INSTANCE_NAME : ```kmstop "[INSTANCE_NAME]"```
-* **Delete** this INSTANCE_NAME : ```kmrm "[INSTANCE_NAME]"```
+* **Delete** this INSTANCE_NAME : ```kmrm "INSTANCE_NAME"```
 
 ### Network
 
-* Minikube IP : ```kmip "INSTANCE_NAME"```
+* Minikube IP : ```kmip "[INSTANCE_NAME]"```
 
 
 ## Library 'virtualbox'
