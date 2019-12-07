@@ -26,7 +26,10 @@ inst_update() {
   brew upgrade
   brew cask upgrade
 }
-
+inst_zlib() {
+  inst zlib
+  brew link zlib
+}
 
 alias brewcd='cd $HOMEBREW_REPOSITORY'
 alias sdkcd='cd $SDKMAN_DIR'
@@ -107,6 +110,21 @@ inst_kubectl() {
   inst kubectl
 }
 
+inst_python() {
+  usage $# "[PYTHON_VERSION]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local PYTHON_VERSION=${1:-3.7.2}
+  echo "Installation > pyenv install -v ${PYTHON_VERSION}"
+  inst pyenv
+  CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -v ${PYTHON_VERSION}
+
+  CONFIGURE_OPTS="--with-openssl=$(brew --prefix openssl)" 
+  CFLAGS="-I$(brew --prefix zlib)/include -I$(brew --prefix sqlite)/include" 
+  LDFLAGS="-L$(brew --prefix zlib)/lib -L$(brew --prefix sqlite)/lib" 
+  pyenv install ${PYTHON_VERSION}
+}
 inst_pip() {
   local PIP_MODULE=${1:-regex}
   echo "Type your sudo password to be able to skip Permission denied into /Library/Python/ directory"
@@ -117,6 +135,18 @@ inst_pip() {
   echo "> pip install $PIP_MODULE"
   pip install $PIP_MODULE
 }
+inst_caffe() {
+  # http://caffe.berkeleyvision.org/install_osx.html
+  brew install -vd snappy leveldb gflags glog szip lmdb
+  brew install hdf5 opencv
+
+  brew install --with-python3 --without-python --build-from-source --with-python -vd protobuf
+  brew install --with-python3 --without-python --build-from-source -vd boost boost-python
+
+  ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.dylib /anaconda3/lib/libboost_python3.dylib
+  ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.a /anaconda3/lib/libboost_python3.dylib
+}
+
 inst_node() {
   brew install node
   npm install -g grunt-cli
@@ -147,17 +177,6 @@ inst_gradle() {
 inst_android() {
   brew tap caskroom/cask
   brew cask install android-sdk
-}
-inst_caffe() {
-  # http://caffe.berkeleyvision.org/install_osx.html
-  brew install -vd snappy leveldb gflags glog szip lmdb
-  brew install hdf5 opencv
-
-  brew install --with-python3 --without-python --build-from-source --with-python -vd protobuf
-  brew install --with-python3 --without-python --build-from-source -vd boost boost-python
-
-  ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.dylib /anaconda3/lib/libboost_python3.dylib
-  ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.a /anaconda3/lib/libboost_python3.dylib
 }
 
 inst_graphviz() {
