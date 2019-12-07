@@ -19,23 +19,23 @@ km() {
   cat ~/.minikube/machines/minikube/config.json | grep DriverName
 }
 kmstartdriver() {
-  usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "IMAGE_NAME" "[EXTRA_PARAMS]"
+  usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "INSTANCE_NAME" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local DRIVER_NAME=$1
-  local IMAGE_NAME=$2
+  local INSTANCE_NAME=$2
   local EXTRA_PARAMS=${@:3}
 
-  kmstart ${IMAGE_NAME} --vm-driver=${DRIVER_NAME} ${EXTRA_PARAMS}
+  kmstart ${INSTANCE_NAME} --vm-driver=${DRIVER_NAME} ${EXTRA_PARAMS}
 }
 # only impacts those images with no repository prefix - images that come from the Docker official registry
 kmstartreg() {
-  usage $# "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"
+  usage $# "[INSTANCE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$1
   local REGISTRY_URL=$2
   local EXTRA_PARAMS=${@:3}
 
@@ -45,14 +45,14 @@ kmstartreg() {
     else
       if [[ $REGISTRY_URL == http* ]] ; then local EXTRA_PARAMS="$EXTRA_PARAMS --insecure-registry=${REGISTRY_URL}" ; fi
   fi
-  kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS}"
+  kmstart "${INSTANCE_NAME}" "${EXTRA_PARAMS}"
 }
 kmstartproxy() {
-  usage $# "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"
+  usage $# "[INSTANCE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$1
   local PROXY_URL=$2
   local EXTRA_PARAMS=${@:3}
 
@@ -65,24 +65,24 @@ kmstartproxy() {
   fi
   EXTRA_PARAMS="$EXTRA_PARAMS --docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24"
 
-  kmstart "${IMAGE_NAME}" "${EXTRA_PARAMS} --v 9999"
+  kmstart "${INSTANCE_NAME}" "${EXTRA_PARAMS} --v 9999"
 }
 kmstart() {
-  usage $# "[IMAGE_NAME]" "[EXTRA_PARAMS]"
+  usage $# "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$1
   local EXTRA_PARAMS=${@:2}
 
-  kmtemplate "start" "${IMAGE_NAME}" "${EXTRA_PARAMS}"
+  kmtemplate "start" "${INSTANCE_NAME}" "${EXTRA_PARAMS}"
 
   echo "------- Help --------";
-  echo "kmdashboard ${IMAGE_NAME} : to display dashboard"
-  echo "kmlogs ${IMAGE_NAME} : to see logs"
-  echo "kmssh ${IMAGE_NAME} : to SSH"
-  echo "kmstop ${IMAGE_NAME} : to stop"
-  echo "kmrm ${IMAGE_NAME} : to stop and remove image"
+  echo "kmdashboard ${INSTANCE_NAME} : to display dashboard"
+  echo "kmlogs ${INSTANCE_NAME} : to see logs"
+  echo "kmssh ${INSTANCE_NAME} : to SSH"
+  echo "kmstop ${INSTANCE_NAME} : to stop"
+  echo "kmrm ${INSTANCE_NAME} : to stop and remove image"
 }
 kmhello() {
   kmtemplate "service" "hello-minikube"
@@ -90,31 +90,48 @@ kmhello() {
 kmdashboard() {
   kmtemplate "dashboard" $@
 }
+
 kmssh() {
+  usage $# "INSTANCE_NAME" "[COMMANDS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local INSTANCE_NAME=$1
   if [ -z "$2" ]
-  then
-    kmtemplate "ssh" $1
-  else
-    local IMAGE_NAME=$1
-    shift 1
-    echo "CALL : root@$IMAGE_NAME> $@"
-    echo "$@" | kmtemplate "ssh" $IMAGE_NAME
+    then
+      kmtemplate "ssh" ${INSTANCE_NAME}
+    else
+      shift 1
+      echo "CALL : root@${INSTANCE_NAME}> $@"
+      echo "$@" | kmtemplate "ssh" ${INSTANCE_NAME}
   fi
 }
 kmip() {
+  usage $# "INSTANCE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   kmtemplate "ip" $@
 }
 kmlogs() {
+  usage $# "INSTANCE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   kmtemplate "logs" $@
 }
-kmmutenotification() {
-  kmtemplate "config" set WantUpdateNotification false
-}
-
 kmstop() {
+  usage $# "INSTANCE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   kmtemplate "stop" $@
 }
 kmrm() {
+  usage $# "INSTANCE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
   kmtemplate "delete" $@
 }
 kmtemplate() {
@@ -142,9 +159,12 @@ kmtemplate() {
   minikube $1 ${EXTRA_PARAMS}
 }
 
+kmmutenotification() {
+  kmtemplate "config" set WantUpdateNotification false
+}
 kmload() {
-  local IMAGE_NAME=$1
-  echo "${FUNCNAME} ${IMAGE_NAME}"
+  local INSTANCE_NAME=$1
+  echo "${FUNCNAME} ${INSTANCE_NAME}"
 
   if [ -n "$1" ]; then
     local OPTIONAL_ARGS="$OPTIONAL_ARGS -p $1"
@@ -153,8 +173,8 @@ kmload() {
   eval $(minikube docker-env ${OPTIONAL_ARGS})
 }
 kmunload() {
-  local IMAGE_NAME=$1
-  echo "${FUNCNAME} ${IMAGE_NAME}"
+  local INSTANCE_NAME=$1
+  echo "${FUNCNAME} ${INSTANCE_NAME}"
 
   if [ -n "$1" ]; then
     local OPTIONAL_ARGS="$OPTIONAL_ARGS -p $1"
@@ -163,12 +183,12 @@ kmunload() {
   eval $(minikube docker-env -u ${OPTIONAL_ARGS})
 }
 kmloadpersist() {
-  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$1
   local EXTRA_KUBE_PARAMS=${@:2}
 
-  if [ -n "$IMAGE_NAME" ]; then
-    echo "Persiting MINIKUBE_DEFAULT_INSTANCE=$IMAGE_NAME!"
-    echo "export MINIKUBE_DEFAULT_INSTANCE=$IMAGE_NAME" > $MINIKUBE_PERSIST_FILE
+  if [ -n "$INSTANCE_NAME" ]; then
+    echo "Persiting MINIKUBE_DEFAULT_INSTANCE=$INSTANCE_NAME!"
+    echo "export MINIKUBE_DEFAULT_INSTANCE=$INSTANCE_NAME" > $MINIKUBE_PERSIST_FILE
     source $MINIKUBE_PERSIST_FILE
   fi
   if [ -n "$EXTRA_KUBE_PARAMS" ]; then
@@ -177,7 +197,7 @@ kmloadpersist() {
     source $MINIKUBE_PERSIST_FILE
   fi
 
-  kmload $IMAGE_NAME
+  kmload $INSTANCE_NAME
 }
 kmloadpersistrm() {
   echo "unset MINIKUBE_DEFAULT_INSTANCE"

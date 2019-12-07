@@ -232,15 +232,30 @@ If you just want to check an image, these funtions will create and remove a temp
 
 ## Library 'k8s-minikube'
 
-Usage ```import lib-k8s-minikube```
+* Usage ```import lib-k8s-minikube```
+* Prefix ```km``` 
 
 ### Base commands
 
+All start commands (if not exists, create automatically) :
+
+* **Start Minikube** using INSTANCE_NAME : ```kmstart "[INSTANCE_NAME]" "[EXTRA_PARAMS]"```
+* Start Minikube with the **specific driver** (virtualbox | none | ..) using INSTANCE_NAME : ```kmstartdriver "DRIVER_NAME" "INSTANCE_NAME" "[EXTRA_PARAMS]"```
+* Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[INSTANCE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
+* Start Minikube using **specific proxy** : ```kmstartproxy "[INSTANCE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
+
+Other base commands :
+
 * Get Minikube version and others info : ```km```
-* **Start Minikube** using IMAGE_NAME (if not exists, create automatically) : ```kmstart "[IMAGE_NAME]" "[EXTRA_PARAMS]"```
-* Start Minikube with the **specific driver** (virtualbox | none | ..) using IMAGE_NAME : ```kmstartdriver "DRIVER_NAME" "IMAGE_NAME" "[EXTRA_PARAMS]"```
-* Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
-* Start Minikube using **specific proxy** : ```kmstartproxy "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
+* Open a **SSH** command into minikube instance : ```kmssh "INSTANCE_NAME" "[COMMANDS]"```
+* See **Logs** of this INSTANCE_NAME : ```kmlogs "[INSTANCE_NAME]"```
+* **Stop** this INSTANCE_NAME : ```kmstop "[INSTANCE_NAME]"```
+* **Delete** this INSTANCE_NAME : ```kmrm "[INSTANCE_NAME]"```
+
+### Network
+
+* Minikube IP : ```kmip "INSTANCE_NAME"```
+
 
 ## Library 'virtualbox'
 
@@ -248,11 +263,15 @@ Usage ```import lib-virtualbox```
 
 ### Base commands
 
-* Get VirtualBox version : ```vbox```
+* Get VirtualBox version : ```vbox "[-a]"```
 * List VirtualBox images : ```vboxls```
 * Inspect an existing image : ```vboxinspect "INSTANCE_NAME"```
 
 ### Administrate virtualbox image
+
+Install fwk :
+
+* Mount local [bash-fwk](https://github.com/frtu/bash-fwk) into virtualbox image : ```vboxfwk "INSTANCE_NAME" "USER_HOME"```
 
 Base commands :
 

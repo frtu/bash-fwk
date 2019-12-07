@@ -67,7 +67,7 @@ vboxpause() {
   usage $# "INSTANCE_NAME"
   vboxtpl "pause" $@
 }
-vboxpause() {
+vboxresume() {
   usage $# "INSTANCE_NAME"
   vboxtpl "resume" $@
 }
