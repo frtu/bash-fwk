@@ -27,6 +27,23 @@ vboxinspect() {
   echo "VBoxManage showvminfo ${INSTANCE_NAME} --machinereadable"
   VBoxManage showvminfo ${INSTANCE_NAME} --machinereadable
 }
+vboxfwk() {
+  usage $# "INSTANCE_NAME" "USER_HOME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
+
+  local INSTANCE_NAME=$1
+  local USER_HOME=$2
+  echo "vboxmount ${INSTANCE_NAME} ~/git/bash-fwk ${USER_HOME}/git/bash-fwk"
+  vboxmount ${INSTANCE_NAME} ~/git/bash-fwk ${USER_HOME}/git/bash-fwk
+
+  echo "bash-fwk folder mounted. Just run > cd ~/git/bash-fwk && . setup.bash"
+}
 
 vboxstart() {
   usage $# "INSTANCE_NAME"
@@ -45,6 +62,14 @@ vboxstart() {
 vboxstop() {
   usage $# "INSTANCE_NAME"
   vboxtpl "poweroff" $@
+}
+vboxpause() {
+  usage $# "INSTANCE_NAME"
+  vboxtpl "pause" $@
+}
+vboxpause() {
+  usage $# "INSTANCE_NAME"
+  vboxtpl "resume" $@
 }
 vboxtpl() {
   usage $# "CMD" "INSTANCE_NAME"
@@ -190,10 +215,9 @@ vboxnetls() {
   VBoxManage list hostonlyifs
 }
 vboxnetcreate() {
-  echo "VBoxManage hostonlyif create"
-  VBoxManage hostonlyif create
+  echo "VBoxManage hostonlyif create $@"
+  VBoxManage hostonlyif create $@
 }
-
 vboxnetrm() {
   usage $# "NETWORK_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

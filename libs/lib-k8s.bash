@@ -176,7 +176,26 @@ kcapply() {
   echo "kcedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
   echo "kcrm [POD_NAME] : to stop and remove"
 }
+kcruntpl() {
+  usage $# "CMD" "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local CMD=$1
+  local IMAGE_NAME=$2
+  local INSTANCE_NAME=$3
+  local NAMESPACE=$4
+  local EXTRA_PARAMS=${@:5}
+  
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+  fi
+
+  # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
+  # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/#docker-run
+  echo "kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME}"
+  kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME}
+}
 kcattach() {
   usage $# "POD_NAME"
    # MIN NUM OF ARG
@@ -308,6 +327,23 @@ kcpodid() {
   kcpodinfo ${POD_NAME} ${NAMESPACE} | grep 'Container ID'
 }
 
+kcpodrun() {
+  usage $# "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$2
+  local NAMESPACE=$3
+  local PORT=$4
+
+  if [ -n "$PORT" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --port $PORT"
+  fi
+
+  # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
+  kcruntpl "run --generator=run-pod/v1" "${IMAGE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" "${EXTRA_PARAMS}"
+}
 kcpodtop() {
   usage $# "POD_NAME"
    # MIN NUM OF ARG
@@ -411,6 +447,57 @@ kcpodtemplate() {
 
   echo "kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
   kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
+}
+
+alias kcsvcls=kclsservices
+
+kcstschk() {
+  usage $# "SERVICE_NAME" "[NAMESPACE]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SERVICE_NAME=$1
+  local NAMESPACE=$2
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+  fi
+
+  echo "kubectl rollout status sts/${DEPLOYMENT_NAME} ${EXTRA_PARAMS}"
+  kubectl rollout status sts/${DEPLOYMENT_NAME} ${EXTRA_PARAMS}
+}
+
+alias kcdpls=kclsdeployments
+# https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
+kcdprun() {
+  usage $# "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  kcruntpl "create deployment" $@
+}
+kcdpexpose() {
+  usage $# "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DEPLOYMENT_NAME=$1
+  local SERVICE_NAME=$2
+  local PORT=$3
+  local NAMESPACE=$4
+  local EXTRA_PARAMS=${@:5}
+
+  if [ -n "$PORT" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --port $PORT"
+  fi
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+  fi
+
+  # expose a port through with a service
+  echo "kubectl expose deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS} --name=${SERVICE_NAME}"
+  kubectl expose deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS} --name=${SERVICE_NAME}
 }
 
 kcnetlookup() {

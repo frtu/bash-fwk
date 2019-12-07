@@ -161,6 +161,35 @@ vagrm() {
 	vagtemplate "destroy"
 }
 
+vagexport() {
+  local BOX_NAME=$1
+  local BOX_FILENAME=$2
+
+  if [[ -f Vagrantfile ]]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --vagrantfile Vagrantfile"
+  fi
+  if [[ -n "$BOX_NAME" ]]
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS --base $BOX_NAME"
+    elif [[ ! -f Vagrantfile ]]; then
+      usage $# "BOX_NAME" "[BOX_FILENAME:package.box]"
+      ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+      echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+      echo "" >&2
+      vboxls -a
+      return -1
+  fi
+  if [ -n "$BOX_FILENAME" ]
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS --output ${BOX_FILENAME}"
+    elif [[ -n "$BOX_NAME" ]]; then
+      local EXTRA_PARAMS="$EXTRA_PARAMS --output ${BOX_NAME}.box"
+  fi
+
+  echo "vagrant package $EXTRA_PARAMS"
+  vagrant package $EXTRA_PARAMS
+}
+
 vagtemplate() {
   if [ ! -f Vagrantfile ]; then
     echo "Please run this command in a folder containing Vagrantfile." >&2
