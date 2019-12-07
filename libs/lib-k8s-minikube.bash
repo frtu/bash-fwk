@@ -1,5 +1,6 @@
 import lib-k8s
 import lib-docker
+import lib-inst
 
 MINIKUBE_ROOT=~/.minikube
 MINIKUBE_MACHINES_FOLDER=$MINIKUBE_ROOT/machines
@@ -8,14 +9,13 @@ MINIKUBE_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-minikube-instance.bash
 cdkm() {
   cd $MINIKUBE_ROOT
 }
-inst_minikube_linux() {
-  usage $# "[MINIKUBE_URL_EXEC:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
+inst_minikube() {
+  usage $# "[EXEC_URL:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
 
-  local MINIKUBE_URL_EXEC=${1:-https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64}
+  local EXEC_URL=${1:-https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64}
   local BIN_PATH=${2:-/usr/local/bin/}
 
-  echo "curl -Lo minikube-linux-amd64 ${MINIKUBE_URL_EXEC}"
-  curl -Lo minikube-linux-amd64 "${MINIKUBE_URL_EXEC}" && chmod +x minikube-linux-amd64 && sudo cp minikube-linux-amd64 ${BIN_PATH}/minikube
+  inst_dl_bin "minikube" "${EXEC_URL}" "${BIN_PATH}"
 }
 
 alias kmls=kcctx

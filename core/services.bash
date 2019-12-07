@@ -87,14 +87,15 @@ enablessh() {
   srv_activate ssh
   refresh
 }
-enabledocker() {
+enabledocker_linux() {
   enablelib docker-linux
   inst_docker
   refresh
 }
-enableminikube() {
+enableminikube_linux() {
   enablelib docker-linux
   enablelib k8s-minikube
+  inst_kubectl_linux
   inst_minikube
   inst_docker_registry
   enabledocker

@@ -31,6 +31,18 @@ upd() {
 upg() {
   $INSTALL_TOOL upgrade $@
 }
+inst_dl_bin() {
+  usage $# "EXEC_NAME" "EXEC_URL" "[BIN_PATH:/usr/local/bin/]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local EXEC_NAME=$1
+  local EXEC_URL=$2
+  local BIN_PATH=${3:-/usr/local/bin/}
+
+  echo "curl -Lo ${EXEC_NAME} ${EXEC_URL}"
+  curl -Lo ${EXEC_NAME} "${EXEC_URL}" && chmod +x ${EXEC_NAME} && sudo cp ${EXEC_NAME} ${BIN_PATH}/${EXEC_NAME}
+}
 
 inst_wget() {
   inst wget

@@ -48,3 +48,12 @@ inst_dck() {
 
 # https://github.com/docker/compose/releases/download/1.11.2/docker-compose-Linux-x86_64
 # https://nickjanetakis.com/blog/docker-tip-50-running-an-insecure-docker-registry
+
+inst_kubectl_linux() {
+  usage $# "[BIN_PATH:/usr/local/bin/]"
+
+  local EXEC_URL=https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+  local BIN_PATH=${1:-/usr/local/bin/}
+
+  inst_dl_bin "kubectl" "${EXEC_URL}" "${BIN_PATH}"
+}
