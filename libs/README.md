@@ -246,6 +246,8 @@ All start commands (if not exists, create automatically) :
 
 Other base commands :
 
+
+* Install Minikube in bin path : ```kminst_linux "[MINIKUBE_URL_EXEC]" "[BIN_PATH:/usr/local/bin/]"```
 * Get Minikube version and others info : ```km```
 * Open a **SSH** command into minikube instance : ```kmssh "[INSTANCE_NAME]" "[COMMANDS]"```
 * See **Logs** of this INSTANCE_NAME : ```kmlogs "[INSTANCE_NAME]"```

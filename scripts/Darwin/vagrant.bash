@@ -47,6 +47,13 @@ vagbadd_docker() {
 vagbadd_centos() {
 	vagbadd centos65 vagrant-centos65-v6.5.3_64.box https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box
 }
+vagbadd_centos7() {
+  vagbadd centos/7 CentOS-7-x86_64-Vagrant-1905_01.VirtualBox.box https://vagrantcloud.com/centos/boxes/7/versions/1905.1/providers/virtualbox.box
+}
+vagbadd_centos8() {
+  vagbadd centos/8 CentOS-8-Vagrant-8.0.1905-1.x86_64.vagrant-virtualbox.box https://vagrantcloud.com/centos/boxes/8/versions/1905.1/providers/virtualbox.box
+}
+
 vagbadd_ubuntu() {
 	# vagbadd precise64 http://files.vagrantup.com/precise64.box
 	#vagbadd precise64 https://atlas.hashicorp.com/hashicorp/boxes/precise64/versions/1.1.0/providers/virtualbox.box vagrant-ubuntu-precise64-1.1.0.box
