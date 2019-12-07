@@ -14,7 +14,7 @@ kminst_linux() {
   local BIN_PATH=${2:-/usr/local/bin/}
 
   echo "curl -Lo minikube-linux-amd64 ${MINIKUBE_URL_EXEC}"
-  curl -Lo minikube-linux-amd64 ${MINIKUBE_URL_EXEC} && chmod +x minikube-linux-amd64 && sudo cp minikube ${BIN_PATH}
+  curl -Lo minikube-linux-amd64 "${MINIKUBE_URL_EXEC}" && chmod +x minikube-linux-amd64 && sudo cp minikube-linux-amd64 ${BIN_PATH}/minikube
 }
 
 alias kmls=kcctx
