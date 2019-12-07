@@ -43,6 +43,13 @@ apt update && apt -y install net-tools nmap netcat telnet curl
 ```	
 If already installed, use quick fwk install copy : ```fwknet ```
 
+### Locally on Busybox
+
+	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | ash
+
+Command ```source file.bash``` doesn't work, need to use ```. file.bash```
+
+
 ## Your new env
 
 ### Core
