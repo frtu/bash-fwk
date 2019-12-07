@@ -7,7 +7,7 @@ MINIKUBE_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-minikube-instance.bash
 cdkm() {
   cd $MINIKUBE_ROOT
 }
-kminst_linux() {
+inst_minikube_linux() {
   usage $# "[MINIKUBE_URL_EXEC:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
 
   local MINIKUBE_URL_EXEC=${1:-https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64}
