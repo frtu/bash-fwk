@@ -41,7 +41,17 @@ inst_dl_bin() {
   local BIN_PATH=${3:-/usr/local/bin/}
 
   echo "curl -Lo ${EXEC_NAME} ${EXEC_URL}"
-  curl -Lo ${EXEC_NAME} "${EXEC_URL}" && chmod +x ${EXEC_NAME} && sudo cp ${EXEC_NAME} ${BIN_PATH}/${EXEC_NAME}
+  curl -Lo ${EXEC_NAME} "${EXEC_URL}" && chmod +x ${EXEC_NAME} && bincp ${EXEC_NAME}
+}
+bincp() {
+  usage $# "EXEC_FILE_NAME" "[EXEC_FINAL_NAME]" "[BIN_PATH:/usr/local/bin/]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local EXEC_FILE_NAME=$1
+  local EXEC_FINAL_NAME=${2:-$1}
+  local BIN_PATH=${3:-/usr/local/bin/}
+  sudo cp ${EXEC_FILE_NAME} ${BIN_PATH}/${EXEC_FINAL_NAME}
 }
 
 inst_wget() {
