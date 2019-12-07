@@ -181,8 +181,11 @@ Usage ```import lib-docker```
 ### Image repository
 
 * List all local images : ```dckls```
-* Pull locally remote image ```dckpull "IMAGE_NAME"```
 * Search remote ```dcksearch "IMAGE_NAME"```
+* Pull locally remote image ```dckpull "IMAGE_NAME"```
+* Export image to file : ```dckexport "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"```
+* Import image from file : ```dckimport "DCK_IMAGE_FILENAME"```
+* Import image files containing text filter from folder : ```dckimportfolder "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"```
 
 ### Administrate docker instances
 
@@ -238,3 +241,35 @@ Usage ```import lib-k8s-minikube```
 * Start Minikube with the **specific driver** (virtualbox | none | ..) using IMAGE_NAME : ```kmstartdriver "DRIVER_NAME" "IMAGE_NAME" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific proxy** : ```kmstartproxy "[IMAGE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
+
+## Library 'virtualbox'
+
+Usage ```import lib-virtualbox```
+
+### Base commands
+
+* Get VirtualBox version : ```vbox```
+* List VirtualBox images : ```vboxls```
+* Inspect an existing image : ```vboxinspect "INSTANCE_NAME"```
+
+### Administrate virtualbox image
+
+Base commands :
+
+* Create a new instance : ```vboxcreate "INSTANCE_NAME" "BASE_FOLDER" "[CPU_NB]" "[MEMORY_MB]" "[NETWORK:82540EM|virtio]"```
+* Start existing instance : ```vboxstart "INSTANCE_NAME"```
+* Stop existing instance : ```vboxstop "INSTANCE_NAME"```
+* Pause existing instance : ```vboxpause "INSTANCE_NAME"```
+* Resume existing instance : ```vboxresume "INSTANCE_NAME"```
+
+Modify an existing instance :
+
+* Mount a new storage : ```vboxstorage "INSTANCE_NAME" "IMAGE_FILEPATH" "[PORT_NUMBER]"```
+* Mount a host folder : ```vboxmount "INSTANCE_NAME" "HOST_FOLDER_PATH" "TARGET_FOLDER_NAME"```
+* Modify memory : ```vboxmemory "INSTANCE_NAME" "MEMORY_MB"```
+* Expose instance port into host : ```vboxport "INSTANCE_NAME" "PORT"```
+
+Network :
+
+* List all DHCP : ```vboxnetdhcp```
+* ...
