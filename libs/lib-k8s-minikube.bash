@@ -1,4 +1,5 @@
 import lib-k8s
+import lib-docker
 
 MINIKUBE_ROOT=~/.minikube
 MINIKUBE_MACHINES_FOLDER=$MINIKUBE_ROOT/machines

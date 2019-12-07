@@ -92,6 +92,13 @@ enabledocker() {
   inst_docker
   refresh
 }
+enableminikube() {
+  enablelib docker-linux
+  enablelib k8s-minikube
+  inst_minikube
+  inst_docker_registry
+  enabledocker
+}
 enableml() {
   usage $# "MAGIC_LEAP_SDK_VERSION"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
