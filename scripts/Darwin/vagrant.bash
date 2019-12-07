@@ -15,14 +15,9 @@ VAGRANT_MACHINES_SUBFOLDER=./.vagrant/machines
 
 # https://www.vagrantup.com/docs/boxes.html
 # https://atlas.hashicorp.com/boxes/
-
-cdvag() {
-  cd $VAGRANT_MACHINES_SUBFOLDER
-}
 cdvagb() {
   cd $VAGRANT_BOXES_FOLDER
 }
-
 vagbls() {
 	# ls $VAGRANT_BOXES_FOLDER
 	echo "=== Vagrant boxes catalog ==="
@@ -112,18 +107,26 @@ vagbadd() {
   vagrant init $BOX_NAME
 }
 vagbrm() {
+  usage $# "BOX_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
 	if [ $# -eq 0 ]; then
-      echo "Please add the name of the box to remove with 'vagbrm [BOX_NAME]'"
-	  echo "=== Vagrant boxes catalog ==="
-      vagrant box list
-      return
-  	fi
-  	vagrant box remove $1
+    echo "Please add the name of the box to remove with 'vagbrm [BOX_NAME]'" >&2
+	  echo "=== Vagrant boxes catalog ===" >&2
+    vagrant box list
+    return
+  fi
+
+  local BOX_NAME=$1
+  echo "vagrant box remove $BOX_NAME"
+  vagrant box remove $BOX_NAME
 }
 
 # ==================================================
 # Vagrant install and usage
 # ==================================================
+cdvag() {
+  cd $VAGRANT_MACHINES_SUBFOLDER
+}
 vagls() {
 	vagrant global-status --prune
 
@@ -132,14 +135,11 @@ vagls() {
 		ls $VAGRANT_MACHINES_SUBFOLDER
 	fi
 }
-
-vaginst_script() {
+vaginst_fwk() {
 	INSTALL_SCRIPT="curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash"
-    echo "CALL : root@vagrant> $INSTALL_SCRIPT"
+
+  echo "CALL : root@vagrant> $INSTALL_SCRIPT"
 	vagssh "$($INSTALL_SCRIPT)"
-}
-vagenabledocker() {
-	vagssh "echo 'import "lib-docker"' > ~/scr-local/service-docker.bash"
 }
 
 vagstart() {
@@ -160,8 +160,22 @@ vagssh() {
 vagrm() {
 	vagtemplate "destroy"
 }
+vagtemplate() {
+  if [ ! -f Vagrantfile ]; then
+    echo "Please run this command in a folder containing Vagrantfile." >&2
+    echo "- Create one using cmd > vagbadd_xx" >&2
+    echo "- Go to an existing folder looking at the last column directory." >&2
+    vagls
+    return -1
+  fi
+
+  echo "vagrant $@"
+  vagrant $@
+}
 
 vagexport() {
+  usage $# "[BOX_NAME]" "[BOX_FILENAME]"
+
   local BOX_NAME=$1
   local BOX_FILENAME=$2
 
@@ -190,16 +204,7 @@ vagexport() {
   vagrant package $EXTRA_PARAMS
 }
 
-vagtemplate() {
-  if [ ! -f Vagrantfile ]; then
-    echo "Please run this command in a folder containing Vagrantfile." >&2
-    echo "- Create one using cmd > vagbadd_xx" >&2
-    echo "- Go to an existing folder looking at the last column directory." >&2
-    vagls
-    return -1
-  fi
-
-  echo "vagrant $@"
-  vagrant $@
+vagenabledocker() {
+  vagssh "echo 'import "lib-docker"' > ~/scr-local/service-docker.bash"
 }
 # https://www.hashicorp.com/blog/feature-preview-vagrant-1-6-docker-dev-environments.html
