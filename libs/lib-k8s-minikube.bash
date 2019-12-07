@@ -29,6 +29,7 @@ kmstartdriver() {
 
   kmstart ${IMAGE_NAME} --vm-driver=${DRIVER_NAME} ${EXTRA_PARAMS}
 }
+# only impacts those images with no repository prefix - images that come from the Docker official registry
 kmstartreg() {
   usage $# "[IMAGE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -99,6 +100,9 @@ kmssh() {
     echo "CALL : root@$IMAGE_NAME> $@"
     echo "$@" | kmtemplate "ssh" $IMAGE_NAME
   fi
+}
+kmip() {
+  kmtemplate "ip" $@
 }
 kmlogs() {
   kmtemplate "logs" $@

@@ -2,6 +2,8 @@ import lib-k8s-minikube
 
 export DOCKER_REGISTRY_CN=https://docker.mirrors.ustc.edu.cn
 
+export IMAGE_REPOSITORY=registry.cn-hangzhou.aliyuncs.com/google_containers
+
 # https://yq.aliyun.com/articles/221687
 inst_cn_minikube() {
   local MINIKUBE_VERSION=1.5.1
@@ -23,5 +25,8 @@ kmstartcnvbox() {
   kmstartcn --vm-driver=virtualbox
 }
 kmstartcn() {
-  kmstartreg "minikube" "${DOCKER_REGISTRY_CN}" " --image-mirror-country cn" $@
+  kmstartreg "minikube" "${DOCKER_REGISTRY_CN}" " --image-mirror-country cn" "--image-repository ${IMAGE_REPOSITORY}" $@
+}
+kchellocn() {
+  kchello ${IMAGE_REPOSITORY}
 }

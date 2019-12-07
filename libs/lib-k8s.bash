@@ -1,5 +1,10 @@
 kchello() {
-  kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
+  usage $# "[IMAGE_REPOSITORY:k8s.gcr.io]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_REPOSITORY=${1:-k8s.gcr.io}
+  kubectl create deployment hello-minikube --image=${IMAGE_REPOSITORY}/echoserver:1.10
 }
 
 kc() {
@@ -12,6 +17,7 @@ kc() {
   echo "------- Cluster Info --------";
   kubectl cluster-info
 }
+# https://kubernetes.io/docs/reference/kubectl/overview/#resource-types
 kcls() {
   usage $# "[NAMESPACE]"
   echo "------- Namespaces --------";
@@ -182,8 +188,9 @@ kcattach() {
 
   local POD_NAME=$1
 
-  echo "kubectl attach ${POD_NAME} -i"
-  kubectl attach ${POD_NAME} -i
+  # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/#docker-attach
+  echo "kubectl attach -it ${POD_NAME}"
+  kubectl attach -it ${POD_NAME}
 }
 kcbash() {
   usage $# "POD_NAME" "[COMMANDS]"
@@ -404,6 +411,21 @@ kcpodtemplate() {
 
   echo "kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
   kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
+}
+
+kcnetlookup() {
+  usage $# "DOMAIN_NAME"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  kcexec nslookup $@
+}
+kcexec() {
+  usage $# "CMD"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  kubectl exec -ti busybox -- $@
 }
 
 kcedit() {
