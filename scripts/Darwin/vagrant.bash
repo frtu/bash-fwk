@@ -84,12 +84,15 @@ vagbadd() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local BOX_NAME=$1
+  local BOX_FILENAME=$2
   local BOX_URL=$3
 
-  if [ -z "$2" ]; then
-    local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$1.box
-  else
-    local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$2
+  if [ ! -f "$BOX_FILENAME" ]; then
+    if [ -z "$BOX_FILENAME" ]; then
+      local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$1.box
+    else
+      local BOX_FILENAME=$VM_ARCHIVE_FOLDER/$2
+    fi
   fi
 
   if [ -n "$BOX_URL" ]; then
