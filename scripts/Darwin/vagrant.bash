@@ -3,7 +3,9 @@ import lib-virtualbox
 import lib-vm
 
 VAGRANT_BOXES_FOLDER=~/.vagrant.d/boxes
+
 VAGRANT_MACHINES_SUBFOLDER=./.vagrant/machines
+VAGRANT_VBOX_SUBFOLDER=$VAGRANT_MACHINES_SUBFOLDER/default/virtualbox
 
 # ==================================================
 # Vagrant Box Administration
@@ -214,6 +216,25 @@ vagexport() {
 
   echo "vagrant package $EXTRA_PARAMS"
   vagrant package $EXTRA_PARAMS
+}
+vagexportkeyvbox() {
+  if [[ ! -f "$VAGRANT_VBOX_SUBFOLDER/private_key" ]]; then
+    echo "Cannot find key at : $VAGRANT_VBOX_SUBFOLDER/private_key" >&2
+    return -1
+  fi
+
+  cp $VAGRANT_VBOX_SUBFOLDER/private_key .
+  echo "Succesfully copy key locally : ${PWD}/private_key"
+}
+vagimportkeyvbox() {
+  if [[ ! -f "private_key" ]]; then
+    echo "Cannot find key at : ./private_key" >&2
+    return -1
+  fi
+  
+  mkdir -p $VAGRANT_VBOX_SUBFOLDER
+  cp private_key $VAGRANT_VBOX_SUBFOLDER
+  echo "Succesfully copy key locally : ${VAGRANT_VBOX_SUBFOLDER}/private_key"
 }
 
 vagenabledocker() {
