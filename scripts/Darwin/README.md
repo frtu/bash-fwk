@@ -14,7 +14,8 @@
 
 * cd local vagrant instance folder : ```cdvag```
 * list local vagrant instance folder : ```vagls```
-* Remotely install [bash-fwk](https://github.com/frtu/bash-fwk) into local instance : ```vaginst_fwk ```
+* Remotely install [bash-fwk](https://github.com/frtu/bash-fwk) into local instance : ```vaginst_fwk```
+* Install vbguest into local instance : ```vaginst_vbguest```
 
 ### Interacting with instance
 
