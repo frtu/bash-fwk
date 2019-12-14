@@ -577,6 +577,9 @@ dckbuild() {
   docker build ${OPTIONAL_ARGS} ${ROOT_PATH}
 }
 
+dcmp() {
+  docker-compose version
+}
 dcmpstart() {
   docker-compose up
 }

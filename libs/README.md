@@ -234,6 +234,19 @@ If you just want to check an image, these funtions will create and remove a temp
 * Run Tomcat image : ```dckrunjava "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]"```
 * Run temporary Tomcat image port 8080 with System env : ```dckrunjavaenv "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"```
 
+
+### Module 'docker-compose'
+
+Base commands :
+
+* Get docker-compose version : ```dcmp```
+* List all docker-compose instances : ```dcmpps```
+* Start local docker-compose & tail : ```dcmpstart```
+* Start local docker-compose as a daemon : ```dcmpstartd ```
+* Read instance console : ```dcmplogs "INSTANCE_NAME"```
+* Stop local docker-compose : ```dcmpstop```
+
+
 ## Library 'k8s-minikube'
 
 * Usage ```import lib-k8s-minikube```
