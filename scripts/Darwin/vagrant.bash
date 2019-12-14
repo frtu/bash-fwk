@@ -153,6 +153,12 @@ vaginst_fwk() {
   echo "CALL : root@vagrant> $INSTALL_SCRIPT"
 	vagssh "$($INSTALL_SCRIPT)"
 }
+vaginst_vbguest() {
+  usage $# "[COMMAND:install|update|repair]"
+
+  local COMMAND=${1:-install}
+  vagrant plugin ${COMMAND} vagrant-vbguest
+}
 
 vagstart() {
 	vagtemplate "up"
