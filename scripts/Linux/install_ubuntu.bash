@@ -1,5 +1,5 @@
 import lib-ssocks
-import lib-docker-minikube
+import lib-k8s-minikube
 
 inst_ssocks() {
   usage $# "PASSWORD"
