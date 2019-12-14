@@ -275,6 +275,43 @@ dckimport() {
       echo "== An error has happen. Please check if an existing instance has a conflict using cmd 'dckps'. Error code=$STATUS  =="
   fi
 }
+dckregtagpush() {
+  usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
+  dcktag $@
+  dckpush $@
+}
+dckregtag() {
+  usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
+  
+  local DCK_IMAGE_NAME=$1
+  dckregtpl "tag $DCK_IMAGE_NAME" $@
+}
+dckregpush() {
+  usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
+  dckregtpl "push" $@
+}
+
+dckregtpl() {
+  usage $# "CMD" "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG" >&2
+    dckls
+    return -1
+  fi
+
+  local CMD=$1
+  local FULL_IMAGE_NAME=$2
+  
+  if [[ ! $FULL_IMAGE_NAME == *\/* ]]; then
+    local DCK_IMAGE_NAME=$2
+    local DOCKER_REGISTRY_URL=${3:-myregistry-127-0-0-1.nip.io:5000}
+    local FULL_IMAGE_NAME=$DOCKER_REGISTRY_URL/$DCK_IMAGE_NAME
+  fi  
+
+  echo "docker ${CMD} ${FULL_IMAGE_NAME}"
+  docker ${CMD} ${FULL_IMAGE_NAME}
+}
 
 # https://docs.docker.com/engine/userguide/networking/
 dcknetls() {

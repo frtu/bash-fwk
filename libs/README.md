@@ -247,6 +247,31 @@ Base commands :
 * Stop local docker-compose : ```dcmpstop```
 
 
+### Module 'docker-registry'
+
+Base commands :
+
+* **Tag** existing local image with a registry URL : ```dckregtag "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"```
+* **Push** local image into registry URL : ```dckregpush "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"```
+* **Tag and push** existing image into registry URL : ```dckregtag "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"```
+
+For Centos, docker registry distribution :
+
+* **Install** : ```inst_docker_registry```
+* List all images in folder : ```dckregls```
+* CD into image folder : ```dckregcd```
+* Get registry **status** : ```dckregstatus ```
+* **Start** registry : ```dckregstart```
+* **Stop** registry : ```dckregstop```
+* **Restart** registry : ```dckregrestart```
+
+### Linux configuration
+
+Base commands :
+
+* Edit local docker daemon config : ```dcksrvvi```
+
+
 ## Library 'k8s-minikube'
 
 * Usage ```import lib-k8s-minikube```

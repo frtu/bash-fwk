@@ -14,6 +14,8 @@ inst_docker() {
 
 # https://computingforgeeks.com/install-and-configure-docker-registry-on-centos-7/
 export DOCKER_REGISTRY_CONF=/etc/docker-distribution/registry/config.yml
+export DOCKER_REGISTRY_FOLDER=/var/lib/registry/docker/registry/v2/repositories
+
 inst_docker_registry() {
   inst docker-distribution
   activate docker-distribution
@@ -29,4 +31,10 @@ dckregstop() {
 }
 dckregrestart() {
   restart docker-distribution
+}
+dckregls() {
+  ll $DOCKER_REGISTRY_FOLDER
+}
+dckregcd() {
+  cd $DOCKER_REGISTRY_FOLDER
 }
