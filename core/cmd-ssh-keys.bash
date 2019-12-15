@@ -1,4 +1,5 @@
 import lib-file-transfer
+import lib-key-gen
 
 # ATTENTION MUST BE ~ since remote may have different path
 AUTH_KEYS="~/.ssh/authorized_keys"
@@ -39,24 +40,6 @@ sshkeysls() {
 
     echo "- $filename"
   done
-}
-genkeypair() {
-  usage $# "KEY_PRIVATE_FILE" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local KEY_PRIVATE_FILE=$1
-  local KEY_SIZE=${2:-4096}
-  local KEY_TYPE=${3:-rsa}
-
-  #if [[ ! $KEY_PRIVATE_FILE == *\.* ]]; then
-    local KEY_PRIVATE_FILE="${KEY_PRIVATE_FILE}-${KEY_TYPE}-${KEY_SIZE}"
-  #fi
-
-  echo "ssh-keygen -t ${KEY_TYPE} -b ${KEY_SIZE} -f ${KEY_PRIVATE_FILE}"
-  ssh-keygen -t ${KEY_TYPE} -b ${KEY_SIZE} -f ${KEY_PRIVATE_FILE}
-
-  ll ${KEY_PRIVATE_FILE}
 }
 
 sshkeyscp() {

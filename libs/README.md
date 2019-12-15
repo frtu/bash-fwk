@@ -34,6 +34,27 @@ Usage ```import lib-systemctl```
 * Stop of a system service : ```stop "PACKAGE"```
 * Restart of a system service : ```restart "PACKAGE"```
 
+
+## Library 'key-gen'
+
+Usage ```import lib-key-gen```
+
+### Base commands
+
+Generate keys / certificate :
+
+* Generate **key pair** at specified path : ```genkeypair "KEY_PRIVATE_FILE" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]"```
+* Generate **certificate request** for CA : ```gencert "CERT_FILE:server|server.csr" "KEY_PRIVATE_FILE_PATH" "[TTL:365]"```
+* Generate **self-signed** certificate without password : ```gencertself "CERT_FILE:server|server.crt" "KEY_PRIVATE_FILE_PATH" "[TTL:365]"```
+* Generate **key & self-signed cert pair** for server : ```gencertkey "CERT_FILE:server|server.crt" "[KEY_PRIVATE_FILE:server.key]" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]" "[TTL:365]"```
+
+Print key / certificate :
+
+* Print & check private key : ```printkey```
+* Print certificate request : ```printreqcert```
+* Print final certificate : ```printcert```
+
+
 ## Library 'git'
 
 Usage ```import lib-git```
