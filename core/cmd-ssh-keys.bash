@@ -27,11 +27,7 @@ sshmkdir() {
 # Keys management
 sshkeysgen() {
   local KEY_NAME=${1:-$DEFAULT_KEY_NAME}
-
-  KEY_PRI="${SSH_ROOT}/${KEY_NAME}"
-
-  echo "ssh-keygen -t rsa -b 4096 -f $KEY_PRI"
-  ssh-keygen -t rsa -b 4096 -f $KEY_PRI
+  genkeypair "${SSH_ROOT}/${KEY_NAME}"
 }
 sshkeysls() {
   echo "Listing keys available in $SSH_ROOT"
@@ -44,6 +40,25 @@ sshkeysls() {
     echo "- $filename"
   done
 }
+genkeypair() {
+  usage $# "KEY_PRIVATE_FILE" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local KEY_PRIVATE_FILE=$1
+  local KEY_SIZE=${2:-4096}
+  local KEY_TYPE=${3:-rsa}
+
+  #if [[ ! $KEY_PRIVATE_FILE == *\.* ]]; then
+    local KEY_PRIVATE_FILE="${KEY_PRIVATE_FILE}-${KEY_TYPE}-${KEY_SIZE}"
+  #fi
+
+  echo "ssh-keygen -t ${KEY_TYPE} -b ${KEY_SIZE} -f ${KEY_PRIVATE_FILE}"
+  ssh-keygen -t ${KEY_TYPE} -b ${KEY_SIZE} -f ${KEY_PRIVATE_FILE}
+
+  ll ${KEY_PRIVATE_FILE}
+}
+
 sshkeyscp() {
   usage $# "KEY_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
