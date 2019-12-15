@@ -216,7 +216,7 @@ sshproxy() {
 
   if [ -n "${LOCAL_PORT}" ]; then
     # -D : open on a local port for distant forward
-    local EXTRA_ARGS="-ND localhost:${LOCAL_PORT}"
+    local EXTRA_PARAMS="-ND localhost:${LOCAL_PORT}"
   fi
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts#Jump_Hosts_--_Passing_Through_a_Gateway_or_Two
@@ -266,13 +266,13 @@ sshproxync() {
     # https://network23.org/inputisevil/2015/09/05/dynamic-port-forwarding-with-ssh-and-socks5/#2e9f
     echo ">> ATTENTION -N stops SSH from executing commands! Prompt is deactivated!"
     # -D : open on a local port for distant forward
-    local EXTRA_ARGS="-D ${LOCAL_PORT}"
+    local EXTRA_PARAMS="-D ${LOCAL_PORT}"
   fi
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts#ProxyCommand_with_Netcat
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts#Jump_Hosts_--_Passing_Through_a_Gateway_or_Two
-  echo "ssh ${EXTRA_ARGS} -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}"
-  ssh ${EXTRA_ARGS} -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}
+  echo "ssh ${EXTRA_PARAMS} -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}"
+  ssh ${EXTRA_PARAMS} -o ProxyCommand="ssh ${FWD_HOSTNAME} nc %h ${FWD_PORT}" ${SSH_HOSTNAME}
 }
 sshproxyconftunnel() {
   usage $# "LOCAL_PORT" "SSH_HOSTNAME" "SSH_PORT" "[KEY_NAME]" "[USERNAME]" "[SSH_CONFIG_ALIAS]"
