@@ -13,6 +13,33 @@ vboxls() {
       VBoxManage list runningvms
   fi
 }
+
+vboxtypels() {
+  echo "VBoxManage list ostypes"
+  VBoxManage list ostypes
+}
+vboximport() {
+  usage $# "IMAGE_FILEPATH" "[INSTANCE_NAME]" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local IMAGE_FILEPATH=$1
+  local INSTANCE_NAME=$2
+  local EXTRA_PARAMS=${@:3}
+
+  if [ ! -f "$IMAGE_FILEPATH" ]; then
+    echo "File doesn't exist $IMAGE_FILEPATH"
+    return 1
+  fi
+  # Setting the folder name
+  if [ -n "$INSTANCE_NAME" ]; then
+    local EXTRA_PARAMS="--vsys 0 --vmname ${INSTANCE_NAME} $EXTRA_PARAMS"
+  fi
+
+  echo "VBoxManage import \"${IMAGE_FILEPATH}\" ${EXTRA_PARAMS}"
+  VBoxManage import "${IMAGE_FILEPATH}" ${EXTRA_PARAMS}
+}
+
 vboxinspect() {
   usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
