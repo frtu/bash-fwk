@@ -366,4 +366,18 @@ Other base commands :
 
 ### Base commands
 
-* Launch kubectl version, list all clusters & nodes  : ```kc```
+* Go to K8S config & cache folder : ```cdkc```
+* Launch kubectl version, list all clusters & nodes : ```kc```
+* Check k8s by running echo : ```kchello```
+
+All kubectl listing commands in the current cluster and namespace :
+
+* List all **k8s resources/objects** : ```kcls [NAMESPACE]```
+* List all **namespaces** : ```kclsnamespaces```
+* List all **pods** : ```kclspods [NAMESPACE]```
+* List all **services**  : ```kclsservices [NAMESPACE]```
+* List all **deployments** : ```kclsdeployments [NAMESPACE]```
+* List all events : ```kclsevents [NAMESPACE]```
+* List all api services : ```kclsapi [NAMESPACE]```
+
+...

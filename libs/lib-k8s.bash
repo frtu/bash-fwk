@@ -1,3 +1,8 @@
+KUBE_FOLDER=~/.kube
+
+cdkc() {
+  cd ${KUBE_FOLDER}
+}
 kc() {
   echo "------- CLI and Server version --------";
   kubectl version
