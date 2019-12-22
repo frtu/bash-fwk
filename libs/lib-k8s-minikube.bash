@@ -6,8 +6,13 @@ MINIKUBE_ROOT=~/.minikube
 MINIKUBE_MACHINES_FOLDER=$MINIKUBE_ROOT/machines
 MINIKUBE_PERSIST_FILE=$LOCAL_SCRIPTS_FOLDER/env-minikube-instance.bash
 
+MINIKUBE_VAR=/var/lib/minikube
+
 cdkm() {
   cd $MINIKUBE_ROOT
+}
+cdkmvar() {
+  cd $MINIKUBE_VAR
 }
 inst_minikube() {
   usage $# "[EXEC_URL:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
@@ -30,13 +35,21 @@ km() {
   echo "------- Virtual box --------";
   cat ~/.minikube/machines/minikube/config.json | grep DriverName
 }
+kmstartlocal() {
+  usage $# "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local INSTANCE_NAME=${1:-minikube}
+  kmstartdriver none ${INSTANCE_NAME} --apiserver-ips 127.0.0.1 --apiserver-name localhost
+}
 kmstartdriver() {
-  usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "INSTANCE_NAME" "[EXTRA_PARAMS]"
+  usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local DRIVER_NAME=$1
-  local INSTANCE_NAME=$2
+  local INSTANCE_NAME=${2:-minikube}
   local EXTRA_PARAMS=${@:3}
 
   kmstart ${INSTANCE_NAME} --vm-driver=${DRIVER_NAME} ${EXTRA_PARAMS}
@@ -76,6 +89,17 @@ kmstartproxy() {
   EXTRA_PARAMS="$EXTRA_PARAMS --docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24"
 
   kmstart "${INSTANCE_NAME}" "${EXTRA_PARAMS} --v 9999"
+}
+kmstartversion() {
+  usage $# "VERSION:v1.16.2" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local VERSION=$1
+  local INSTANCE_NAME=${2:-minikube}
+  local EXTRA_PARAMS=${@:3}
+
+  kmstart ${INSTANCE_NAME} --kubernetes-version ${VERSION} ${EXTRA_PARAMS}
 }
 kmstart() {
   usage $# "[INSTANCE_NAME]" "[EXTRA_PARAMS]"

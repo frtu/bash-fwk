@@ -337,14 +337,19 @@ Network :
 
 ### Base commands
 
-* Go to Minikube cache folder : ```cdkm```
+* Go to Minikube **cache** folder : ```cdkm```
+* Go to Minikube **var** folder (/var/lib/minikube) : ```cdkmvar```
 
 All start commands (if not exists, create automatically) :
 
 * **Start Minikube** using INSTANCE_NAME : ```kmstart "[INSTANCE_NAME]" "[EXTRA_PARAMS]"```
-* Start Minikube with the **specific driver** (virtualbox | none | ..) using INSTANCE_NAME : ```kmstartdriver "DRIVER_NAME" "INSTANCE_NAME" "[EXTRA_PARAMS]"```
+* Start Minikube with the **specific version** using INSTANCE_NAME : ```kmstartversion "VERSION:v1.16.2" "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"```
+* Start Minikube with the **specific driver** (virtualbox | none | ..) using INSTANCE_NAME : ```kmstartdriver "DRIVER_NAME" "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[INSTANCE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific proxy** : ```kmstartproxy "[INSTANCE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
+
+* Start Minikube using driver=none & apiserver=local : ```kmstartlocal "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"```
+
 
 Other base commands :
 
