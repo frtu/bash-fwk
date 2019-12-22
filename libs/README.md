@@ -28,11 +28,12 @@ Common installer for all distribution :
 ## Library 'systemctl'
 Usage ```import lib-systemctl```
 
-* Enable a system service : ```activate "PACKAGE"```
-* Get status of a system service : ```status "PACKAGE"```
-* Start of a system service : ```start "PACKAGE"```
-* Stop of a system service : ```stop "PACKAGE"```
-* Restart of a system service : ```restart "PACKAGE"```
+* See system service logs : ```srvlogs```
+* Enable a system service : ```srvactivate "PACKAGE"```
+* Get status of a system service : ```srvstatus "PACKAGE"```
+* Start of a system service : ```srvstart "PACKAGE"```
+* Stop of a system service : ```srvstop "PACKAGE"```
+* Restart of a system service : ```srvrestart "PACKAGE"```
 
 
 ## Library 'key-gen'

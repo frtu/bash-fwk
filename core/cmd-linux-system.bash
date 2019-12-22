@@ -27,11 +27,6 @@ binappend() {
   echo $PATH
 }
 
-# NETWORK
-portlist() {
-  netstat -ntlp | grep LISTEN
-}
-
 linuxdesc() {
   echo "====== Kernel version > uname -mrs ======"
   uname -mrs
@@ -41,6 +36,14 @@ linuxdesc() {
   cat /proc/version
   echo "====== Others > ${SYS_INFO} ======"
   ${SYS_INFO}
+}
+
+# NETWORK
+portlist() {
+  netstat -ntlp | grep LISTEN
+}
+lsip() {
+  ip -4 addr  
 }
 tcp() {
   usage $# "ETHERNET_NAME"
