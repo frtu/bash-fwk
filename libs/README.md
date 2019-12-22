@@ -350,6 +350,12 @@ All start commands (if not exists, create automatically) :
 
 * Start Minikube using driver=none & apiserver=local : ```kmstartlocal "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"```
 
+Config commands :
+
+* Set Minikube to use this specific driver for the next start : ```kmconfdriverset "DRIVER_NAME:none|virtualbox|hyperkit"```
+* Mute Minikube new version alert : ```kmconfmute```
+* Edit Minikube config : ```kmconfvi```
+
 
 Other base commands :
 

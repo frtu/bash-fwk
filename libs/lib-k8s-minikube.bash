@@ -35,6 +35,34 @@ km() {
   echo "------- Virtual box --------";
   cat ~/.minikube/machines/minikube/config.json | grep DriverName
 }
+
+# https://minikube.sigs.k8s.io/docs/reference/drivers/none/
+kmconfdriverset() {
+  usage $# "DRIVER_NAME:none|virtualbox|hyperkit"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local DRIVER_NAME=$1
+  kmconftpl set vm-driver ${DRIVER_NAME}
+}
+kmconfmute() {
+  kmconftpl set WantUpdateNotification false
+}
+kmconfvi() {
+  vi ${MINIKUBE_ROOT}/config/config.json
+}
+kmconftpl() {
+  usage $# "CMD:set" "EXTRA_PARAMS"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CMD=$1
+  local EXTRA_PARAMS=${@:2}
+
+  echo "minikube config ${CMD} ${EXTRA_PARAMS}"
+  minikube config ${CMD} ${EXTRA_PARAMS}
+}
+
 kmstartlocal() {
   usage $# "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -184,9 +212,6 @@ kmtemplate() {
   minikube $1 ${EXTRA_PARAMS}
 }
 
-kmmutenotification() {
-  kmtemplate "config" set WantUpdateNotification false
-}
 kmload() {
   local INSTANCE_NAME=$1
   echo "${FUNCNAME} ${INSTANCE_NAME}"
