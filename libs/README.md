@@ -347,7 +347,6 @@ All start commands (if not exists, create automatically) :
 
 Other base commands :
 
-
 * Install Minikube in bin path : ```inst_minikube "[EXEC_URL]" "[BIN_PATH:/usr/local/bin/]"```
 * Get Minikube version and others info : ```km```
 * Open a **SSH** command into minikube instance : ```kmssh "[INSTANCE_NAME]" "[COMMANDS]"```
@@ -358,3 +357,13 @@ Other base commands :
 ### Network
 
 * Minikube IP : ```kmip "[INSTANCE_NAME]"```
+
+
+## Library 'k8s'
+
+* Usage ```import lib-k8s```
+* Prefix ```kc``` 
+
+### Base commands
+
+* Launch kubectl version, list all clusters & nodes  : ```kc```

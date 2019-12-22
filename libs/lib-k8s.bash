@@ -1,12 +1,3 @@
-kchello() {
-  usage $# "[IMAGE_REPOSITORY:k8s.gcr.io]"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local IMAGE_REPOSITORY=${1:-k8s.gcr.io}
-  kubectl create deployment hello-minikube --image=${IMAGE_REPOSITORY}/echoserver:1.10
-}
-
 kc() {
   echo "------- CLI and Server version --------";
   kubectl version
@@ -16,6 +7,15 @@ kc() {
   kubectl get nodes
   echo "------- Cluster Info --------";
   kubectl cluster-info
+}
+
+kchello() {
+  usage $# "[IMAGE_REPOSITORY:k8s.gcr.io]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local IMAGE_REPOSITORY=${1:-k8s.gcr.io}
+  kubectl create deployment hello-minikube --image=${IMAGE_REPOSITORY}/echoserver:1.10
 }
 # https://kubernetes.io/docs/reference/kubectl/overview/#resource-types
 kcls() {
