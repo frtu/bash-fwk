@@ -5,6 +5,7 @@ export DOCKER_REGISTRY_CN=https://docker.mirrors.ustc.edu.cn
 export IMAGE_REPOSITORY=registry.cn-hangzhou.aliyuncs.com/google_containers
 
 # https://yq.aliyun.com/articles/221687
+# https://codefarm.me/2018/08/09/http-proxy-docker-minikube/
 inst_cn_minikube() {
   local MINIKUBE_VERSION=1.5.1
   local MINIKUBE_URL_EXEC=https://github.com/kubernetes/minikube/releases/download/v${MINIKUBE_VERSION}/minikube-darwin-amd64
@@ -14,7 +15,8 @@ inst_cn_minikube() {
   echo "Install Docker to allow K8S to work on standalone"
   echo "-------------------------------------------------"
   echo "> Download EXEC from ${MINIKUBE_URL_EXEC}"
-  curl -Lo minikube ${MINIKUBE_URL_EXEC} && chmod +x minikube && sudo mv minikube /usr/local/bin/
+  inst_dl_bin "minikube" "${MINIKUBE_URL_EXEC}"
+
   echo "> Download ISO from ${MINIKUBE_URL_ISO}"
   kmstartcn --iso-url=${MINIKUBE_URL_ISO}
 

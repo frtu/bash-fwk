@@ -49,18 +49,36 @@ dcksrvrestart() {
   srvrestart docker
 }
 
-inst_dck() {
-  inst docker.io
-}
+# https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux
+inst_kubectl() {
+  # https://github.com/kubernetes/kubernetes/releases
+  usage $# "[VERSION]" "[BIN_PATH:/usr/local/bin/]"
 
-# https://github.com/docker/compose/releases/download/1.11.2/docker-compose-Linux-x86_64
-# https://nickjanetakis.com/blog/docker-tip-50-running-an-insecure-docker-registry
+  local VERSION=$1
+  local BIN_PATH=${2:-/usr/local/bin/}
 
-inst_kubectl_linux() {
-  usage $# "[BIN_PATH:/usr/local/bin/]"
-
-  local EXEC_URL=https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-  local BIN_PATH=${1:-/usr/local/bin/}
+  if [[ -z ${VERSION} ]]; then
+    VERSION=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`
+  fi
+  local EXEC_URL=https://storage.googleapis.com/kubernetes-release/release/${VERSION}/bin/linux/amd64/kubectl
 
   inst_dl_bin "kubectl" "${EXEC_URL}" "${BIN_PATH}"
+}
+# https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube-via-direct-download
+inst_minikube() {
+  usage $# "[VERSION:latest]" "[EXEC_URL:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
+  echo "== Check release version at https://github.com/kubernetes/minikube/releases =="
+
+  local VERSION=$1
+  local EXEC_URL=$2
+  local BIN_PATH=${3:-/usr/local/bin/}
+
+  if [[ -z ${EXEC_URL} ]]; then
+    if [[ -z ${VERSION} ]]; then
+      VERSION=latest
+    fi
+    local EXEC_URL=https://storage.googleapis.com/minikube/releases/${VERSION}/minikube-linux-amd64
+  fi
+
+  inst_dl_bin "minikube" "${EXEC_URL}" "${BIN_PATH}"
 }

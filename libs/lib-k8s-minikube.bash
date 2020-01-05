@@ -14,14 +14,6 @@ cdkm() {
 cdkmvar() {
   cd $MINIKUBE_VAR
 }
-inst_minikube() {
-  usage $# "[EXEC_URL:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
-
-  local EXEC_URL=${1:-https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64}
-  local BIN_PATH=${2:-/usr/local/bin/}
-
-  inst_dl_bin "minikube" "${EXEC_URL}" "${BIN_PATH}"
-}
 
 alias kmls=kcctx
 
