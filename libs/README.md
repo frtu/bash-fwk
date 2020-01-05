@@ -348,7 +348,9 @@ All start commands (if not exists, create automatically) :
 * Start Minikube using **specific Docker Registry url** (**registry-mirror** if https | **insecure-registry** if http): ```kmstartreg "[INSTANCE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"```
 * Start Minikube using **specific proxy** : ```kmstartproxy "[INSTANCE_NAME]" "[PROXY_URL]" "[EXTRA_PARAMS]"```
 
-* Start Minikube using driver=none & apiserver=local : ```kmstartlocal "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"```
+Start Minikube in local mode with apiserver=local & local driver (if 'none' only one instance allowed) :
+
+* Start in local mode. (OPTIONAL) Allow to change k8s version or Driver : ```kmstartlocal "[K8S_VERSION]" "[DRIVER_NAME:none]" "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"```
 
 Config commands :
 
@@ -359,9 +361,9 @@ Config commands :
 
 Other base commands :
 
-* Install Minikube in bin path : ```inst_minikube "[EXEC_URL]" "[BIN_PATH:/usr/local/bin/]"```
 * Get Minikube version and others info : ```km```
 * Open a **SSH** command into minikube instance : ```kmssh "[INSTANCE_NAME]" "[COMMANDS]"```
+* Check **Status** of this INSTANCE_NAME : ```kmstatus "[INSTANCE_NAME]"```
 * See **Logs** of this INSTANCE_NAME : ```kmlogs "[INSTANCE_NAME]"```
 * **Stop** this INSTANCE_NAME : ```kmstop "[INSTANCE_NAME]"```
 * **Delete** this INSTANCE_NAME : ```kmrm "INSTANCE_NAME"```

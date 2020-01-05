@@ -30,6 +30,7 @@ km() {
 
 # https://minikube.sigs.k8s.io/docs/reference/drivers/none/
 kmconfdriverset() {
+  # hyperkit : https://github.com/moby/hyperkit
   usage $# "DRIVER_NAME:none|virtualbox|hyperkit"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -56,14 +57,22 @@ kmconftpl() {
 }
 
 kmstartlocal() {
-  usage $# "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"
+  usage $# "[K8S_VERSION]" "[DRIVER_NAME:none]" "[INSTANCE_NAME:minikube]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local INSTANCE_NAME=${1:-minikube}
-  kmstartdriver none ${INSTANCE_NAME} --apiserver-ips 127.0.0.1 --apiserver-name localhost
+  local K8S_VERSION=$1
+  local DRIVER_NAME=${2:-none}
+  local INSTANCE_NAME=${3:-minikube}
+
+  if [ -n "$K8S_VERSION" ]; then
+    local EXTRA_PARAMS="${EXTRA_PARAMS} --kubernetes-version ${K8S_VERSION}"
+  fi
+  echo "sudo /usr/local/bin/minikube start --vm-driver=${DRIVER_NAME} --apiserver-ips 127.0.0.1 --apiserver-name localhost ${EXTRA_PARAMS}"
+  sudo /usr/local/bin/minikube start --vm-driver=${DRIVER_NAME} --apiserver-ips 127.0.0.1 --apiserver-name localhost ${EXTRA_PARAMS}
 }
 kmstartdriver() {
+  # hyperkit : https://github.com/moby/hyperkit
   usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -135,6 +144,10 @@ kmstart() {
   echo "kmssh ${INSTANCE_NAME} : to SSH"
   echo "kmstop ${INSTANCE_NAME} : to stop"
   echo "kmrm ${INSTANCE_NAME} : to stop and remove image"
+}
+kmstatus() {
+  usage $# "[INSTANCE_NAME]"
+  kmtemplate "status" $@
 }
 kmhello() {
   kmtemplate "service" "hello-minikube"
@@ -241,7 +254,7 @@ kmloadpersist() {
 
   kmload $INSTANCE_NAME
 }
-kmloadpersistrm() {
+kmloadrm() {
   echo "unset MINIKUBE_DEFAULT_INSTANCE"
   unset MINIKUBE_DEFAULT_INSTANCE
   

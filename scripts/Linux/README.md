@@ -9,13 +9,6 @@ How to quickly start with Linux (Ubuntu)
 
 ## Installation
 
-### Docker
-
-Install docker :
-```
-enabledockerlinux
-```
-
 ### NodeJS
 
 Install NodeJS 10 :
@@ -51,7 +44,15 @@ sudo vi /usr/local/lib/python3.7/dist-packages/shadowsocks/crypto/openssl.py
 inst_youtube
 ```
 
-## Docker module
+## Virtualization
+
+### Installation
+
+* Install any [kubectl version](https://github.com/kubernetes/kubernetes/releases) : ```inst_kubectl "[VERSION:latest]" "[BIN_PATH:/usr/local/bin/]"```
+* Install any [minikube version](https://github.com/kubernetes/minikube/releases) : ```inst_minikube "[VERSION:latest]" "[EXEC_URL:googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"```
+* Install helm : ```inst_helm```
+
+### Docker module
 
 List all docker instances :
 ```
