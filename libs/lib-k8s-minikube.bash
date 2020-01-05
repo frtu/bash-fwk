@@ -15,6 +15,42 @@ cdkmvar() {
   cd $MINIKUBE_VAR
 }
 
+# https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux
+inst_kubectl() {
+  # https://github.com/kubernetes/kubernetes/releases
+  usage $# "[VERSION:latest]" "[BIN_PATH:/usr/local/bin/]"
+
+  local VERSION=$1
+  local BIN_PATH=${2:-/usr/local/bin/}
+
+  if [[ -z ${VERSION} ]]; then
+    VERSION=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`
+  fi
+  local OS=$(uname | tr '[:upper:]' '[:lower:]')
+  local EXEC_URL=https://storage.googleapis.com/kubernetes-release/release/${VERSION}/bin/${OS}/amd64/kubectl
+
+  inst_dl_bin "kubectl" "${EXEC_URL}" "${BIN_PATH}"
+}
+# https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube-via-direct-download
+inst_minikube() {
+  usage $# "[VERSION:latest]" "[EXEC_URL:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
+  echo "== Check release version at https://github.com/kubernetes/minikube/releases =="
+
+  local VERSION=$1
+  local EXEC_URL=$2
+  local BIN_PATH=${3:-/usr/local/bin/}
+
+  if [[ -z ${EXEC_URL} ]]; then
+    if [[ -z ${VERSION} ]]; then
+      VERSION=latest
+    fi
+    local OS=$(uname | tr '[:upper:]' '[:lower:]')
+    local EXEC_URL=https://storage.googleapis.com/minikube/releases/${VERSION}/minikube-${OS}-amd64
+  fi
+
+  inst_dl_bin "minikube" "${EXEC_URL}" "${BIN_PATH}"
+}
+
 alias kmls=kcctx
 
 km() {
