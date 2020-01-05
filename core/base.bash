@@ -26,7 +26,7 @@ usage() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
       echo "Usage : usage NUMBER_ARG [ARGUMENT_LIST]" >&2
-      return -1
+      return 1
   fi
 
   local NUMBER_ARG=$1
@@ -51,7 +51,7 @@ usage() {
   if [[ "$NUMBER_ARG" < "$NUM_MANDATORY_ARGS" ]]; then
     # Display usage in stderr and EXIT
     echo "Usage : ${FUNCNAME[1]} ${@:2} => $NUM_MANDATORY_ARGS mandatory argument(s)" >&2
-    return -1
+    return 1
   fi
 }
 
@@ -61,7 +61,7 @@ refresh() {
 relink() {
   usage $# "SOURCE_FOLDER" "LOCAL_LINK_NAME" "[FORCE:false]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local SOURCE_FOLDER=$1
   local LOCAL_LINK_NAME=$2
@@ -70,7 +70,7 @@ relink() {
   if [[ -d "${LOCAL_LINK_NAME}" ]]; then
     if [[ -z "${FORCE}" ]]; then
       echo "'${LOCAL_LINK_NAME}' is an EXISTING directory! Are you sure of the parameters order?" >&2
-      return -1
+      return 1
     fi
   fi
 

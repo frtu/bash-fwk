@@ -158,7 +158,7 @@ kmstartproxy() {
 kmstartversion() {
   usage $# "VERSION:v1.16.2" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local VERSION=$1
   local INSTANCE_NAME=${2:-minikube}
@@ -223,7 +223,7 @@ kmrm() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a INSTANCE_NAME you want to delete : If you don't know any names run 'kmls'" >&2
     kmls
-    return -1
+    return 1
   fi
 
   kmtemplate "delete" $@
@@ -231,7 +231,7 @@ kmrm() {
 kmtemplate() {
   usage $# "CMD" "[CONTEXT:kcctx()]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CMD=$1
   local CONTEXT=$2

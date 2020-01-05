@@ -58,7 +58,7 @@ hmhistory() {
 hmtpl() { 
   if [ -z "$2" ]; then
     echo "Please supply argument(s) \"CHART_FOLDER\"." >&2
-    return -1
+    return 1
   fi
   echo "helm $@"
   helm $@
