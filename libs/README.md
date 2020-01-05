@@ -317,6 +317,7 @@ Base commands :
 * Stop existing instance : ```vboxstop "INSTANCE_NAME"```
 * Pause existing instance : ```vboxpause "INSTANCE_NAME"```
 * Resume existing instance : ```vboxresume "INSTANCE_NAME"```
+* Delete existing instance : ```vboxrm "INSTANCE_NAME"```
 
 Modify an existing instance :
 

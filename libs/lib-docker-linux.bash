@@ -52,7 +52,7 @@ dcksrvrestart() {
 # https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux
 inst_kubectl() {
   # https://github.com/kubernetes/kubernetes/releases
-  usage $# "[VERSION]" "[BIN_PATH:/usr/local/bin/]"
+  usage $# "[VERSION:latest]" "[BIN_PATH:/usr/local/bin/]"
 
   local VERSION=$1
   local BIN_PATH=${2:-/usr/local/bin/}

@@ -309,12 +309,17 @@ vboxsnapshot() {
   echo "VBoxManage snapshot $INSTANCE_NAME take $SNAPSHOT_NAME --description \"$SNAPSHOT_DESC\""
   VBoxManage snapshot $INSTANCE_NAME take $SNAPSHOT_NAME --description "$SNAPSHOT_DESC"
 }
-vboxrmsoft() {
-  usage $# "IMAGE_HASH"
+vboxrm() {
+  usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then
+    echo "If you don't know any names run 'vboxls' and look at the first column \"VBOX_INST_NAMES\"" >&2
+    echo "" >&2
+    vboxls -a
+    return -1
+  fi
 
-  local IMAGE_HASH=$1
-  echo "Only remove from VBox listing > VBoxManage unregistervm $IMAGE_HASH --delete"
-  VBoxManage unregistervm $IMAGE_HASH --delete
+  local INSTANCE_NAME=$1
+  echo "VBoxManage unregistervm --delete \"$INSTANCE_NAME\""
+  VBoxManage unregistervm --delete "$INSTANCE_NAME"
 }
