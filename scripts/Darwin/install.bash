@@ -66,11 +66,6 @@ inst_git() {
   xcode-select --install
   xcode-select --reset
 }
-# For Docker host
-enabledockertoolbox() {
-  enablelib dockertoolbox
-  srv_activate dockertoolbox
-}
 inst_vagrant() {
   # brew install Caskroom/cask/virtualbox
   #brew install Caskroom/cask/virtualbox-extension-pack
@@ -83,7 +78,15 @@ inst_vagrant() {
   brew tap homebrew/completions
   brew install vagrant-completion
 }
-inst_k8s() {
+# For Docker host
+enabledockertoolbox() {
+  enablelib dockertoolbox
+  srv_activate dockertoolbox
+}
+inst_kubectl_brew() {
+  inst kubectl
+}
+inst_minikube_brew() {
   usage $# "[PROXY]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -105,9 +108,6 @@ inst_k8s() {
 }
 inst_helm() {
   inst kubernetes-helm
-}
-inst_kubectl() {
-  inst kubectl
 }
 
 inst_python() {
