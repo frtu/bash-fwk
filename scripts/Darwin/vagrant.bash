@@ -131,6 +131,8 @@ vagbrm() {
   local BOX_NAME=$1
   echo "vagrant box remove $BOX_NAME"
   vagrant box remove $BOX_NAME
+
+  vagbls
 }
 
 # ==================================================
@@ -139,6 +141,7 @@ vagbrm() {
 cdvag() {
   cd $VAGRANT_MACHINES_SUBFOLDER
 }
+
 vagls() {
 	vagrant global-status --prune
 
@@ -147,12 +150,6 @@ vagls() {
 		ls $VAGRANT_MACHINES_SUBFOLDER
 	fi
 }
-vaginst_fwk() {
-	INSTALL_SCRIPT="curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash"
-
-  echo "CALL : root@vagrant> $INSTALL_SCRIPT"
-	vagssh "$($INSTALL_SCRIPT)"
-}
 vaginst_vbguest() {
   usage $# "[COMMAND:install|update|repair]"
 
@@ -160,8 +157,27 @@ vaginst_vbguest() {
   vagrant plugin ${COMMAND} vagrant-vbguest
 }
 
+vaginst_fwk() {
+  INSTALL_SCRIPT="curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash"
+
+  echo "CALL : root@vagrant> $INSTALL_SCRIPT"
+  vagssh "$($INSTALL_SCRIPT)"
+}
+alias vagfwkinst='vaginst_fwk'
+vagfwkmount() {
+  usage $# "INSTANCE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local INSTANCE_NAME=$1
+  vboxmountfwk ${INSTANCE_NAME} /home/vagrant
+}
+
 vagstart() {
 	vagtemplate "up"
+}
+vagprovision() {
+  vagtemplate "provision"
 }
 vagstop() {
 	vagtemplate "halt"
@@ -177,6 +193,8 @@ vagssh() {
 }
 vagrm() {
 	vagtemplate "destroy"
+
+  vboxls
 }
 vagtemplate() {
   if [ ! -f Vagrantfile ]; then
@@ -199,9 +217,9 @@ vagexport() {
   local BOX_NAME=$1
   local BOX_FILENAME=$2
 
-  if [[ -f Vagrantfile ]]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS --vagrantfile Vagrantfile"
-  fi
+  #if [[ -f Vagrantfile ]]; then
+  #  local EXTRA_PARAMS="$EXTRA_PARAMS --vagrantfile Vagrantfile"
+  #fi
   if [[ -n "$BOX_NAME" ]]
     then
       local EXTRA_PARAMS="$EXTRA_PARAMS --base $BOX_NAME"

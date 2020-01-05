@@ -308,7 +308,7 @@ Usage ```import lib-virtualbox```
 
 Install fwk :
 
-* Mount local [bash-fwk](https://github.com/frtu/bash-fwk) into virtualbox image : ```vboxfwk "INSTANCE_NAME" "USER_HOME"```
+* Mount local [bash-fwk](https://github.com/frtu/bash-fwk) into virtualbox image : ```vboxmountfwk "INSTANCE_NAME" "GUEST_HOME"```
 
 Base commands :
 
@@ -372,7 +372,6 @@ Other base commands :
 ### Network
 
 * Minikube IP : ```kmip "[INSTANCE_NAME]"```
-
 
 ## Library 'k8s'
 

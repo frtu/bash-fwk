@@ -14,16 +14,18 @@
 
 * cd local vagrant instance folder : ```cdvag```
 * list local vagrant instance folder : ```vagls```
-* Remotely install [bash-fwk](https://github.com/frtu/bash-fwk) into local instance : ```vaginst_fwk```
 * Install vbguest into local instance : ```vaginst_vbguest```
+* Remotely install [bash-fwk](https://github.com/frtu/bash-fwk) into local instance : ```vaginst_fwk``` or ```vagfwkinst``` 
+* Mount host folder into guest instance : ```vagfwkmount```
 
 ### Interacting with instance
 
-Basic commands :
+Basic commands to run in Vagrant folder :
 
 * Start local instance : ```vagstart```
 * Stop local instance : ```vagstop```
 * SSH into local instance : ```vagssh```
+* Relaunch provision : ```vagprovision ```
 * Remove local instance : ```vagrm```
 
 Import/Export commands :
