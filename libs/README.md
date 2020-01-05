@@ -394,4 +394,16 @@ All kubectl listing commands in the current cluster and namespace :
 * List all events : ```kclsevents [NAMESPACE]```
 * List all api services : ```kclsapi [NAMESPACE]```
 
+ATTENTION - Wildcard delete :
+
+* **Delete** any resources (pod, service or deployment) of that name : ```kcrm "RESOURCE" "[NAMESPACE]"```
+* **Clean up ALL** resources in that namespace : ```kcrmall "NAMESPACE"```
+
+### Deployment 'kcdp' commands
+
+* **List** all existing deployment : ```kcdpls [NAMESPACE]```
+* **Create** a new deployment : ```kcdprun "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
+* Get **info** from an existing deployment : ```kcdpinfo "DEPLOYMENT_NAME" "[NAMESPACE]"```
+* **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
+
 ...

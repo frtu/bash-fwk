@@ -482,6 +482,16 @@ kcdprun() {
 
   kcruntpl "create deployment" $@
 }
+kcdpinfo() {
+  usage $# "DEPLOYMENT_NAME" "[NAMESPACE]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local DEPLOYMENT_NAME=$1
+  local NAMESPACE=$2
+  local EXTRA_PARAMS=${@:3}
+  kcdptpl "describe" "${DEPLOYMENT_NAME}" "${NAMESPACE}"
+}
 kcdpexpose() {
   usage $# "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
@@ -496,13 +506,30 @@ kcdpexpose() {
   if [ -n "$PORT" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS --port $PORT"
   fi
+
+  # expose a port through a service
+  kcdptpl "expose" "${DEPLOYMENT_NAME}" "${NAMESPACE}" "--name=${SERVICE_NAME}" "${EXTRA_PARAMS}"
+}
+kcdptpl() {
+  usage $# "CMD" "DEPLOYMENT_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcdpls'" >&2
+    kcdpls
+    return 1
+  fi
+
+  local CMD=$1
+  local DEPLOYMENT_NAME=$2
+  local NAMESPACE=$3
+  local EXTRA_PARAMS=${@:4}
+  
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
   fi
 
-  # expose a port through with a service
-  echo "kubectl expose deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS} --name=${SERVICE_NAME}"
-  kubectl expose deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS} --name=${SERVICE_NAME}
+  echo "kubectl ${CMD} deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS}"
+  kubectl ${CMD} deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS}
 }
 
 kcnetlookup() {
@@ -531,7 +558,7 @@ kcedit() {
   kubectl edit ${RESOURCE}
 }
 kcrm() {
-  usage $# "RESOURCE"
+  usage $# "RESOURCE" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a POD or SERVICE name: If you don't know any pod names run 'kclspods' or 'kclsservices'" >&2
@@ -539,9 +566,15 @@ kcrm() {
   fi
 
   local RESOURCE=$1
+  local NAMESPACE=$2
+  local EXTRA_PARAMS=${@:3}
+  
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+  fi
 
-  echo "kubectl delete pod,service,deployment ${RESOURCE}"
-  kubectl delete pod,service,deployment ${RESOURCE}
+  echo "kubectl delete pod,service,deployment ${RESOURCE} ${EXTRA_PARAMS}"
+  kubectl delete pod,service,deployment ${RESOURCE} ${EXTRA_PARAMS}
 }
 kcrmall() {
   usage $# "NAMESPACE"
