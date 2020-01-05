@@ -19,30 +19,34 @@ cddckimages() {
 }
 
 activatedck() {
+  srvactivate docker
+  
+  echo "> sudo usermod -aG docker $USER"
   sudo usermod -aG docker $USER
-  activate docker
 }
 ## Follow https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
 dcksrvvi() {
   sudo vi $DOCKER_CONFIG
 }
 dcksrvcheck() {
-  status docker
+  srvstatus docker
 }
 dcksrvstatus() {
-  status docker
+  srvstatus docker
 }
 dcksrvstart() {
   # ubuntu 14
   # sudo service docker restart
   # ubuntu 16
-  start docker
+  srvstart docker
+
+  dcksrvstatus
 }
 dcksrvstop() {
-  stop docker
+  srvstop docker
 }
 dcksrvrestart() {
-  restart docker
+  srvrestart docker
 }
 
 inst_dck() {

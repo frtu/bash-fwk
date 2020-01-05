@@ -9,6 +9,7 @@ export NET_PKG_EXTRA="iputils"
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-centos-7
 inst_docker() {
   curl -fsSL https://get.docker.com/ | sh
+  enablelib docker-linux
   activatedck
 }
 
@@ -18,19 +19,19 @@ export DOCKER_REGISTRY_FOLDER=/var/lib/registry/docker/registry/v2/repositories
 
 inst_docker_registry() {
   inst docker-distribution
-  activate docker-distribution
+  srvactivate docker-distribution
 }
 dckregstatus() {
-  status docker-distribution
+  srvstatus docker-distribution
 }
 dckregstart() {
-  start docker-distribution
+  srvstart docker-distribution
 }
 dckregstop() {
-  stop docker-distribution
+  srvstop docker-distribution
 }
 dckregrestart() {
-  restart docker-distribution
+  srvrestart docker-distribution
 }
 dckregls() {
   ll $DOCKER_REGISTRY_FOLDER
