@@ -1,12 +1,47 @@
+import lib-k8s
+
 # https://www.baeldung.com/kubernetes-helm
 hm() { 
-  hmtpl "version"
+  echo "helm version"
+  helm version
 }
-
 hminit() { 
   echo "== Initialize Helm server (Tiller) into the current K8s context =="
-  hmtpl "init" $@
+
+  echo "helm init $@"
+  helm init $@
 }
+hmupg() { 
+  usage $# "[SERVICE_ACCOUNT:tiller]"
+
+  local SERVICE_ACCOUNT=${1:-tiller}
+  hmsrvinit ${SERVICE_ACCOUNT} --upgrade
+}
+hmsrvinit() {
+  usage $# "[SERVICE_ACCOUNT:tiller]"
+
+  echo "== ATTENTION service account MUST be created before https://github.com/helm/helm/issues/4685#issuecomment-531239132 =="
+
+  local SERVICE_ACCOUNT=${1:-tiller}
+  hminit --service-account ${SERVICE_ACCOUNT} ${@:2}
+
+  echo "helm repo add stable https://kubernetes-charts.storage.googleapis.com/"
+  helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+
+  echo "helm repo update"
+  helm repo update              # Make sure we get the latest list of charts
+}
+hmsrvinfo() {
+  usage $# "[NAMESPACE:kube-system]"
+
+  local NAMESPACE=${1:-kube-system}
+  kcdpinfo "tiller-deploy" "${NAMESPACE}"
+}
+hmsrvrm() {
+  kubectl -n kube-system delete deployment tiller-deploy
+  kubectl -n kube-system delete service/tiller-deploy
+} 
+
 hmcreate() { 
   hmtpl "create" $@
 }
@@ -16,6 +51,9 @@ hmgen() {
 }
 hmpkg() { 
   hmtpl "package" $@
+}
+hmhistory() { 
+  hmtpl "history" $@
 }
 hmtpl() { 
   if [ -z "$2" ]; then
