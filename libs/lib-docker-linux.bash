@@ -1,7 +1,10 @@
 import lib-docker
 import lib-systemctl
 
-#alias docker-compose='sudo docker-compose'
+if [[ -z "$CHECK_SUDO" ]] && [[ $(id -u) -ne 0 ]] ; then 
+  alias docker="sudo docker"
+  alias docker-compose="sudo docker-compose"
+fi
 
 # Ubuntu Repo : https://download.docker.com/linux/ubuntu/dists/
 # Centos Repo : https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
