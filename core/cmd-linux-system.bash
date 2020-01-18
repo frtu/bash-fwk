@@ -37,6 +37,9 @@ linuxdesc() {
   echo "====== Others > ${SYS_INFO} ======"
   ${SYS_INFO}
 }
+suroot() {
+  sudo -iu root
+}
 
 # NETWORK
 portlist() {
