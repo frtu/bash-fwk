@@ -5,7 +5,6 @@ mvngenlocal() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local VERSION=${4:-0.0.1-SNAPSHOT}
-
   mvngen $1 $2 $3 $VERSION -DarchetypeCatalog=local ${@:5}
 }
 mvngen() {
@@ -28,6 +27,8 @@ mvngen() {
   if [ -n "${VERSION}" ]; then
     OPTIONAL_ARGS="${OPTIONAL_ARGS} -Dversion=${VERSION}"
   fi
+
+  echo "= Override version using 'enablemvngen [ARCHETYPE_VERSION]' current ARCHETYPE_VERSION=${ARCHETYPE_VERSION} ="
 
   echo "mvn archetype:generate -DarchetypeGroupId=com.github.frtu.archetype -DarchetypeArtifactId=${ARCHETYPE}-project-archetype -DarchetypeVersion=${ARCHETYPE_VERSION} ${OPTIONAL_ARGS}"
   mvn archetype:generate -DarchetypeGroupId=com.github.frtu.archetype -DarchetypeArtifactId=${ARCHETYPE}-project-archetype -DarchetypeVersion=${ARCHETYPE_VERSION} ${OPTIONAL_ARGS}
