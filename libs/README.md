@@ -372,6 +372,7 @@ Other base commands :
 ### Network
 
 * Minikube IP : ```kmip "[INSTANCE_NAME]"```
+* Print a specific service URL : ```kmsvc "SERVICE_NAME" "[INSTANCE_NAME:minikube]"```
 
 ## Library 'k8s'
 

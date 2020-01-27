@@ -186,7 +186,16 @@ kmstatus() {
   kmtemplate "status" $@
 }
 kmhello() {
-  kmtemplate "service" "hello-minikube"
+  kmsvc "hello-minikube"
+}
+kmsvc() {
+  usage $# "SERVICE_NAME" "[INSTANCE_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local SERVICE_NAME=$1
+  local INSTANCE_NAME=${2:-minikube}
+  kmtemplate "service" ${INSTANCE_NAME} ${SERVICE_NAME} "--url"
 }
 kmdashboard() {
   kmtemplate "dashboard" $@
