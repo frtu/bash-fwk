@@ -58,6 +58,9 @@ kclsapi() {
   usage $# "[NAMESPACE]"
   kcgettemplate "apiservice" $@
 }
+kclsresources() {
+  kubectl api-resources
+}
 kcgettemplate() {
   usage $# "RESOURCE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG

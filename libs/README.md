@@ -394,6 +394,7 @@ All kubectl listing commands in the current cluster and namespace :
 * List all **deployments** : ```kclsdeployments [NAMESPACE]```
 * List all events : ```kclsevents [NAMESPACE]```
 * List all api services : ```kclsapi [NAMESPACE]```
+* List all resources types : ```kclsresources```
 
 ATTENTION - Wildcard delete :
 
