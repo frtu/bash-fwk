@@ -202,7 +202,8 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 ## Library 'docker'
 
-Usage ```import lib-docker```
+* Usage ```import lib-docker```
+* Prefix ```dck``` 
 
 ### Image repository
 
@@ -296,7 +297,8 @@ Base commands :
 
 ## Library 'virtualbox'
 
-Usage ```import lib-virtualbox```
+* Usage ```import lib-virtualbox```
+* Prefix ```vbox``` 
 
 ### Base commands
 
@@ -334,10 +336,11 @@ Network :
 ## Library 'k8s-minikube'
 
 * Usage ```import lib-k8s-minikube```
-* Prefix ```km``` 
+* Prefix ```km```
 
 ### Base commands
 
+* Get Minikube version : ```km```
 * Go to Minikube **cache** folder : ```cdkm```
 * Go to Minikube **var** folder (/var/lib/minikube) : ```cdkmvar```
 
@@ -381,8 +384,8 @@ Other base commands :
 
 ### Base commands
 
+* Get kubectl version, list all clusters & nodes : ```kc```
 * Go to K8S config & cache folder : ```cdkc```
-* Launch kubectl version, list all clusters & nodes : ```kc```
 * Check k8s by running echo : ```kchello```
 
 All kubectl listing commands in the current cluster and namespace :
