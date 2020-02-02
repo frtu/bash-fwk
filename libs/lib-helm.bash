@@ -7,11 +7,11 @@ hm() {
 }
 hminit() { 
   echo "== Initialize Helm server (Tiller) into the current K8s context =="
-
+  
   echo "helm init $@"
   helm init $@
 }
-hmupg() { 
+hmsrvupg() { 
   usage $# "[SERVICE_ACCOUNT:tiller]"
 
   local SERVICE_ACCOUNT=${1:-tiller}
@@ -23,13 +23,12 @@ hmsrvinit() {
   echo "== ATTENTION service account MUST be created before https://github.com/helm/helm/issues/4685#issuecomment-531239132 =="
 
   local SERVICE_ACCOUNT=${1:-tiller}
+
+  echo "== Service Account : ${SERVICE_ACCOUNT} ${@:2} =="
   hminit --service-account ${SERVICE_ACCOUNT} ${@:2}
 
-  echo "helm repo add stable https://kubernetes-charts.storage.googleapis.com/"
-  helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-
-  echo "helm repo update"
-  helm repo update              # Make sure we get the latest list of charts
+  echo "== Update charts : You need have previously run > hmrepo =="
+  hmrepoupd
 }
 hmsrvinfo() {
   usage $# "[NAMESPACE:kube-system]"
@@ -67,7 +66,7 @@ hmtpl() {
 hmls() { 
   hmtpl "ls" "--all"
 }
-hminstall() { 
+hminst() { 
   usage $# "CHART_FOLDER" "[INSTANCE_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -84,13 +83,13 @@ hminstall() {
 
   hmtpl "install" ${CHART_FOLDER} ${INSTANCE_NAME}
 }
-hmupgrade() { 
+hmupg() { 
   usage $# "CHART_FOLDER" "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local CHART_FOLDER=$1
-  local INSTANCE_NAME=$2
+  local INSTANCE_NAME="--name $2"
 
   hmtpl "upgrade" ${INSTANCE_NAME} ${CHART_FOLDER}
 }
@@ -109,4 +108,32 @@ hmrm() {
 
   local INSTANCE_NAME=$1
   hmtpl "delete" "--purge" ${INSTANCE_NAME}
+}
+
+hmrepo() {
+  usage $# "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"
+
+  # https://github.com/helm/charts#how-do-i-enable-the-stable-repository-for-helm-3
+  local REPO_URL=${1:-https://kubernetes-charts.storage.googleapis.com/}
+  local REPO_NAME=${2:-stable}
+
+  echo "helm repo add ${REPO_NAME} ${REPO_URL}"
+  helm repo add ${REPO_NAME} ${REPO_URL}
+}
+hmrepocn() {
+  # https://github.com/cloudnativeapp/charts/blob/master/README_en.md
+  local REPO_URL=${1:-https://apphub.aliyuncs.com/}
+  local REPO_NAME=${2:-apphub}
+
+  hmrepo ${REPO_URL} ${REPO_NAME}
+}
+hmrepoupd() {
+  echo "helm repo update"
+  helm repo update              # Make sure we get the latest list of charts
+}
+hmsearch() {
+  usage $# "[REPO_NAME:stable?]"
+
+  local REPO_NAME=$1
+  helm search repo ${REPO_NAME}
 }

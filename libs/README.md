@@ -412,3 +412,31 @@ ATTENTION - Wildcard delete :
 * **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
 
 ...
+
+## Library 'helm'
+
+* Usage ```import lib-helm```
+* Prefix ```hm``` 
+
+### Base commands
+
+* Get Helm version : ```hm```
+* Create chart template folder : ```hmcreate "CHART_FOLDER"```
+* Generate chart : ```hmgen "CHART_FOLDER"```
+* Package chart : ```hmpkg "CHART_FOLDER"```
+* Get history : ```hmhistory "CHART_FOLDER"```
+
+
+### K8S service commands
+
+* Helm initialize service-account tiller : ```hmsrvinit "[SERVICE_ACCOUNT:tiller]"```
+* Upgrade service-account tiller : ```hmsrvupg "[SERVICE_ACCOUNT:tiller]"```
+* Get Helm K8s deployment info (tiller-deploy) : ```hmsrvinfo "[NAMESPACE:kube-system]"```
+* Delete Helm K8s deployment (tiller-deploy) : ```hmsrvinfo "[NAMESPACE:kube-system]"```
+
+### Remote repo commands
+
+* Add a new Chart repo URL & prefix : ```hmrepo "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"```
+* Add a new Chart repo URL & prefix for CN : ```hmrepo "[REPO_URL:https://apphub.aliyuncs.com/]" "[REPO_NAME:apphub]"```
+* Upgrade Chart repo index : ```hmrepoupd```
+* Search Chart repo : ```hmsearch "[REPO_NAME:stable?]"```
