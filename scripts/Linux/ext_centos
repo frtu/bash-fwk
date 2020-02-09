@@ -6,9 +6,18 @@ export UNINSTALL_TOOL="yum autoremove"
 # ncat is part of nmap
 export NET_PKG_EXTRA="iputils"
 
+# https://linuxize.com/post/how-to-install-node-js-on-centos-7/
 # Add Node repo URL
 export NODE_URL_PREFIX="rpm"
 export EXEC="sudo bash -"
+
+inst_compiler() {
+  inst gcc-c++ make
+}
+# https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-a-centos-7-server
+inst_nvm() {
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.13.1/install.sh | bash
+}
 
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-centos-7
 inst_docker() {
