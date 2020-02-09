@@ -17,8 +17,10 @@ ssconf() {
   ssconfcat
 }
 ssstart() {
+  echo "$SUDO_CONDITIONAL ssserver -c $SS_CONFIG -d start"
   $SUDO_CONDITIONAL ssserver -c $SS_CONFIG -d start
 }
 ssstop() {
+  echo "$SUDO_CONDITIONAL ssserver -c $SS_CONFIG -d stop"
   $SUDO_CONDITIONAL ssserver -c $SS_CONFIG -d stop
 }
