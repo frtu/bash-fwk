@@ -19,6 +19,7 @@ cdkmvar() {
 inst_kubectl() {
   # https://github.com/kubernetes/kubernetes/releases
   usage $# "[VERSION:latest]" "[BIN_PATH:/usr/local/bin/]"
+  echo "== Check release version at https://github.com/kubernetes/kubernetes/releases =="
 
   local VERSION=$1
   local BIN_PATH=${2:-/usr/local/bin/}
@@ -117,7 +118,7 @@ kmstartdriver() {
   # hyperkit : https://github.com/moby/hyperkit
   usage $# "DRIVER_NAME:virtualbox|hyperkit|none" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DRIVER_NAME=$1
   local INSTANCE_NAME=${2:-minikube}
@@ -129,7 +130,7 @@ kmstartdriver() {
 kmstartreg() {
   usage $# "[INSTANCE_NAME]" "[REGISTRY_URL]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INSTANCE_NAME=$1
   local REGISTRY_URL=$2
@@ -164,7 +165,10 @@ kmstartproxy() {
 kmstartversion() {
   usage $# "VERSION:v1.16.2" "[INSTANCE_NAME]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    echo "== Check release version at https://github.com/kubernetes/kubernetes/releases =="
+    return 1; 
+  fi
 
   local VERSION=$1
   local INSTANCE_NAME=${2:-minikube}
