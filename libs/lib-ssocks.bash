@@ -1,3 +1,5 @@
+import lib-inst
+
 export SS_CONFIG=/etc/shadowsocks.json
 
 alias ssconfcat='cat $SS_CONFIG'
@@ -15,8 +17,8 @@ ssconf() {
   ssconfcat
 }
 ssstart() {
-  sudo ssserver -c $SS_CONFIG -d start
+  $SUDO_CONDITIONAL ssserver -c $SS_CONFIG -d start
 }
 ssstop() {
-  sudo ssserver -c $SS_CONFIG -d stop
+  $SUDO_CONDITIONAL ssserver -c $SS_CONFIG -d stop
 }
