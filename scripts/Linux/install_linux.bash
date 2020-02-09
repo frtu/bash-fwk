@@ -1,10 +1,11 @@
+import lib-inst
 import lib-ssocks
 import lib-k8s-minikube
 
 inst_ssocks() {
   usage $# "PASSWORD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local PASSWORD=$1
   local HOSTNAME=`hostname -I`
@@ -20,7 +21,7 @@ inst_ssocks() {
       echo "- sudo vi /usr/local/lib/python3.6/dist-packages/shadowsocks/crypto/openssl.py"
       echo "- Change all : EVP_CIPHER_CTX_cleanup => EVP_CIPHER_CTX_reset"
       echo ""
-      echo "Launch and Stop application with :"
+      echo "Launch and Stop application with (on Centos, please >suroot before cmd):"
       echo "> ssstart"
       echo "> ssstop"
     else
@@ -34,11 +35,11 @@ inst_node() {
 
   local VERSION=$1
 
-  apt install curl
-  curl -sL https://deb.nodesource.com/setup_${VERSION}.x | sudo -E bash -
+  inst curl
+  $NODE_CONFIG
 
-  apt update
-  apt install nodejs
+  upd
+  inst nodejs
 
   enablelib dev-node
   njversion
@@ -48,5 +49,4 @@ inst_node10() {
 }
 uninst_node() {
   uninst nodejs
-  apt autoremove --purge
 }

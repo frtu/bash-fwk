@@ -1,5 +1,8 @@
 echo "=== Loading Ubuntu ==="
 
+# remove auto-installed packages which are no longer required
+export NODE_CONFIG="curl -sL https://deb.nodesource.com/setup_${VERSION}.x | sudo -E bash -"
+
 inst_docker() {
   # FOLOW : https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce
   apt install apt-transport-https ca-certificates curl software-properties-common
