@@ -30,6 +30,9 @@ inst_kubectl() {
   local EXEC_URL=https://storage.googleapis.com/kubernetes-release/release/${VERSION}/bin/${OS}/amd64/kubectl
 
   inst_dl_bin "kubectl" "${EXEC_URL}" "${BIN_PATH}"
+
+  # ADD IF MOVE THE SCRIPT OUT : enablelib k8s
+  kc
 }
 # https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube-via-direct-download
 inst_minikube() {
@@ -49,6 +52,9 @@ inst_minikube() {
   fi
 
   inst_dl_bin "minikube" "${EXEC_URL}" "${BIN_PATH}"
+
+  # ADD IF MOVE THE SCRIPT OUT : enablelib k8s-minikube
+  km
 }
 
 alias kmls=kcctx
