@@ -1,7 +1,8 @@
 echo "=== Loading Ubuntu ==="
 
 # Add Node repo URL
-export NODE_CONFIG="curl -sL https://deb.nodesource.com/setup_${VERSION}.x | sudo -E bash -"
+export NODE_URL_PREFIX="deb"
+export EXEC="sudo -E bash -"
 
 inst_docker() {
   # FOLOW : https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce

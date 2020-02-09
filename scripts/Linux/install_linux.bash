@@ -36,7 +36,8 @@ inst_node() {
   local VERSION=$1
 
   inst curl
-  $NODE_CONFIG
+  echo "curl -sL https://${NODE_URL_PREFIX}.nodesource.com/setup_${VERSION}.x | $EXEC"
+  curl -sL https://${NODE_URL_PREFIX}.nodesource.com/setup_${VERSION}.x | $EXEC
 
   upd
   inst nodejs
