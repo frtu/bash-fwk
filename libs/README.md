@@ -62,6 +62,8 @@ Usage ```import lib-git```
 
 ### Base commands
 
+* Git status : ```gstatus```
+* Git rollback a change to repo : ```grb "FILE_TO_ROLLBACK"```
 * Pull from remote repo : ```gl "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"```
 * Push to remote repo : ```gh "[REMOTE_REPO_NAME:origin]"```
 

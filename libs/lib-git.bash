@@ -29,6 +29,22 @@ grmcached() {
   git rm -r --cached $ITEM_TO_REMOVE
 }
 
+gstatus() {
+  git status
+}
+grb() {
+  usage $# "FILE_TO_ROLLBACK"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    gstatus
+    return -1;
+  fi
+
+  local FILE_TO_ROLLBACK=$1
+  
+  echo "git checkout -- ${FILE_TO_ROLLBACK}"
+  git checkout -- ${FILE_TO_ROLLBACK}
+}
 gl() {
   usage $# "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
