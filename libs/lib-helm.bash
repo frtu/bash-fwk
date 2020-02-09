@@ -69,12 +69,14 @@ hmls() {
   hmtpl "ls" "--all"
 }
 hminst() { 
-  usage $# "CHART_FOLDER" "[INSTANCE_NAME]"
+  usage $# "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CHART_FOLDER=$1
   local INSTANCE_NAME=$2
+  local CUSTOM_CONFIG_FILE=$3
+  local EXTRA_PARAMS=${@:4}
 
   if [ -n "$INSTANCE_NAME" ]
     then
@@ -82,8 +84,11 @@ hminst() {
     else
       local INSTANCE_NAME="--generate-name"
   fi
+  if [ -f "$CUSTOM_CONFIG_FILE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -f $CUSTOM_CONFIG_FILE"
+  fi
 
-  hmtpl "install" ${CHART_FOLDER} ${INSTANCE_NAME}
+  hmtpl "install" ${EXTRA_PARAMS} ${CHART_FOLDER} ${INSTANCE_NAME}
 }
 hmupg() { 
   usage $# "CHART_FOLDER" "INSTANCE_NAME"

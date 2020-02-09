@@ -425,6 +425,7 @@ ATTENTION - Wildcard delete :
 * Generate chart : ```hmgen "CHART_FOLDER"```
 * Package chart : ```hmpkg "CHART_FOLDER"```
 * Get history : ```hmhistory "CHART_FOLDER"```
+* Install and allow to override config using YAML file : ```hminst "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]"```
 
 
 ### K8S service commands
