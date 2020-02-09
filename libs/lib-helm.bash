@@ -5,12 +5,6 @@ hm() {
   echo "helm version"
   helm version
 }
-hminit() { 
-  echo "== Initialize Helm server (Tiller) into the current K8s context =="
-  
-  echo "helm init $@"
-  helm init $@
-}
 hmsrvupg() { 
   usage $# "[SERVICE_ACCOUNT:tiller]"
 
@@ -66,7 +60,8 @@ hmtpl() {
 }
 
 hmls() { 
-  hmtpl "ls" "--all"
+  # hmtpl "ls" "--all"
+  hmtpl "list"
 }
 hminst() { 
   usage $# "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]" "[EXTRA_PARAMS]"
@@ -93,7 +88,10 @@ hminst() {
 hmupg() { 
   usage $# "CHART_FOLDER" "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    hmls
+    return 1; 
+  fi
 
   local CHART_FOLDER=$1
   local INSTANCE_NAME="--name $2"
@@ -103,7 +101,10 @@ hmupg() {
 hmrollback() { 
   usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    hmls
+    return 1; 
+  fi
 
   local INSTANCE_NAME=$1
   hmtpl "rollback" ${INSTANCE_NAME} 1
@@ -111,10 +112,30 @@ hmrollback() {
 hmrm() { 
   usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    hmls
+    return 1; 
+  fi
+
+  echo "- @Deprecated : ATTENTION removed in v3 : https://helm.sh/docs/topics/v2_v3_migration/"
+  echo "- Use for v3 use > hmuninst"
 
   local INSTANCE_NAME=$1
   hmtpl "delete" "--purge" ${INSTANCE_NAME}
+}
+hmuninst() {
+  usage $# "INSTANCE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    hmls
+    return 1; 
+  fi
+
+  echo "- ATTENTION ONLY in v3 : https://helm.sh/docs/topics/v2_v3_migration/"
+  echo "- Use for v2 use > hmrm"
+
+  local INSTANCE_NAME=$1
+  hmtpl "uninstall" ${INSTANCE_NAME}
 }
 
 hmrepo() {
@@ -143,4 +164,12 @@ hmsearch() {
 
   local REPO_NAME=$1
   helm search repo ${REPO_NAME}
+}
+
+hminit() { 
+  echo "== Initialize Helm server (Tiller) into the current K8s context =="
+  echo "- @Deprecated : ATTENTION removed in v3 : https://helm.sh/docs/topics/v2_v3_migration/"
+
+  echo "helm init $@"
+  helm init $@
 }
