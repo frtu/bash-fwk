@@ -2,6 +2,18 @@ import lib-inst
 import lib-ssocks
 import lib-k8s-minikube
 
+# https://flavio.castelli.me/2018/07/18/hackweek-project-docker-registry-mirror/
+inst_helm() {
+  # https://www.linode.com/docs/kubernetes/how-to-install-apps-on-kubernetes-with-helm/
+  inst socat
+  curl -L https://git.io/get_helm.sh | bash
+  enablelib helm
+  # helm init --service-account tiller --upgrade
+
+  hm
+  hmsrvinit
+}
+
 inst_ssocks() {
   usage $# "PASSWORD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
