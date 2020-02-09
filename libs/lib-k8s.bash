@@ -17,7 +17,7 @@ kc() {
 kchello() {
   usage $# "[IMAGE_REPOSITORY:k8s.gcr.io]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local IMAGE_REPOSITORY=${1:-k8s.gcr.io}
   kubectl create deployment hello-minikube --image=${IMAGE_REPOSITORY}/echoserver:1.10
@@ -64,7 +64,7 @@ kclsresources() {
 kcgettemplate() {
   usage $# "RESOURCE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local RESOURCE=$1
   local NAMESPACE=$2
@@ -103,7 +103,7 @@ kcctxnamespace() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a DEFAULT namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
     kclsnamespaces
-    return -1
+    return 1
   fi
 
   local NAMESPACE=$1
@@ -117,7 +117,7 @@ kcconf() {
 kcconftemplate() {
   usage $# "CMD"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CMD=$1
   local EXTRA_PARAMS=${@:2}
@@ -129,7 +129,7 @@ kcconftemplate() {
 kccreate() {
   usage $# "FILE_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local FILE_NAME=$1
   local NAMESPACE=$2
@@ -160,7 +160,7 @@ kccreate() {
 kcapply() {
   usage $# "FILE_NAME"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local FILE_NAME=$1
   local EXTRA_PARAMS=${@:2}
@@ -187,7 +187,7 @@ kcapply() {
 kcruntpl() {
   usage $# "CMD" "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CMD=$1
   local IMAGE_NAME=$2
@@ -210,7 +210,7 @@ kcattach() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
     kclspods
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -225,7 +225,7 @@ kcbash() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
     kclspods
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -251,7 +251,7 @@ kcnsyaml() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
     kcnspls
-    return -1
+    return 1
   fi
 
   local NAMESPACE=$1
@@ -263,7 +263,7 @@ kcnsjson() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
     kcnspls
-    return -1
+    return 1
   fi
 
   local NAMESPACE=$1
@@ -275,7 +275,7 @@ kcnsdump() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
     kcnspls
-    return -1
+    return 1
   fi
 
   local NAMESPACE=$1
@@ -302,7 +302,7 @@ kcnstpl() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
     kcnspls
-    return -1
+    return 1
   fi
 
   local CMD=$1
@@ -325,7 +325,7 @@ kcpodid() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
     kcpodlsfull
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -338,7 +338,7 @@ kcpodid() {
 kcpodrun() {
   usage $# "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local IMAGE_NAME=$1
   local INSTANCE_NAME=$2
@@ -358,7 +358,7 @@ kcpodtop() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
     kclspods
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -373,7 +373,7 @@ kcpodtail() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
     kclspods
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -385,7 +385,7 @@ kcpodlogs() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
     kclspods
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -401,7 +401,7 @@ kcpodyaml() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
     kcpodlsfull
-    return -1
+    return 1
   fi
 
   local POD_NAME=$1
@@ -415,7 +415,7 @@ kcpodinfo() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
     kcpodlsfull
-    return -1
+    return 1
   fi
 
   kcpodtemplate "describe" $@
@@ -426,7 +426,7 @@ kcpodrm() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
     kcpodlsfull
-    return -1
+    return 1
   fi
 
   kcpodtemplate "delete" $@
@@ -437,7 +437,7 @@ kcpodtemplate() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
     kcpodlsfull
-    return -1
+    return 1
   fi
 
   local CMD=$1
@@ -462,7 +462,7 @@ alias kcsvcls=kclsservices
 kcstschk() {
   usage $# "SERVICE_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local SERVICE_NAME=$1
   local NAMESPACE=$2
@@ -481,14 +481,14 @@ alias kcdpls=kclsdeployments
 kcdprun() {
   usage $# "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   kcruntpl "create deployment" $@
 }
 kcdpinfo() {
   usage $# "DEPLOYMENT_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DEPLOYMENT_NAME=$1
   local NAMESPACE=$2
@@ -498,7 +498,7 @@ kcdpinfo() {
 kcdpexpose() {
   usage $# "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DEPLOYMENT_NAME=$1
   local SERVICE_NAME=$2
@@ -538,14 +538,14 @@ kcdptpl() {
 kcnetlookup() {
   usage $# "DOMAIN_NAME"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   kcexec nslookup $@
 }
 kcexec() {
   usage $# "CMD"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   kubectl exec -ti busybox -- $@
 }
@@ -553,7 +553,7 @@ kcexec() {
 kcedit() {
   usage $# "RESOURCE"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local RESOURCE=$1
 
@@ -565,7 +565,7 @@ kcrm() {
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a POD or SERVICE name: If you don't know any pod names run 'kclspods' or 'kclsservices'" >&2
-    return -1
+    return 1
   fi
 
   local RESOURCE=$1
@@ -585,7 +585,7 @@ kcrmall() {
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a NAMESPACE for the current context : If you don't know any names run 'kclsnamespaces'" >&2
     kclsnamespaces
-    return -1
+    return 1
   fi
 
   local NAMESPACE=$1

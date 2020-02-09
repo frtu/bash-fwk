@@ -69,7 +69,7 @@ hmls() {
 hminst() { 
   usage $# "CHART_FOLDER" "[INSTANCE_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CHART_FOLDER=$1
   local INSTANCE_NAME=$2
@@ -86,7 +86,7 @@ hminst() {
 hmupg() { 
   usage $# "CHART_FOLDER" "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CHART_FOLDER=$1
   local INSTANCE_NAME="--name $2"
@@ -96,7 +96,7 @@ hmupg() {
 hmrollback() { 
   usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INSTANCE_NAME=$1
   hmtpl "rollback" ${INSTANCE_NAME} 1
@@ -104,7 +104,7 @@ hmrollback() {
 hmrm() { 
   usage $# "INSTANCE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INSTANCE_NAME=$1
   hmtpl "delete" "--purge" ${INSTANCE_NAME}
