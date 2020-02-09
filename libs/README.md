@@ -425,15 +425,22 @@ ATTENTION - Wildcard delete :
 * Generate chart : ```hmgen "CHART_FOLDER"```
 * Package chart : ```hmpkg "CHART_FOLDER"```
 * Get history : ```hmhistory "CHART_FOLDER"```
-* Install and allow to override config using YAML file : ```hminst "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]"```
 
+### With K8s commands
+
+* List all installed chart instances : ```hmls```
+* Install and allow to override config using YAML file : ```hminst "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]"```
+* Upgrade existing chart instance : ```hmupg "CHART_FOLDER" "INSTANCE_NAME"```
+* Rollback existing chart instance : ```hmrollback "INSTANCE_NAME"```
+* Remove existing chart instance (v2 ONLY) : ```hmrm "INSTANCE_NAME"```
+* Remove existing chart instance (v3 ONLY) : ```hmuninst "INSTANCE_NAME"```
 
 ### K8S service commands
 
 * Helm initialize service-account tiller : ```hmsrvinit "[SERVICE_ACCOUNT:tiller]"```
 * Upgrade service-account tiller : ```hmsrvupg "[SERVICE_ACCOUNT:tiller]"```
 * Get Helm K8s deployment info (tiller-deploy) : ```hmsrvinfo "[NAMESPACE:kube-system]"```
-* Delete Helm K8s deployment (tiller-deploy) : ```hmsrvinfo "[NAMESPACE:kube-system]"```
+* Delete Helm K8s deployment (tiller-deploy) : ```hmsrvrm```
 
 ### Remote repo commands
 
@@ -441,3 +448,7 @@ ATTENTION - Wildcard delete :
 * Add a new Chart repo URL & prefix for CN : ```hmrepo "[REPO_URL:https://apphub.aliyuncs.com/]" "[REPO_NAME:apphub]"```
 * Upgrade Chart repo index : ```hmrepoupd```
 * Search Chart repo : ```hmsearch "[REPO_NAME:stable?]"```
+
+### Common installation
+
+* Install Chart Museum : ```hminstchartmuseum```

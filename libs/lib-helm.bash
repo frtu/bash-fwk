@@ -75,7 +75,7 @@ hminst() {
 
   if [ -n "$INSTANCE_NAME" ]
     then
-      local INSTANCE_NAME=--name ${INSTANCE_NAME}
+      local INSTANCE_NAME="--name ${INSTANCE_NAME}"
     else
       local INSTANCE_NAME="--generate-name"
   fi
@@ -83,7 +83,7 @@ hminst() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -f $CUSTOM_CONFIG_FILE"
   fi
 
-  hmtpl "install" ${EXTRA_PARAMS} ${CHART_FOLDER} ${INSTANCE_NAME}
+  hmtpl "install" ${INSTANCE_NAME} ${CHART_FOLDER} ${EXTRA_PARAMS}
 }
 hmupg() { 
   usage $# "CHART_FOLDER" "INSTANCE_NAME"
@@ -172,4 +172,13 @@ hminit() {
 
   echo "helm init $@"
   helm init $@
+}
+
+hminstchartmuseum() {
+  hminst stable/chartmuseum chartmuseum
+
+  local POD_NAME_CHARTMUSEUM=$(kubectl get pods --namespace default -l "app=chartmuseum" -l "release=chartmuseum" -o jsonpath="{.items[0].metadata.name}")
+  kubectl port-forward $POD_NAME_CHARTMUSEUM 8080:8080 --namespace default &
+  # Test
+  curl http://localhost:8080
 }
