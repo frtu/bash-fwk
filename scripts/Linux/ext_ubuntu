@@ -1,6 +1,6 @@
 echo "=== Loading Ubuntu ==="
 
-# remove auto-installed packages which are no longer required
+# Add Node repo URL
 export NODE_CONFIG="curl -sL https://deb.nodesource.com/setup_${VERSION}.x | sudo -E bash -"
 
 inst_docker() {

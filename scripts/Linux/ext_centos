@@ -6,6 +6,9 @@ export UNINSTALL_TOOL="yum autoremove"
 # ncat is part of nmap
 export NET_PKG_EXTRA="iputils"
 
+# remove auto-installed packages which are no longer required
+export NODE_CONFIG="curl -sL https://rpm.nodesource.com/setup_${VERSION}.x | sudo bash -"
+
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-centos-7
 inst_docker() {
   curl -fsSL https://get.docker.com/ | sh

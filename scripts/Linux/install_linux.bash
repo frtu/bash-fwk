@@ -31,7 +31,7 @@ inst_ssocks() {
 inst_node() {
   usage $# "VERSION:10/12"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local VERSION=$1
 
