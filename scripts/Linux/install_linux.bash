@@ -5,6 +5,8 @@ import lib-k8s-minikube
 # https://flavio.castelli.me/2018/07/18/hackweek-project-docker-registry-mirror/
 inst_helm() {
   # https://www.linode.com/docs/kubernetes/how-to-install-apps-on-kubernetes-with-helm/
+  echo "== Check release version at https://github.com/helm/helm/tags =="
+  
   inst socat
   curl -L https://git.io/get_helm.sh | bash
   enablelib helm
