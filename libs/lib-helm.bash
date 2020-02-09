@@ -182,3 +182,9 @@ hminstchartmuseum() {
   # Test
   curl http://localhost:8080
 }
+hminstelastic() {
+  hmrepo https://helm.elastic.co elastic
+  hmrepoupd
+  hmsearch elasticsearch --version 7
+  helm install --name elasticsearch --wait --timeout=600 elastic/elasticsearch
+}
