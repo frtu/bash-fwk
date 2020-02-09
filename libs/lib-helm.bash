@@ -21,6 +21,8 @@ hmsrvinit() {
   usage $# "[SERVICE_ACCOUNT:tiller]"
 
   echo "== ATTENTION service account MUST be created before https://github.com/helm/helm/issues/4685#issuecomment-531239132 =="
+  echo "- Attempt to get YAML from https://raw.githubusercontent.com/mspnp/microservices-reference-implementation/master/k8s/tiller-rbac.yaml"
+  kcapply https://raw.githubusercontent.com/mspnp/microservices-reference-implementation/master/k8s/tiller-rbac.yaml
 
   local SERVICE_ACCOUNT=${1:-tiller}
 
