@@ -201,7 +201,7 @@ sshconfusercreatekey() {
   sshconfuser $SSH_CONFIG_ALIAS $SSH_HOSTNAME $KEY_NAME $USERNAME $SSH_PORT
 }
 
-# Port forwarding
+# Create a jump host STDIO -> proxy SSH_HOSTNAME -> FWD_HOSTNAME exec
 sshproxy() {
   usage $# "SSH_HOSTNAME" "FWD_HOSTNAME" "[FWD_PORT]" "[LOCAL_PORT]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -248,6 +248,7 @@ sshproxyconf() {
   fi
 }
 
+# Create a jump host STDIO -> nc SSH_HOSTNAME -> FWD_HOSTNAME exec
 sshproxync() {
   usage $# "SSH_CONFIG_ALIAS" "SSH_HOSTNAME" "FWD_HOSTNAME" "[FWD_PORT]" "[LOCAL_PORT]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -298,6 +299,7 @@ sshproxyconftunnel() {
   echo "== Enabling function '${FUNCTION_NAME}' at $TARGET_SERVICE_FILENAME =="
 }
 
+# Port forwarding (1/2) - Open remote port to local : FWD_HOSTNAME:FWD_PORT -> LOCAL:LOCAL_PORT
 sshproxysocks() {
   usage $# "LOCAL_PORT" "SSH_HOSTNAME" "FWD_PORT" "[USERNAME]" "[FWD_HOSTNAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -317,19 +319,34 @@ sshproxysocks() {
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts#SOCKS_Proxy_Via_a_Single_Intermediate_Host
   # ssh -D ${LOCAL_PORT} -J ${FWD_HOSTNAME}:${FWD_PORT} ${SSH_HOSTNAME}
 }
+# Port forwarding (2/2) - Open local port to jump host : LOCAL:LOCAL_PORT -> SSH_HOSTNAME:LOCAL_PORT (-> REMOTE:PORT) 
 sshproxysocksconnect() {
   echo "Use the previously port configured with sshproxysocks()"
-  usage $# "LOCAL_PORT" "[USERNAME]" "[FWD_HOSTNAME]"
+  usage $# "LOCAL_PORT" "[USERNAME]" "[SSH_HOSTNAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local LOCAL_PORT=$1
   local USERNAME=${2:-$USER}
-  local FWD_HOSTNAME=${3:-127.0.0.1}
+  local SSH_HOSTNAME=${3:-127.0.0.1}
 
   # https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts#Port_Forwarding_Via_a_Single_Intermediate_Host
   # Forward LOCAL_PORT -> SSH_HOSTNAME (intermediate) -> FWD_HOSTNAME (target behind fw)
   echo "ssh -p ${LOCAL_PORT} ${USERNAME}@${SSH_HOSTNAME}"
   ssh -p ${LOCAL_PORT} ${USERNAME}@${SSH_HOSTNAME}
+}
+
+# Create a SOCKS proxy LOCAL_PORT -> FULL_SSH_HOSTNAME exec
+sshsocks() {
+  usage $# "SOCKS_PORT" "SSH_HOSTNAME:w.x.y.z" "[USERNAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local SOCKS_PORT=$1
+  local SSH_HOSTNAME=$2
+  local USERNAME=${3:-$USER}
+
+  echo "ssh -D ${SOCKS_PORT} -f -C -q -N ${USERNAME}@${SSH_HOSTNAME}"
+  ssh -D ${SOCKS_PORT} -f -C -q -N ${USERNAME}@${SSH_HOSTNAME}
 }
 
