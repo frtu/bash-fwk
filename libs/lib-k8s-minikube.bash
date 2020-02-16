@@ -19,7 +19,7 @@ cdkmvar() {
 inst_kubectl() {
   # https://github.com/kubernetes/kubernetes/releases
   usage $# "[VERSION:latest]" "[BIN_PATH:/usr/local/bin/]"
-  echo "== Check release version at https://github.com/kubernetes/kubernetes/releases =="
+  echo "== Check release version at https://github.com/kubernetes/kubernetes/tags =="
 
   local VERSION=$1
   local BIN_PATH=${2:-/usr/local/bin/}
@@ -38,7 +38,7 @@ inst_kubectl() {
 # https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube-via-direct-download
 inst_minikube() {
   usage $# "[VERSION:latest]" "[EXEC_URL:storage.googleapis.com/../minikube-linux-amd64]" "[BIN_PATH:/usr/local/bin/]"
-  echo "== Check release version at https://github.com/kubernetes/minikube/releases =="
+  echo "== Check release version at https://github.com/kubernetes/minikube/tags =="
 
   local VERSION=$1
   local EXEC_URL=$2
