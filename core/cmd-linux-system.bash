@@ -56,15 +56,8 @@ tcp() {
     return 1
   fi
 
-  if [ "$1" == "any" ]
-    then
-      local EXTRA_PARAMS=$@
-    else
-      local EXTRA_PARAMS="-i $@ -vvv"
-  fi
-
-  echo "sudo tcpdump ${EXTRA_PARAMS}"
-  sudo tcpdump ${EXTRA_PARAMS}
+  echo "sudo tcpdump -i $@ -vvv"
+  sudo tcpdump -i $@ -vvv
 }
 tcpport() {
   usage $# "PORT"
@@ -72,7 +65,7 @@ tcpport() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local PORT=$1
-  tcp "any" "dst" "port ${PORT}" "-A"
+  tcp "any dst port ${PORT} -A"
 }
 
 envls() {
