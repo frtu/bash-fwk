@@ -195,9 +195,16 @@ hminstchartmuseum() {
   # Test
   curl http://localhost:8080
 }
+
 hminstelastic() {
   hmrepo https://helm.elastic.co elastic
   hmrepoupd
   hmsearch elasticsearch --version 7
-  helm install --name elasticsearch --wait --timeout=600 elastic/elasticsearch
+  helm install --name elasticsearch --namespace logging --wait --timeout=600 elastic/elasticsearch
+}
+hminstkibana() {
+  helm install elastic/kibana --name kibana --namespace logging \
+     --set ingress.enabled=true \
+     --set ingress.hosts[0]=kibana.pv \
+     --set service.externalPort=80 
 }

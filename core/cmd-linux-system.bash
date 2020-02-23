@@ -56,8 +56,10 @@ tcp() {
     return -1
   fi
 
-  local ETHERNET_NAME=$1
-  sudo tcpdump -i ${ETHERNET_NAME} -vvv
+  sudo tcpdump -i $@ -vvv
+}
+tcpport() {
+  tcp "any dst port 20001 -A"
 }
 
 envls() {
