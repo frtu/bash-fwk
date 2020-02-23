@@ -1,6 +1,5 @@
 import lib-inst
 import lib-ssocks
-import lib-k8s
 import lib-k8s-minikube
 
 # https://flavio.castelli.me/2018/07/18/hackweek-project-docker-registry-mirror/

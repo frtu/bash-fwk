@@ -22,6 +22,7 @@ srvstart() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   sudo systemctl start $@
+  srvstatus $@
 }
 srvstop() {
   usage $# "PACKAGE"
@@ -29,6 +30,7 @@ srvstop() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   sudo systemctl stop $@
+  srvstatus $@
 }
 srvrestart() {
   usage $# "PACKAGE"
@@ -36,4 +38,5 @@ srvrestart() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   sudo systemctl restart $@
+  srvstatus $@
 }

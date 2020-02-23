@@ -9,13 +9,10 @@ kcsrvstatus() {
 }
 kcsrvstart() {
   srvstart ${SERVICE_NAME}
-  kcsrvstatus
 }
 kcsrvstop() {
   srvstop ${SERVICE_NAME}
-  kcsrvstatus
 }
 kcsrvrestart() {
   srvrestart ${SERVICE_NAME}
-  kcsrvstatus
 }

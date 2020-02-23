@@ -17,6 +17,8 @@ export DOCKER_IMAGES_FOLDER=/var/lib/docker/
 # ubuntu 16 and Centos
 export DOCKER_CONFIG=/etc/docker/daemon.json
 
+SERVICE_NAME=docker
+
 cddckimages() {
   cd $DOCKER_IMAGES_FOLDER
 }
@@ -32,22 +34,20 @@ dcksrvvi() {
   sudo vi $DOCKER_CONFIG
 }
 dcksrvcheck() {
-  srvstatus docker
+  srvstatus ${SERVICE_NAME}
 }
 dcksrvstatus() {
-  srvstatus docker
+  srvstatus ${SERVICE_NAME}
 }
 dcksrvstart() {
   # ubuntu 14
   # sudo service docker restart
   # ubuntu 16
-  srvstart docker
-
-  dcksrvstatus
+  srvstart ${SERVICE_NAME}
 }
 dcksrvstop() {
-  srvstop docker
+  srvstop ${SERVICE_NAME}
 }
 dcksrvrestart() {
-  srvrestart docker
+  srvrestart ${SERVICE_NAME}
 }

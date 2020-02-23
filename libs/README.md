@@ -290,12 +290,19 @@ For Centos, docker registry distribution :
 * **Stop** registry : ```dckregstop```
 * **Restart** registry : ```dckregrestart```
 
-### Linux configuration
+### ONLY for linux configuration
 
-Base commands :
+Base commands for service **docker** :
 
+* Service status : ```dcksrvstatus```
+* Service start : ```dcksrvstart```
+* Service stop : ```dcksrvstop```
+* Service re start : ```dcksrvrestart```
+
+Administration :
+
+* Activate docker as a service : ```activatedck```
 * Edit local docker daemon config : ```dcksrvvi```
-
 
 ## Library 'virtualbox'
 
@@ -378,6 +385,15 @@ Other base commands :
 
 * Minikube IP : ```kmip "[INSTANCE_NAME]"```
 * Print a specific service URL : ```kmsvc "SERVICE_NAME" "[INSTANCE_NAME:minikube]"```
+
+### ONLY for linux configuration
+
+Base commands for **kubelet** :
+
+* Service status : ```kcsrvstatus```
+* Service start : ```kcsrvstart```
+* Service stop : ```kcsrvstop```
+* Service re start : ```kcsrvrestart```
 
 ## Library 'k8s'
 

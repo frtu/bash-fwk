@@ -87,18 +87,14 @@ enablessh() {
   srv_activate ssh
   refresh
 }
-enabledocker_linux() {
-  enablelib docker-linux
-  inst_docker
-  refresh
-}
 enableminikube_linux() {
   enablelib docker-linux
-  enablelib k8s-minikube
+  inst_docker
+  enablelib k8s-linux
   inst_kubectl_linux
+  enablelib k8s-minikube
   inst_minikube
   inst_docker_registry
-  enabledocker
 }
 enableml() {
   usage $# "MAGIC_LEAP_SDK_VERSION"
