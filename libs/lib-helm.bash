@@ -138,6 +138,10 @@ hmuninst() {
   hmtpl "uninstall" ${INSTANCE_NAME}
 }
 
+hmrepogit() {
+  enablelib git
+  git clone https://github.com/helm/charts.git ~/git/helm-charts
+}
 hmrepo() {
   usage $# "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"
 
