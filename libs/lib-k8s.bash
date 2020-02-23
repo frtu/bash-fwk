@@ -472,8 +472,43 @@ kcstschk() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
   fi
 
-  echo "kubectl rollout status sts/${DEPLOYMENT_NAME} ${EXTRA_PARAMS}"
-  kubectl rollout status sts/${DEPLOYMENT_NAME} ${EXTRA_PARAMS}
+  echo "kubectl rollout status sts/${SERVICE_NAME} ${EXTRA_PARAMS}"
+  kubectl rollout status sts/${SERVICE_NAME} ${EXTRA_PARAMS}
+}
+kcsvcyaml() {
+  usage $# "SERVICE_NAME" "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a service name from a namespace: If you don't know any service names run 'kcsvcls'" >&2
+    kcsvcls
+    return 1
+  fi
+
+  local SERVICE_NAME=$1
+  local NAMESPACE=$2
+
+  kcsvctpl "get" ${SERVICE_NAME} ${NAMESPACE} -o yaml
+}
+kcsvctpl() {
+  usage $# "CMD" "SERVICE_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a service name from a namespace: If you don't know any service names run 'kcsvcls'" >&2
+    kcsvcls
+    return 1
+  fi
+
+  local CMD=$1
+  local SERVICE_NAME=$2
+  local NAMESPACE=$3
+  local EXTRA_PARAMS=${@:4}
+  
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+  fi
+
+  echo "kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}"
+  kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}
 }
 
 alias kcdpls=kclsdeployments
@@ -485,10 +520,28 @@ kcdprun() {
 
   kcruntpl "create deployment" $@
 }
+kcdpyaml() {
+  usage $# "DEPLOYMENT_NAME" "NAMESPACE"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'kclsdeployments'" >&2
+    kclsdeployments
+    return 1
+  fi
+
+  local DEPLOYMENT_NAME=$1
+  local NAMESPACE=$2
+
+  kcdptpl "get" ${DEPLOYMENT_NAME} ${NAMESPACE} -o yaml
+}
 kcdpinfo() {
   usage $# "DEPLOYMENT_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return 1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'kclsdeployments'" >&2
+    kclsdeployments
+    return 1
+  fi
 
   local DEPLOYMENT_NAME=$1
   local NAMESPACE=$2
@@ -498,7 +551,11 @@ kcdpinfo() {
 kcdpexpose() {
   usage $# "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return 1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'kclsdeployments'" >&2
+    kclsdeployments
+    return 1
+  fi
 
   local DEPLOYMENT_NAME=$1
   local SERVICE_NAME=$2

@@ -422,10 +422,43 @@ ATTENTION - Wildcard delete :
 * **Delete** any resources (pod, service or deployment) of that name : ```kcrm "RESOURCE" "[NAMESPACE]"```
 * **Clean up ALL** resources in that namespace : ```kcrmall "NAMESPACE"```
 
+### Deployment 'kcns' commands
+
+* List all **namespaces** : ```kcnsls```
+* List all **namespaces** showing labels : ```kcnslsfull```
+* Set **current** namespace : ```kcnsset```
+* **Create** a new deployment : ```kcnscreate ".."```
+* Get **info** from an existing namespace : ```kcnsinfo ".."```
+* Get **YAML** from an existing namespace : ```kcnsyaml ".."```
+* Get **JSON** from an existing namespace : ```kcnsjson ".."```
+* **Edit** from an existing namespace : ```kcnsvi ".."```
+* **Remove** from an existing namespace : ```kcnsrm ".."```
+
+### Deployment 'kcpod' commands
+
+* List all **pods** : ```kcpodls```
+* List all **pods** showing labels : ```kcpodlabel```
+* List all **pods** and IPs : ```kcpodlsfull```
+* Get **YAML** from an existing pod : ```kcpodyaml "POD_NAME" "NAMESPACE"```
+* Get **info** from an existing pod : ```kcpodinfo "POD_NAME" "NAMESPACE"```
+* Get **container ID** from a pod : ```kcpodid "POD_NAME" "NAMESPACE"```
+* **Create** a new pod : ```kcpodrun "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"```
+* **Top** from an existing pod : ```kcpodtop "POD_NAME"```
+* Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
+* **Tail logs** from an existing pod : ```kcpodtail "POD_NAME"```
+* **Remove** from an existing pod : ```kcpodrm "POD_NAME" "NAMESPACE"```
+
+### Deployment 'kcsvc' commands
+
+* List all **services** : ```kcsvcls```
+* Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
+* Check status for an existing **service** : ```kcstschk "SERVICE_NAME" "[NAMESPACE]"```
+
 ### Deployment 'kcdp' commands
 
 * **List** all existing deployment : ```kcdpls [NAMESPACE]```
 * **Create** a new deployment : ```kcdprun "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
+* Get **YAML** from an existing deployment : ```kcdpyaml "DEPLOYMENT_NAME" "NAMESPACE"```
 * Get **info** from an existing deployment : ```kcdpinfo "DEPLOYMENT_NAME" "[NAMESPACE]"```
 * **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
 
