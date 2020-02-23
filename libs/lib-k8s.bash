@@ -592,6 +592,17 @@ kcdptpl() {
   kubectl ${CMD} deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS}
 }
 
+kcyaml() {
+  usage $# "[RESOURCE:all]" "[NAMESPACE:default]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local RESOURCE=${1:-deploy,sts,svc,configmap,secret}
+  local NAMESPACE=${2:-default}
+
+  kcgettemplate ${RESOURCE} ${NAMESPACE} "yaml" --export
+}
+
 kcnetlookup() {
   usage $# "DOMAIN_NAME"
    # MIN NUM OF ARG
