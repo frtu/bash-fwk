@@ -1,5 +1,7 @@
 import lib-k8s
 
+CHARTS_LOCAL_FOLDER=~/git/helm-charts
+
 # https://www.baeldung.com/kubernetes-helm
 hm() { 
   echo "helm version"
@@ -140,8 +142,15 @@ hmuninst() {
 
 hmrepogit() {
   enablelib git
-  git clone https://github.com/helm/charts.git ~/git/helm-charts
+  git clone https://github.com/helm/charts.git ${CHARTS_LOCAL_FOLDER}
+
+  echo "== Checkout chart repo locally at : ${CHARTS_LOCAL_FOLDER}. Use > hmrepogitcd"
+  hmrepogitcd 
 }
+hmrepogitcd() {
+  cd ${CHARTS_LOCAL_FOLDER}
+}
+
 hmrepo() {
   usage $# "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"
 

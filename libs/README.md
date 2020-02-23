@@ -451,6 +451,11 @@ ATTENTION - Wildcard delete :
 * Upgrade Chart repo index : ```hmrepoupd```
 * Search Chart repo : ```hmsearch "[REPO_NAME:stable?]"```
 
+To manage locally charts repo at *~/git/helm-charts* (ONLY for fallback) :
+
+* Manually checkout stable git locally : ```hmrepogit```
+* Go to local folder : ```hmrepogitcd```
+
 ### Common installation
 
 * Install Chart Museum : ```hminstchartmuseum```
