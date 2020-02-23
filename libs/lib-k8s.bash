@@ -593,14 +593,14 @@ kcdptpl() {
 }
 
 kcyaml() {
-  usage $# "[RESOURCE:all]" "[NAMESPACE:default]"
+  usage $# "[RESOURCE:deploy,sts,svc,configmap,secret]" "[NAMESPACE:default]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local RESOURCE=${1:-deploy,sts,svc,configmap,secret}
   local NAMESPACE=${2:-default}
 
-  kcgettemplate ${RESOURCE} ${NAMESPACE} "yaml" --export
+  kcgettemplate ${RESOURCE} ${NAMESPACE} "yaml"
 }
 
 kcnetlookup() {
