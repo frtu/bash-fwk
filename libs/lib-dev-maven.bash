@@ -111,27 +111,92 @@ mvndljar() {
   wget ${EXTRA_ARGS} http://repo.maven.apache.org/maven2/${GROUP_ID}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PATH}
 }
 
-mvnimportjar() {
+# http://maven.apache.org/plugins/maven-install-plugin/install-file-mojo.html
+mvnjarimport() {
   usage $# "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local GROUP_ID=$1
   local ARTIFACT_ID=$2
   local ARTIFACT_VERSION=$3
-  local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
-  local FILE_PATH=${4:-$FILE_PREFIX.jar}
 
+  local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
+
+  local FILE_PATH=${4:-$FILE_PREFIX.jar}
   local SOURCE_PATH="${FILE_PREFIX}-sources.jar"
   local POM_PATH="${FILE_PREFIX}.pom"
 
   if [ ! -f "$FILE_PATH" ]; then
-    echo "Cannot find $FILE_PATH. Please specify the optional parmater FILE_PATH" >&2
-    echo "Usage : mvnimportjar GROUP_ID ARTIFACT_ID ARTIFACT_VERSION [FILE_PATH]" >&2
-    return -1
-  fi  
-  echo "mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DgeneratePom=true"
-  mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DgeneratePom=true
+    echo "Cannot find $FILE_PATH. Please specify the optional paramater FILE_PATH" >&2
+    return 1
+  fi
+
+  local EXTRA_PARAMS=${@:5}
+  if [ -f "$POM_PATH" ]
+    then
+      EXTRA_PARAMS="${EXTRA_PARAMS} -DpomFile=$POM_PATH"
+    else
+      EXTRA_PARAMS="${EXTRA_PARAMS} -DgeneratePom=true"
+  fi
+  if [ -f "$SOURCE_PATH" ]; then
+      EXTRA_PARAMS="${EXTRA_PARAMS} -Dsources=$SOURCE_PATH"
+  fi
+
+  echo "mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar ${EXTRA_PARAMS}"
+  mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION ${EXTRA_PARAMS}
+}
+# http://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html
+mvnjardeploy() {
+  usage $# "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "REPO_SETTINGS_ID" "[FILE_PATH]" "[REPO_URL]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local GROUP_ID=$1
+  local ARTIFACT_ID=$2
+  local ARTIFACT_VERSION=$3
+  local REPO_SETTINGS_ID=$4
+  local FILE_PATH=$5
+
+  # OPTIONAL
+  local REPO_URL=$6
+  local EXTRA_PARAMS=${@:7}
+
+  local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
+
+  if [ ! -f "$FILE_PATH" ]; then
+    local FILE_PATH=${FILE_PREFIX}.jar
+    local SOURCE_PATH="${FILE_PREFIX}-sources.jar"
+    local POM_PATH="${FILE_PREFIX}.pom"
+  fi 
+  if [ ! -f "$FILE_PATH" ]; then
+    local FILE_PREFIX_IN_LOCAL_REPO=${MVN_REPO_PATH}/${GROUP_ID/./\/}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PREFIX}
+    echo "== Searching from FILE_PREFIX_IN_LOCAL_REPO=${FILE_PREFIX_IN_LOCAL_REPO} =="
+
+    local FILE_PATH=${FILE_PREFIX_IN_LOCAL_REPO}.jar
+    local SOURCE_PATH="${FILE_PREFIX_IN_LOCAL_REPO}-sources.jar"
+    local POM_PATH="${FILE_PREFIX_IN_LOCAL_REPO}.pom"
+  fi
+  if [ ! -f "$FILE_PATH" ]; then
+    echo "Cannot find $FILE_PATH. Please specify the optional paramater FILE_PATH" >&2
+    return 1
+  fi
+
+  if [ -f "$POM_PATH" ]
+    then
+      EXTRA_PARAMS="${EXTRA_PARAMS} -DpomFile=${POM_PATH}"
+    else
+      EXTRA_PARAMS="${EXTRA_PARAMS} -DgeneratePom=true"
+  fi
+  if [ -f "$SOURCE_PATH" ]; then
+      EXTRA_PARAMS="${EXTRA_PARAMS} -Dsources=${SOURCE_PATH}"
+  fi
+  if [ -n "$REPO_URL" ]; then
+      EXTRA_PARAMS="${EXTRA_PARAMS} -Durl=${REPO_URL}"
+  fi
+
+  echo "mvn deploy:deploy-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DrepositoryId=${REPO_SETTINGS_ID} ${EXTRA_PARAMS}"
+  mvn deploy:deploy-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DrepositoryId=${REPO_SETTINGS_ID} ${EXTRA_PARAMS}
 }
 
 mvnrepoinit() {

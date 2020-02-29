@@ -164,6 +164,8 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 ### Repository commands
 
 * Clean up **local repository** from metadata reference : ```mvnrepoclean```
+* Import JAR file into **local repository** (```FILE_PATH``` default value is ```ARTIFACT_ID-ARTIFACT_VERSION.jar```) : ```mvnjarimport "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "[FILE_PATH]"```
+* Deploy JAR file into **remote repository** (from ```ARTIFACT_ID-ARTIFACT_VERSION.jar``` or local repository ```~/.m2```) : ```mvnjardeploy "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "REPO_SETTINGS_ID" "[FILE_PATH]" "[REPO_URL]"```
 
 ## Library 'dev-maven-archetype'
 
