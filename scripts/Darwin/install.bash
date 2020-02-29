@@ -147,24 +147,46 @@ inst_caffe() {
   ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.a /anaconda3/lib/libboost_python3.dylib
 }
 
-inst_node() {
-  brew install node
-  npm install -g grunt-cli
-  
+enable_node() {
   enablelib dev-node
   njversion
 }
+inst_node() {
+  brew install node
+  npm install -g grunt-cli
+  enable_node
+}
 inst_nvm() {
+  usage $# "[VERSION]"
   local VERSION=${1:-v10.13.0}
-  echo "VERSION=${VERSION} => Change it by passing a first paramter"
+
+  inst nvm
+  mkdir -p ~/.nvm
+
+  echo "- Create local env in $LOCAL_SCRIPTS_FOLDER/env-nvm.bash"
+  echo 'export NVM_DIR=~/.nvm' > $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
+  echo '[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"' >> $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
+  echo '[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"' >> $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
+
+  echo "- NVM_DIR=$NVM_DIR"
+
+  source $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
+  echo "nvm install ${VERSION}"
+  nvm install ${VERSION}
+
+  enable_node
+}
+inst_nvm_get() {
+  usage $# "[VERSION]"
+  local VERSION=${1:-v10.13.0}
 
   wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
   nvm install ${VERSION}
 }
 
 inst_gradle() {
+  usage $# "[VERSION]"
   local VERSION=${1:-4.5.1}
-  echo "VERSION=${VERSION} => Change it by passing a first paramter"
 
   # brew update && brew install gradle
 

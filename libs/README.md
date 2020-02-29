@@ -210,6 +210,18 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 * Deploy to nexus repository : ```mvnreleasedeploy```
 
 
+## Library 'dev-node'
+
+* Usage ```import lib-dev-node```
+* Prefix ```nj```
+
+### Base commands
+
+* Get **node** & **npm** version : ```nj```
+* Install & start : ```njinststart```
+* Build : ```njbuild```
+* Build & deploy as server : ```njbuildNdeploy```
+
 ## Library 'docker'
 
 * Usage ```import lib-docker```
