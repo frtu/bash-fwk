@@ -5,7 +5,7 @@
 * Install node using **nvm** : ```inst_nvm "[VERSION]"```
 * Install node & grunt-cli (OLD) : ```inst_node```
 
-Also enable [lib-dev-node](../../libs#library-dev-node)
+Also enable [lib-dev-nvm](../../libs#library-dev-nvm)
 
 ## Vagrant
 

@@ -157,9 +157,6 @@ inst_node() {
   enable_node
 }
 inst_nvm() {
-  usage $# "[VERSION]"
-  local VERSION=${1:-v10.13.0}
-
   inst nvm
   mkdir -p ~/.nvm
 
@@ -167,14 +164,14 @@ inst_nvm() {
   echo 'export NVM_DIR=~/.nvm' > $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
   echo '[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"' >> $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
   echo '[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"' >> $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
-
-  echo "- NVM_DIR=$NVM_DIR"
+  echo '' >> $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
+  
+  echo 'import lib-dev-nvm' >> $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
 
   source $LOCAL_SCRIPTS_FOLDER/env-nvm.bash
-  echo "nvm install ${VERSION}"
-  nvm install ${VERSION}
+  njversion
 
-  enable_node
+  echo "> nvminst 'VERSION'"
 }
 inst_nvm_get() {
   usage $# "[VERSION]"

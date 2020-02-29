@@ -209,6 +209,24 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 * Deploy to nexus repository : ```mvnreleasedeploy```
 
+## Library 'dev-nvm'
+
+* Usage ```import lib-dev-nvm```
+* Prefix ```nvm```
+
+### Base commands
+
+* Get **nvm** version : ```nvm```
+* List all local installed version : ```nvmls```
+* Get current version : ```nvmcurrent```
+* Use a specific version : ```nvmuse "VERSION"```
+* Where is cmd version : ```nvmwhich "VERSION"```
+
+### Iinstall commands
+
+* List all remote version : ```nvmlsremote```
+* Install a specific version : ```nvminst "[VERSION:v10.13.0]"```
+* Uninstall a specific version : ```nvmuninst "VERSION"```
 
 ## Library 'dev-node'
 
