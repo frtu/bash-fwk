@@ -216,7 +216,7 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 ### Base commands
 
-* Get **nvm** version : ```nvm```
+* Get **nvm** version : ```nvmv```
 * List all local installed version : ```nvmls```
 * Get current version : ```nvmcurrent```
 * Use a specific version : ```nvmuse "VERSION"```

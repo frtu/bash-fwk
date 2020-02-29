@@ -2,7 +2,7 @@ import lib-dev-node
 
 export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
 
-nvm() {
+nvmv() {
   nvm --version
 }
 nvmls() {
