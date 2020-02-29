@@ -1,5 +1,6 @@
 #!/bin/sh
 MVN_REPO_ROOT=~/.m2
+MVN_REPO_PATH=$MVN_REPO_ROOT/repository
 
 MVN_SETTINGS=settings.xml
 MVN_SETTINGS_STANDALONE=STANDALONE
@@ -185,9 +186,9 @@ mvnreponexus() {
 }
 
 mvnrepoclean() { # Remove all trace of orginal repo from local repo (avoid SNAPSHOT to search for nexus when you cannot reach it)
-  find $MVN_REPO_ROOT/repository -type f -name "_remote.repositories" -exec echo {} \; -exec rm -f {} \;
-  find $MVN_REPO_ROOT/repository -type f -name "resolver-status.properties" -exec echo {} \; -exec rm -f {} \;
-  find $MVN_REPO_ROOT/repository -type f -name "maven-metadata-nexus.*" -exec echo {} \; -exec rm -f {} \;
+  find $MVN_REPO_PATH -type f -name "_remote.repositories" -exec echo {} \; -exec rm -f {} \;
+  find $MVN_REPO_PATH -type f -name "resolver-status.properties" -exec echo {} \; -exec rm -f {} \;
+  find $MVN_REPO_PATH -type f -name "maven-metadata-nexus.*" -exec echo {} \; -exec rm -f {} \;
 }
 
 mvnschemaregister() {

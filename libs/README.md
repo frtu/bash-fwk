@@ -159,6 +159,12 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 * Configure email : ```gconfsetemail "EMAIL_PARAM_VALUE"```
 * Configure proxy : ```gconfsetproxy "PROXY_PARAM_VALUE"```
 
+## Library 'dev-maven'
+
+### Repository commands
+
+* Clean up **local repository** from metadata reference : ```mvnrepoclean```
+
 ## Library 'dev-maven-archetype'
 
 ### Install
