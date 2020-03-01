@@ -116,3 +116,10 @@ printkey() {
   echo "openssl rsa -in ${KEY_PRIVATE_FILE_PATH} -check"
   openssl rsa -in ${KEY_PRIVATE_FILE_PATH} -check
 }
+printcertserver() {
+  usage $# "DOMAIN_NAME:HTTPS_PORT"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  keytool -printcert -sslserver $@
+}
