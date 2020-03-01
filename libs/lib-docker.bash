@@ -277,8 +277,8 @@ dckimport() {
 }
 dckregtagpush() {
   usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
-  dcktag $@
-  dckpush $@
+  dckregtag $@
+  dckregpush $@
 }
 dckregtag() {
   usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
