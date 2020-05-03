@@ -170,7 +170,7 @@ mvnjardeploy() {
     local POM_PATH="${FILE_PREFIX}.pom"
   fi 
   if [ ! -f "$FILE_PATH" ]; then
-    local FILE_PREFIX_IN_LOCAL_REPO=${MVN_REPO_PATH}/${GROUP_ID/./\/}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PREFIX}
+    local FILE_PREFIX_IN_LOCAL_REPO=${MVN_REPO_PATH}/${GROUP_ID//./\/}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PREFIX}
     echo "== Searching from FILE_PREFIX_IN_LOCAL_REPO=${FILE_PREFIX_IN_LOCAL_REPO} =="
 
     local FILE_PATH=${FILE_PREFIX_IN_LOCAL_REPO}.jar
