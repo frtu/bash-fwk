@@ -148,7 +148,7 @@ mvnjarimport() {
 }
 # http://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html
 mvnjardeploy() {
-  usage $# "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "REPO_SETTINGS_ID" "[FILE_PATH]" "[REPO_URL]"
+  usage $# "GROUP_ID" "ARTIFACT_ID" "ARTIFACT_VERSION" "REPO_SETTINGS_ID" "[REPO_URL]" "[FILE_PATH:ARTIFACT_ID-ARTIFACT_VERSION.jar]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
@@ -156,19 +156,23 @@ mvnjardeploy() {
   local ARTIFACT_ID=$2
   local ARTIFACT_VERSION=$3
   local REPO_SETTINGS_ID=$4
-  local FILE_PATH=$5
 
   # OPTIONAL
-  local REPO_URL=$6
+  local REPO_URL=$5
+  local FILE_PATH=$6
   local EXTRA_PARAMS=${@:7}
 
   local FILE_PREFIX=$ARTIFACT_ID-$ARTIFACT_VERSION
 
-  if [ ! -f "$FILE_PATH" ]; then
-    local FILE_PATH=${FILE_PREFIX}.jar
-    local SOURCE_PATH="${FILE_PREFIX}-sources.jar"
-    local POM_PATH="${FILE_PREFIX}.pom"
+  if [ ! -f "$FILE_PATH" ] 
+    then
+      local FILE_PATH=${FILE_PREFIX}.jar
+    else
+      local FILE_PREFIX="${FILE_PATH%.*}"
   fi 
+  local SOURCE_PATH="${FILE_PREFIX}-sources.jar"
+  local POM_PATH="${FILE_PREFIX}.pom"
+
   if [ ! -f "$FILE_PATH" ]; then
     local FILE_PREFIX_IN_LOCAL_REPO=${MVN_REPO_PATH}/${GROUP_ID//./\/}/${ARTIFACT_ID}/${ARTIFACT_VERSION}/${FILE_PREFIX}
     echo "== Searching from FILE_PREFIX_IN_LOCAL_REPO=${FILE_PREFIX_IN_LOCAL_REPO} =="
@@ -195,8 +199,8 @@ mvnjardeploy() {
       EXTRA_PARAMS="${EXTRA_PARAMS} -Durl=${REPO_URL}"
   fi
 
-  echo "mvn deploy:deploy-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DrepositoryId=${REPO_SETTINGS_ID} ${EXTRA_PARAMS}"
-  mvn deploy:deploy-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -DrepositoryId=${REPO_SETTINGS_ID} ${EXTRA_PARAMS}
+  echo "mvn deploy:deploy-file -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -Dfile=$FILE_PATH ${EXTRA_PARAMS} -DrepositoryId=${REPO_SETTINGS_ID}"
+  mvn deploy:deploy-file -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar -Dfile=$FILE_PATH ${EXTRA_PARAMS} -DrepositoryId=${REPO_SETTINGS_ID}
 }
 
 mvnrepoinit() {
