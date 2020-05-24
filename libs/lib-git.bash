@@ -32,6 +32,14 @@ grmcached() {
 gstatus() {
   git status
 }
+
+gs() {
+  echo "git stash $@"
+  git stash $@
+}
+gsp() {
+  gs pop
+}
 grb() {
   usage $# "FILE_TO_ROLLBACK"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -44,6 +52,10 @@ grb() {
   
   echo "git checkout -- ${FILE_TO_ROLLBACK}"
   git checkout -- ${FILE_TO_ROLLBACK}
+}
+gf() {
+  echo "git fetch --all"
+  git fetch --all
 }
 gl() {
   usage $# "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"
@@ -219,6 +231,29 @@ gbr() {
   echo "git checkout ${BRANCH_OR_TAG_NAME}"
   git checkout ${BRANCH_OR_TAG_NAME}
 }
+# git stash checkout pop
+gbrsp() {
+  usage $# "BRANCH_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local BRANCH_NAME=$1
+  gs
+  gbr ${BRANCH_NAME}
+  gl
+  gsp
+}
+
+# git branch
+gbrc() {
+  usage $# "BRANCH_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local BRANCH_NAME=$1
+  echo "git branch $BRANCH_NAME"
+  git branch $BRANCH_NAME
+}
 gbrcreate() {
   usage $# "BRANCH_NAME:master" "[REMOTE_REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -274,6 +309,61 @@ gbrmv() {
 
   echo "git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}"
   git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}
+}
+
+gfm() {
+  gbrsp master
+}
+gfd() {
+  gbrsp develop
+}
+gff() {
+  usage $# "FEATURE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local FEATURE_NAME=$1
+  gbrsp feature/${FEATURE_NAME}
+}
+gffc() {
+  usage $# "FEATURE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local FEATURE_NAME=$1
+  gbrc feature/${FEATURE_NAME}
+}
+gfr() {
+  usage $# "RELEASE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local RELEASE_NAME=$1
+  gbrsp release/${RELEASE_NAME}
+}
+gfrc() {
+  usage $# "RELEASE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local RELEASE_NAME=$1
+  gbrc release/${RELEASE_NAME}
+}
+gfh() {
+  usage $# "HOTFIX_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local HOTFIX_NAME=$1
+  gbrsp hotfix/${HOTFIX_NAME}
+}
+gfhc() {
+  usage $# "HOTFIX_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local HOTFIX_NAME=$1
+  gbrc hotfix/${HOTFIX_NAME}
 }
 
 gremotels() {

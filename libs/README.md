@@ -62,11 +62,12 @@ Usage ```import lib-git```
 
 ### Base commands
 
-* Git status : ```gstatus```
-* Git rollback a change to repo : ```grb "FILE_TO_ROLLBACK"```
+* Git status : ```gstatus``` 
+* Git stash : ```gs```
+* Git stash pop : ```gsp```
+* Git fetch all data from origin : ```gf```
 * Pull from remote repo : ```gl "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"```
 * Push to remote repo : ```gh "[REMOTE_REPO_NAME:origin]"```
-
 
 ### Remote
 #### Clone repository
@@ -142,9 +143,23 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 
 * List all branches : ```gbrls```
 * Use an existing branch : ```gbr "BRANCH_OR_TAG_NAME:master"```
+* Git stash-checkout-pull-pop : ```gbrsp "BRANCH_NAME"```
+* Create a new branch : ```gbrc "BRANCH_NAME"```
 * Create a non-existing branch : ```gbrcreate "BRANCH_NAME:develop" "[REPO_NAME:origin]"```
 * Rename a branch : ```gbrmv "OLD_BRANCH_NAME" "NEW_BRANCH_NAME"```
 * Remove a branch : ```gbrrm "BRANCH_NAME" "[FALLBACK_BRANCH_AFTER_DELETE:master]"```
+
+#### Git-flow branches
+
+* Git checkout master : ```gfm```
+* Git checkout develop : ```gfd```
+* Git checkout or create feature branch : ```gff "FEATURE_NAME"``` or ```gffc "FEATURE_NAME"```
+* Git checkout or create release branch : ```gfr "RELEASE_NAME"``` or ```gfrc "RELEASE_NAME"```
+* Git checkout or create hotfix branch : ```gfh "HOTFIX_NAME"``` or ```gfhc "HOTFIX_NAME"```
+
+#### File commands
+
+* Git rollback a change to repo : ```grb "FILE_TO_ROLLBACK"```
 
 #### Git patches
 
