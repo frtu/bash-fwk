@@ -18,6 +18,9 @@ prjmvn() {
     cd ..
   done
 }
+prjmc() {
+  prjmvn compile
+}
 
 prjgit() {
   # MIN NUM OF ARG
@@ -39,3 +42,10 @@ prjgit() {
     cd ..
   done
 }
+prjgl() {
+  prjgit pull $@
+}
+prjgf() {
+  prjgit fetch --all $@
+}
+

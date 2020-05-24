@@ -56,9 +56,29 @@ Print key / certificate :
 * Print final certificate : ```printcert```
 
 
+## Library 'dev-project'
+
+* Install ```enableprj```
+* Usage ```import lib-dev-project```
+* Prefix ```prj```
+
+### Base commands
+
+Maven :
+
+* Run a maven cmd to all subfolders : ```prjmvn "COMMAND"```
+* Run maven compile to all subfolders : ```prjmc```
+
+Git :
+
+* Run a git cmd to all subfolders : ```prjgit "COMMAND"```
+* Run git pull to all subfolders : ```prjgl```
+* Run git fetch --all to all subfolders : ```prjgf```
+
 ## Library 'git'
 
-Usage ```import lib-git```
+* Usage ```import lib-git```
+* Prefix ```g```
 
 ### Base commands
 

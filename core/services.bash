@@ -65,6 +65,10 @@ disablelib() {
   rm -v $OUTPUT_SERVICE_FILENAME
 }
 
+enableprj() {
+  enablelib dev-project
+}
+
 # Local env
 enablehadoop() {
   enablelib hadoop-admin
