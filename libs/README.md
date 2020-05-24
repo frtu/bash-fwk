@@ -62,7 +62,6 @@ Usage ```import lib-git```
 
 ### Base commands
 
-* Git status : ```gstatus``` 
 * Git stash : ```gs```
 * Git stash pop : ```gsp```
 * Git fetch all data from origin : ```gf```
@@ -132,6 +131,15 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 
 ### Local commands
 
+#### File commands
+
+* Git status : ```gstatus``` 
+* Git add a file : ```gadd "FILE_PATH"```
+* Git add all change & commit : ```gaddall "MESSAGE"```
+* Git diff a file : ```gdiff "FILE_PATH"```
+* Git rollback a file : ```grb "FILE_TO_ROLLBACK"```
+* Git commit with a message : ```gcomm "MESSAGE"```
+
 #### Git tags
 
 * List tags : ```gtagls```
@@ -156,10 +164,6 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 * Git checkout or create feature branch : ```gff "FEATURE_NAME"``` or ```gffc "FEATURE_NAME"```
 * Git checkout or create release branch : ```gfr "RELEASE_NAME"``` or ```gfrc "RELEASE_NAME"```
 * Git checkout or create hotfix branch : ```gfh "HOTFIX_NAME"``` or ```gfhc "HOTFIX_NAME"```
-
-#### File commands
-
-* Git rollback a change to repo : ```grb "FILE_TO_ROLLBACK"```
 
 #### Git patches
 
