@@ -33,6 +33,21 @@ gstatus() {
   git status
 }
 
+gbase() {
+  usage $# "[MESSAGE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "git init"
+  git init
+
+  local MESSAGE=${1:-Init}
+  gaddall ${MESSAGE}
+}
+gbaserm() {
+  echo "rm -Rf .git"
+  rm -Rf .git
+}
 gs() {
   echo "git stash $@"
   git stash $@
@@ -68,7 +83,10 @@ gaddall() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local MESSAGE=$1
+  echo "git add -A"
   git add -A
+
+  echo "git commit -am \"$MESSAGE\""
   git commit -am "$MESSAGE"
 }
 gcomm() {

@@ -89,6 +89,8 @@ Git :
 * Git fetch all data from origin : ```gf```
 * Pull from remote repo : ```gl "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"```
 * Push to remote repo : ```gh "[REMOTE_REPO_NAME:origin]"```
+* Init & add all files : ```gbase```
+* Remove git from current project : ```gbaserm```
 
 ### Remote
 #### Clone repository
