@@ -48,12 +48,14 @@ Generate keys / certificate :
 * Generate **certificate request** for CA : ```gencert "CERT_FILE:server|server.csr" "KEY_PRIVATE_FILE_PATH" "[TTL:365]"```
 * Generate **self-signed** certificate without password : ```gencertself "CERT_FILE:server|server.crt" "KEY_PRIVATE_FILE_PATH" "[TTL:365]"```
 * Generate **key & self-signed cert pair** for server : ```gencertkey "CERT_FILE:server|server.crt" "[KEY_PRIVATE_FILE:server.key]" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]" "[TTL:365]"```
+* Generate Java KeyStore JKS : ```keystoregen```
 
 Print key / certificate :
 
-* Print & check private key : ```printkey```
-* Print certificate request : ```printreqcert```
+* Print & check private key : ```printkey "KEY_PRIVATE_FILE_PATH"```
+* Print certificate request : ```printreqcert "CERT_FILE"```
 * Print final certificate : ```printcert```
+* Print HTTPS certificate : ```printcertsslserver```
 
 
 ## Library 'dev-project'

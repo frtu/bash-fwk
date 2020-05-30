@@ -89,6 +89,15 @@ gencert() {
 
   ll $1
 }
+printkey() {
+  usage $# "KEY_PRIVATE_FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local KEY_PRIVATE_FILE_PATH=$1
+  echo "openssl rsa -in ${KEY_PRIVATE_FILE_PATH} -check"
+  openssl rsa -in ${KEY_PRIVATE_FILE_PATH} -check
+}
 printreqcert() {
   usage $# "CERT_FILE:server.csr"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -107,14 +116,15 @@ printcert() {
   echo "openssl x509 -in ${CERT_FILE} -noout -text"
   openssl x509 -in ${CERT_FILE} -noout -text
 }
-printkey() {
-  usage $# "KEY_PRIVATE_FILE_PATH"
+printcertsslserver() {
+  usage $# "DOMAIN_NAME:HTTPS_PORT"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local KEY_PRIVATE_FILE_PATH=$1
-  echo "openssl rsa -in ${KEY_PRIVATE_FILE_PATH} -check"
-  openssl rsa -in ${KEY_PRIVATE_FILE_PATH} -check
+  openssl s_client -showcerts -connect $@ </dev/null 2>/dev/null|openssl x509 -outform PEM > cert.pem
+}
+keystoregen() {
+  keytool -genkey -alias msmaster -keyalg RSA -keystore KeyStore.jks -keysize 2048
 }
 printcertserver() {
   usage $# "DOMAIN_NAME:HTTPS_PORT"
