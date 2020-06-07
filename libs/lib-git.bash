@@ -299,6 +299,8 @@ gbrc() {
   local BRANCH_NAME=$1
   echo "git branch $BRANCH_NAME"
   git branch $BRANCH_NAME
+
+  gbr ${BRANCH_NAME} 
 }
 gbrcreate() {
   usage $# "BRANCH_NAME:master" "[REMOTE_REPO_NAME:origin]"
