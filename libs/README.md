@@ -252,6 +252,18 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 
 * Deploy to nexus repository : ```mvnreleasedeploy```
 
+## Library 'dev-spring'
+
+* Install ```enablesp```
+* Usage ```import lib-dev-spring ```
+* Prefix ```sp```
+
+### Base commands
+
+* Run Spring-boot application : ```sprun```
+* When Actuator enable for spring-boot & logger enable **GET** logger configuration : ```splog "LOGGER_NAME" "[BASE_URL]"```
+* When Actuator enable for spring-boot & logger enable **SET** logger configuration : ```splogset "LOGGER_NAME" "LEVEL:TRACE|DEBUG|INFO|WARN|ERROR" "[BASE_URL]"```
+
 ## Library 'dev-nvm'
 
 * Usage ```import lib-dev-nvm```

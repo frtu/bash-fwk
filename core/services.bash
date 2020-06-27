@@ -68,6 +68,9 @@ disablelib() {
 enableprj() {
   enablelib dev-project
 }
+enablesp() {
+  enablelib dev-spring
+}
 
 # Local env
 enablehadoop() {
