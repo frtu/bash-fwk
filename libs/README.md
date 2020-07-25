@@ -295,6 +295,16 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 * Build : ```njbuild```
 * Build & deploy as server : ```njbuildNdeploy```
 
+## Library 'dev-py-conda'
+
+* Usage ```import lib-dev-py-conda```
+* Prefix ```pc```
+
+### Base commands
+
+* Get **python** & **conda** version : ```pc```
+* Update repo : ```pcupd```
+
 ## Library 'docker'
 
 * Usage ```import lib-docker```

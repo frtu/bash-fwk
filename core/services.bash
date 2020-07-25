@@ -1,4 +1,5 @@
 SERVICE_LOCAL_BASH_PREFIX=$LOCAL_SCRIPTS_FOLDER/service-
+export CONDA_ROOT_FOLDER=/opt/anaconda3
 
 # MORE LIGHTWEIGHT SERVICE CAPABILITIES (ONE LINE)
 lslibs() {
@@ -120,6 +121,17 @@ enableml() {
       echo "First parameter doesn't allow to point to a valid ML_HOME=$ML_HOME!!"
       return -1
   fi  
+}
+enableconda() {
+  ##################################
+  # CHECK CONDA INSTALLATION
+  if [[ ! -d "${CONDA_ROOT_FOLDER}/bin" ]]; then 
+    echo "Please install Anaconda first !! Folder should exist : $CONDA_ROOT_FOLDER/bin " >&2
+    return 1
+  fi    
+
+  binappend ${CONDA_ROOT_FOLDER}/bin
+  enablelib dev-py-conda
 }
 
 # Dev tools
