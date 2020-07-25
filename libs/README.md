@@ -300,10 +300,31 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 * Usage ```import lib-dev-py-conda```
 * Prefix ```pc```
 
-### Base commands
+### Admin commands
 
 * Get **python** & **conda** version : ```pc```
-* Update repo : ```pcupd```
+* Upgrade Conda : ```pcugd```
+* Create isolated environment : ```pcenvcreate "ENV_NAME"```
+* Use isolated environment : ```pcenv "ENV_NAME"```
+* Deactivate isolated environment : ```pcenvdeactivate```
+
+### Base commands
+
+* Update metadata : ```pcupd```
+* Install package : ```pcinst "PACKAGE"```
+* Add repo : ```pcrepo "CHANNEL_NAME"```
+* Add repo (*conda-forge*) : ```pcrepoforge```
+* Install package from (*conda-forge*) : ```pcinstforge "PACKAGE"```
+
+## Library 'dev-py-pip'
+
+* Usage ```import lib-dev-pip```
+* Prefix ```pp```
+
+### Base commands
+
+* Install package with pip (if requirements.txt exist, use it if no arg passed)  : ```ppinst "[PACKAGE]"```
+* Install mtcnn : ```ppinst_mtcnn```
 
 ## Library 'docker'
 
