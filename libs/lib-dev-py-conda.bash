@@ -1,5 +1,10 @@
 import lib-dev-py-pip
 
+CONDA_PKG=${CONDA_ROOT_FOLDER}/lib/python3.8/site-packages
+pcls() {
+  ll ${CONDA_PKG}
+}
+
 pc() {
   echo "conda info"
   conda info

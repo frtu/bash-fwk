@@ -1,5 +1,5 @@
 SERVICE_LOCAL_BASH_PREFIX=$LOCAL_SCRIPTS_FOLDER/service-
-export CONDA_ROOT_FOLDER=/opt/anaconda3
+export CONDA_ROOT_FOLDER_DEFAULT=/opt/anaconda3
 
 # MORE LIGHTWEIGHT SERVICE CAPABILITIES (ONE LINE)
 lslibs() {
@@ -122,7 +122,10 @@ enableml() {
       return -1
   fi  
 }
-enableconda() {
+enablepyconda() {
+  usage $# "[CONDA_ROOT_FOLDER]"
+  
+  local CONDA_ROOT_FOLDER=${1:-$CONDA_ROOT_FOLDER_DEFAULT}
   ##################################
   # CHECK CONDA INSTALLATION
   if [[ ! -d "${CONDA_ROOT_FOLDER}/bin" ]]; then 
@@ -131,7 +134,7 @@ enableconda() {
   fi    
 
   binappend ${CONDA_ROOT_FOLDER}/bin
-  enablelib dev-py-conda
+  enablelib dev-py-conda "export CONDA_ROOT_FOLDER=${CONDA_ROOT_FOLDER}"
 }
 
 # Dev tools

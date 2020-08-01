@@ -7,7 +7,7 @@ ppinst() {
 
   if [ -n "$PACKAGE" ]
     then
-      local INST_ARG="${PACKAGE}"
+      local INST_ARG="$@"
     else
       if [[ -f "${REQ_FILENAME}" ]] 
         then 
@@ -24,4 +24,7 @@ ppinst() {
 
 ppinst_mtcnn() {
   ppinst mtcnn
+}
+ppinst_tensorflow() {
+  ppinst --default-timeout=1000 --no-cache-dir tensorflow
 }
