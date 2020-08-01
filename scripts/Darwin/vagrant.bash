@@ -62,7 +62,8 @@ vagbadd_ubuntu() {
 	vagbadd ubuntu/trusty64 vagrant-ubuntu-trusty64-20170810.box https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/20170810.0.0/providers/virtualbox.box
 }
 vagbadd_ubuntu18() {
-	vagbadd generic/ubuntu1804 vagrant-ubuntu1804-2.0.4.box https://vagrantcloud.com/generic/boxes/ubuntu1804/versions/2.0.4/providers/virtualbox.box
+  #vagbadd generic/ubuntu1804 vagrant-ubuntu1804-2.0.4.box https://vagrantcloud.com/generic/boxes/ubuntu1804/versions/2.0.4/providers/virtualbox.box
+  vagbadd bento/ubuntu-18.04 vagrant-ubuntu1804-202005-21-0.box https://vagrantcloud.com/bento/boxes/ubuntu-18.04/versions/202005.21.0/providers/virtualbox.box
 }
 
 vagbadd_docker_centos() {
