@@ -144,7 +144,7 @@ mvnjarimport() {
   fi
 
   echo "mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar ${EXTRA_PARAMS}"
-  mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION ${EXTRA_PARAMS}
+  mvn install:install-file -Dfile=$FILE_PATH -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$ARTIFACT_VERSION -Dpackaging=jar ${EXTRA_PARAMS}
 }
 # http://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html
 mvnjardeploy() {
