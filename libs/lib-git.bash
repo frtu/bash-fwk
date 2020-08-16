@@ -125,7 +125,7 @@ gcl() {
   local BRANCH_NAME=$3
   local GITHUB_ROOT_URL=$4
 
-  if [[ $1 == http* ]]; then
+  if [[ $REPO_NAME == http* ]] || [[ $REPO_NAME == git@* ]] || [[ $REPO_NAME == ssh@* ]] ; then
     echo "git clone $1"
     git clone $1
     
