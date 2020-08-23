@@ -331,14 +331,22 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 * Usage ```import lib-docker```
 * Prefix ```dck``` 
 
-### Image repository
+### Local Image repository
 
-* List all local images : ```dckls```
-* Search remote ```dcksearch "IMAGE_NAME"```
-* Pull locally remote image ```dckpull "IMAGE_NAME"```
-* Export image to file : ```dckexport "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"```
-* Import image from file : ```dckimport "DCK_IMAGE_FILENAME"```
-* Import image files containing text filter from folder : ```dckimportfolder "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"```
+* **List** all local images : ```dckls```
+* **Import** image from file : ```dckimport "DCK_IMAGE_FILENAME"```
+* **Import** image files containing text filter from folder : ```dckimportfolder "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"```
+* **Export** image to file : ```dckexport "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"```
+* **Remove Image** from local repository : ```dckrmimage "IMAGE_NAME"```
+* **Force Remove** Image : ```dckrmimage "IMAGE_NAME"```
+* **Clean up** local image from dependencies : ```dckimgclean```
+* **Clean up** all (from dep & if not used) : ```dckimgcleanall```
+* Clean up all till yesterday : ```dckimgcleanyesterday```
+
+### Remote repository
+
+* **Search** remote ```dcksearch "IMAGE_NAME"```
+* **Pull** locally remote image ```dckpull "IMAGE_NAME"```
 
 ### Administrate docker instances
 
