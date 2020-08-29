@@ -6,6 +6,7 @@ All the bash commands you can activate with :
 * Import (temporary) : ```import lib-*``` (*like ```import lib-git```*)
 * Persist import : ```enablelib *``` (*like ```enablelib git```*)
 * Remove persisted import : ```disablelib *``` (*like ```disablelib git```*)
+* Persist export env : ```envcreate "ENV_NAME" "ENV_VALUE"``` (*like ```enablelib JH12 /Library/Java/JavaVirtualMachines/xx```*)
 
 ## Library 'inst'
 Usage ```import lib-inst```

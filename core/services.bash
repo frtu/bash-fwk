@@ -191,13 +191,23 @@ envcreate() {
   local ENV_NAME=$1
   local ENV_VALUE=$2
 
-  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/env-${ENV_NAME}.bash
-
-  echo "Create new ENV file : ${OUTPUT_FILENAME}"
-  echo "" > ${OUTPUT_FILENAME}
-  envpersist "${OUTPUT_FILENAME}" "export ${ENV_NAME}=${ENV_VALUE}"
+  scriptpersist "env-${ENV_NAME}" "export ${ENV_NAME}=${ENV_VALUE}"
 }
-envpersist() {
+scriptpersist() {
+  usage $# "SCRIPT_NAME" "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SCRIPT_NAME=$1
+  local CMD=${@:2}
+
+  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
+
+  echo "Create new SCRIPT file : ${OUTPUT_FILENAME}"
+  echo "" > ${OUTPUT_FILENAME}
+  scriptappend "${OUTPUT_FILENAME}" "${CMD}"
+}
+scriptappend() {
   usage $# "OUTPUT_FILENAME" "CMD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
