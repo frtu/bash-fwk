@@ -22,7 +22,7 @@ binappend() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local NEW_PATH_FOLDER=$1
-  echo "export PATH=\$PATH:\"$NEW_PATH_FOLDER\"" >> ~/.bash_profile
+  echo "export PATH=\"$NEW_PATH_FOLDER\":\$PATH" >> ~/.bash_profile
   refresh
   echo $PATH
 }

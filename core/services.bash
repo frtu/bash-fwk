@@ -183,6 +183,35 @@ enablemvngen() {
   enablelib dev-maven-archetype "export ARCHETYPE_VERSION=${ARCHETYPE_VERSION}"
 }
 
+envcreate() {
+  usage $# "ENV_NAME" "ENV_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ENV_NAME=$1
+  local ENV_VALUE=$2
+
+  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/env-${ENV_NAME}.bash
+
+  echo "Create new ENV file : ${OUTPUT_FILENAME}"
+  echo "" > ${OUTPUT_FILENAME}
+  envpersist "${OUTPUT_FILENAME}" "export ${ENV_NAME}=${ENV_VALUE}"
+}
+envpersist() {
+  usage $# "OUTPUT_FILENAME" "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local OUTPUT_FILENAME=$1
+  local ADDITIONAL_SETTINGS=${@:2}
+
+  echo "Enabling service at ${OUTPUT_FILENAME}"
+  echo "echo \"${ADDITIONAL_SETTINGS}\"" >> $OUTPUT_FILENAME
+  echo "${ADDITIONAL_SETTINGS}" >> $OUTPUT_FILENAME
+
+  source $OUTPUT_FILENAME
+}
+
 # FILE BASED SERVICE
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
 srv_list() {
