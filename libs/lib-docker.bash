@@ -218,6 +218,27 @@ dckexport() {
   echo "docker save ${DCK_IMAGE_NAME} | gzip > $FILENAME_TAR"
   docker save ${DCK_IMAGE_NAME} | gzip > $FILENAME_TAR
 }
+dckexportinstance() {
+  usage $# "INSTANCE_NAME" "[FILENAME_TAR]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'dckps' and look at NAMES" >&2
+    dckps
+    return 1
+  fi
+
+  local INSTANCE_NAME=$1
+
+  # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+  DCK_IMAGE_ID=${INSTANCE_NAME//\//_}
+  DCK_IMAGE_ID=${DCK_IMAGE_ID//\:/-}
+  local FILENAME_TAR=$VM_ARCHIVE_FOLDER/docker_inst_${2:-$DCK_IMAGE_ID}.tar.gz
+
+  mkdir -p $VM_ARCHIVE_FOLDER/
+
+  echo "docker export -o "${FILENAME_TAR}" ${DCK_IMAGE_NAME}"
+  docker export -o "${FILENAME_TAR}" ${DCK_IMAGE_NAME}
+}
 dckimportfolder() {
   usage $# "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
