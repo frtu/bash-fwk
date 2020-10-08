@@ -2,7 +2,8 @@ import lib-dev-py-pip
 
 CONDA_PKG=${CONDA_ROOT_FOLDER}/lib/python3.8/site-packages
 pcls() {
-  ll ${CONDA_PKG}
+  echo "conda list"
+  conda list
 }
 
 pc() {
@@ -77,4 +78,22 @@ pcinstforge() {
 
   echo "Find doc at https://anaconda.org/conda-forge/$@"
   pcinst -c conda-forge $@
+}
+pcinstanaconda() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "Find doc at https://anaconda.org/anaconda/$@"
+  pcinst -c anaconda $@
+}
+
+pcinstbasemap() {
+  ppinst geos
+  pcinstforge proj4
+  pcinstforge basemap
+  pcinstforge basemap-data-hires
+}
+pcinstbasemap() {
+  pcinstforge proj4 cartopy
 }
