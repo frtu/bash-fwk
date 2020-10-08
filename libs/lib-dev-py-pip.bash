@@ -1,5 +1,11 @@
+import lib-dev-python
+
 REQ_FILENAME=requirements.txt
 
+ppls() {
+  echo "pip list"
+  pip list
+}
 ppinst() {
   usage $# "[PACKAGE]"
 
