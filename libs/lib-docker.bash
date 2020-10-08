@@ -316,7 +316,7 @@ dckimportcontainer() {
     return 1
   fi
 
-  echo "docker load -i ${DCK_IMAGE_FILENAME}"
+  echo "tar -c ${CONTAINER_NAME_PATH} | docker import - ${CONTAINER_NAME}"
   tar -c ${CONTAINER_NAME_PATH} | docker import - ${CONTAINER_NAME}
 
   STATUS=$?
