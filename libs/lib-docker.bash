@@ -691,28 +691,35 @@ dckbuild() {
 }
 
 dcmp() {
-  docker-compose version
+  dcmptpl version
+}
+dcmpbuild() {
+  dcmptpl build
 }
 dcmpstart() {
-  docker-compose up
+  dcmptpl up
 }
 dcmpstartd() {
-  docker-compose up -d
+  dcmptpl up -d
   dckps
 }
 dcmpstop() {
-  docker-compose down
+  dcmptpl down
 }
-
 dcmpps() {
-  docker-compose ps
+  dcmptpl ps
 }
 dcmplogs() {
   usage $# "INSTANCE_NAME"
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any image run 'dcmpps'" >&2
     dcmpps
-    return -1
+    return 1
   fi
-  docker-compose logs $1
+  dcmptpl logs $1
 }
+dcmptpl() {
+  echo "docker-compose $@"
+  docker-compose $@
+}
+
