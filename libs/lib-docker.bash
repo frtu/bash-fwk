@@ -34,7 +34,14 @@ dcksearch() {
 
 # See running
 dckps() {
-  docker ps -a
+  usage $# "[LIST_GREP]"
+
+  local LIST_GREP=$1
+  if [ -z "$LIST_GREP" ]; then
+      docker ps -a
+    else
+      docker ps -a | grep ${LIST_GREP}
+  fi
 }
 dckstart() {
   dcktpl "start" $@
