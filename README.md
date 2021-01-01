@@ -10,7 +10,7 @@ Framework for BASH startup, loading and utils
 If already installed, use quick fwk install copy : ```fwkinst```
 
 ### Locally on Ubuntu
-	sudo apt-get update && sudo apt-get install git && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
+	sudo apt-get update && sudo apt-get install git curl && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
 
 If already installed, use quick fwk install copy : ```fwkubuntu ```
 

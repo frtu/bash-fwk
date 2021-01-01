@@ -42,3 +42,134 @@ inst_java() {
   inst default-jdk
   inst_maven
 }
+# apt add PPA repo - Personal Package Archives
+aptrepo() {
+  usage $# "PPA_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local PPA_NAME=$1
+  echo "sudo add-apt-repository -y ppa:${PPA_NAME}"
+  sudo add-apt-repository -y ppa:${PPA_NAME}
+
+  upd
+}
+inst_aptfast() {
+  aptrepo apt-fast/stable
+  inst apt-fast
+}
+# https://itsfoss.com/lightweight-alternative-applications-ubuntu/ : https://www.appgrid.org/
+inst_appgrid() {
+  aptrepo appgrid/stable
+  inst appgrid
+}
+# Add indicator : https://itsfoss.com/best-indicator-applets-ubuntu/
+inst_wheather() {
+  inst indicator-weather
+}
+inst_tlp() {
+  aptrepo linrunner/tlp
+  inst tlp tlp-rdw
+  sudo tlp start
+}
+inst_cpufreq() {
+  inst indicator-cpufreq
+}
+inst_multiload() {
+  inst indicator-multiload
+}
+inst_netspeed() {
+  aptrepo fixnix/netspeed
+  inst indicator-netspeed-unity
+}
+inst_diskman() {
+  aptrepo teejee2008/ppa
+  inst indicator-diskman
+}
+inst_inxi() {
+  inst inxi
+}
+# RAM Optimizer
+inst_preload() {
+  inst preload
+}
+
+# https://linoxide.com/linux-how-to/few-command-helps-to-get-linux-hardware-details/
+hdcpu() {
+  echo "sudo lscpu ${OPTIONAL_ARGS}"
+  sudo lscpu ${OPTIONAL_ARGS}
+}
+hdmemory() {
+  hd memory
+}
+hdnetwork() {
+  hd network
+}
+hdstorage() {
+  hd disk storage
+}
+hdgraphics() {
+  inst_inxi
+  inxi -G
+}
+hdsound() {
+  inst_inxi
+  inxi -A
+}
+hdbattery() {
+  inst_inxi
+  inxi -B
+}
+hd() {
+  usage $# "[HARDWARE_TYPE]" "[HARDWARE_TYPE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local OPTIONAL_ARGS=""
+  for ARG in "${@:1}"; do
+    OPTIONAL_ARGS="${OPTIONAL_ARGS} -class ${ARG}"
+  done
+
+  echo "sudo lshw ${OPTIONAL_ARGS}"
+  sudo lshw ${OPTIONAL_ARGS}
+}
+instgraphics() {
+  sudo ubuntu-drivers devices
+  inst nvidia-340 nvidia-modprobe
+}
+
+# System metrics
+mem() {
+  echo "free -m"
+  free -m
+}
+
+# Services
+srvps() {
+  echo "service --status-all"
+  service --status-all
+}
+srvstop() {
+  usage $# "SERVICE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'srvps' and look at the last column NAMES" >&2
+    srvps
+    return -1
+  fi
+
+  local SERVICE_NAME=$1
+  sudo service ${SERVICE_NAME} stop
+}
+srvrm() {
+  usage $# "SERVICE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any names run 'srvps' and look at the last column NAMES" >&2
+    srvps
+    return -1
+  fi
+
+  local SERVICE_NAME=$1
+  uninst ${SERVICE_NAME}
+}

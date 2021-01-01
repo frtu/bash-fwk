@@ -17,3 +17,6 @@ inst_pip() {
 inst_youtube() {
   inst youtube-dl
 }
+inst_vlc() {
+  inst vlc
+}
