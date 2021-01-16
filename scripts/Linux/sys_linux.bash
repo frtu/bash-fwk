@@ -8,6 +8,9 @@ fi
 import lib-inst
 import lib-systemctl
 
+inst_proc() {
+  inst procps
+}
 inst_net() {
   inst net-tools nmap telnet curl ${NET_PKG_EXTRA}
 }

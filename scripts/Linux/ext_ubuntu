@@ -42,6 +42,14 @@ inst_java() {
   inst default-jdk
   inst_maven
 }
+
+inst_clean() {
+  echo "sudo apt-get clean"
+  sudo apt-get clean
+  echo "sudo apt-get autoremove"
+  sudo apt-get autoremove
+}
+
 # apt add PPA repo - Personal Package Archives
 aptrepo() {
   usage $# "PPA_NAME"

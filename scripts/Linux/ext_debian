@@ -14,3 +14,7 @@ export UNINSTALL_TOOL="apt purge"
 export CLEANUP_TOOL="apt autoremove --purge"
 
 export NET_PKG_EXTRA="netcat iputils-ping"
+
+updf() {
+  upd --allow-insecure-repositories
+}
