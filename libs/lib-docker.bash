@@ -5,8 +5,16 @@ dck() {
 }
 
 dckls() {
-  echo "List all existing docker images"
-  docker images
+  usage $# "[LIST_GREP]"
+
+  local LIST_GREP=$1
+  if [ -z "$LIST_GREP" ]; then
+      echo "List all existing docker images"
+      docker images
+    else
+      echo "List all existing docker images containing ${LIST_GREP}"
+      docker images | grep ${LIST_GREP}
+  fi
 }
 dckpullsk() {
   usage $# "IMAGE_NAME"
@@ -38,8 +46,10 @@ dckps() {
 
   local LIST_GREP=$1
   if [ -z "$LIST_GREP" ]; then
+      echo "List all docker instances"
       docker ps -a
     else
+      echo "List all docker instances containing ${LIST_GREP}"
       docker ps -a | grep ${LIST_GREP}
   fi
 }
@@ -48,6 +58,9 @@ dckstart() {
 }
 dckstartall() {
   dckstart $(docker ps -aq)
+}
+dcklogstail() {
+  dcklogs $@ "--follow"
 }
 dcklogs() {
   dcktpl "logs" $@
@@ -673,6 +686,8 @@ dckimgcleanall() {
 dckimgclean() {
   echo "docker image prune $@"
   docker image prune $@
+  echo "docker container prune $@"
+  docker container prune $@
 }
 
 dckbuild() {
