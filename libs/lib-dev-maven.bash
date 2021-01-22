@@ -20,8 +20,13 @@ mvnsrc() { # Download in local repo all the source
 mvndoc() {
   mvnsk javadoc:javadoc
 }
-mvnrun() {
-  mvnsk exec:java
+mvnexec() {
+  usage $# "CLASSNAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local CLASSNAME=$1
+  mvnsk exec:java -Dexec.mainClass=${CLASSNAME}
 }
 mvndep() { # list all dependencies, you may want to redirect the output into a file
   mvnsk dependency:tree

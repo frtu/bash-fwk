@@ -205,6 +205,16 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 
 ## Library 'dev-maven'
 
+* Usage ```import lib-dev-maven ```
+
+### Base commands
+
+* Run maven with skiping test: ```mvnsk "CMD"```
+* Generate javadoc : ```mvndoc```
+* Display the whole dependency tree : ```mvndep```
+* Download the source from Jar : ```mvnsrc```
+* Use maven to exec a class : ```mvnexec "CLASSNAME"```
+
 ### Repository commands
 
 * Clean up **local repository** from metadata reference : ```mvnrepoclean```
