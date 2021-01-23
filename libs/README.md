@@ -275,6 +275,19 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 * When Actuator enable for spring-boot & logger enable **GET** logger configuration : ```splog "LOGGER_NAME" "[BASE_URL]"```
 * When Actuator enable for spring-boot & logger enable **SET** logger configuration : ```splogset "LOGGER_NAME" "LEVEL:TRACE|DEBUG|INFO|WARN|ERROR" "[BASE_URL]"```
 
+## Library 'dev-kotlin'
+
+* Usage ```import lib-dev-kotlin```
+* Prefix ```kt```
+
+### Base commands
+
+* Get **kotlin** version : ```kt```
+* Compile a kotlin file .kt : ```ktc "KOTLIN_FILE_NAME"```
+* Create a JAR from kotlin file .kt : ```ktjar "KOTLIN_FILE_NAME"```
+* Create a JAR standalone with kotlin runtime : ```ktjarstandalone "KOTLIN_FILE_NAME"```
+* Run kotlin in REPL (read, evaluate, print, loop) with optional classpath : ```ktrepl "[KOTLIN_JAR_FILE]"```
+
 ## Library 'dev-nvm'
 
 * Usage ```import lib-dev-nvm```
