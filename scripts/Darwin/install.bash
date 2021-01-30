@@ -19,7 +19,11 @@ inst_brew() {
 }
 inst_sdk() {
   # http://sdkman.io/
+  echo "curl -s \"https://get.sdkman.io\" | bash"
   curl -s "https://get.sdkman.io" | bash
+  sdk_load
+}
+sdk_load() {
   source "${HOME}/.sdkman/bin/sdkman-init.sh"
 }
 inst_update() {
