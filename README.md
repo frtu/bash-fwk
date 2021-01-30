@@ -4,17 +4,17 @@ Framework for BASH startup, loading and utils
 
 ## One line download and install
 
-### Locally (require 'git')
+### [Locally](autoinstaller4curl.bash) (require 'git')
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
 
 If already installed, use quick fwk install copy : ```fwkinst```
 
-### Locally on Ubuntu
+### Locally on [Ubuntu](autoinstaller4curl-ubuntu.bash)
 	sudo apt-get update && sudo apt-get install git curl && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
 
 If already installed, use quick fwk install copy : ```fwkubuntu ```
 
-### Locally on Debian
+### Locally on [Debian](autoinstaller4curl-debian.bash)
 
 ```	
 apt-get update && apt-get -y install curl git && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
@@ -93,8 +93,8 @@ Windows specific scripts are on folder "scripts\MINGW64_NT-6.3\"
 
 ### Ubuntu
 
-See [bash-fwk linux scripts](https://github.com/frtu/bash-fwk/tree/master/scripts/Linux)
+See [bash-fwk linux scripts](scripts/Linux/)
 
 ## Tech details
 
-To understand or contribute, just check [bash-fwk core framework](https://github.com/frtu/bash-fwk/tree/master/core)
+To understand or contribute, just check [bash-fwk core framework](core/)
