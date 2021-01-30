@@ -28,11 +28,21 @@ enablelib() {
   fi
   ##################################
 
-  local ADDITIONAL_SETTINGS=${@:2}
+  local ADDITIONAL_SETTINGS_2=$2
+  local ADDITIONAL_SETTINGS_3=$3
+  local ADDITIONAL_SETTINGS_4=${@:4}
 
   echo "Enabling service at ${OUTPUT_SERVICE_FILENAME}"
   echo "echo \"- Loading '${OUTPUT_SERVICE_FILENAME}'. Env name SERVICE_SCR_${LIB_NAME_WITHOUT_PREFIX//-} capture this service filename\"" > $OUTPUT_SERVICE_FILENAME
-  echo "${ADDITIONAL_SETTINGS}" >> $OUTPUT_SERVICE_FILENAME
+  if [[ -n $ADDITIONAL_SETTINGS_2 ]]; then 
+    echo "${ADDITIONAL_SETTINGS_2}" >> $OUTPUT_SERVICE_FILENAME
+  fi
+  if [[ -n $ADDITIONAL_SETTINGS_3 ]]; then 
+    echo "${ADDITIONAL_SETTINGS_3}" >> $OUTPUT_SERVICE_FILENAME
+  fi
+  if [[ -n $ADDITIONAL_SETTINGS_4 ]]; then 
+    echo "${ADDITIONAL_SETTINGS_4}" >> $OUTPUT_SERVICE_FILENAME
+  fi
   echo "import lib-${LIB_NAME_WITHOUT_PREFIX}" >> $OUTPUT_SERVICE_FILENAME
   echo "" >> $OUTPUT_SERVICE_FILENAME
   # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
@@ -175,12 +185,16 @@ enablemvn() {
   fi
 }
 enablemvngen() {
-  usage $# "ARCHETYPE_VERSION"
+  usage $# "ARCHETYPE_VERSION" "[DEFAULT_GID]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local ARCHETYPE_VERSION=$1
-  enablelib dev-maven-archetype "export ARCHETYPE_VERSION=${ARCHETYPE_VERSION}"
+  local ARCHETYPE_VERSION_LINE="export ARCHETYPE_VERSION=$1"
+  if [[ -n $2 ]]; then 
+    local DEFAULT_GID_LINE="export DEFAULT_GID=$2" 
+  fi
+
+  enablelib dev-maven-archetype "${ARCHETYPE_VERSION_LINE}" "${DEFAULT_GID_LINE}"
 }
 
 envcreate() {

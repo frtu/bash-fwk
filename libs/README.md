@@ -225,19 +225,20 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 
 ### Install
 
-* Enable Maven Archetype generator library with the [dedicated version](https://search.maven.org/search?q=g:com.github.frtu.archetype) : ```enablemvngen "ARCHETYPE_VERSION"```
+* Enable Maven Archetype generator library with the [dedicated version](https://search.maven.org/search?q=g:com.github.frtu.archetype) : ```enablemvngen "ARCHETYPE_VERSION" "[DEFAULT_GID]"```
 
 ### Usage
 
 Allow to generate all kinds of projects :
 
-* Base project with parent pom : ```mvngen base "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Base project with parent pom : ```mvngen base "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Kotlin project with parent pom : ```mvngen kotlin "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]"```
 
 For Stream Processing : 
 
-* Kafka Publisher with parent pom : ```mvngen plt-kafka "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
-* Spark Consumer with parent pom : ```mvngen plt-spark "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
-* Simple Avro Data model project : ```mvngen avro "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Kafka Publisher with parent pom : ```mvngen plt-kafka "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Spark Consumer with parent pom : ```mvngen plt-spark "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]"```
+* Simple Avro Data model project : ```mvngen avro "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]"```
 
 ### Local dev
 

@@ -1,20 +1,26 @@
 #!/bin/sh
 mvngenlocal() {
-  usage $# "ARCHETYPE:base|plt-kafka|plt-spark|avro" "GID" "AID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
+  usage $# "ARCHETYPE:base|kotlin|plt-kafka|plt-spark|avro" "AID" "[GID]" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local VERSION=${4:-0.0.1-SNAPSHOT}
-  mvngen $1 $2 $3 $VERSION -DarchetypeCatalog=local ${@:5}
+
+  local GID=${3:-$DEFAULT_GID}
+  if [[ -z $GID ]]; then 
+    local GID=$2 
+  fi
+
+  mvngen $1 $2 ${GID} ${VERSION} -DarchetypeCatalog=local ${@:5}
 }
 mvngen() {
-  usage $# "ARCHETYPE:base|plt-kafka|plt-spark|avro" "[GID]" "[AID]" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
+  usage $# "ARCHETYPE:base|kotlin|plt-kafka|plt-spark|avro" "[AID]" "[GID]" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local ARCHETYPE=$1
-  local GID=$2
-  local AID=$3
+  local AID=$2
+  local GID=${3:-$DEFAULT_GID}
   local VERSION=${4:-0.0.1-SNAPSHOT}
 
   local OPTIONAL_ARGS=${@:5}
