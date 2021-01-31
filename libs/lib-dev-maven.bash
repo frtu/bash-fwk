@@ -31,6 +31,9 @@ mvnexec() {
 mvndep() { # list all dependencies, you may want to redirect the output into a file
   mvnsk dependency:tree
 }
+mvndeppom() {
+  mvn help:effective-pom
+}
 mvndepgraph() {
   usage $# "[CONFIG_FILE]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
