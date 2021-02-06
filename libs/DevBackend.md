@@ -1,5 +1,33 @@
 # Dev Backend lib
 
+
+## Library 'inst-sdk'
+
+* Usage ```import lib-inst-sdk```
+* Install ```enablelib inst-sdk```
+
+### Base commands
+
+* Install SDKMAN : ```inst_sdk```
+* Load sdk cmd line : ```sdkload```
+* Print sdk version : ```sdkv```
+* Update sdk : ```sdkupd```
+
+### Installation
+
+* List all packages : ```sdkls "[PACKAGE]"```
+* Use maven to exec a class : ```sdkinst "PACKAGE" "[VERSION]" "[PATH_TO_INSTALLATION]"```
+
+Install packages :
+
+* Install Java : ```instjava```
+* Install Scala : ```instscala```
+* Install Kotlin : ```instkotlin```
+* Install Kotlin script : ```instkscript```
+* Install VisualVM : ```instvisualvm```
+* Install Gradle : ```instgradle```
+* Install sbt : ```instsbt```
+
 ## Library 'dev-kotlin'
 
 * Usage ```import lib-dev-kotlin```

@@ -17,15 +17,6 @@ inst_brew() {
   brew install brew-cask
   brew tap beeftornado/rmtree
 }
-inst_sdk() {
-  # http://sdkman.io/
-  echo "curl -s \"https://get.sdkman.io\" | bash"
-  curl -s "https://get.sdkman.io" | bash
-  sdk_load
-}
-sdk_load() {
-  source "${HOME}/.sdkman/bin/sdkman-init.sh"
-}
 inst_update() {
   brew upgrade
   brew cask upgrade
@@ -185,18 +176,6 @@ inst_nvm_get() {
   nvm install ${VERSION}
 }
 
-inst_gradle() {
-  usage $# "[VERSION]"
-  local VERSION=${1:-4.5.1}
-
-  # brew update && brew install gradle
-
-  ## OR using sdkman
-  if [ -z "$SDKMAN_DIR" ]; then
-    inst_sdk
-  fi
-  sdk install gradle ${VERSION}
-}
 inst_android() {
   brew tap caskroom/cask
   brew cask install android-sdk
