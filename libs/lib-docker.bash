@@ -153,11 +153,11 @@ dckbashtpl() {
   # run in LOGIN MODE : https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization#bash
   if [ -z "$3" ]
     then
-      echo "Login into a Bash docker images : ${INSTANCE_NAME}"
+      echo "docker exec -it ${INSTANCE_NAME} ${BASH_CMD} -l"
       docker exec -it ${INSTANCE_NAME} ${BASH_CMD} -l
     else
       local COMMANDS=${@:3}
-      echo "CALL : root@${INSTANCE_NAME}> ${COMMANDS}"
+      echo "echo \"${COMMANDS}\" | docker exec -i ${INSTANCE_NAME} ${BASH_CMD} -l"
       echo "${COMMANDS}" | docker exec -i ${INSTANCE_NAME} ${BASH_CMD} -l
   fi
 }
