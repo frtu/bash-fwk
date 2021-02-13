@@ -142,6 +142,10 @@ inst_caffe() {
   ln -s /usr/local/Cellar/boost-python3/1.67.0/lib/libboost_python36.a /anaconda3/lib/libboost_python3.dylib
 }
 
+enable_nginx() {
+  enablelib nginx "alias ngcd=/usr/local/etc/nginx/"
+}
+
 enable_node() {
   enablelib dev-node
   njversion
