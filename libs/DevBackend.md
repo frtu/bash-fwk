@@ -113,3 +113,19 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 * Run Spring-boot application : ```sprun```
 * When Actuator enable for spring-boot & logger enable **GET** logger configuration : ```splog "LOGGER_NAME" "[BASE_URL]"```
 * When Actuator enable for spring-boot & logger enable **SET** logger configuration : ```splogset "LOGGER_NAME" "LEVEL:TRACE|DEBUG|INFO|WARN|ERROR" "[BASE_URL]"```
+
+## Library 'jmeter'
+
+* Usage ```import lib-jmeter```
+* Prefix ```jm```
+
+### Install
+
+* Enable jmeter : ```enablelib jmeter```
+* Install : ```inst_jmeter```
+
+### Usage
+
+* Launch JMeter GUI mode (for creation, debugging & reading logs) : ``jm``
+* Launch JMeter CLI mode / headless : ``jmcli "JMX_FILE" "[LOG_FILE:result.jtl]"``
+* Launch JMeter CLI mode / headless with extended memory : ``jmcliext "JMX_FILE" "[LOG_FILE:result.jtl]" "[MEM:512m]"``
