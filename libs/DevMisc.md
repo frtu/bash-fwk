@@ -13,11 +13,33 @@
 * Use a specific version : ```nvmuse "VERSION"```
 * Where is cmd version : ```nvmwhich "VERSION"```
 
-### Iinstall commands
+### Install commands
 
 * List all remote version : ```nvmlsremote```
 * Install a specific version : ```nvminst "[VERSION:v10.13.0]"```
 * Uninstall a specific version : ```nvmuninst "VERSION"```
+
+### Configuration commands
+
+* Set http proxy to reach out repository : ```njconfsetproxy "PROXY_URL"```
+* Set https proxy to reach out repository : ```njconfsetproxysecured "HTTPS_PROXY_URL"```
+* Remove proxy settings : ```njconfcleanproxies```
+* Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
+
+Generic configuration settings
+
+* List all configurations : ```njconfls```
+* Set configuration : ```njconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Remove configuration : ```njconfrm "CONF_PARAM_NAME"```
+
+
+### Repository commands
+
+* Print the current **remote repository** URL : ```njconfrepo```
+* Set **remote repository** URL : ```njconfsetrepo "REPO_URL"```
+* Search for package in **remote repository** : ```njrepols "PKG_NAME"```
+* Clean up cache : ```njclean```
+
 
 ## Library 'dev-node'
 
