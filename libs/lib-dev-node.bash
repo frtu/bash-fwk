@@ -27,14 +27,6 @@ njbuildNdeploy() {
   serve -s build&
 }
 
-njconfls() {
-  echo "npm config get $@"
-  npm config get $@
-}
-njconfrepo() {
-  njconfls "registry" $@
-}
-
 njrepols() {
   usage $# "PKG_NAME"
 
@@ -65,6 +57,14 @@ njconfset() {
 
   echo "npm config set $CONF_PARAM_NAME \"$CONF_PARAM_VALUE\""
   npm config set $CONF_PARAM_NAME "$CONF_PARAM_VALUE"
+}
+
+njconfls() {
+  echo "npm config get $@"
+  npm config get $@
+}
+njconfrepo() {
+  njconfls "registry" $@
 }
 
 njclean() {

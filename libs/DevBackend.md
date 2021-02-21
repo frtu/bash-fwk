@@ -111,6 +111,9 @@ You can also use the skip everything syntax : ```mvnreleasetagsk```
 ### Base commands
 
 * Run Spring-boot application : ```sprun```
+
+### Log level commands
+
 * When Actuator enable for spring-boot & logger enable **GET** logger configuration : ```splog "LOGGER_NAME" "[BASE_URL]"```
 * When Actuator enable for spring-boot & logger enable **SET** logger configuration : ```splogset "LOGGER_NAME" "LEVEL:TRACE|DEBUG|INFO|WARN|ERROR" "[BASE_URL]"```
 
