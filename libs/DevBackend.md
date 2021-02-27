@@ -28,6 +28,29 @@ Install packages :
 * Install Gradle : ```instgradle```
 * Install sbt : ```instsbt```
 
+
+## Library 'dev-java'
+
+* Usage ```import lib-dev-java ```
+* Prefix ```j```
+
+### Base commands
+
+* Get **jdk** version : ```jv```
+* List all available jdks : ```jls```
+* Set jdk : ```jset "JDK_PATH"``` or ```jset8```
+* Add current jdk into PATH : ```jdkbin```
+
+### Keystore commands
+
+* List all the keys in the current JDK path : ```jkeyls "[JKS_FILENAME]" "[PASSWORD]"```
+* List import one cert to the keystore of current jdk : ```jkeyimport "JKS_FILENAME" "[JKS_NAME]" "[PASSWORD]"```
+
+### Admin commands
+
+* Going to all JDK folders : ```jcd```
+* To make a JDK (un)available to be picked up : ```jdeactivate "JDK_PATH"``` or ```jactivate "JDK_PATH"```
+
 ## Library 'dev-kotlin'
 
 * Usage ```import lib-dev-kotlin```
