@@ -50,6 +50,13 @@ If already installed, use quick fwk install copy : ```fwknet ```
 
 Command ```source file.bash``` doesn't work, need to use ```. file.bash```
 
+### IF raw.githubusercontent.com unreachable
+
+The DNS may not work correctly, just run :
+
+```
+sudo -- sh -c "echo 199.232.28.133 raw.githubusercontent.com >> /etc/hosts"
+```
 
 ## Your new env
 

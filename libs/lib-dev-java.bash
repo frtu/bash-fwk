@@ -36,10 +36,10 @@ jdkbin() {
   java -version
 }
 jset8() {
-  jdkset $JH8
+  jset $JH8
 }
 jset12() {
-  jdkset $JH12
+  jset $JH12
 }
 jset() {
   usage $# "JDK_PATH"
