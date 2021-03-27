@@ -1,4 +1,9 @@
-# Misc dev lib
+# Guidelines
+
+* [Install and use specific version of Node](InstallNode.md)
+
+
+# Tech libraries
 
 ## Library 'dev-nvm'
 
