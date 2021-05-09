@@ -101,6 +101,21 @@ enabledckhadoop() {
 enabledckspark() {
   enablelib dck-spark
 }
+enablegit() {
+  usage $# "GITHUB_ROOT_URL:github.com" "USER_NAME" "EMAIL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local GITHUB_ROOT_URL=$1
+  local USER_NAME=$2
+  local EMAIL=$3
+
+  enablelib git
+  gpersist ${GITHUB_ROOT_URL}
+  gconfsetname ${USER_NAME}
+  gconfsetemail ${EMAIL}
+}
+
 enablessh() {
   srv_activate ssh
   refresh
