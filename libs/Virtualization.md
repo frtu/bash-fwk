@@ -223,6 +223,8 @@ Base commands for **kubelet** :
 * Usage ```import lib-k8s```
 * Prefix ```kc``` 
 
+TIPS : can also check [kubectl cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+
 ### Base commands
 
 * Get kubectl version, list all clusters & nodes : ```kc```
@@ -246,6 +248,16 @@ ATTENTION - Wildcard delete :
 * **Delete** any resources (pod, service or deployment) of that name : ```kcrm "RESOURCE" "[NAMESPACE]"```
 * **Clean up ALL** resources in that namespace : ```kcrmall "NAMESPACE"```
 
+### Working with apps
+
+* Run a **bash command** to a particular pod : ```kcbash "POD_NAME" "NAMESPACE" "[COMMANDS]"```
+* Open a **http proxy** at specified port into a particular pod : ```kcproxy "POD_NAME" "[PORT:8001]" "[NAMESPACE]"```
+* **Top** from an existing pod : ```kcpodtop "POD_NAME"```
+* Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
+* **Tail logs** from an existing pod : ```kcpodtail "POD_NAME"```
+* **Attach to a process** that is already running inside an existing container : ```kcattach "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"```
+* Open a **tunnel** from a particular pod into localhost : ```kcportfwd "POD_NAME" "PORT_MAPPING-8080:80" "[NAMESPACE]"```
+
 ### Deployment 'kcns' commands
 
 * List all **namespaces** : ```kcnsls```
@@ -267,9 +279,6 @@ ATTENTION - Wildcard delete :
 * Get **info** from an existing pod : ```kcpodinfo "POD_NAME" "NAMESPACE"```
 * Get **container ID** from a pod : ```kcpodid "POD_NAME" "NAMESPACE"```
 * **Create** a new pod : ```kcpodrun "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"```
-* **Top** from an existing pod : ```kcpodtop "POD_NAME"```
-* Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
-* **Tail logs** from an existing pod : ```kcpodtail "POD_NAME"```
 * **Remove** from an existing pod : ```kcpodrm "POD_NAME" "NAMESPACE"```
 
 ### Deployment 'kcsvc' commands
@@ -277,6 +286,7 @@ ATTENTION - Wildcard delete :
 * List all **services** : ```kcsvcls```
 * Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
 * Check status for an existing **service** : ```kcstschk "SERVICE_NAME" "[NAMESPACE]"```
+* **Remove** from an existing service : ```kcsvcrm "SERVICE_NAME" "[NAMESPACE]"```
 
 ### Deployment 'kcdp' commands
 
@@ -285,6 +295,20 @@ ATTENTION - Wildcard delete :
 * Get **YAML** from an existing deployment : ```kcdpyaml "DEPLOYMENT_NAME" "NAMESPACE"```
 * Get **info** from an existing deployment : ```kcdpinfo "DEPLOYMENT_NAME" "[NAMESPACE]"```
 * **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
+* **Remove** from an existing deployment : ```kcdprm "DEPLOYMENT_NAME" "[NAMESPACE]"```
+
+### K8s context 'kcctx' commands
+
+* List all **K8s context** : ```kcctx```
+* Switch to one specific **K8s context** : ```kcctx "[CONTEXT]"```
+* Set the default namespace for this context : ```kcctxnamespace "NAMESPACE" "[CONTEXT]"```
+* Print k8s context in YAML format : ```kcconf```
+* Print k8s context file : ```kcconfcat```
+
+### Manage YAML commands
+
+* Deploy to k8s cluster **YAML files** : ```kccreate "FILE_NAME" "[NAMESPACE]"```
+* Apply YAML files : ```kcapply "FILE_NAME"```
 
 ...
 

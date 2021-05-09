@@ -1,6 +1,7 @@
 KUBECONFIG_FILE=~/.kube/config
 KUBE_FOLDER=~/.kube
 
+# https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 cdkc() {
   cd ${KUBE_FOLDER}
 }
@@ -74,7 +75,7 @@ kcgettemplate() {
   
   if [ -n "$NAMESPACE" ]
     then
-      local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+      local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
     else
       local EXTRA_PARAMS="$EXTRA_PARAMS --all-namespaces"
   fi
@@ -97,14 +98,6 @@ kcctx() {
       kcconftemplate "get-contexts"
   fi
 }
-kcctxyaml() {
-  echo "kubectl config view"
-  kubectl config view
-}
-kccat() {
-  echo "cat ${KUBECONFIG_FILE}"
-  cat ${KUBECONFIG_FILE}
-}
 # Set default namespace for this context
 kcctxnamespace() {
   usage $# "NAMESPACE" "[CONTEXT]"
@@ -122,6 +115,10 @@ kcctxnamespace() {
 }
 kcconf() {
   kcconftemplate "view"
+}
+kcconfcat() {
+  echo "cat ${KUBECONFIG_FILE}"
+  cat ${KUBECONFIG_FILE}
 }
 kcconftemplate() {
   usage $# "CMD"
@@ -144,7 +141,7 @@ kccreate() {
   local NAMESPACE=$2
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl create -f ${FILE_NAME} ${EXTRA_PARAMS}"
@@ -205,7 +202,7 @@ kcruntpl() {
   local EXTRA_PARAMS=${@:5}
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
@@ -214,7 +211,7 @@ kcruntpl() {
   kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME}
 }
 kcattach() {
-  usage $# "POD_NAME"
+  usage $# "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
@@ -223,10 +220,20 @@ kcattach() {
   fi
 
   local POD_NAME=$1
-
+  local NAMESPACE=$2
+  local CONTAINER_NAME=$3
+  local EXTRA_PARAMS=${@:4}
+  
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+  if [ -n "$CONTAINER_NAME" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -c ${CONTAINER_NAME}"
+  fi
+  
   # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/#docker-attach
-  echo "kubectl attach -it ${POD_NAME}"
-  kubectl attach -it ${POD_NAME}
+  echo "kubectl attach -it ${POD_NAME} ${EXTRA_PARAMS}"
+  kubectl attach -it ${POD_NAME} ${EXTRA_PARAMS}
 }
 kcbash() {
   usage $# "POD_NAME" "NAMESPACE" "[COMMANDS]"
@@ -329,6 +336,25 @@ kcpodlabel() {
   echo "kubectl get pods --show-labels"
   kubectl get pods --show-labels
 }
+kcpodls() {
+  usage $# "[NAMESPACE]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a NAMESPACE for the current context : If you don't know any names run 'kclsnamespaces'" >&2
+    kclsnamespaces
+    return 1
+  fi
+
+  local NAMESPACE=$1
+  local EXTRA_PARAMS=${@:2}
+  
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+  
+  echo "kubectl get pods ${EXTRA_PARAMS}"
+  kubectl get pods ${EXTRA_PARAMS}
+}
 kcpodid() {
   usage $# "POD_NAME" "NAMESPACE"
    # MIN NUM OF ARG
@@ -406,7 +432,7 @@ kcpodlogs() {
   local EXTRA_PARAMS=${@:3}
 
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl logs ${EXTRA_PARAMS} ${POD_NAME}"
@@ -464,7 +490,7 @@ kcpodtemplate() {
   local EXTRA_PARAMS=${@:4}
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS}"
@@ -483,7 +509,7 @@ kcstschk() {
   local EXTRA_PARAMS=${@:3}
 
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl rollout status sts/${SERVICE_NAME} ${EXTRA_PARAMS}"
@@ -532,7 +558,7 @@ kcsvctpl() {
   local EXTRA_PARAMS=${@:4}
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}"
@@ -627,7 +653,7 @@ kcdptpl() {
   local EXTRA_PARAMS=${@:4}
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl ${CMD} deployment ${DEPLOYMENT_NAME} ${EXTRA_PARAMS}"
@@ -645,6 +671,7 @@ kcyaml() {
   kcgettemplate ${RESOURCE} ${NAMESPACE} "yaml"
 }
 
+# https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward
 kcportfwd() {
   usage $# "POD_NAME" "PORT_MAPPING-8080:80" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
@@ -660,11 +687,36 @@ kcportfwd() {
   local EXTRA_PARAMS=${@:4}
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl port-forward ${POD_NAME} ${EXTRA_PARAMS} ${PORT_MAPPING}"
   kubectl port-forward ${POD_NAME} ${EXTRA_PARAMS} ${PORT_MAPPING}
+}
+# https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#proxy
+kcproxy() {
+  usage $# "POD_NAME" "[PORT:8001]" "[NAMESPACE]" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    kcpodlsfull
+    return 1
+  fi
+
+  local POD_NAME=$1
+  local PORT=$2
+  local NAMESPACE=$3
+  local EXTRA_PARAMS=${@:4}
+  
+  if [ -n "$PORT" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --port=${PORT}"
+  fi
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  echo "kubectl proxy ${POD_NAME} ${EXTRA_PARAMS}"
+  kubectl proxy ${POD_NAME} ${EXTRA_PARAMS}
 }
 
 kcnetlookup() {
@@ -706,7 +758,7 @@ kcrm() {
   local EXTRA_PARAMS=${@:3}
   
   if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n $NAMESPACE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl delete pod,service,deployment ${RESOURCE} ${EXTRA_PARAMS}"
