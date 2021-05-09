@@ -148,6 +148,23 @@ Network :
 * List all DHCP : ```vboxnetdhcp```
 * ...
 
+## Library 'k8s-gke'
+
+* Usage ```import lib-k8s-gke```
+* Prefix ```gke```
+
+### Base commands
+
+* Get gcloud info : ```gke```
+* Login to google cloud : ```gkelogin```
+* Initialize configuration for GKE : ```gkeinit```
+
+### Manage project
+
+* Create gke alias to a project : ```gkeaddprj "PROJECT_ID" "PROJECT_NAME" "REGION"```
+* Switch project using previously created alias : ```gkeprj<PROJECT_NAME>```
+* Check the current project : ```kcctx```
+
 ## Library 'k8s-minikube'
 
 * Usage ```import lib-k8s-minikube```
