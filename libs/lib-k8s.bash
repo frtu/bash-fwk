@@ -329,7 +329,6 @@ kcnstpl() {
   kubectl ${CMD} namespace ${NAMESPACE} ${@:3}
 }
 
-alias kcpodls='kubectl get pods'
 alias kcpodlsfull='kcpodls --all-namespaces -o wide'
 
 kcpodlabel() {
