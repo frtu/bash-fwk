@@ -8,7 +8,7 @@ genkeypair() {
   local KEY_TYPE=${3:-rsa}
 
   #if [[ ! $KEY_PRIVATE_FILE == *\.* ]]; then
-    local KEY_PRIVATE_FILE="${KEY_PRIVATE_FILE}-${KEY_TYPE}-${KEY_SIZE}"
+    local KEY_PRIVATE_FILE="${KEY_PRIVATE_FILE}-${KEY_SIZE}-${KEY_TYPE}"
   #fi
 
   echo "ssh-keygen -t ${KEY_TYPE} -b ${KEY_SIZE} -f ${KEY_PRIVATE_FILE}"
