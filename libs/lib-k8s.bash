@@ -260,24 +260,27 @@ kcattach() {
   kubectl attach -it ${POD_NAME} ${EXTRA_PARAMS}
 }
 kcbash() {
-  usage $# "POD_NAME" "NAMESPACE" "[COMMANDS]"
+  usage $# "POD_NAME" "[NAMESPACE]" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
-    kclspods
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
+    kcpodls
     return 1
   fi
 
   local POD_NAME=$1
   local NAMESPACE=$2
-  if [ -z "$3" ]
-    then
-      echo "Login into a Bash : ${POD_NAME}"
-      kcbash ${POD_NAME} ${NAMESPACE} /bin/bash
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  if [ -z "$3" ]; then
+      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash"
+      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash
     else
       local COMMANDS=${@:3}
-      echo "kubectl exec -it ${POD_NAME} -n ${NAMESPACE} -- ${COMMANDS}"
-      kubectl exec -it ${POD_NAME} -n ${NAMESPACE} -- ${COMMANDS}
+      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}"
+      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}
   fi
 }
 

@@ -250,7 +250,7 @@ ATTENTION - Wildcard delete :
 
 ### Working with apps
 
-* Run a **bash command** to a particular pod : ```kcbash "POD_NAME" "NAMESPACE" "[COMMANDS]"```
+* Run a **bash command** to a particular pod : ```kcbash "POD_NAME" "[NAMESPACE]" "[COMMANDS]"```
 * Open a **http proxy** at specified port into a particular pod : ```kcproxy "POD_NAME" "[PORT:8001]" "[NAMESPACE]"```
 * **Top** from an existing pod : ```kcpodtop "POD_NAME"```
 * Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
