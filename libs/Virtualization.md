@@ -272,9 +272,15 @@ ATTENTION - Wildcard delete :
 
 ### Deployment 'kcpod' commands
 
+When discovering pods, use :
+
+* List all **pods** and IPs : ```kclspods [NAMESPACE]```
+* List all **pods** and IPs : ```kclspodsfull "[NAMESPACE]" "[OPTION:wide|yaml]"```
+
+These commands are easier with 'kcnsset NAMESPACE' :
+
 * List all **pods** : ```kcpodls```
 * List all **pods** showing labels : ```kcpodlabel```
-* List all **pods** and IPs : ```kcpodlsfull```
 * Get **YAML** from an existing pod : ```kcpodyaml "POD_NAME" "NAMESPACE"```
 * Get **info** from an existing pod : ```kcpodinfo "POD_NAME" "NAMESPACE"```
 * Get **container ID** from a pod : ```kcpodid "POD_NAME" "NAMESPACE"```

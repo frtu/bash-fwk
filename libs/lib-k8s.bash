@@ -44,6 +44,30 @@ kclspods() {
   usage $# "[NAMESPACE]"
   kcgettemplate "pods" $@
 }
+kclspodsfull() {
+  usage $# "[NAMESPACE]" "[OPTION:wide|yaml]"
+
+  local NAMESPACE=$1
+  local OPTION=$2
+  local ADDITIONAL_PARAMS=${@:3}
+  
+  if [ -n "$NAMESPACE" ]
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+    else
+      local EXTRA_PARAMS="$EXTRA_PARAMS --all-namespaces"
+  fi
+
+  if [ -n "$OPTION" ]
+    then
+      local EXTRA_PARAMS="$EXTRA_PARAMS -o $OPTION"
+    else
+      local EXTRA_PARAMS="$EXTRA_PARAMS -o wide"
+  fi
+
+  echo "kubectl get pods ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
+  kubectl get pods ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
+}
 kclsservices() {
   usage $# "[NAMESPACE]"
   kcgettemplate "service" $@
@@ -328,8 +352,6 @@ kcnstpl() {
   echo "kubectl ${CMD} namespace ${NAMESPACE} ${@:3}"
   kubectl ${CMD} namespace ${NAMESPACE} ${@:3}
 }
-
-alias kcpodlsfull='kcpodls --all-namespaces -o wide'
 
 kcpodlabel() {
   echo "kubectl get pods --show-labels"
