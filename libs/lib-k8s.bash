@@ -360,24 +360,25 @@ kcpodlabel() {
   echo "kubectl get pods --show-labels"
   kubectl get pods --show-labels
 }
-kcpodls() {
-  usage $# "[NAMESPACE]"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a NAMESPACE for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kclsnamespaces
-    return 1
-  fi
 
-  local NAMESPACE=$1
-  local EXTRA_PARAMS=${@:2}
-  
+kcpodls() {
+  usage $# "[CONTAINING_TEXT]" "[NAMESPACE]"
+
+  local CONTAINING_TEXT=$1
+  local NAMESPACE=$2
+  local EXTRA_PARAMS=${@:3}
+
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
-  
-  echo "kubectl get pods ${EXTRA_PARAMS}"
-  kubectl get pods ${EXTRA_PARAMS}
+  if [ -z "$CONTAINING_TEXT" ]; then
+      echo "kubectl get pods ${EXTRA_PARAMS}"
+      kubectl get pods ${EXTRA_PARAMS}
+    else
+      echo "== List all existing pods containing [${CONTAINING_TEXT}] =="
+      echo "kubectl get pods ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}"
+      kubectl get pods ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}
+  fi
 }
 kcpodid() {
   usage $# "POD_NAME" "NAMESPACE"

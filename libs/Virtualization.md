@@ -7,7 +7,7 @@
 
 ### Local Image repository
 
-* **List** all local images : ```dckls```
+* **List** all local images : ```dckls "[CONTAINING_TEXT]"```
 * **Import** image from file : ```dckimport "DCK_IMAGE_FILENAME"```
 * **Import** image files containing text filter from folder : ```dckimportfolder "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"```
 * **Export** image to file : ```dckexport "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"```
@@ -27,7 +27,7 @@
 Base commands :
 
 * Get Docker version : ```dck```
-* List all existing instances : ```dckps```
+* List all existing instances : ```dckps "[CONTAINING_TEXT]"```
 * Start existing instance : ```dckstart "INSTANCE_NAME"```
 * Read instance console : ```dcklogs "INSTANCE_NAME"```
 * Stop existing instance : ```dckstop "INSTANCE_NAME"```
@@ -279,7 +279,7 @@ When discovering pods, use :
 
 These commands are easier with 'kcnsset NAMESPACE' :
 
-* List all **pods** : ```kcpodls```
+* List all **pods** or the ones containing text : ```kcpodls "[CONTAINING_TEXT]" "[NAMESPACE]"```
 * List all **pods** showing labels : ```kcpodlabel```
 * Get **YAML** from an existing pod : ```kcpodyaml "POD_NAME" "NAMESPACE"```
 * Get **info** from an existing pod : ```kcpodinfo "POD_NAME" "NAMESPACE"```

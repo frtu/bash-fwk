@@ -5,15 +5,15 @@ dck() {
 }
 
 dckls() {
-  usage $# "[LIST_GREP]"
+  usage $# "[CONTAINING_TEXT]"
 
-  local LIST_GREP=$1
-  if [ -z "$LIST_GREP" ]; then
+  local CONTAINING_TEXT=$1
+  if [ -z "$CONTAINING_TEXT" ]; then
       echo "List all existing docker images"
       docker images
     else
-      echo "List all existing docker images containing ${LIST_GREP}"
-      docker images | grep ${LIST_GREP}
+      echo "List all existing docker images containing ${CONTAINING_TEXT}"
+      docker images | grep ${CONTAINING_TEXT}
   fi
 }
 dckpullsk() {
@@ -42,15 +42,15 @@ dcksearch() {
 
 # See running
 dckps() {
-  usage $# "[LIST_GREP]"
+  usage $# "[CONTAINING_TEXT]"
 
-  local LIST_GREP=$1
-  if [ -z "$LIST_GREP" ]; then
+  local CONTAINING_TEXT=$1
+  if [ -z "$CONTAINING_TEXT" ]; then
       echo "List all docker instances"
       docker ps -a
     else
-      echo "List all docker instances containing ${LIST_GREP}"
-      docker ps -a | grep ${LIST_GREP}
+      echo "List all docker instances containing ${CONTAINING_TEXT}"
+      docker ps -a | grep ${CONTAINING_TEXT}
   fi
 }
 dckstart() {
