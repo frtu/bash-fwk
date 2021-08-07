@@ -698,7 +698,7 @@ kcyaml() {
 
 # https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward
 kcportfwd() {
-  usage $# "POD_NAME" "PORT_MAPPING-8080:80" "[NAMESPACE]" "[EXTRA_PARAMS]"
+  usage $# "POD_NAME|SERVICE_NAME|DEPLOYMENT:service/xx|deployment/yy" "PORT_MAPPING-8080:80" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
@@ -715,6 +715,7 @@ kcportfwd() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
+  # https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
   echo "kubectl port-forward ${POD_NAME} ${EXTRA_PARAMS} ${PORT_MAPPING}"
   kubectl port-forward ${POD_NAME} ${EXTRA_PARAMS} ${PORT_MAPPING}
 }
