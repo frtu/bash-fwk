@@ -258,6 +258,12 @@ ATTENTION - Wildcard delete :
 * **Attach to a process** that is already running inside an existing container : ```kcattach "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"```
 * Open a **tunnel** from a particular pod into localhost : ```kcportfwd "POD_NAME" "PORT_MAPPING-8080:80" "[NAMESPACE]"```
 
+Interaction with files
+
+* **Copy** file from/to depending on the if source or destination is prefixed by pod : ```kcpodcp "SOURCE" "DESTINATION"```
+* Copy file **from pod** using file path : ```kcpodcpfrom "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"```
+* Copy file **to pod** using file path : ```kcpodcpto "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"```
+
 ### Deployment 'kcns' commands
 
 * List all **namespaces** : ```kcnsls```

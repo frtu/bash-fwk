@@ -396,6 +396,38 @@ kcpodid() {
   kcpodinfo ${POD_NAME} ${NAMESPACE} | grep 'Container ID'
 }
 
+# Interaction
+kcpodcp() {
+  usage $# "SOURCE" "DESTINATION"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local SOURCE=$1
+  local DESTINATION=$2
+
+  echo "kubectl cp ${SOURCE} ${DESTINATION}"
+  kubectl cp ${SOURCE} ${DESTINATION}
+}
+kcpodcpfrom() {
+  usage $# "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
+  local SOURCE_PATH=$1
+  local DESTINATION_PATH=$2
+
+  kcpodcp ${POD_NAME}:${SOURCE_PATH} ${DESTINATION_PATH}
+}
+kcpodcpto() {
+  usage $# "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
+  local SOURCE_PATH=$1
+  local DESTINATION_PATH=$2
+
+  kcpodcp ${SOURCE_PATH} ${POD_NAME}:${DESTINATION_PATH}
+}
 kcpodrun() {
   usage $# "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"
    # MIN NUM OF ARG
