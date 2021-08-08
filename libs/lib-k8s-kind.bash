@@ -45,9 +45,6 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
-  - containerPort: 80
-    hostPort: 80
-    listenAddress: "127.0.0.1"
 - role: worker
 - role: worker
 EOF
@@ -56,7 +53,7 @@ EOF
   cat ${CONFIG_FILE}
 }
 kdc() {
-  usage $# "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"
+  usage $# "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.20.2]"
 
   local CLUSTER_NAME=$1
   local CONFIG_FILE=$2
