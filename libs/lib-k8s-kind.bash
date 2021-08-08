@@ -21,13 +21,31 @@ kdinfo() {
 
   local CLUSTER_NAME=$1
 
-  echo "kubectl cluster-info --context ${CLUSTER_NAME}"
-  kubectl cluster-info --context ${CLUSTER_NAME}
+  # Every kind instances are prefixed with kind-*
+  local CLUSTER_FULL_NAME=kind-${CLUSTER_NAME}
+
+  echo "kubectl cluster-info --context ${CLUSTER_FULL_NAME}"
+  kubectl cluster-info --context ${CLUSTER_FULL_NAME}
 }
 
 kdc() {
-  usage $# "[CLUSTER_NAME]"
-  kdtpl "create" $@
+  usage $# "[CLUSTER_NAME]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"
+
+  local CLUSTER_NAME=$1
+  local CONFIG_FILE=$2
+  local OVERRIDE_IMAGE=$3
+  local EXTRA_PARAMS=${@:4}
+  
+  # List of all image at https://hub.docker.com/r/kindest/node/tags
+  if [ -n "$OVERRIDE_IMAGE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --image=$OVERRIDE_IMAGE"
+  fi
+  # Default cluster context name is `kind`
+  if [ -f "$CONFIG_FILE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --config $CONFIG_FILE"
+  fi
+
+  kdtpl "create" ${CLUSTER_NAME} ${EXTRA_PARAMS}
 }
 kdrm() {
   usage $# "[CLUSTER_NAME]"
@@ -53,4 +71,46 @@ kdtpl() {
 
   echo "kind ${CMD} cluster ${EXTRA_PARAMS}"
   kind ${CMD} cluster ${EXTRA_PARAMS}
+}
+
+alias kdimport=kdload
+kdload() {
+  usage $# "IMAGE_NAME" "[CLUSTER_NAME]" "[EXTRA_PARAMS]"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please provide a IMAGE_NAME: If you don't know any cluster names run 'dckls'" >&2
+    dckls
+    return 1
+  fi
+
+  local IMAGE_NAME=$1
+  local CLUSTER_NAME=$2
+  local EXTRA_PARAMS=${@:3}
+
+  # Default cluster context name is `kind`
+  if [ -n "$CLUSTER_NAME" ]; then
+    # Every kind instances are prefixed with kind-*
+    local CLUSTER_FULL_NAME=kind-${CLUSTER_NAME}
+
+    local EXTRA_PARAMS="$EXTRA_PARAMS --name $CLUSTER_FULL_NAME"
+  fi
+
+  echo "kind load docker-image ${IMAGE_NAME} ${EXTRA_PARAMS}"
+  kind load docker-image ${IMAGE_NAME} ${EXTRA_PARAMS}
+}
+
+kcapils() {
+  for kind in `kubectl api-resources | tail +2 | awk '{ print $1 }'`; do kubectl explain $kind; done | grep -e "KIND:" -e "VERSION:"
+}
+kddashboard() {
+  echo "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml"
+  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml
+
+  kdproxy
+}
+kdproxy() {
+  echo "kubectl proxy"
+  kubectl proxy
+
+  http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 }
