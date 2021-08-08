@@ -177,14 +177,22 @@ Network :
 * List all kind clusters : ```kdls```
 * Get more info for a particular cluster : ```kdinfo "CLUSTER_NAME"```
 * Create a new cluster : ```kdc "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"```
+* List all nodes : ```kdgetnodes```
+* Print K8s config : ```kdgetconfig```
 * Generate a cluster config : ```kdgenconfig "[CONFIG_FILE]"```
 * Delete a cluster : ```kdrm "[CLUSTER_NAME]"```
 
 ### Manage instances
 
-* Load docker image into cluster : ```kdimport``` or ```kdload "IMAGE_NAME" "[CLUSTER_NAME]"```
-* Install dashboard : ```kddashboard```
+* Load docker image into cluster : ```kdimport "IMAGE_NAME" "[CLUSTER_NAME]"``` or ```kdload```
+* Install dashboard : ```kdinstdashboard```
 
+### ArgoCD
+
+* Install ArgoCD : ```kdinstargocd```
+* List all components from ArgoCD : ```kdargocdls```
+* Open port to ArgoCD : ```kdargocd "[PORT_MAPPING-8080]"```
+* Get Admin pwd for ArgoCD : ```kdargocdpassword```
 
 ## Library 'k8s-minikube'
 

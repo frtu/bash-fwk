@@ -24,8 +24,14 @@ kdinfo() {
   # Every kind instances are prefixed with kind-*
   local CLUSTER_FULL_NAME=kind-${CLUSTER_NAME}
 
+  echo "------- Cluster Info --------";
   echo "kubectl cluster-info --context ${CLUSTER_FULL_NAME}"
   kubectl cluster-info --context ${CLUSTER_FULL_NAME}
+  
+  echo "------- Running instances --------";
+  kdgetnodes $@
+  echo "------- Config --------";
+  echo "-> kdgetconfig $@"
 }
 
 kdgenconfig() {
@@ -39,6 +45,9 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
+  - containerPort: 80
+    hostPort: 80
+    listenAddress: "127.0.0.1"
 - role: worker
 - role: worker
 EOF
@@ -141,11 +150,28 @@ kdload() {
   kind load docker-image ${IMAGE_NAME} ${EXTRA_PARAMS}
 }
 
-kddashboard() {
+kdinstdashboard() {
   echo "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml"
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml
 
   # Login dashboard with
   echo "Login dashboard with => http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login"
   kcproxy
+}
+kdinstargocd() {
+  kubectl create namespace argocd
+  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+}
+kdargocdls() {
+  kcls argocd
+}
+kdargocd() {
+  usage $#  "[PORT_MAPPING-8080]" "[EXTRA_PARAMS]"
+
+  local PORT_MAPPING=${1:-8080}:443
+  kcportfwd svc/argocd-server ${PORT_MAPPING} argocd ${@:2}
+}
+kdargocdpassword() {
+  echo "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d"
+  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 }
