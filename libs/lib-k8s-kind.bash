@@ -92,10 +92,10 @@ kdtpl() {
 }
 
 kdgetnodes() {
-  kdget nodes
+  kdget nodes $@
 }
 kdgetconfig() {
-  kdget kubeconfig
+  kdget kubeconfig $@
 }
 kdget() {
   usage $# "RESOURCE:nodes|kubeconfig" "[CLUSTER_NAME]" "[EXTRA_PARAMS]"
