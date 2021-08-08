@@ -91,6 +91,30 @@ kdtpl() {
   kind ${CMD} cluster ${EXTRA_PARAMS}
 }
 
+kdgetnodes() {
+  kdget nodes
+}
+kdgetconfig() {
+  kdget kubeconfig
+}
+kdget() {
+  usage $# "RESOURCE:nodes|kubeconfig" "[CLUSTER_NAME]" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local RESOURCE=$1
+  local CLUSTER_NAME=$2
+  local EXTRA_PARAMS=${@:3}
+  
+  # Default cluster context name is `kind`
+  if [ -n "$CLUSTER_NAME" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --name $CLUSTER_NAME"
+  fi
+
+  echo "kind get ${RESOURCE} ${EXTRA_PARAMS}"
+  kind get ${RESOURCE} ${EXTRA_PARAMS}
+}
+
 alias kdimport=kdload
 kdload() {
   usage $# "IMAGE_NAME" "[CLUSTER_NAME]" "[EXTRA_PARAMS]"
