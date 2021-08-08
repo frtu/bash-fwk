@@ -28,8 +28,26 @@ kdinfo() {
   kubectl cluster-info --context ${CLUSTER_FULL_NAME}
 }
 
+kdgenconfig() {
+  usage $# "[CONFIG_FILE]"
+
+  local CONFIG_FILE=${1:-kind-config.yaml}
+
+  cat > $CONFIG_FILE <<EOF
+# three node (two workers) cluster config
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+EOF
+
+  echo "== Generated file at ${CONFIG_FILE} =="
+  cat ${CONFIG_FILE}
+}
 kdc() {
-  usage $# "[CLUSTER_NAME]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"
+  usage $# "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"
 
   local CLUSTER_NAME=$1
   local CONFIG_FILE=$2
@@ -99,18 +117,11 @@ kdload() {
   kind load docker-image ${IMAGE_NAME} ${EXTRA_PARAMS}
 }
 
-kcapils() {
-  for kind in `kubectl api-resources | tail +2 | awk '{ print $1 }'`; do kubectl explain $kind; done | grep -e "KIND:" -e "VERSION:"
-}
 kddashboard() {
   echo "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml"
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml
 
-  kdproxy
-}
-kdproxy() {
-  echo "kubectl proxy"
-  kubectl proxy
-
-  http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+  # Login dashboard with
+  echo "Login dashboard with => http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login"
+  kcproxy
 }

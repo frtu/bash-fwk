@@ -165,6 +165,27 @@ Network :
 * Switch project using previously created alias : ```gkeprj<PROJECT_NAME>```
 * Check the current project : ```kcctx```
 
+
+## Library 'k8s-kind'
+
+* Usage ```import lib-k8s-kind```
+* Prefix ```kd```
+* Install ```enablekind``` & ```inst_kind```
+
+### Admin commands
+
+* List all kind clusters : ```kdls```
+* Get more info for a particular cluster : ```kdinfo "CLUSTER_NAME"```
+* Create a new cluster : ```kdc "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"```
+* Generate a cluster config : ```kdgenconfig "[CONFIG_FILE]"```
+* Delete a cluster : ```kdrm "[CLUSTER_NAME]"```
+
+### Manage instances
+
+* Load docker image into cluster : ```kdimport``` or ```kdload "IMAGE_NAME" "[CLUSTER_NAME]"```
+* Install dashboard : ```kddashboard```
+
+
 ## Library 'k8s-minikube'
 
 * Usage ```import lib-k8s-minikube```

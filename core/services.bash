@@ -120,6 +120,10 @@ enablessh() {
   srv_activate ssh
   refresh
 }
+enablekind() {
+  enablelib k8s-kind
+  inst_kind
+}
 enableminikube_linux() {
   enablelib docker-linux
   inst_docker

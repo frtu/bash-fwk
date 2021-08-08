@@ -87,6 +87,9 @@ kclsapi() {
 kclsresources() {
   kubectl api-resources
 }
+kclsresourcesformatted() {
+  for kind in `kubectl api-resources | tail +2 | awk '{ print $1 }'`; do kubectl explain $kind; done | grep -e "KIND:" -e "VERSION:"
+}
 kcgettemplate() {
   usage $# "RESOURCE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
@@ -753,7 +756,7 @@ kcportfwd() {
 }
 # https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#proxy
 kcproxy() {
-  usage $# "POD_NAME" "[PORT:8001]" "[NAMESPACE]" "[EXTRA_PARAMS]"
+  usage $# "[POD_NAME]" "[PORT:8001]" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
