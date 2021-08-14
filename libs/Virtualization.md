@@ -326,7 +326,7 @@ These commands are easier with 'kcnsset NAMESPACE' :
 
 * List all **services** : ```kcsvcls```
 * Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
-* Check status for an existing **service** : ```kcstschk "SERVICE_NAME" "[NAMESPACE]"```
+* Check status for an existing **service** : ```kcsvschk "SERVICE_NAME" "[NAMESPACE]"```
 * **Remove** from an existing service : ```kcsvcrm "SERVICE_NAME" "[NAMESPACE]"```
 
 ### Deployment 'kcdp' commands

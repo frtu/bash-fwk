@@ -433,8 +433,8 @@ kcpodls() {
       kubectl get pods ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}
   fi
 }
-alias kcpodinfo=kcpoddescribe
-kcpoddescribe() {
+alias kcpodinfo=kcpoddesc
+kcpoddesc() {
   usage $# "POD_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
