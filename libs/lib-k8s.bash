@@ -102,11 +102,8 @@ kcdesc() {
   local NAMESPACE=$3
   local ADDITIONAL_PARAMS=${@:4}
   
-  if [ -n "$NAMESPACE" ]
-    then
-      local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
-    else
-      local EXTRA_PARAMS="$EXTRA_PARAMS --all-namespaces"
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   echo "kubectl describe ${RESOURCE_TYPE} ${RESOURCE_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
