@@ -110,11 +110,11 @@ kcdesc() {
   kubectl describe ${RESOURCE_TYPE} ${RESOURCE_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
 }
 kcgettemplate() {
-  usage $# "RESOURCE" "[NAMESPACE]" "[OPTION:wide|yaml]"
+  usage $# "RESOURCE_TYPE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local RESOURCE=$1
+  local RESOURCE_TYPE=$1
   local NAMESPACE=$2
   local OPTION=$3
   local ADDITIONAL_PARAMS=${@:4}
@@ -129,18 +129,56 @@ kcgettemplate() {
       local EXTRA_PARAMS="$EXTRA_PARAMS -o $OPTION"
   fi
 
-  echo "kubectl get ${RESOURCE} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
-  kubectl get ${RESOURCE} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
+  echo "kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}"
+  kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}
 }
-kcyaml() {
-  usage $# "[RESOURCE:deploy,sts,svc,configmap,secret]" "[NAMESPACE:default]"
+
+kcgettpl() {
+  usage $# "RESOURCE_TYPE" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local RESOURCE=${1:-deploy,sts,svc,configmap,secret}
-  local NAMESPACE=${2:-default}
+  local RESOURCE_TYPE=$1
+  local OPTION=$2
+  local ADDITIONAL_PARAMS=${@:3}
+  
+  if [ -n "$OPTION" ]; then
+      local EXTRA_PARAMS="$EXTRA_PARAMS -o $OPTION"
+  fi
 
-  kcgettemplate ${RESOURCE} ${NAMESPACE} "yaml"
+  echo "kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}"
+  kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}
+}
+kcyaml() {
+  usage $# "[RESOURCE_TYPE:deploy,sts,svc,configmap,secret]" "[RESOURCE_NAME]" "[NAMESPACE:default]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local RESOURCE_TYPE=${1:-pod,deploy,sts,svc,configmap,secret}
+  local RESOURCE_NAME=$2
+  local NAMESPACE=$3
+  local EXTRA_PARAMS=${@:4}
+
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  kcgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
+}
+kcyamlns() {
+  usage $# "[NAMESPACE:default]" "[RESOURCE_TYPE:deploy,sts,svc,configmap,secret]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local NAMESPACE=$1
+  local RESOURCE_TYPE=${2:-pod,deploy,sts,svc,configmap,secret}
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  kcgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
 }
 kclogsns() {
   usage $# "RESOURCE_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
@@ -430,29 +468,13 @@ kcpodls() {
       kubectl get pods ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}
   fi
 }
-alias kcpodinfo=kcpoddesc
-kcpoddesc() {
-  usage $# "POD_NAME" "[NAMESPACE]"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
-    return 1
-  fi
-  kcdesc "pod" $@
-}
+alias kcpodyaml='kcyaml pod '
+alias kcpoddesc='kcdesc pod '
+alias kcpoddesc=kcpodinfo
+
 kcpodid() {
   usage $# "POD_NAME" "[NAMESPACE]"
   kcpoddescribe $@ | grep 'Container ID'
-}
-kcpodyaml() {
-  usage $# "POD_NAME"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
-    return 1
-  fi
-
-  kcyaml $@
 }
 kcpodlabel() {
   echo "kubectl get pods $@ --show-labels"
@@ -558,7 +580,8 @@ kcpodtpl() {
 }
 
 alias kcsvcls=kclsservices
-alias kcsvcyaml=kcyaml
+alias kcsvcyaml='kcyaml svc '
+alias kcsvcdesc='kcdesc svc '
 kcsvschk() {
   usage $# "SERVICE_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
@@ -610,7 +633,9 @@ kcsvctpl() {
 }
 
 alias kcdpls=kclsdeployments
-alias kcdpyaml=kcyaml
+alias kcdpyaml='kcyaml deployment'
+alias kcdpdesc='kcdesc deployment '
+alias kcdpdesc=kcdpinfo
 # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
 kcdprun() {
   usage $# "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
@@ -618,16 +643,6 @@ kcdprun() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   kcruntpl "create deployment" $@
-}
-kcdpinfo() {
-  usage $# "DEPLOYMENT_NAME" "[NAMESPACE]"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'kclsdeployments'" >&2
-    return 1
-  fi
-
-  kcdesc "deployment" $@
 }
 kcdpexpose() {
   usage $# "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"

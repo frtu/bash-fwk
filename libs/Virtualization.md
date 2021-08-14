@@ -270,7 +270,7 @@ All kubectl listing commands in the current cluster and namespace :
 * List all events : ```kclsevents [NAMESPACE]```
 * List all api services : ```kclsapi [NAMESPACE]```
 * List all resources types : ```kclsresources```
-* List all resource YAML : ```kcyaml "[RESOURCE:all]" "[NAMESPACE:default]"```
+* List all resources YAML from this namespace : ```kcyamlns "[NAMESPACE:default]" "[RESOURCE_TYPE:all]"```
 
 ATTENTION - Wildcard delete :
 
@@ -317,7 +317,7 @@ These commands are easier with 'kcnsset NAMESPACE' :
 * List all **pods** or the ones containing text : ```kcpodls "[CONTAINING_TEXT]" "[NAMESPACE]"```
 * List all **pods** showing labels : ```kcpodlabel```
 * Get **YAML** from an existing pod : ```kcpodyaml "POD_NAME" "NAMESPACE"```
-* Get **info** from an existing pod : ```kcpodinfo "POD_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing pod : ```kcpoddesc "POD_NAME" "NAMESPACE"``` or ```kcpodinfo```
 * Get **container ID** from a pod : ```kcpodid "POD_NAME" "NAMESPACE"```
 * **Create** a new pod : ```kcpodrun "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"```
 * **Remove** from an existing pod : ```kcpodrm "POD_NAME" "NAMESPACE"```
@@ -326,6 +326,7 @@ These commands are easier with 'kcnsset NAMESPACE' :
 
 * List all **services** : ```kcsvcls```
 * Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing service : ```kcsvcdesc "SERVICE_NAME" "NAMESPACE"``` or ```kcsvcinfo```
 * Check status for an existing **service** : ```kcsvschk "SERVICE_NAME" "[NAMESPACE]"```
 * **Remove** from an existing service : ```kcsvcrm "SERVICE_NAME" "[NAMESPACE]"```
 
@@ -334,7 +335,7 @@ These commands are easier with 'kcnsset NAMESPACE' :
 * **List** all existing deployment : ```kcdpls [NAMESPACE]```
 * **Create** a new deployment : ```kcdprun "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
 * Get **YAML** from an existing deployment : ```kcdpyaml "DEPLOYMENT_NAME" "NAMESPACE"```
-* Get **info** from an existing deployment : ```kcdpinfo "DEPLOYMENT_NAME" "[NAMESPACE]"```
+* Get **describe** or info from an existing deployment : ```kcdpdesc "DEPLOYMENT_NAME" "NAMESPACE"``` or ```kcdpinfo```
 * **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
 * **Remove** from an existing deployment : ```kcdprm "DEPLOYMENT_NAME" "[NAMESPACE]"```
 
