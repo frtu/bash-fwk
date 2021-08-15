@@ -205,7 +205,7 @@ kclogs() {
 }
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
 kcbash() {
-  usage $# "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[CMD]"
+  usage $# "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
@@ -216,7 +216,7 @@ kcbash() {
   local POD_NAME=$1
   local CONTAINER=$2
   local NAMESPACE=$3
-  local CMD=${@:4}
+  local COMMANDS=${@:4}
 
   if [ -n "$CONTAINER" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -c ${CONTAINER}"
@@ -225,12 +225,12 @@ kcbash() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  if [ -z "$CMD" ]; then
+  if [ -z "$COMMANDS" ]; then
       echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash"
       kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash
     else
-      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${CMD}"
-      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${CMD}
+      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}"
+      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}
   fi
 }
 
@@ -346,16 +346,16 @@ kcruntpl() {
   local IMAGE_NAME=$2
   local INSTANCE_NAME=$3
   local NAMESPACE=$4
-  local EXTRA_PARAMS=${@:5}
-  
+  local ADDITIONAL_PARAMS=${@:5}
+
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
   # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/#docker-run
-  echo "kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME}"
-  kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME}
+  echo "kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}"
+  kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}
 }
 kcattach() {
   usage $# "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"
