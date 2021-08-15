@@ -331,6 +331,7 @@ Create your own image :
 * Get **describe** or info from an existing pod : ```kcpoddesc "POD_NAME" "NAMESPACE"``` or ```kcpodinfo```
 * Check logs of a **crashed pod** : ```kccrashedlogs "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"```
 * Open a bash on a copied **crashed pod** : ```kccrasheddebug "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
+* Open a bash **modifying base image** to SET_IMAGE : ```kccrasheddebugsetimage "INSTANCE_NAME" "[SET_IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
 
 ## Library 'helm'
 

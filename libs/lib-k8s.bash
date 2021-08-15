@@ -237,6 +237,7 @@ kcbashbusybox() {
 
   kcbash "${INSTANCE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" "${COMMANDS}"
 }
+# https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#copying-a-pod-while-adding-a-new-container
 kccrashedlogs() {
   usage $# "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
@@ -254,8 +255,6 @@ kccrashedlogs() {
 }
 kccrasheddebug() {
   usage $# "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INSTANCE_NAME=$1
   local IMAGE=${2:-ubuntu}
@@ -269,7 +268,34 @@ kccrasheddebug() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kcinteractivetpl "debug" "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--share-processes --copy-to=${INSTANCE_NAME}-debug"
+  kccrasheddebugtpl "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--share-processes"
+}
+kccrasheddebugsetimage() {
+  usage $# "INSTANCE_NAME" "[SET_IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"
+
+  local INSTANCE_NAME=$1
+  local SET_IMAGE=${2:-ubuntu}
+  local NAMESPACE=${3:-default}
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$SET_IMAGE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --set-image=*=${SET_IMAGE}"
+  fi
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  kccrasheddebugtpl "${INSTANCE_NAME}" "${EXTRA_PARAMS}"
+}
+kccrasheddebugtpl() {
+  usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local INSTANCE_NAME=$1
+  local EXTRA_PARAMS=${@:2}
+
+  kcinteractivetpl "debug" "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--copy-to=${INSTANCE_NAME}-debug"
 }
 kcinteractivetpl() {
   usage $# "CMD" "POD_NAME" "[EXTRA_PARAMS]"
