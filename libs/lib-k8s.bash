@@ -233,6 +233,61 @@ kcbash() {
       kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}
   fi
 }
+kcbashbusybox() {
+  usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[COMMANDS:/bin/sh]"
+
+  local INSTANCE_NAME=$1
+  local NAMESPACE=${2:-default}
+  local COMMANDS=${3:-/bin/sh}
+
+  kcbash "${INSTANCE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" "${COMMANDS}"
+}
+kccrashedlogs() {
+  usage $# "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local INSTANCE_NAME=$1
+  local NAMESPACE=$2
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  kclogs --previous ${EXTRA_PARAMS} ${INSTANCE_NAME}
+}
+kccrasheddebug() {
+  usage $# "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local INSTANCE_NAME=$1
+  local IMAGE=${2:-ubuntu}
+  local NAMESPACE=${3:-default}
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$IMAGE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --image=${IMAGE}"
+  fi
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  kcinteractivetpl "debug" "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--share-processes --copy-to=${INSTANCE_NAME}-debug"
+}
+kcinteractivetpl() {
+  usage $# "CMD" "POD_NAME" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CMD=$1
+  local POD_NAME=$2
+  local EXTRA_PARAMS=${@:3}
+
+  echo "kubectl ${CMD} -it ${POD_NAME} ${EXTRA_PARAMS}"
+  kubectl ${CMD} -it ${POD_NAME} ${EXTRA_PARAMS}
+}
 
 kcctx() {
   usage $# "[CONTEXT]"
@@ -336,6 +391,34 @@ kcapply() {
   echo "kcpodyaml [POD_NAME] : get more YAML from this pod"
   echo "kcedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
   echo "kcrm [POD_NAME] : to stop and remove"
+}
+
+kcrunimage() {
+  usage $# "INSTANCE_NAME" "[IMAGE_NAME:busybox]" "[NAMESPACE:default]" "[COMMANDS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local INSTANCE_NAME=$1
+  local IMAGE_NAME=${2:-busybox}
+  local NAMESPACE=${3:-default}
+  local COMMANDS=${@:4}
+
+  if [ -n "$COMMANDS" ]; then
+    local ADDITIONAL_PARAMS="$ADDITIONAL_PARAMS -- ${COMMANDS}"
+  fi
+
+  # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
+  kcruntpl "run" "${IMAGE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" --restart=Never "${ADDITIONAL_PARAMS}"
+}
+kcrunimagepause() {
+  usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"
+
+  local INSTANCE_NAME=$1
+  local IMAGE_NAME=${2:-busybox}
+  local NAMESPACE=${3:-default}
+  local CMD=${3:-sleep 1d}
+
+  kcrunimage "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${CMD}"
 }
 kcruntpl() {
   usage $# "CMD" "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run]"

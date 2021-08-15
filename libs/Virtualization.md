@@ -311,10 +311,26 @@ These commands are easier with 'kcnsset NAMESPACE' :
 
 ### Manage YAML commands
 
+Sample images :
+
+* Run an instance of existing image : ```kcrunimage "INSTANCE_NAME" "[IMAGE_NAME:busybox]" "[NAMESPACE:default]" "[CMD]"```
+* Create an instance and sleep 1d : ```kcrunimagepause "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"```
+* Bash into busybox : ```kcbashbusybox "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"```
+
+
+Create your own image :
+
 * Deploy to k8s cluster **YAML files** : ```kccreate "FILE_NAME" "[NAMESPACE]"```
 * Apply YAML files : ```kcapply "FILE_NAME"```
 
 ...
+
+
+### Troubleshooting crashed pods
+
+* Get **describe** or info from an existing pod : ```kcpoddesc "POD_NAME" "NAMESPACE"``` or ```kcpodinfo```
+* Check logs of a **crashed pod** : ```kccrashedlogs "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"```
+* Open a bash on a copied **crashed pod** : ```kccrasheddebug "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
 
 ## Library 'helm'
 
