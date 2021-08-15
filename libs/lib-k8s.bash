@@ -216,7 +216,8 @@ kcbash() {
   local POD_NAME=$1
   local CONTAINER=$2
   local NAMESPACE=$3
-  local COMMANDS=${@:4}
+  local COMMANDS=${4:-/bin/bash}
+  local COMMANDS_ARGS=${@:5}
 
   if [ -n "$CONTAINER" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -c ${CONTAINER}"
@@ -225,13 +226,7 @@ kcbash() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  if [ -z "$COMMANDS" ]; then
-      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash"
-      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash
-    else
-      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}"
-      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}
-  fi
+  kcinteractivetpl "exec" "${POD_NAME}" "${EXTRA_PARAMS}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
 }
 kcbashbusybox() {
   usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[COMMANDS:/bin/sh]"
@@ -408,37 +403,40 @@ kcrunimage() {
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
-  kcruntpl "run" "${IMAGE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" --restart=Never "${ADDITIONAL_PARAMS}"
+  kcruntpl "run" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" --restart=Never "${ADDITIONAL_PARAMS}"
 }
 kcrunimagepause() {
-  usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"
+  usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]" "[COMMANDS:sleep 1d]"
 
   local INSTANCE_NAME=$1
   local IMAGE_NAME=${2:-busybox}
   local NAMESPACE=${3:-default}
-  local CMD=${3:-sleep 1d}
+  local COMMANDS=${3:-sleep 1d}
 
-  kcrunimage "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${CMD}"
+  kcrunimage "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${COMMANDS}"
 }
 kcruntpl() {
-  usage $# "CMD" "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run]"
+  usage $# "CMD" "INSTANCE_NAME" "[IMAGE_NAME]" "[NAMESPACE]" "[ADDITIONAL_PARAMS:--dry-run]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CMD=$1
-  local IMAGE_NAME=$2
-  local INSTANCE_NAME=$3
+  local INSTANCE_NAME=$2
+  local IMAGE_NAME=$3
   local NAMESPACE=$4
   local ADDITIONAL_PARAMS=${@:5}
 
+  if [ -n "$IMAGE_NAME" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --image=${IMAGE_NAME}"
+  fi
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
   # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/#docker-run
-  echo "kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}"
-  kubectl ${CMD} --image=${IMAGE_NAME} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}
+  echo "kubectl ${CMD} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}"
+  kubectl ${CMD} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}
 }
 kcattach() {
   usage $# "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"
@@ -617,7 +615,7 @@ kcpodrun() {
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
-  kcruntpl "run --generator=run-pod/v1" "${IMAGE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" "${EXTRA_PARAMS}"
+  kcruntpl "run --generator=run-pod/v1" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${EXTRA_PARAMS}"
 }
 
 alias kcpodlogs=kclogsns
@@ -727,7 +725,7 @@ alias kcdpdesc='kcdesc deployment '
 alias kcdpdesc=kcdpinfo
 # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
 kcdprun() {
-  usage $# "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
+  usage $# "DEPLOYMENT_NAME" "IMAGE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 

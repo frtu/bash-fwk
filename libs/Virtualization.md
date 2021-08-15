@@ -281,7 +281,7 @@ These commands are easier with 'kcnsset NAMESPACE' :
 * Get **YAML** from an existing pod : ```kcpodyaml "POD_NAME" "NAMESPACE"```
 * Get **describe** or info from an existing pod : ```kcpoddesc "POD_NAME" "NAMESPACE"``` or ```kcpodinfo```
 * Get **container ID** from a pod : ```kcpodid "POD_NAME" "NAMESPACE"```
-* **Create** a new pod : ```kcpodrun "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"```
+* **Create** a new pod : ```kcpodrun "INSTANCE_NAME" "IMAGE_NAME" "[NAMESPACE]" "[PORT]"```
 * **Remove** from an existing pod : ```kcpodrm "POD_NAME" "NAMESPACE"```
 
 ### Deployment 'kcsvc' commands
