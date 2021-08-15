@@ -110,44 +110,6 @@ Administration :
 * Activate docker as a service : ```activatedck```
 * Edit local docker daemon config : ```dcksrvvi```
 
-## Library 'virtualbox'
-
-* Usage ```import lib-virtualbox```
-* Prefix ```vbox``` 
-
-### Base commands
-
-* Get VirtualBox version : ```vbox "[-a]"```
-* List VirtualBox images : ```vboxls```
-* Inspect an existing image : ```vboxinspect "INSTANCE_NAME"```
-
-### Administrate virtualbox image
-
-Install fwk :
-
-* Mount local [bash-fwk](https://github.com/frtu/bash-fwk) into virtualbox image : ```vboxmountfwk "INSTANCE_NAME" "GUEST_HOME"```
-
-Base commands :
-
-* Create a new instance : ```vboxcreate "INSTANCE_NAME" "BASE_FOLDER" "[CPU_NB]" "[MEMORY_MB]" "[NETWORK:82540EM|virtio]"```
-* Start existing instance : ```vboxstart "INSTANCE_NAME"```
-* Stop existing instance : ```vboxstop "INSTANCE_NAME"```
-* Pause existing instance : ```vboxpause "INSTANCE_NAME"```
-* Resume existing instance : ```vboxresume "INSTANCE_NAME"```
-* Delete existing instance : ```vboxrm "INSTANCE_NAME"```
-
-Modify an existing instance :
-
-* Mount a new storage : ```vboxstorage "INSTANCE_NAME" "IMAGE_FILEPATH" "[PORT_NUMBER]"```
-* Mount a host folder : ```vboxmount "INSTANCE_NAME" "HOST_FOLDER_PATH" "TARGET_FOLDER_NAME"```
-* Modify memory : ```vboxmemory "INSTANCE_NAME" "MEMORY_MB"```
-* Expose instance port into host : ```vboxport "INSTANCE_NAME" "PORT"```
-
-Network :
-
-* List all DHCP : ```vboxnetdhcp```
-* ...
-
 ## Library 'k8s-gke'
 
 * Usage ```import lib-k8s-gke```
@@ -279,7 +241,7 @@ ATTENTION - Wildcard delete :
 
 ### Working with apps
 
-* Run a **bash command** to a particular pod : ```kcbash "POD_NAME" "[NAMESPACE]" "[COMMANDS]"```
+* Run a **bash command** to a particular pod : ```kcbash "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"```
 * Open a **http proxy** at specified port into a particular pod : ```kcproxy "POD_NAME" "[PORT:8001]" "[NAMESPACE]"```
 * **Top** from an existing pod : ```kcpodtop "POD_NAME"```
 * Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
@@ -398,3 +360,42 @@ To manage locally charts repo at *~/git/helm-charts* (ONLY for fallback) :
 ### Common installation
 
 * Install Chart Museum : ```hminstchartmuseum```
+
+
+## Library 'virtualbox'
+
+* Usage ```import lib-virtualbox```
+* Prefix ```vbox``` 
+
+### Base commands
+
+* Get VirtualBox version : ```vbox "[-a]"```
+* List VirtualBox images : ```vboxls```
+* Inspect an existing image : ```vboxinspect "INSTANCE_NAME"```
+
+### Administrate virtualbox image
+
+Install fwk :
+
+* Mount local [bash-fwk](https://github.com/frtu/bash-fwk) into virtualbox image : ```vboxmountfwk "INSTANCE_NAME" "GUEST_HOME"```
+
+Base commands :
+
+* Create a new instance : ```vboxcreate "INSTANCE_NAME" "BASE_FOLDER" "[CPU_NB]" "[MEMORY_MB]" "[NETWORK:82540EM|virtio]"```
+* Start existing instance : ```vboxstart "INSTANCE_NAME"```
+* Stop existing instance : ```vboxstop "INSTANCE_NAME"```
+* Pause existing instance : ```vboxpause "INSTANCE_NAME"```
+* Resume existing instance : ```vboxresume "INSTANCE_NAME"```
+* Delete existing instance : ```vboxrm "INSTANCE_NAME"```
+
+Modify an existing instance :
+
+* Mount a new storage : ```vboxstorage "INSTANCE_NAME" "IMAGE_FILEPATH" "[PORT_NUMBER]"```
+* Mount a host folder : ```vboxmount "INSTANCE_NAME" "HOST_FOLDER_PATH" "TARGET_FOLDER_NAME"```
+* Modify memory : ```vboxmemory "INSTANCE_NAME" "MEMORY_MB"```
+* Expose instance port into host : ```vboxport "INSTANCE_NAME" "PORT"```
+
+Network :
+
+* List all DHCP : ```vboxnetdhcp```
+* ...

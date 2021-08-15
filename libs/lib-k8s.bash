@@ -203,8 +203,9 @@ kclogs() {
   echo "kubectl logs $@"
   kubectl logs $@
 }
+# https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
 kcbash() {
-  usage $# "POD_NAME" "[NAMESPACE]" "[COMMANDS]"
+  usage $# "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[CMD]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
@@ -213,18 +214,23 @@ kcbash() {
   fi
 
   local POD_NAME=$1
-  local NAMESPACE=$2
+  local CONTAINER=$2
+  local NAMESPACE=$3
+  local CMD=${@:4}
+
+  if [ -n "$CONTAINER" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -c ${CONTAINER}"
+  fi
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  if [ -z "$3" ]; then
+  if [ -z "$CMD" ]; then
       echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash"
       kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- /bin/bash
     else
-      local COMMANDS=${@:3}
-      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}"
-      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${COMMANDS}
+      echo "kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${CMD}"
+      kubectl exec -it ${POD_NAME} ${EXTRA_PARAMS} -- ${CMD}
   fi
 }
 
