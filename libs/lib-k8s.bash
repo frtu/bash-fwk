@@ -380,7 +380,7 @@ kccreate() {
   echo "kcpodtail [POD_NAME] : for daemons, tail logs"
 
   echo "---------------------";
-  echo "kcpodinfo [POD_NAME] : get more info from this pod"
+  echo "kcpoddesc [POD_NAME] : get more info from this pod"
 
   echo "kcpodyaml [POD_NAME] : get more YAML from this pod"
   echo "kcedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
@@ -407,7 +407,7 @@ kcapply() {
   echo "kcpodtail [POD_NAME] : for daemons, tail logs"
 
   echo "---------------------";
-  echo "kcpodinfo [POD_NAME] : get more info from this pod"
+  echo "kcpoddesc [POD_NAME] : get more info from this pod"
 
   echo "kcpodyaml [POD_NAME] : get more YAML from this pod"
   echo "kcedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
@@ -583,11 +583,11 @@ kcpodls() {
 }
 alias kcpodyaml='kcyaml pod '
 alias kcpoddesc='kcdesc pod '
-alias kcpoddesc=kcpodinfo
+alias kcpodinfo=kcpoddesc
 
 kcpodid() {
   usage $# "POD_NAME" "[NAMESPACE]"
-  kcpoddescribe $@ | grep 'Container ID'
+  kcpoddesc $@ | grep 'Container ID'
 }
 kcpodlabel() {
   echo "kubectl get pods $@ --show-labels"
@@ -748,7 +748,7 @@ kcsvctpl() {
 alias kcdpls=kclsdeployments
 alias kcdpyaml='kcyaml deployment'
 alias kcdpdesc='kcdesc deployment '
-alias kcdpdesc=kcdpinfo
+alias kcdpinfo=kcdpdesc
 # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
 kcdprun() {
   usage $# "DEPLOYMENT_NAME" "IMAGE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
