@@ -149,6 +149,26 @@ kcgettpl() {
   echo "kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}"
   kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}
 }
+kclstpl() {
+  usage $# "RESOURCE_TYPE" "[CONTAINING_TEXT]" "[CONTAINING_TEXT]" "[NAMESPACE]"
+
+  local RESOURCE_TYPE=$1
+  local CONTAINING_TEXT=$2
+  local NAMESPACE=$3
+  local EXTRA_PARAMS=${@:4}
+
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+  if [ -z "$CONTAINING_TEXT" ]; then
+      echo "kubectl get ${RESOURCE_TYPE} ${EXTRA_PARAMS}"
+      kubectl get ${RESOURCE_TYPE} ${EXTRA_PARAMS}
+    else
+      echo "== List all existing ${RESOURCE_TYPE} containing [${CONTAINING_TEXT}] =="
+      echo "kubectl get ${RESOURCE_TYPE} ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}"
+      kubectl get ${RESOURCE_TYPE} ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}
+  fi
+}
 kcyaml() {
   usage $# "[RESOURCE_TYPE:deploy,sts,svc,configmap,secret]" "[RESOURCE_NAME]" "[NAMESPACE:default]"
    # MIN NUM OF ARG
@@ -562,25 +582,7 @@ kcnstpl() {
   kubectl ${CMD} namespace ${NAMESPACE} ${@:3}
 }
 
-kcpodls() {
-  usage $# "[CONTAINING_TEXT]" "[NAMESPACE]"
-
-  local CONTAINING_TEXT=$1
-  local NAMESPACE=$2
-  local EXTRA_PARAMS=${@:3}
-
-  if [ -n "$NAMESPACE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
-  fi
-  if [ -z "$CONTAINING_TEXT" ]; then
-      echo "kubectl get pods ${EXTRA_PARAMS}"
-      kubectl get pods ${EXTRA_PARAMS}
-    else
-      echo "== List all existing pods containing [${CONTAINING_TEXT}] =="
-      echo "kubectl get pods ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}"
-      kubectl get pods ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}
-  fi
-}
+alias kcpodls='kclstpl pod '
 alias kcpodyaml='kcyaml pod '
 alias kcpoddesc='kcdesc pod '
 alias kcpodinfo=kcpoddesc
@@ -692,7 +694,7 @@ kcpodtpl() {
   kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS}
 }
 
-alias kcsvcls=kclsservices
+alias kcsvcls='kclstpl svc '
 alias kcsvcyaml='kcyaml svc '
 alias kcsvcdesc='kcdesc svc '
 kcsvschk() {
@@ -745,7 +747,7 @@ kcsvctpl() {
   kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}
 }
 
-alias kcdpls=kclsdeployments
+alias kcdpls='kclstpl deployment '
 alias kcdpyaml='kcyaml deployment'
 alias kcdpdesc='kcdesc deployment '
 alias kcdpinfo=kcdpdesc
