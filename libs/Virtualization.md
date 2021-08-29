@@ -241,7 +241,9 @@ ATTENTION - Wildcard delete :
 
 ### Working with apps
 
-* Run a **bash command** to a particular pod : ```kcbash "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"```
+* Run a **bash command** to a particular pod : ```kcbash "POD_NAME"  "[COMMANDS]"```
+* Run a **bash command** to a particular pod with container name & namespace : ```kcbashns "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"```
+* Run a **list env vars** to a particular pod : ```kcpodenv "POD_NAME" "[CONTAINING_TEXT]"```
 * Open a **http proxy** at specified port into a particular pod : ```kcproxy "POD_NAME" "[PORT:8001]" "[NAMESPACE]"```
 * **Top** from an existing pod : ```kcpodtop "POD_NAME"```
 * Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```

@@ -225,6 +225,22 @@ kclogs() {
 }
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
 kcbash() {
+  usage $# "POD_NAME" "[COMMANDS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
+    kcpodls
+    return 1
+  fi
+
+  local POD_NAME=$1
+  local COMMANDS=${2:-/bin/bash}
+  local COMMANDS_ARGS=${@:3}
+
+  kcinteractivetpl "exec" "${POD_NAME}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
+}
+# https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
+kcbashns() {
   usage $# "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
@@ -594,6 +610,24 @@ kcpodid() {
 kcpodlabel() {
   echo "kubectl get pods $@ --show-labels"
   kubectl get pods $@ --show-labels
+}
+kcpodenv() {
+  usage $# "POD_NAME" "[CONTAINING_TEXT]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
+    kcpodls
+    return 1
+  fi
+
+  local POD_NAME=$1
+  local CONTAINING_TEXT=${@:2}
+
+  if [ -z "$CONTAINING_TEXT" ]; then
+      kcbash "${POD_NAME}" "env"
+    else
+      kcbash "${POD_NAME}" "env"  | grep ${CONTAINING_TEXT}
+  fi
 }
 
 # Interaction
