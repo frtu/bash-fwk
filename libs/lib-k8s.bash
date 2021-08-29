@@ -646,7 +646,7 @@ kcpodrun() {
   kcruntpl "run --generator=run-pod/v1" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${EXTRA_PARAMS}"
 }
 
-alias kcpodlogs=kclogsns
+alias kcpodlogs=kclogs
 kcpodtail() {
   usage $# "POD_NAME"
    # MIN NUM OF ARG
