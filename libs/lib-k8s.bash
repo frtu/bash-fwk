@@ -31,10 +31,12 @@ kcls() {
   kclsnamespaces $@
   echo "------- Pods --------";
   kclspods $@
-  echo "------- Services --------";
-  kclsservices $@
   echo "------- Deployment --------";
   kclsdeployments $@
+  echo "------- Services --------";
+  kclsservices $@
+  echo "------- Ingress --------";
+  kclsingress $@
 }
 kclsnamespaces() {
   echo "kubectl get namespaces $@"
@@ -75,6 +77,10 @@ kclsservices() {
 kclsdeployments() {
   usage $# "[NAMESPACE]"
   kcgettemplate "deployment" $@
+}
+kclsingress() {
+  usage $# "[NAMESPACE]"
+  kcgettemplate "ingress" $@
 }
 kclsevents() {
   usage $# "[NAMESPACE]"
