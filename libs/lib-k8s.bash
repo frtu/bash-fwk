@@ -786,6 +786,7 @@ kcsvctpl() {
   echo "kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}"
   kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}
 }
+alias kcingls='kclstpl ingress '
 
 alias kcdpls='kclstpl deployment '
 alias kcdpyaml='kcyaml deployment'

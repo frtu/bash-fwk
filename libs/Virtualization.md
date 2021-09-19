@@ -227,8 +227,9 @@ All kubectl listing commands in the current cluster and namespace :
 * List all **k8s resources/objects** : ```kcls [NAMESPACE]```
 * List all **namespaces** : ```kclsnamespaces```
 * List all **pods** : ```kclspods [NAMESPACE]```
-* List all **services**  : ```kclsservices [NAMESPACE]```
 * List all **deployments** : ```kclsdeployments [NAMESPACE]```
+* List all **services**  : ```kclsservices [NAMESPACE]```
+* List all **ingress**  : ```kclsingress [NAMESPACE]```
 * List all events : ```kclsevents [NAMESPACE]```
 * List all api services : ```kclsapi [NAMESPACE]```
 * List all resources types : ```kclsresources```
@@ -273,7 +274,7 @@ Interaction with files
 
 When discovering pods, use :
 
-* List all **pods** and IPs : ```kclspods [NAMESPACE]```
+* List all **pods** and IPs : ```kclspods "[CONTAINING_TEXT]"```
 * List all **pods** and IPs : ```kclspodsfull "[NAMESPACE]" "[OPTION:wide|yaml]"```
 
 These commands are easier with 'kcnsset NAMESPACE' :
@@ -286,22 +287,28 @@ These commands are easier with 'kcnsset NAMESPACE' :
 * **Create** a new pod : ```kcpodrun "INSTANCE_NAME" "IMAGE_NAME" "[NAMESPACE]" "[PORT]"```
 * **Remove** from an existing pod : ```kcpodrm "POD_NAME" "NAMESPACE"```
 
-### Deployment 'kcsvc' commands
-
-* List all **services** : ```kcsvcls```
-* Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
-* Get **describe** or info from an existing service : ```kcsvcdesc "SERVICE_NAME" "NAMESPACE"``` or ```kcsvcinfo```
-* Check status for an existing **service** : ```kcsvschk "SERVICE_NAME" "[NAMESPACE]"```
-* **Remove** from an existing service : ```kcsvcrm "SERVICE_NAME" "[NAMESPACE]"```
-
 ### Deployment 'kcdp' commands
 
-* **List** all existing deployment : ```kcdpls [NAMESPACE]```
+* **List** all existing deployment : ```kcdpls "[CONTAINING_TEXT]"```
 * **Create** a new deployment : ```kcdprun "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
 * Get **YAML** from an existing deployment : ```kcdpyaml "DEPLOYMENT_NAME" "NAMESPACE"```
 * Get **describe** or info from an existing deployment : ```kcdpdesc "DEPLOYMENT_NAME" "NAMESPACE"``` or ```kcdpinfo```
 * **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
 * **Remove** from an existing deployment : ```kcdprm "DEPLOYMENT_NAME" "[NAMESPACE]"```
+
+### Deployment 'kcsvc' commands
+
+* List all **services** : ```kcsvcls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing service : ```kcsvcdesc "SERVICE_NAME" "NAMESPACE"``` or ```kcsvcinfo```
+* Check status for an existing **service** : ```kcsvschk "SERVICE_NAME" "[NAMESPACE]"```
+* **Remove** from an existing service : ```kcsvcrm "SERVICE_NAME" "[NAMESPACE]"```
+
+
+### Deployment 'kcing' commands
+
+* List all **ingress** : ```kcingls "[CONTAINING_TEXT]"```
+
 
 ### K8s context 'kcctx' commands
 
