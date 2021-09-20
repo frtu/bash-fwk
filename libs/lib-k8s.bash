@@ -24,6 +24,11 @@ kchello() {
   local IMAGE_REPOSITORY=${1:-k8s.gcr.io}
   kubectl create deployment hello-minikube --image=${IMAGE_REPOSITORY}/echoserver:1.10
 }
+# https://kind.sigs.k8s.io/docs/user/ingress/
+kcingress() {
+  echo "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml"
+  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+}
 # https://kubernetes.io/docs/reference/kubectl/overview/#resource-types
 kcls() {
   usage $# "[NAMESPACE]"

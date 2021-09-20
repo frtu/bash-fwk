@@ -6,6 +6,10 @@ inst_kind() {
   inst kind
 }
 
+kd() {
+  echo "kind version"
+  kind version
+}
 kdls() {
   echo "kind get clusters"
   kind get clusters
