@@ -308,6 +308,8 @@ These commands are easier with 'kcnsset NAMESPACE' :
 ### Deployment 'kcing' commands
 
 * List all **ingress** : ```kcingls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing ingress : ```kcingyaml "INGRESS_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing ingress : ```kcingdesc "INGRESS_NAME" "NAMESPACE"```
 
 
 ### K8s context 'kcctx' commands

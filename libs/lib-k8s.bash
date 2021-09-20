@@ -176,11 +176,11 @@ kclstpl() {
   fi
 }
 kcyaml() {
-  usage $# "[RESOURCE_TYPE:deploy,sts,svc,configmap,secret]" "[RESOURCE_NAME]" "[NAMESPACE:default]"
+  usage $# "[RESOURCE_TYPE:deploy,sts,svc,ingress,configmap,secret]" "[RESOURCE_NAME]" "[NAMESPACE:default]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local RESOURCE_TYPE=${1:-pod,deploy,sts,svc,configmap,secret}
+  local RESOURCE_TYPE=${1:-pod,deploy,sts,svc,ingress,configmap,secret}
   local RESOURCE_NAME=$2
   local NAMESPACE=$3
   local EXTRA_PARAMS=${@:4}
@@ -192,12 +192,12 @@ kcyaml() {
   kcgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
 }
 kcyamlns() {
-  usage $# "[NAMESPACE:default]" "[RESOURCE_TYPE:deploy,sts,svc,configmap,secret]"
+  usage $# "[NAMESPACE:default]" "[RESOURCE_TYPE:deploy,sts,svc,ingress,configmap,secret]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local NAMESPACE=$1
-  local RESOURCE_TYPE=${2:-pod,deploy,sts,svc,configmap,secret}
+  local RESOURCE_TYPE=${2:-pod,deploy,sts,svc,ingress,configmap,secret}
   local EXTRA_PARAMS=${@:3}
 
   if [ -n "$NAMESPACE" ]; then
@@ -787,6 +787,8 @@ kcsvctpl() {
   kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}
 }
 alias kcingls='kclstpl ingress '
+alias kcingyaml='kcyaml ingress'
+alias kcingdesc='kcdesc ingress '
 
 alias kcdpls='kclstpl deployment '
 alias kcdpyaml='kcyaml deployment'
@@ -946,8 +948,8 @@ kcrm() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  echo "kubectl delete pod,service,deployment ${RESOURCE} ${EXTRA_PARAMS}"
-  kubectl delete pod,service,deployment ${RESOURCE} ${EXTRA_PARAMS}
+  echo "kubectl delete pod,deployment,service,ingress ${RESOURCE} ${EXTRA_PARAMS}"
+  kubectl delete pod,deployment,service,ingress ${RESOURCE} ${EXTRA_PARAMS}
 }
 kcrmall() {
   usage $# "NAMESPACE"
@@ -960,6 +962,6 @@ kcrmall() {
 
   local NAMESPACE=$1
 
-  echo "kubectl -n ${NAMESPACE} delete po,svc,deployment --all "
-  kubectl -n ${NAMESPACE} delete po,svc,deployment --all 
+  echo "kubectl -n ${NAMESPACE} delete po,deployment,svc,ingress --all "
+  kubectl -n ${NAMESPACE} delete po,deployment,svc,ingress --all 
 }
