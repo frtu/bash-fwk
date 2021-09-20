@@ -110,6 +110,22 @@ Administration :
 * Activate docker as a service : ```activatedck```
 * Edit local docker daemon config : ```dcksrvvi```
 
+## Library 'k8s-resources'
+
+* Usage ```import lib-k8s-resources```
+* Prefix ```kr```
+
+### Base commands
+
+* Create Pod : ```krpod "APP_NAME" "IMAGE_NAME" "PORT" "[ARGS]"```
+* Create Deployment : ```krdp "APP_NAME" "IMAGE_NAME" "PORT" "[ARGS]"```
+* Create Service : ```krsvc "TARGET_PORT" "[PORT:80]" "[SVC_NAME:sample]" "[APP_NAME:sample]"```
+* Create Ingress : ```kringress "TARGET_PORT" "[INGRESS_NAME:sample]" "[APP_NAME:sample-service]" "[PATH:sample]"```
+
+### Common images
+
+* Create NGINX deployment : ```krnginx "[APP_NAME:nginx]" "[IMAGE_NAME:nginx:1.14.2]" "[PORT:80]"```
+
 ## Library 'k8s-gke'
 
 * Usage ```import lib-k8s-gke```
