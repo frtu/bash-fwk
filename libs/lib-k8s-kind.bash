@@ -96,6 +96,29 @@ kdtpl() {
   echo "kind ${CMD} cluster ${EXTRA_PARAMS}"
   kind ${CMD} cluster ${EXTRA_PARAMS}
 }
+# https://kind.sigs.k8s.io/
+kdcgo() {
+  usage $# "[GO_MODULE]" "[CLUSTER_NAME]" "[CMD]" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please provide a CLUSTER_NAME: If you don't know any cluster names run 'kdls'" >&2
+    kdls
+    return 1
+  fi
+
+  local GO_MODULE=${1:-sigs.k8s.io/kind@v0.11.1}
+  local CLUSTER_NAME=$2
+  local CMD=${3:-create}
+  local EXTRA_PARAMS=${@:4}
+  
+  # Default cluster context name is `kind`
+  if [ -n "$CLUSTER_NAME" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --name $CLUSTER_NAME"
+  fi
+  
+  echo "GO111MODULE=\"on\" go install ${GO_MODULE} && kind ${CMD} cluster ${EXTRA_PARAMS}"
+  GO111MODULE="on" go install ${GO_MODULE} && kind ${CMD} cluster ${EXTRA_PARAMS}
+}
 
 kdgetnodes() {
   kdget nodes $@
@@ -137,6 +160,7 @@ kdload() {
 
   # Default cluster context name is `kind`
   if [ -n "$CLUSTER_NAME" ]; then
+    echo "== STRANGELY ONLY WORKS WITH kind CLUSTER =="
     # Every kind instances are prefixed with kind-*
     local CLUSTER_FULL_NAME=kind-${CLUSTER_NAME}
 
