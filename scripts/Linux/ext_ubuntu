@@ -4,6 +4,27 @@ echo "=== Loading Ubuntu ==="
 export NODE_URL_PREFIX="deb"
 export EXEC="sudo -E bash -"
 
+inst_exfat() {
+  inst exfat-fuse exfat-utils
+}
+inst_rar() {
+  inst unrar
+}
+
+inst_wine() {
+  # FOLOW : https://www.how2shout.com/linux/how-to-install-wechat-client-on-ubuntu-linux/
+  sudo dpkg --add-architecture i386
+  wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+  sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
+  sudo apt update
+  sudo apt install --install-recommends winehq-stable
+}
+inst_android() {
+  inst mtpfs mtp-tools
+  sudo add-apt-repository ppa:samoilov-lex/aftl-stable
+  sudo apt-get update && sudo apt install android-file-transfer
+}
+
 inst_docker() {
   # FOLOW : https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce
   apt install apt-transport-https ca-certificates curl software-properties-common
