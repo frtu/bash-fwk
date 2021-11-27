@@ -83,6 +83,11 @@ aptrepo() {
 
   upd
 }
+
+inst_stacer() {
+  aptrepo oguzhaninan/stacer
+  inst stacer
+}
 inst_aptfast() {
   aptrepo apt-fast/stable
   inst apt-fast
