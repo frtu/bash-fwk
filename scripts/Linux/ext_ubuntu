@@ -11,6 +11,15 @@ inst_rar() {
   inst unrar
 }
 
+inst_ios() {
+  aptrepo martin-salbaba/ppa+libimobiledevice
+  inst libimobiledevice-utils ifuse
+}
+inst_android() {
+  inst mtpfs mtp-tools
+  sudo add-apt-repository ppa:samoilov-lex/aftl-stable
+  sudo apt-get update && sudo apt install android-file-transfer
+}
 inst_wine() {
   # FOLOW : https://www.how2shout.com/linux/how-to-install-wechat-client-on-ubuntu-linux/
   sudo dpkg --add-architecture i386
@@ -18,11 +27,6 @@ inst_wine() {
   sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
   sudo apt update
   sudo apt install --install-recommends winehq-stable
-}
-inst_android() {
-  inst mtpfs mtp-tools
-  sudo add-apt-repository ppa:samoilov-lex/aftl-stable
-  sudo apt-get update && sudo apt install android-file-transfer
 }
 
 inst_docker() {
