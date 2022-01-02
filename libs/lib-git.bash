@@ -12,7 +12,7 @@ parse_git_branch() {
 gpersist() {
   usage $# "GITHUB_ROOT_URL:github.com"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local GITHUB_ROOT_URL=$1
   echo "Persiting GITHUB_ROOT_URL=${GITHUB_ROOT_URL}!"
@@ -21,7 +21,7 @@ gpersist() {
 grmcached() {
   usage $# "ITEM_TO_REMOVE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local ITEM_TO_REMOVE=$1
 
@@ -36,7 +36,7 @@ gstatus() {
 gbase() {
   usage $# "[MESSAGE]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "git init"
   git init
@@ -69,7 +69,7 @@ gtpl() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     gstatus
-    return -1;
+    return 1;
   fi
 
   local CMD=$1
@@ -80,7 +80,7 @@ gtpl() {
 gaddall() {
   usage $# "MESSAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local MESSAGE=$1
   echo "git add -A"
@@ -92,7 +92,7 @@ gaddall() {
 gcomm() {
   usage $# "MESSAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local MESSAGE=$1
   echo "git commit -m ${MESSAGE}"
@@ -106,7 +106,7 @@ gf() {
 gl() {
   usage $# "[REMOTE_REPO_NAME:origin]" "[REMOTE_BRANCH:master]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "git pull $@"
   git pull $@
@@ -114,7 +114,7 @@ gl() {
 gh() {
   usage $# "[REMOTE_REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "git push $@"
   git push $@
@@ -157,7 +157,7 @@ gcl() {
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
-    return -1
+    return 1
   fi
   ##################################  
   
@@ -206,7 +206,7 @@ gsubadd(){
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
-    return -1
+    return 1
   fi
   ##################################
 
@@ -218,6 +218,10 @@ gsubadd(){
   git submodule add ${EXTRA_ARGS} git@${GITHUB_ROOT_URL}:${REPO_NAME}/${PROJECT_NAME}.git
 }
 
+glog() {
+  echo "git log"
+  git log
+}
 gtagls() {
   echo "git tag"
   git tag
@@ -231,7 +235,7 @@ gtagpush() {
   if [[ "$?" -ne 0 ]]; then 
     echo "==== Please push an existing tag ! Check existing tag using 'gtagls' ===="
     gtagls
-    return -1; 
+    return 1; 
   fi
 
   local TAG_NAME=$1
@@ -245,7 +249,7 @@ gtagrm() {
   if [[ "$?" -ne 0 ]]; then 
     echo "==== Please specify a tag to remove ! Check existing tag using 'gtagls' ===="
     gtagls
-    return -1; 
+    return 1; 
   fi
 
   local TAG_NAME=$1
@@ -270,7 +274,7 @@ gbr() {
     gtagls
     echo "==== Please use 'gbrls' to select an existing branch (remove '/remotes/repo/' for a remote branch) ===="
     gbrls
-    return -1; 
+    return 1; 
   fi
 
   local BRANCH_OR_TAG_NAME=$1
@@ -281,7 +285,7 @@ gbr() {
 gbrsp() {
   usage $# "BRANCH_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local BRANCH_NAME=$1
   gs
@@ -294,7 +298,7 @@ gbrsp() {
 gbrc() {
   usage $# "BRANCH_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local BRANCH_NAME=$1
   echo "git branch $BRANCH_NAME"
@@ -305,7 +309,7 @@ gbrc() {
 gbrcreate() {
   usage $# "BRANCH_NAME:master" "[REMOTE_REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local BRANCH_NAME=$1
   local REMOTE_REPO_NAME=$2
@@ -336,7 +340,7 @@ gbrcreate() {
 gbrrm() {
   usage $# "BRANCH_NAME" "[FALLBACK_BRANCH_AFTER_DELETE:master]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local BRANCH_NAME=$1
   local FALLBACK_BRANCH_AFTER_DELETE=${2:-master}
@@ -350,7 +354,7 @@ gbrrm() {
 gbrmv() {
   usage $# "OLD_BRANCH_NAME" "NEW_BRANCH_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local OLD_BRANCH_NAME=$1
   local NEW_BRANCH_NAME=$2
@@ -368,7 +372,7 @@ gfd() {
 gff() {
   usage $# "FEATURE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local FEATURE_NAME=$1
   gbrsp feature/${FEATURE_NAME}
@@ -376,7 +380,7 @@ gff() {
 gffc() {
   usage $# "FEATURE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local FEATURE_NAME=$1
   gbrc feature/${FEATURE_NAME}
@@ -384,7 +388,7 @@ gffc() {
 gfr() {
   usage $# "RELEASE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local RELEASE_NAME=$1
   gbrsp release/${RELEASE_NAME}
@@ -392,7 +396,7 @@ gfr() {
 gfrc() {
   usage $# "RELEASE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local RELEASE_NAME=$1
   gbrc release/${RELEASE_NAME}
@@ -400,7 +404,7 @@ gfrc() {
 gfh() {
   usage $# "HOTFIX_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local HOTFIX_NAME=$1
   gbrsp hotfix/${HOTFIX_NAME}
@@ -408,7 +412,7 @@ gfh() {
 gfhc() {
   usage $# "HOTFIX_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local HOTFIX_NAME=$1
   gbrc hotfix/${HOTFIX_NAME}
@@ -447,7 +451,7 @@ gremoteadd() {
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[REMOTE_NAME:origin]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]" "[BRANCH_NAME:master]"
-    return -1
+    return 1
   fi
   ##################################
   ## USAGE IF NO PROJECT_NAME
@@ -495,7 +499,7 @@ gremotemultiadd() {
   ## USAGE IF NO PROJECT_NAME
   if [ -z $PROJECT_NAME ]; then
     usage $# "REPO_NAME" "PROJECT_NAME" "[BRANCH_NAME]" "[GITHUB_ROOT_URL:${GITHUB_ROOT_URL}]"
-    return -1
+    return 1
   fi
   ##################################
 
@@ -512,7 +516,7 @@ gremotemultiadd() {
 gremotemultimerge() {
   usage $# "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:github.com]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local REPO_NAME=$1
   local PROJECT_NAME=$2
@@ -537,7 +541,7 @@ gremotemultimerge() {
 gremoterm() {
   usage $# "REMOTE_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local REMOTE_NAME=remote-$1
   echo "git remote remove $REMOTE_NAME"
@@ -547,7 +551,7 @@ gremoterm() {
 gpatch() {
   usage $# "DIFF_FILENAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DIFF_FILENAME=${1:-diff}
 	echo "git diff > $DIFF_FILENAME.patch"
@@ -556,7 +560,7 @@ gpatch() {
 gpatchapply() {
   usage $# "DIFF_FILENAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DIFF_FILENAME=${1:-diff}	
 	if [ -f "$DIFF_FILENAME.patch" ]; then
@@ -576,7 +580,7 @@ gconfls() {
 gconfset() {
   usage $# "CONF_PARAM_NAME" "CONF_PARAM_VALUE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CONF_PARAM_NAME=$1
   local CONF_PARAM_VALUE=$2
@@ -587,21 +591,21 @@ gconfset() {
 gconfsetname() {
   usage $# "NAME_PARAM_VALUE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   gconfset user.name "$1"
 }
 gconfsetemail() {
   usage $# "EMAIL_PARAM_VALUE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   gconfset user.email "$1"
 }
 gconfsetproxy() {
   usage $# "PROXY_PARAM_VALUE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   gconfset http.proxy "$1"
 }
