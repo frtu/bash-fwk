@@ -14,7 +14,7 @@ mvngenlocal() {
   mvngen $1 $2 ${GID} ${VERSION} -DarchetypeCatalog=local ${@:5}
 }
 mvngen() {
-  usage $# "ARCHETYPE:base|kotlin|plt-kafka|plt-spark|avro" "[AID]" "[GID]" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
+  usage $# "ARCHETYPE:base|kotlin|plt-kafka|plt-spark|avro" "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
@@ -38,6 +38,9 @@ mvngen() {
 
   echo "mvn archetype:generate -DarchetypeGroupId=com.github.frtu.archetype -DarchetypeArtifactId=${ARCHETYPE}-project-archetype -DarchetypeVersion=${ARCHETYPE_VERSION} ${OPTIONAL_ARGS}"
   mvn archetype:generate -DarchetypeGroupId=com.github.frtu.archetype -DarchetypeArtifactId=${ARCHETYPE}-project-archetype -DarchetypeVersion=${ARCHETYPE_VERSION} ${OPTIONAL_ARGS}
+
+  cd "${AID}"
+  mvn compile
 }
 # https://github.com/openjdk/jmh
 mvngenbenchmark() {

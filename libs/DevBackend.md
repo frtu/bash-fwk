@@ -86,7 +86,7 @@ Install packages :
 
 ### Install
 
-* Enable Maven Archetype generator library with the [dedicated version](https://search.maven.org/search?q=g:com.github.frtu.archetype) : ```enablemvngen "ARCHETYPE_VERSION" "[DEFAULT_GID]"```
+* Enable Maven Archetype generator library with the [dedicated version](https://search.maven.org/search?q=g:com.github.frtu.archetype) : ```enablemvngen "ARCHETYPE_VERSION" "DEFAULT_GID"```
 
 ### Usage
 
