@@ -197,6 +197,11 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 * Git checkout or create release branch : ```gfr "RELEASE_NAME"``` or ```gfrc "RELEASE_NAME"```
 * Git checkout or create hotfix branch : ```gfh "HOTFIX_NAME"``` or ```gfhc "HOTFIX_NAME"```
 
+#### Git history
+
+* List all previous version : ```glog```
+* Change HEAD to previous version : ```greset "COMMIT_ID"```
+
 #### Git patches
 
 * Generate a diff file from local change : ```gpatch "DIFF_FILENAME"```
