@@ -548,6 +548,21 @@ gremoterm() {
   git remote remove $REMOTE_NAME
 }
 
+# Reset to previous commit
+greset() {
+  usage $# "COMMIT_ID"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "If you don't know any COMMIT_ID run 'glog'" >&2 
+    return 1
+  fi
+
+  local COMMIT_ID=$1
+  gs
+  git reset --hard ${COMMIT_ID}
+  gsp
+}
+
 gpatch() {
   usage $# "DIFF_FILENAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
