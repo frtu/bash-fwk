@@ -64,6 +64,10 @@ inst_maven() {
   inst maven
 }
 
+# https://cluster-api.sigs.k8s.io/clusterctl/overview.html
+inst_clusterctl() {
+  inst clusterctl
+}
 # https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux
 inst_dl_kubectl() {
   # https://github.com/kubernetes/kubernetes/releases
@@ -101,4 +105,23 @@ inst_dl_kind() {
   fi
 
   inst_dl_bin "kind" "${EXEC_URL}" "${BIN_PATH}"
+}
+
+# https://github.com/argoproj/argo-cd/releases
+inst_dl_argocd() {
+  usage $# "[VERSION:v2.2.2]" "[EXEC_URL:https://github.com/argoproj/argo-cd/releases/download/xxx]" "[BIN_PATH:/usr/local/bin/]"
+
+  local VERSION=${1:-v2.2.2}
+  local EXEC_URL=$2
+  local BIN_PATH=${3:-/usr/local/bin/}
+
+  if [[ -z ${EXEC_URL} ]]; then
+    if [[ -z ${VERSION} ]]; then
+      VERSION=latest
+    fi
+    local OS=$(uname | tr '[:upper:]' '[:lower:]')
+    local EXEC_URL=https://github.com/argoproj/argo-cd/releases/download/${VERSION}/argocd-${OS}-amd64
+  fi
+
+  inst_dl_bin "argocd" "${EXEC_URL}" "${BIN_PATH}"
 }

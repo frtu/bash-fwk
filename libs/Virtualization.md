@@ -143,6 +143,16 @@ Administration :
 * Switch project using previously created alias : ```gkeprj<PROJECT_NAME>```
 * Check the current project : ```kcctx```
 
+## Library 'k8s-argocd'
+
+* Usage ```import lib-k8s-argocd```
+* Prefix ```ka```
+
+### Base commands
+
+* Login to ArgoCD : ```kalogin "[SERVER_URL:localhost:8080]"```
+* Update ArgoCD pwd : ```kapwdupd```
+* Adding ArgoCD service-account to that target cluster : ```katarget "TARGET_CLUSTER_NAME:target-k8s"```
 
 ## Library 'k8s-kind'
 
@@ -169,8 +179,8 @@ Administration :
 
 * Install ArgoCD : ```kdinstargocd```
 * List all components from ArgoCD : ```kdargocdls```
-* Open port to ArgoCD : ```kdargocd "[PORT_MAPPING-8080]"```
-* Get Admin pwd for ArgoCD : ```kdargocdpassword```
+* Open port to ArgoCD using [http://localhost:PORT_MAPPING/](http://localhost:8080/) : ```kdargocd "[PORT_MAPPING-8080]"```
+* Get ```admin``` pwd for ArgoCD : ```kdargocdpassword```
 
 ## Library 'k8s-minikube'
 

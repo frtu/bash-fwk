@@ -1,5 +1,6 @@
-import lib-k8s
 import lib-inst
+import lib-k8s
+import lib-k8s-argocd
 
 # https://kind.sigs.k8s.io/docs/user/quick-start/
 inst_kind() {
