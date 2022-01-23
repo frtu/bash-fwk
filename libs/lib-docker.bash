@@ -19,7 +19,7 @@ dckls() {
 dckpullsk() {
   usage $# "IMAGE_NAME"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local IMAGE_NAME=$1
   dckpull ${IMAGE_NAME} "–disable-content-trust"
@@ -27,7 +27,7 @@ dckpullsk() {
 dckpull() {
   usage $# "IMAGE_NAME" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "docker pull $@"
   docker pull $@
@@ -35,7 +35,7 @@ dckpull() {
 dcksearch() {
   usage $# "IMAGE_NAME"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   dcktpl "search" $@
 }
@@ -81,7 +81,7 @@ dcktpl() {
   if [ -z "$2" ]; then
     echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
-    return -1
+    return 1
   fi
   echo "docker $@"
   docker $@
@@ -90,7 +90,7 @@ dckrm() {
   # MIN NUM OF ARG
   if [[ "$#" < "1" ]]; then
     echo "Please supply argument(s) \"INSTANCE_NAME\". If you don't know any names run 'dckps' and look at the last column NAMES" >&2
-    return -1
+    return 1
   fi
   docker stop $@
   docker rm -f $@
@@ -104,7 +104,7 @@ dckcp() {
   if [[ "$?" -ne 0 ]]; then 
     echo "(Prefix the image location with \"IMAGE_NAME:/tmp\"). If you don't know any names run 'dckps' and look at the last column NAMES" >&2
      dckps
-     return -1
+     return 1
    fi
   local SOURCE=$1
   local DESTINATION=$2
@@ -119,7 +119,7 @@ dcksh() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
-    return -1
+    return 1
   fi
 
   dckbashtpl "sh" $@
@@ -130,7 +130,7 @@ dckbash() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
     dckps
-    return -1
+    return 1
   fi
 
   dckbashtpl "bash" $@
@@ -144,7 +144,7 @@ dckbashtpl() {
         echo "If you don't know any names run 'dckps' and look at the last column NAMES" >&2
         dckps
     fi
-    return -1
+    return 1
   fi
 
   local BASH_CMD=$1
@@ -168,7 +168,7 @@ dckimagesh() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
     dckls
-    return -1
+    return 1
   fi
 
   dckimagebashtpl "sh" $@
@@ -179,7 +179,7 @@ dckimagebash() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
     dckls
-    return -1
+    return 1
   fi
 
   dckimagebashtpl "bash" $@
@@ -193,7 +193,7 @@ dckimagebashtpl() {
         echo "If you don't know any names run 'dckls' and look at the last column NAMES" >&2
         dckls
     fi
-    return -1
+    return 1
   fi
 
   local BASH_CMD=$1
@@ -207,7 +207,7 @@ dckimagebashtpl() {
 dckproxy() {
   usage $# "DOCKER_REGISTRY_DOMAIN_NAME"
    # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DOCKER_REGISTRY_DOMAIN_NAME=$1
 
@@ -223,7 +223,7 @@ dckexport() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG" >&2
     dckls
-    return -1
+    return 1
   fi
 
   local DCK_IMAGE_NAME=$1
@@ -241,7 +241,7 @@ dckexport() {
 dckimportfolder() {
   usage $# "DOCKER_IMAGE_FILE_FILTER" "[FOLDER_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DOCKER_IMAGE_FILE_FILTER=$1
   local FOLDER_PATH=${2:-$VM_ARCHIVE_FOLDER}
@@ -266,7 +266,7 @@ dckimportfolder() {
 dckimport() {
   usage $# "DCK_IMAGE_FILENAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DCK_IMAGE_FILENAME=$1
   # If the local file doesn't exist
@@ -280,7 +280,7 @@ dckimport() {
 
   if [ ! -f ${DCK_IMAGE_FILENAME} ]; then
     echo "Cannot find file '$1' or '${DCK_IMAGE_FILENAME}'" >&2
-    return -1
+    return 1
   fi
 
   echo "docker load -i ${DCK_IMAGE_FILENAME}"
@@ -320,7 +320,7 @@ dckexportcontainer() {
 dckimportcontainer() {
   usage $# "CONTAINER_NAME" "[CONTAINER_NAME_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CONTAINER_NAME=$1
   local CONTAINER_NAME_PATH=${2:-docker_inst_$CONTAINER_NAME.tar.gz}
@@ -371,7 +371,7 @@ dckregtpl() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dckls' and look at the 2 columns REPOSITORY:TAG" >&2
     dckls
-    return -1
+    return 1
   fi
 
   local CMD=$1
@@ -406,7 +406,7 @@ dcknetrm() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any names run 'dcknetls'" >&2
     dcknetls
-    return -1
+    return 1
   fi
 
   echo "docker network rm $@"
@@ -429,7 +429,7 @@ dckcreate() {
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
     dckls 
-    return -1
+    return 1
   fi
 
   local IMAGE_NAME=$1
@@ -444,7 +444,7 @@ dckcreate() {
 dckrundaemon() {
   usage $# "IMAGE_NAME" "[INSTANCE_NAME]" "[MORE_ARG]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local IMAGE_NAME=$1
   local INSTANCE_NAME=${2:-$1}
@@ -471,7 +471,7 @@ dckrundaemon() {
 dckrunjavaenv() {
   usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local IMAGE_NAME=$1
   local PORT=8080
@@ -487,7 +487,7 @@ dckrunjavaenv() {
 dckrunjava() {
   usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]" "[SYS_ENV_PREFIXED_BY_-e]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local IMAGE_NAME=$1
   local PORT=${2:-8080}
@@ -507,7 +507,7 @@ dckrunjava() {
 dckrunjenkinsnode() {
   usage $# "INSTANCE_NAME:jenkins-nodejs" "[FOLDER_PATH]" "[PORT_JENKINS:8080]" "[PORT_SONARQUBE:9000]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INSTANCE_NAME=${1:-jenkins-nodejs}
   local FOLDER_PATH=$2
@@ -549,7 +549,7 @@ dckrunjenkinsnode() {
 dckrunjenkins() {
   usage $# "INSTANCE_NAME:jenkins" "[FOLDER_PATH]" "[PORT_JENKINS:8080]" "[PORT_INBOUND_AGENT:50000]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
  
   local INSTANCE_NAME=${1:-jenkins}
   local FOLDER_PATH=$2
@@ -588,7 +588,7 @@ dckrunjenkins() {
 dckrunnginx() {
   usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local FOLDER_PATH=${3:-$PWD}
   dckweb "nginx" "$FOLDER_PATH:/usr/share/nginx/html" $@
@@ -596,7 +596,7 @@ dckrunnginx() {
 dckrunphp() {
   usage $# "INSTANCE_NAME" "[PORT]" "[FOLDER_PATH:PWD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   FOLDER_PATH=${3:-$PWD}
   dckweb "php:7.0-apache" "$FOLDER_PATH:/var/www/html" $@
@@ -605,7 +605,7 @@ dckrunphp() {
 dckweb() {
   usage $# "[IMAGE_NAME:nginx]" "[OPTIONAL_ARGS]" "[INSTANCE_NAME:web]" "[PORT]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   # By default image name is "nginx"
   local IMAGE_NAME=${1:-nginx}
@@ -634,7 +634,7 @@ dckweb() {
 dckrunmysql() {
   usage $# "[IMAGE_NAME:mysql\:5.7.17]" "[INSTANCE_NAME:mysql]" "[PASSWORD:password]" "[PORT:3306]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   # By default image name is "mysql:5.7.17"
   local IMAGE_NAME=${1:-mysql\:5.7.17}
@@ -657,8 +657,7 @@ dckrmimageforce() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
-    dckls 
-    return -1
+    return 1
   fi
 
   dckrmimage "-f" "$@"
@@ -668,8 +667,7 @@ dckrmimage() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "If you don't know any image run 'dckls' and look at the column REPOSITORY" >&2 
-    dckls 
-    return -1
+    return 1
   fi
 
   echo "docker rmi $@"
@@ -695,7 +693,7 @@ dckbuild() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     echo "It is HIGHLY recommended to name the image that you will create. You can optionally append a :TAG_NAME" >&2 
-    return -1
+    return 1
   fi
 
   local IMAGE_NAME=$1
