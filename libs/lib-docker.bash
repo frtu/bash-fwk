@@ -411,25 +411,52 @@ dcknetls() {
 dcknetlsfull() {
   dcknetls
   echo "== Inspect bridge ==" 
-  docker network inspect bridge
+  dcknetdesc bridge
   echo "== Inspect host ==" 
-  docker network inspect host
+  dcknetdesc host
+}
+# https://docs.docker.com/network/network-tutorial-standalone/#use-user-defined-bridge-networks
+dcknetcreate() {
+  usage $# "NETWORK_NAME"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  dcknettpl "create --driver bridge " $@
+  dcknetls
 }
 # https://docs.docker.com/engine/reference/commandline/network_rm/
 dcknetrm() {
-  usage $# "NETWORK_NAME_OR_IDs"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  dcknettpl "rm" $@
+  dcknetls
+}
+dcknetconnect() {
+  usage $# "CONTAINER_NAME" "[NETWORK_NAME:bridge]"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CONTAINER_NAME=$1
+  local NETWORK_NAME=${2:-bridge}
+
+  dcknettpl "connect" ${NETWORK_NAME} ${CONTAINER_NAME}
+}
+alias dcknetinfo=dcknetdesc
+alias dcknetinspect=dcknetdesc
+dcknetdesc() {
+  dcknettpl "inspect" $@
+}
+dcknettpl() {
+  usage $# "CMD" "NETWORK_NAME_OR_IDs" "[EXTRA_PARAMS]"
+  # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "If you don't know any names run 'dcknetls'" >&2
+    echo "Please supply argument(s) \"NETWORK_NAME_OR_IDs\". If you don't know any names run 'dcknetls' and look at the last column NAMES" >&2
     dcknetls
     return 1
   fi
 
-  echo "docker network rm $@"
-  docker network rm $@
-
-  dcknetls
+  echo "docker network $@"
+  docker network $@
 }
+
 dcknethosts() {
   cat /etc/hosts
 }
