@@ -71,6 +71,20 @@ dckstop() {
 dckstopall() {
   dckstop $(docker ps -aq)
 }
+dckip() {
+  usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  dckinspect  -f '{{.NetworkSettings.IPAddress}}' $@
+}
+dckstatus() {
+  usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  dckinspect  -f '{{.State.Running}}' $@
+}
 dckinspect() {
   dcktpl "inspect" $@
 }
