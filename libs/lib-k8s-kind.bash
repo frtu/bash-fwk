@@ -15,7 +15,8 @@ kdls() {
   echo "kind get clusters"
   kind get clusters
 }
-kdinfo() {
+alias kdinfo=kddesc
+kddesc() {
   usage $# "CLUSTER_NAME"
   # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
