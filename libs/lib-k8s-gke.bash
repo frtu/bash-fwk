@@ -36,20 +36,30 @@ gkeconfregion() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local REGION_NAME=$1
-
-  echo "gcloud config set compute/region ${REGION_NAME}"
-  gcloud config set compute/region ${REGION_NAME}
+  gkeconfset compute/region $1
 }
 gkeconfzone() {
   usage $# "ZONE_NAME:asia-east2-c"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local ZONE_NAME=$1
+  gkeconfset compute/zone $1
+}
+gkeconfreporting() {
+  usage $# "[CONF_PARAM_NAME:true|false]"
+  local CONF_PARAM_NAME=${1:-false}
+  gkeconfset disable_usage_reporting ${CONF_PARAM_NAME}
+}
+gkeconfset() {
+  usage $# "CONF_PARAM_NAME" "CONF_PARAM_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "gcloud config set compute/zone ${ZONE_NAME}"
-  gcloud config set compute/zone ${ZONE_NAME}
+  local CONF_PARAM_NAME=$1
+  local CONF_PARAM_VALUE=$2
+
+  echo "gcloud config set $CONF_PARAM_NAME \"$CONF_PARAM_VALUE\""
+  gcloud config set $CONF_PARAM_NAME "$CONF_PARAM_VALUE"
 }
 
 # Manage a K8s cluster at https://console.cloud.google.com/kubernetes/
