@@ -1,7 +1,15 @@
 import lib-vm
 
+export DOCKER_CONFIG_FILE=~/.docker/config.json
+
 dck() {
   docker version
+}
+dckconf() {
+  cat ${DOCKER_CONFIG_FILE}
+}
+dckconfvi() {
+  vi ${DOCKER_CONFIG_FILE}
 }
 
 dckls() {

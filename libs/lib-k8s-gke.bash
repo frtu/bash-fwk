@@ -13,6 +13,7 @@ gke() {
   echo "gcloud info"
   gcloud info
 }
+alias gkeauth=gkelogin
 gkelogin() {
   echo "gcloud auth login"
   gcloud auth login
@@ -47,6 +48,7 @@ gkeconfzone() {
 }
 gkeconfreporting() {
   usage $# "[CONF_PARAM_NAME:true|false]"
+
   local CONF_PARAM_NAME=${1:-false}
   gkeconfset disable_usage_reporting ${CONF_PARAM_NAME}
 }
@@ -119,7 +121,37 @@ gkeprjadd() {
 }
 
 # https://cloud.google.com/container-registry/docs/quickstart?hl=en_US&_ga=2.266249671.958204232.1643861732-1066249181.1615732322#before-you-begin
+# https://cloud.google.com/artifact-registry/docs/docker/quickstart#create
 gkereg() {
-  echo "gcloud auth configure-docker"
-  gcloud auth configure-docker
+  usage $# "[REPO:REGION-docker.pkg.dev]" "[ADDITIONAL_SETTINGS]"
+
+  echo "== More on auth at https://cloud.google.com/artifact-registry/docs/docker/quickstart#auth =="
+  echo "gcloud auth configure-docker $@"
+  gcloud auth configure-docker $@
+}
+
+# https://cloud.google.com/container-registry/docs/advanced-authentication
+gkeacctls() {
+  echo "gcloud iam service-accounts list"
+  gcloud iam service-accounts list
+}
+gkeacctauth() {
+  usage $# "ACCOUNT:USERNAME@PROJECT_ID.iam.gserviceaccount.com" "KEY_FILE" "[ADDITIONAL_SETTINGS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
+  local ACCOUNT=$1
+  local KEY_FILE=$2
+  local ADDITIONAL_SETTINGS=${@:3}
+
+  ##################################
+  # CREATE IF NOT EXIST
+  if [ ! -f "$KEY_FILE" ]; then
+    echo "= Please provide an existing KEY_FILE path instead of path=[$KEY_FILE]" >&2
+    return 1
+  fi
+  ##################################
+
+  echo "gcloud auth activate-service-account $ACCOUNT --key-file=$KEY_FILE"
+  gcloud auth activate-service-account $ACCOUNT --key-file=$KEY_FILE
 }
