@@ -4,6 +4,10 @@ gkeinst() {
   echo "inst --cask google-cloud-sdk"
   inst --cask google-cloud-sdk
 }
+gkeupd() {
+  echo "gcloud components update"
+  gcloud components update
+}
 
 gke() {
   echo "gcloud info"
@@ -49,6 +53,30 @@ gkeconfzone() {
 }
 
 # Manage a K8s cluster at https://console.cloud.google.com/kubernetes/
+gkeprjset() {
+  usage $# "PROJECT_ID:zeta-surf-123456" "[ADDITIONAL_SETTINGS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+ 
+  local PROJECT_ID=$1
+  local ADDITIONAL_SETTINGS=${@:2}
+  
+  echo "gcloud config set project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}"
+  gcloud config set project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}
+}
+gkeprjgetcredential() {
+  usage $# "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION:asia-east2" "[ADDITIONAL_SETTINGS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local PROJECT_ID=$1
+  local CLUSTER_NAME=$2
+  local REGION=$3
+  local ADDITIONAL_SETTINGS=${@:4}
+
+  echo "gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}"
+  gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}
+}
 gkeprjadd() {
   usage $# "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION:asia-east2" "[ADDITIONAL_SETTINGS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -70,9 +98,8 @@ gkeprjadd() {
   local ADDITIONAL_SETTINGS=${@:4}
   
   echo "Adding project to ${OUTPUT_SERVICE_FILENAME}"
-  echo "alias gkeprj${CLUSTER_NAME}='gcloud config set project ${PROJECT_ID}; gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION}'" >> $OUTPUT_SERVICE_FILENAME
-  # OR gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID}
-
+  echo "alias gkeprj${CLUSTER_NAME}='gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION}  --project ${PROJECT_ID}'" >> $OUTPUT_SERVICE_FILENAME
+  
   if [[ -n $ADDITIONAL_SETTINGS ]]; then 
     echo "${ADDITIONAL_SETTINGS}" >> $OUTPUT_SERVICE_FILENAME
   fi

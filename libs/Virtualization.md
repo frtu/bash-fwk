@@ -151,6 +151,8 @@ Make sure to install : using ```gkeinst``` or [gcloud install page](https://clou
 
 * Create gke alias to a project : ```gkeprjadd "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION"```
 * Switch project using previously created alias : ```gkeprj<PROJECT_NAME>```
+* Set current project to : ```gkeprjset "PROJECT_ID:zeta-surf-123456"```
+* Get project credential : ```gkeprjgetcredential "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION"```
 * Check the current project : ```kcctx```
 
 ### Manage registry (bin repo)
