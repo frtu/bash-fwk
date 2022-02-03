@@ -438,6 +438,7 @@ dcknetrm() {
   dcknettpl "rm" $@
   dcknetls
 }
+
 dcknetconnect() {
   usage $# "CONTAINER_NAME" "[NETWORK_NAME:bridge]"
   # MIN NUM OF ARG
@@ -447,6 +448,14 @@ dcknetconnect() {
   local NETWORK_NAME=${2:-bridge}
 
   dcknettpl "connect" ${NETWORK_NAME} ${CONTAINER_NAME}
+}
+dcknetconnectedls() {
+  usage $# "NETWORK_NAME:bridge"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local NETWORK_NAME=$1
+  docker network "inspect" ${NETWORK_NAME} -f "{{range .Containers}}{{.Name}} {{end}}"
 }
 alias dcknetinfo=dcknetdesc
 alias dcknetinspect=dcknetdesc

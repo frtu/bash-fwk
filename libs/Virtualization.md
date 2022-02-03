@@ -63,7 +63,11 @@ If you just want to check an image, these funtions will create and remove a temp
 
 * List all existing networks : ```dcknetls```
 * List all existing networks, inspect bridge & host : ```dcknetlsfull```
+* Inspect or describe a specific network : ```dcknetdesc "NETWORK_NAME_OR_IDs"```
+* Create a new docker network : ```dcknetcreate "NETWORK_NAME"```
 * Remove existing network : ```dcknetrm "NETWORK_NAME_OR_IDs"```
+* Allow a container to connect to a specific network : ```dcknetconnect "CONTAINER_NAME" "[NETWORK_NAME:bridge]"```
+* List all the containers connecting to a specific network : ```dcknetconnectedls "NETWORK_NAME:bridge"```
 
 ### Extra support
 
