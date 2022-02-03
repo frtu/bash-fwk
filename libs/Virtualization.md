@@ -131,17 +131,30 @@ Administration :
 * Usage ```import lib-k8s-gke```
 * Prefix ```gke```
 
+Make sure to install : using ```gkeinst``` or [gcloud install page](https://cloud.google.com/sdk/docs/install)
+
 ### Base commands
 
 * Get gcloud info : ```gke```
 * Login to google cloud : ```gkelogin```
 * Initialize configuration for GKE : ```gkeinit```
+* Run diagnostics (may help to detect proxy) : ```gkediagnostics```
+
+### Manage cluster
+
+* Get gcloud config help : ```gkeconf```
+* Config set region : ```gkeconfregion "REGION_NAME:asia-east2"```
+* Config set zone : ```gkeconfzone "ZONE_NAME:asia-east2-c"```
 
 ### Manage project
 
-* Create gke alias to a project : ```gkeaddprj "PROJECT_ID" "PROJECT_NAME" "REGION"```
+* Create gke alias to a project : ```gkeprjadd "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION"```
 * Switch project using previously created alias : ```gkeprj<PROJECT_NAME>```
 * Check the current project : ```kcctx```
+
+### Manage registry (bin repo)
+
+* Configure Binary image repo : ```gkereg```
 
 ## Library 'k8s-argocd'
 
