@@ -219,19 +219,7 @@ dckimagebashtpl() {
   docker run --rm -ti --entrypoint ${BASH_CMD} ${IMAGE_NAME}
 }
 
-# Starting & administration
-dckproxy() {
-  usage $# "DOCKER_REGISTRY_DOMAIN_NAME"
-   # MIN NUM OF ARG
-  if [[ "$?" -ne 0 ]]; then return 1; fi
-
-  local DOCKER_REGISTRY_DOMAIN_NAME=$1
-
-  echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
-  echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
-  
-  echo 'export DOCKER_OPTS=" --registry-mirror 'https://${DOCKER_REGISTRY_DOMAIN_NAME}' --insecure-registry 'http://${DOCKER_REGISTRY_DOMAIN_NAME}'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
-}
+# https://docs.docker.com/network/proxy/
 
 dckexport() {
   usage $# "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"
@@ -365,6 +353,19 @@ dckimportcontainer() {
   fi
 }
 
+# Starting & administration
+dckregmirror() {
+  usage $# "DOCKER_REGISTRY_DOMAIN_NAME"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local DOCKER_REGISTRY_DOMAIN_NAME=$1
+
+  echo "Setting locally the Docker proxy $1 in ~/scripts/service_docker_proxy.bash"
+  echo "ATTENTION : Doesn't work for boot2docker !! Use dckmregistryinsecure() or dckmregistry() INSTEAD !"
+  
+  echo 'export DOCKER_OPTS=" --registry-mirror 'https://${DOCKER_REGISTRY_DOMAIN_NAME}' --insecure-registry 'http://${DOCKER_REGISTRY_DOMAIN_NAME}'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
+}
 dckregtagpush() {
   usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
   dckregtag $@
