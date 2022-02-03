@@ -42,6 +42,8 @@ kcls() {
   kclsservices $@
   echo "------- Ingress --------";
   kclsingress $@
+  echo "------- ConfigMaps --------";
+  kclsconfigmaps $@
 }
 kclsnamespaces() {
   echo "kubectl get namespaces $@"
@@ -94,6 +96,10 @@ kclsevents() {
 kclsapi() {
   usage $# "[NAMESPACE]"
   kcgettemplate "apiservice" $@
+}
+kclsconfigmaps() {
+  usage $# "[NAMESPACE]"
+  kcgettemplate "configmaps" $@
 }
 kclsresources() {
   kubectl api-resources

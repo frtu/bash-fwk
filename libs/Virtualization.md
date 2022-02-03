@@ -195,11 +195,12 @@ Make sure to install : using ```gkeinst``` or [gcloud install page](https://clou
 * Create a new cluster : ```kdc "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"```
 * List all nodes : ```kdgetnodes```
 * Print K8s config : ```kdgetconfig```
-* Generate a cluster config : ```kdgenconfig "[CONFIG_FILE]"```
+* Generate a cluster config and add Docker registry : ```kdgenconfig "[CONFIG_FILE]" "[REG_HOST]" "[REG_PORT:5000]"```
 * Delete a cluster : ```kdrm "[CLUSTER_NAME]"```
 
 ### Manage instances
 
+* Add configmap for a specific docker registry : ```kdconfreg "[REG_PORT:5000]"```
 * Load docker image into cluster : ```kdimport "IMAGE_NAME" "[CLUSTER_NAME]"``` or ```kdload```
 * Install dashboard : ```kdinstdashboard```
 
@@ -284,6 +285,7 @@ All kubectl listing commands in the current cluster and namespace :
 * List all **deployments** : ```kclsdeployments [NAMESPACE]```
 * List all **services**  : ```kclsservices [NAMESPACE]```
 * List all **ingress**  : ```kclsingress [NAMESPACE]```
+* List all **configmaps**  : ```kclsconfigmaps [NAMESPACE]```
 * List all events : ```kclsevents [NAMESPACE]```
 * List all api services : ```kclsapi [NAMESPACE]```
 * List all resources types : ```kclsresources```

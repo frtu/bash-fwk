@@ -41,10 +41,12 @@ kddesc() {
 }
 
 kdgenconfig() {
-  usage $# "[CONFIG_FILE]"
+  usage $# "[CONFIG_FILE]" "[REG_HOST]" "[REG_PORT:5000]"
 
   local CONFIG_FILE=${1:-kind-config.yaml}
-
+  local REG_HOST=$2
+  local REG_PORT=${3:-5000}
+  
   cat > $CONFIG_FILE <<EOF
 # three node (two workers) cluster config
 kind: Cluster
@@ -55,11 +57,38 @@ nodes:
 - role: worker
 EOF
 
+  if [ -n "$REG_HOST" ]; then
+    echo "Adding docker registry $REG_HOST:$REG_PORT"
+    cat >> $CONFIG_FILE <<EOF
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${REG_PORT}"]
+    endpoint = ["http://${REG_HOST}:5000"]
+EOF
+  fi
+
   echo "== Generated file at ${CONFIG_FILE} =="
   cat ${CONFIG_FILE}
 }
+kdconfreg() {
+  usage $# "[REG_PORT:5000]"
+  local REG_PORT=${1:-5000}
+
+  cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-registry-hosting
+  namespace: kube-public
+data:
+  localRegistryHosting.v1: |
+    host: "localhost:${REG_PORT}"
+    help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
+EOF
+}
+
 kdc() {
-  usage $# "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.20.2]"
+  usage $# "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.23.1]"
 
   local CLUSTER_NAME=$1
   local CONFIG_FILE=$2
