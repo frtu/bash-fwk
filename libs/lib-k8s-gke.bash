@@ -1,5 +1,7 @@
 import lib-k8s
 
+# https://cloud.google.com/sdk/docs
+
 gkeinst() {
   echo "inst --cask google-cloud-sdk"
   inst --cask google-cloud-sdk
@@ -154,4 +156,17 @@ gkeacctauth() {
 
   echo "gcloud auth activate-service-account $ACCOUNT --key-file=$KEY_FILE"
   gcloud auth activate-service-account $ACCOUNT --key-file=$KEY_FILE
+}
+
+# https://cloud.google.com/container-registry/docs/enable-service
+gkesvcenable() {
+  usage $# "SERVICE_NAME:containerregistry" "[ADDITIONAL_SETTINGS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local SERVICE_NAME=$1
+  local ADDITIONAL_SETTINGS=${@:2}
+
+  echo "gcloud services enable $SERVICE_NAME.googleapis.com"
+  gcloud services enable $SERVICE_NAME.googleapis.com
 }

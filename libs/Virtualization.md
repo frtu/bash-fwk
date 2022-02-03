@@ -163,6 +163,7 @@ Make sure to install : using ```gkeinst``` or [gcloud install page](https://clou
 ### Manage registry (bin repo)
 
 * Configure Binary image repo : ```gkereg```
+* Enable a specific [service](https://cloud.google.com/container-registry/docs/enable-service) : ```gkesvcenable "SERVICE_NAME:containerregistry"```
 * List all service-acounts : ```gkeacctls```
 * Configure auth using service-account : ```gkeacctauth "ACCOUNT:USERNAME@PROJECT_ID.iam.gserviceaccount.com" "KEY_FILE"```
 
