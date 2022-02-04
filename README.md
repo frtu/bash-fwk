@@ -4,6 +4,15 @@ Framework for BASH startup, loading and utils
 
 ## One line download and install
 
+Check your Linux distro with these cmds :
+
+```
+cat /etc/*-release
+cat /proc/version
+uname -mrs
+${SYS_INFO}
+```
+
 ### [Locally](autoinstaller4curl.bash) (require 'git')
 	echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/autoinstaller4curl.bash)" | bash
 
@@ -39,7 +48,7 @@ If already installed, use quick fwk install copy : ```fwkvag ```
 ### Net tools
 
 ```	
-apt update && apt -y install net-tools nmap netcat telnet curl
+apt update && apt -y install net-tools nmap netcat telnet curl iputils-ping
 ```	
 If already installed, use quick fwk install copy : ```fwknet ```
 
