@@ -1,0 +1,36 @@
+echo "=== Loading Alpine ==="
+
+# https://www.cyberciti.biz/faq/10-alpine-linux-apk-command-examples/
+export INSTALL_TOOL="apk"
+
+# https://alpinelinux.org/downloads/
+# https://pkgs.alpinelinux.org/packages
+# https://nathanleclaire.com/blog/2016/08/11/curl-with-http2-support---a-minimal-alpine-based-docker-image/
+
+inst() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "$INSTALL_TOOL add $@"
+  $INSTALL_TOOL add $@
+}
+
+inst_curl() {
+  inst curl
+}
+inst_git() {
+  inst git
+}
+inst_bash() {
+  inst bash
+}
+inst_net() {
+  inst --update-cache iproute2 bind-tools net-tools
+}
+inst_all() {
+  inst_curl
+  inst_git
+  inst_bash
+  inst_net
+}
