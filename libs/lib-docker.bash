@@ -511,16 +511,18 @@ dckrundaemon() {
   local INSTANCE_NAME=${2:-$1}
   local MORE_ARG=${@:3}
 
-  echo "Start docker daemon > docker run -d --name ${INSTANCE_NAME} ${MORE_ARG} -P ${IMAGE_NAME}"
-  docker run -d --name ${INSTANCE_NAME} ${MORE_ARG} -P ${IMAGE_NAME}
+  echo "Start docker daemon > docker container run -d --name ${INSTANCE_NAME} ${MORE_ARG} -P ${IMAGE_NAME}"
+  docker container run -d --name ${INSTANCE_NAME} ${MORE_ARG} -P ${IMAGE_NAME}
 
   STATUS=$?
   if [ "${STATUS}" -eq 0 ]
     then
       docker port ${INSTANCE_NAME}
 
-      echo "dcklogs ${INSTANCE_NAME} : to tail log of this image"
-      echo "dckinspect ${INSTANCE_NAME} : to inspect characteristics of this image"
+      echo "dckbash ${INSTANCE_NAME} : to bash into this image"
+      echo "dcklogs ${INSTANCE_NAME} : to print log of this image"
+      echo "dcklogstail ${INSTANCE_NAME} : to tail log of this image"
+      echo "dckdesc ${INSTANCE_NAME} : to inspect characteristics of this image"
       echo "dcktop ${INSTANCE_NAME} : to top from this image"
       echo "dckrm ${INSTANCE_NAME} : to stop and remove image"
     else

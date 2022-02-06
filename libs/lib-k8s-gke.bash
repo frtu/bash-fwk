@@ -68,28 +68,28 @@ gkeconfset() {
 
 # Manage a K8s cluster at https://console.cloud.google.com/kubernetes/
 gkeprjset() {
-  usage $# "PROJECT_ID:zeta-surf-123456" "[ADDITIONAL_SETTINGS]"
+  usage $# "PROJECT_ID:zeta-surf-123456" "[ADDITIONAL_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
  
   local PROJECT_ID=$1
-  local ADDITIONAL_SETTINGS=${@:2}
+  local ADDITIONAL_PARAMS=${@:2}
   
-  echo "gcloud config set project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}"
-  gcloud config set project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}
+  echo "gcloud config set project ${PROJECT_ID} ${ADDITIONAL_PARAMS}"
+  gcloud config set project ${PROJECT_ID} ${ADDITIONAL_PARAMS}
 }
 gkeprjgetcredential() {
-  usage $# "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION:asia-east2" "[ADDITIONAL_SETTINGS]"
+  usage $# "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION:asia-east2" "[ADDITIONAL_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local PROJECT_ID=$1
   local CLUSTER_NAME=$2
   local REGION=$3
-  local ADDITIONAL_SETTINGS=${@:4}
+  local ADDITIONAL_PARAMS=${@:4}
 
-  echo "gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}"
-  gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID} ${ADDITIONAL_SETTINGS}
+  echo "gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID} ${ADDITIONAL_PARAMS}"
+  gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID} ${ADDITIONAL_PARAMS}
 }
 gkeprjadd() {
   usage $# "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION:asia-east2" "[ADDITIONAL_SETTINGS]"
@@ -125,7 +125,7 @@ gkeprjadd() {
 # https://cloud.google.com/container-registry/docs/quickstart?hl=en_US&_ga=2.266249671.958204232.1643861732-1066249181.1615732322#before-you-begin
 # https://cloud.google.com/artifact-registry/docs/docker/quickstart#create
 gkereg() {
-  usage $# "[REPO:REGION-docker.pkg.dev]" "[ADDITIONAL_SETTINGS]"
+  usage $# "[REPO:REGION-docker.pkg.dev]" "[ADDITIONAL_PARAMS]"
 
   echo "== More on auth at https://cloud.google.com/artifact-registry/docs/docker/quickstart#auth =="
   echo "gcloud auth configure-docker $@"
@@ -138,13 +138,13 @@ gkeacctls() {
   gcloud iam service-accounts list
 }
 gkeacctauth() {
-  usage $# "ACCOUNT:USERNAME@PROJECT_ID.iam.gserviceaccount.com" "KEY_FILE" "[ADDITIONAL_SETTINGS]"
+  usage $# "ACCOUNT:USERNAME@PROJECT_ID.iam.gserviceaccount.com" "KEY_FILE" "[ADDITIONAL_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local ACCOUNT=$1
   local KEY_FILE=$2
-  local ADDITIONAL_SETTINGS=${@:3}
+  local ADDITIONAL_PARAMS=${@:3}
 
   ##################################
   # CREATE IF NOT EXIST
@@ -160,12 +160,12 @@ gkeacctauth() {
 
 # https://cloud.google.com/container-registry/docs/enable-service
 gkesvcenable() {
-  usage $# "SERVICE_NAME:containerregistry" "[ADDITIONAL_SETTINGS]"
+  usage $# "SERVICE_NAME:containerregistry" "[ADDITIONAL_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local SERVICE_NAME=$1
-  local ADDITIONAL_SETTINGS=${@:2}
+  local ADDITIONAL_PARAMS=${@:2}
 
   echo "gcloud services enable $SERVICE_NAME.googleapis.com"
   gcloud services enable $SERVICE_NAME.googleapis.com
