@@ -48,7 +48,8 @@ If already installed, use quick fwk install copy : ```fwkvag ```
 ### Net tools
 
 ```	
-apt update && apt -y install net-tools nmap netcat telnet curl iputils-ping
+apt update && apt -y install curl telnet netcat iputils-ping net-tools 
+apt update && apt -y install nmap tcpdump iperf3 iftop iproute2 ipvsadm
 ```	
 If already installed, use quick fwk install copy : ```fwknet ```
 
