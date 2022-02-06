@@ -225,7 +225,7 @@ dckimagebashtpl() {
   local IMAGE_NAME=$2
 
   echo "Login into a Bash docker images : ${IMAGE_NAME}"
-  docker run --rm -ti --entrypoint ${BASH_CMD} ${IMAGE_NAME}
+  docker container run --rm -ti --entrypoint ${BASH_CMD} ${IMAGE_NAME}
 }
 
 # https://docs.docker.com/network/proxy/
@@ -496,8 +496,8 @@ dcknetdebug() {
   echo "* netstat -tulpn"
   echo "* iperf <commands>"
 
-  echo "docker container run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}"
-  docker container run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}
+  echo "docker container run -it --rm --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}"
+  docker container run -it --rm --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}
 }
 
 dcknethosts() {
@@ -506,7 +506,7 @@ dcknethosts() {
 
 dckhello() {
   echo "Testing if docker works?"
-  docker run --rm hello-world
+  docker container run --rm hello-world
 }
 
 dckcreate() {
