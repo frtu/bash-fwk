@@ -178,12 +178,12 @@ dckbashtpl() {
   # run in LOGIN MODE : https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization#bash
   if [ -z "$3" ]
     then
-      echo "docker exec -it ${INSTANCE_NAME} ${BASH_CMD} -l"
-      docker exec -it ${INSTANCE_NAME} ${BASH_CMD} -l
+      echo "docker container exec -it ${INSTANCE_NAME} ${BASH_CMD} -l"
+      docker container exec -it ${INSTANCE_NAME} ${BASH_CMD} -l
     else
       local COMMANDS=${@:3}
-      echo "echo \"${COMMANDS}\" | docker exec -i ${INSTANCE_NAME} ${BASH_CMD} -l"
-      echo "${COMMANDS}" | docker exec -i ${INSTANCE_NAME} ${BASH_CMD} -l
+      echo "echo \"${COMMANDS}\" | docker container exec -i ${INSTANCE_NAME} ${BASH_CMD} -l"
+      echo "${COMMANDS}" | docker container exec -i ${INSTANCE_NAME} ${BASH_CMD} -l
   fi
 }
 # Shell into an existing IMAGE_NAME
@@ -496,8 +496,8 @@ dcknetdebug() {
   echo "* netstat -tulpn"
   echo "* iperf <commands>"
 
-  echo "docker run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}"
-  docker run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}
+  echo "docker container run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}"
+  docker container run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}
 }
 
 dcknethosts() {
