@@ -69,6 +69,10 @@ If you just want to check an image, these funtions will create and remove a temp
 * Allow a container to connect to a specific network : ```dcknetconnect "CONTAINER_NAME" "[NETWORK_NAME:bridge]"```
 * List all the containers connecting to a specific network : ```dcknetconnectedls "NETWORK_NAME:bridge"```
 
+Troubleshooting
+
+* Debug container using [netshoot](https://github.com/nicolaka/netshoot/blob/master/README.md) : ```dcknetdebug "CONTAINER_NAME" "[DEBUG_IMAGE_NAME:nicolaka/netshoot]"```
+
 ### Extra support
 
 * Run Tomcat image : ```dckrunjava "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[PORT:8080]" "[INSTANCE_NAME]"```

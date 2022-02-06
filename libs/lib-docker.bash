@@ -136,6 +136,7 @@ dckcp() {
   echo "Copy from/to docker images : ${SOURCE} => ${DESTINATION}"
   docker cp ${SOURCE} ${DESTINATION}
 }
+
 # Shell into an existing INSTANCE_NAME
 dcksh() {
   usage $# "INSTANCE_NAME" "[COMMANDS]"
@@ -473,6 +474,30 @@ dcknettpl() {
 
   echo "docker network $@"
   docker network $@
+}
+## https://docker-tutorial.schoolofdevops.com/troubleshooting-toolkit/
+# Debug network issue using another docker image
+dcknetdebug() {
+  usage $# "CONTAINER_NAME" "[DEBUG_IMAGE_NAME:nicolaka/netshoot]" "[ADDITIONAL_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
+  local CONTAINER_NAME=$1
+  local DEBUG_IMAGE_NAME=${2:-nicolaka/netshoot}
+  local ADDITIONAL_PARAMS=${@:3}
+
+  echo "* nsenter —net=<net-namespace>"
+  echo "* tcpdump -nnvvXXS -i <interface> port <port>"
+  echo "* iptables -nvL -t <table>"
+  echo "* ipvsadm -L"
+  echo "* ip <commands>"
+  echo "* bridge <commands>"
+  echo "* drill"
+  echo "* netstat -tulpn"
+  echo "* iperf <commands>"
+
+  echo "docker run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}"
+  docker run -it --net container:${CONTAINER_NAME} --privileged ${DEBUG_IMAGE_NAME} ${ADDITIONAL_PARAMS}
 }
 
 dcknethosts() {

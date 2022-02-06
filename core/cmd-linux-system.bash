@@ -67,6 +67,15 @@ tcpport() {
   local PORT=$1
   tcp "any dst port ${PORT} -A"
 }
+# http://lartc.org/howto/lartc.iproute2.arp.html
+iproute() {
+  echo "ip route show"
+  ip route show
+}
+ipneigh() {
+  echo "ip neigh show"
+  ip neigh show
+}
 
 envls() {
   if [ -z "$1" ]
