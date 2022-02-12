@@ -1,5 +1,8 @@
 echo "=== Loading Alpine ==="
 
+# net specific package
+export NET_PKG_EXTRA="iputils iproute2 bind-tools"
+
 # https://www.cyberciti.biz/faq/10-alpine-linux-apk-command-examples/
 export INSTALL_TOOL="apk"
 
@@ -20,9 +23,6 @@ inst_git() {
 }
 inst_bash() {
   inst bash
-}
-inst_net() {
-  inst --update-cache iproute2 bind-tools net-tools
 }
 inst_all() {
   inst_curl

@@ -13,6 +13,9 @@ if [ -f /etc/alpine-release ]; then
   source $SCRIPTS_FOLDER/ext_alpine
 fi
 
+inst_net() {
+  inst curl net-tools nmap tcpdump ${NET_PKG_EXTRA}
+}
 inst_proc() {
   inst procps
 }

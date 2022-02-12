@@ -1,19 +1,16 @@
 echo "=== Loading Centos ==="
 
+# net specific package
+export NET_PKG_EXTRA="iputils telnet"
+
 export INSTALL_TOOL="yum -y"
 export UNINSTALL_TOOL="yum autoremove"
-
-# ncat is part of nmap
-export NET_PKG_EXTRA="iputils tcpdump"
 
 # https://linuxize.com/post/how-to-install-node-js-on-centos-7/
 # Add Node repo URL
 export NODE_URL_PREFIX="rpm"
 export EXEC="sudo bash -"
 
-inst_net() {
-  inst net-tools nmap telnet curl ${NET_PKG_EXTRA}
-}
 inst_compiler() {
   inst gcc-c++ make
 }

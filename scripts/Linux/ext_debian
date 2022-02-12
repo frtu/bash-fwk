@@ -1,10 +1,10 @@
 echo "=== Loading Debian ==="
 
-export SYS_INFO="cat /etc/debian_version"
+# net specific package
+export NET_PKG_EXTRA="iputils-ping iproute2 netcat"
 
 # https://wiki.debian.org/DebianPackageManagement#Apt
 export INSTALL_TOOL="apt -y"
-
 # remove package while leaving its configuration files
 # export UNINSTALL_TOOL="apt remove"
 # remove package and its configuration
@@ -13,11 +13,8 @@ export UNINSTALL_TOOL="apt purge"
 # remove auto-installed packages which are no longer required
 export CLEANUP_TOOL="apt autoremove --purge"
 
-export NET_PKG_EXTRA="netcat iputils-ping"
+export SYS_INFO="cat /etc/debian_version"
 
 updf() {
   upd --allow-insecure-repositories
-}
-inst_net() {
-  inst net-tools nmap telnet curl ${NET_PKG_EXTRA}
 }
