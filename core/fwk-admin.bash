@@ -53,10 +53,10 @@ mkscriptfolder() {
 
   local FOLDER=$1
 
-  if [ ! -d ${FOLDER} ]; then
+  if [ ! -d $FOLDER ]; then
     echo "Creating new folder ${FOLDER}"
-    mkdir -p ${FOLDER}
-    touch ${FOLDER}/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash
+    mkdir -p "${FOLDER}"
+    touch "${FOLDER}/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash"
   fi
 }
 
