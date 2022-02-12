@@ -1,3 +1,7 @@
+if [[ -z "$CHECK_SUDO" ]] && [[ $(id -u) -ne 0 ]] ; then 
+  alias systemctl="sudo systemctl"
+fi
+
 srvlogs() {
   journalctl -xe
 }
@@ -7,7 +11,7 @@ srvactivate() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  sudo systemctl enable $@
+  systemctl enable $@
 }
 srvstatus() {
   usage $# "PACKAGE"
@@ -21,7 +25,7 @@ srvstart() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  sudo systemctl start $@
+  systemctl start $@
   srvstatus $@
 }
 srvstop() {
@@ -29,7 +33,7 @@ srvstop() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  sudo systemctl stop $@
+  systemctl stop $@
   srvstatus $@
 }
 srvrestart() {
@@ -37,6 +41,6 @@ srvrestart() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  sudo systemctl restart $@
+  systemctl restart $@
   srvstatus $@
 }
