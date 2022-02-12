@@ -11,6 +11,9 @@ export NET_PKG_EXTRA="iputils tcpdump"
 export NODE_URL_PREFIX="rpm"
 export EXEC="sudo bash -"
 
+inst_net() {
+  inst net-tools nmap telnet curl ${NET_PKG_EXTRA}
+}
 inst_compiler() {
   inst gcc-c++ make
 }
