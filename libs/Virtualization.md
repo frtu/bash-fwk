@@ -200,7 +200,7 @@ Make sure to install : using ```gkeinst``` or [gcloud install page](https://clou
 
 * List all kind clusters : ```kdls```
 * Get more info for a particular cluster : ```kdinfo "CLUSTER_NAME"```
-* Create a new cluster : ```kdc "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"```
+* Create a new cluster : ```kdc "[CONFIG_FILE]" "[CLUSTER_NAME:kind]"  "[OVERRIDE_IMAGE:kindest/node:v1.17.2]"```
 * List all nodes : ```kdgetnodes```
 * Print K8s config : ```kdgetconfig```
 * Generate a cluster config and add Docker registry : ```kdgenconfig "[CONFIG_FILE]" "[REG_HOST]" "[REG_PORT:5000]"```
@@ -247,7 +247,6 @@ Config commands :
 * Set Minikube to use this specific driver for the next start : ```kmconfdriverset "DRIVER_NAME:none|virtualbox|hyperkit"```
 * Mute Minikube new version alert : ```kmconfmute```
 * Edit Minikube config : ```kmconfvi```
-
 
 Other base commands :
 

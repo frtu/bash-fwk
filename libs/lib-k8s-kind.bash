@@ -88,10 +88,10 @@ EOF
 }
 
 kdc() {
-  usage $# "[CLUSTER_NAME:kind]" "[CONFIG_FILE]" "[OVERRIDE_IMAGE:kindest/node:v1.23.1]"
+  usage $# "[CONFIG_FILE]" "[CLUSTER_NAME:kind]" "[OVERRIDE_IMAGE:kindest/node:v1.23.1]"
 
-  local CLUSTER_NAME=$1
-  local CONFIG_FILE=$2
+  local CONFIG_FILE=$1
+  local CLUSTER_NAME=${2:-kind}
   local OVERRIDE_IMAGE=$3
   local EXTRA_PARAMS=${@:4}
   

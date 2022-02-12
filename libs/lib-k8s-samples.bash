@@ -1,6 +1,7 @@
 import lib-k8s-resources
 
 # https://kubernetes.io/docs/tutorials/kubernetes-basics/
+# https://awkwardferny.medium.com/getting-started-with-kubernetes-ingress-nginx-on-minikube-d75e58f52b6c
 kspodecho() {
   usage $# "[APP_NAME:sample]" "[ECHO:hello]" "[IMAGE_NAME:hashicorp/http-echo:0.2.3]" "[PORT:5678]"
    # MIN NUM OF ARG
