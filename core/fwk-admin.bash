@@ -38,25 +38,22 @@ bashdeploy() {
 	DISTRO_SCRIPT_FOLDER="$_dir/scripts/$system/"
   echo "Mapping folder > ${DISTRO_SCRIPT_FOLDER}"
   
-  mkscriptfolder "$DISTRO_SCRIPT_FOLDER"
-  mkscriptfolder "$LOCAL_SCRIPTS_FOLDER"
-
 	echo "------- LINK bash folders --------"
 	relink "$_dir/core/" "$CORE_FOLDER"
 	relink "$_dir/libs/" "$LIBS_FOLDER"
+
+  mkscriptfolder "$DISTRO_SCRIPT_FOLDER"
 	relink "$DISTRO_SCRIPT_FOLDER" "$SCRIPTS_FOLDER"
+
+  mkscriptfolder "$LOCAL_SCRIPTS_FOLDER"
 }
 mkscriptfolder() {
-  usage $# "FOLDER"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
   local FOLDER=$1
 
   if [ ! -d $FOLDER ]; then
     echo "Creating new folder ${FOLDER}"
-    mkdir -p "${FOLDER}"
-    touch "${FOLDER}/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash"
+    mkdir -p $FOLDER
+    touch $FOLDER/CREATE_YOUR_OWN_DISTRO_SCRIPT_HERE.bash
   fi
 }
 
@@ -93,7 +90,7 @@ replicate2currentfolder() {
 replicate2remote() {
   usage $# "REMOTE_HOST"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local REMOTE_HOST=$1
 

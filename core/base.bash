@@ -59,10 +59,6 @@ refresh() {
   source ~/.bash_profile
 }
 relink() {
-  usage $# "SOURCE_FOLDER" "LOCAL_LINK_NAME" "[FORCE:false]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
-  
   local SOURCE_FOLDER=$1
   local LOCAL_LINK_NAME=$2
   local FORCE=$3
