@@ -79,19 +79,36 @@ dckstop() {
 dckstopall() {
   dckstop $(docker ps -aq)
 }
-dckip() {
+dckdescstatus() {
+  usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  dckdesc  -f '{{.State.Running}}' $@
+}
+dckdescip() {
   usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
   # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   dckdesc  -f '{{.NetworkSettings.IPAddress}}' $@
 }
-dckstatus() {
+dckdescport() {
   usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
   # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  dckdesc  -f '{{.State.Running}}' $@
+  echo "docker inspect -f '{{range \$key, \$value := .NetworkSettings.Ports}}{{\$key}} -> {{\$value}} {{end}}' $@"
+  docker inspect -f '{{range $key, $value := .NetworkSettings.Ports}}{{$key}} -> {{$value}} {{end}}' $@
+}
+# List all networks a container belongs to
+dckdescnet() {
+  usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
+  # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  echo "docker inspect -f '{{range \$key, \$value := .NetworkSettings.Networks}}{{\$key}} {{end}}' $@"
+  docker inspect -f '{{range $key, $value := .NetworkSettings.Networks}}{{$key}} -> IPAddress:{{$value.IPAddress}} Gateway:{{$value.Gateway}} {{end}}' $@
 }
 alias dckinfo=dckdesc
 alias dckinspect=dckdesc
@@ -450,12 +467,15 @@ dcknetconnect() {
 
   dcknettpl "connect" ${NETWORK_NAME} ${CONTAINER_NAME}
 }
+# https://maximorlov.com/4-reasons-why-your-docker-containers-cant-talk-to-each-other/
 dcknetconnectedls() {
   usage $# "NETWORK_NAME:bridge"
   # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local NETWORK_NAME=$1
+
+  echo "docker network \"inspect\" ${NETWORK_NAME} -f \"{{range .Containers}}{{.Name}} {{end}}\""
   docker network "inspect" ${NETWORK_NAME} -f "{{range .Containers}}{{.Name}} {{end}}"
 }
 alias dcknetinfo=dcknetdesc
@@ -830,4 +850,3 @@ dcmptpl() {
   echo "docker-compose $@"
   docker-compose $@
 }
-

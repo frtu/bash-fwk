@@ -40,7 +40,11 @@ Base commands :
 
 Status :
 
-* Check instance definition : ```dckinspect "INSTANCE_NAME"```
+* Check instance status : ```dckdescstatus "INSTANCE_NAME"```
+* Check instance IP : ```dckdescip "INSTANCE_NAME"```
+* Check instance ports : ```dckdescport "INSTANCE_NAME"```
+* Check instance networks : ```dckdescnet "INSTANCE_NAME"```
+* Check full instance definition : ```dckdesc "INSTANCE_NAME"```
 * Check health : ```dcktop "INSTANCE_NAME"```
 
 (ATTENTION) Long commands :
