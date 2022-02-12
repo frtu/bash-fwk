@@ -1,6 +1,7 @@
 import lib-vm
 
 export DOCKER_CONFIG_FILE=~/.docker/config.json
+export DOCKER_DAEMON_FILE=/etc/docker/daemon.json
 
 dck() {
   docker version
@@ -392,6 +393,19 @@ dckregmirror() {
   
   echo 'export DOCKER_OPTS=" --registry-mirror 'https://${DOCKER_REGISTRY_DOMAIN_NAME}' --insecure-registry 'http://${DOCKER_REGISTRY_DOMAIN_NAME}'"' > $LOCAL_SCRIPTS_FOLDER/env-docker-proxy.bash
 }
+dckregconf() {
+  cat ${DOCKER_DAEMON_FILE}
+}
+dckregconfpersist() {
+  usage $# "[DOCKER_REGISTRY_DOMAIN_NAME:docker-registry:5000]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local DOCKER_REGISTRY_DOMAIN_NAME=${1:-docker-registry:5000}
+
+  echo "{\"insecure-registries\":[\"$DOCKER_REGISTRY_DOMAIN_NAME\"]}"
+  echo "{\"insecure-registries\":[\"$DOCKER_REGISTRY_DOMAIN_NAME\"]}" >> $DOCKER_DAEMON_FILE
+} 
 dckregtagpush() {
   usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
   dckregtag $@
