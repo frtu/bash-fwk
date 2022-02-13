@@ -959,8 +959,8 @@ kcrm() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  echo "kubectl delete pod,deployment,service,ingress ${RESOURCE} ${EXTRA_PARAMS}"
-  kubectl delete pod,deployment,service,ingress ${RESOURCE} ${EXTRA_PARAMS}
+  echo "kubectl delete pod,deployment,service,ingress,secret ${RESOURCE} ${EXTRA_PARAMS}"
+  kubectl delete pod,deployment,service,ingress,secret ${RESOURCE} ${EXTRA_PARAMS}
 }
 kcrmall() {
   usage $# "NAMESPACE"
