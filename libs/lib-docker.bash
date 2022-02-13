@@ -403,9 +403,9 @@ dckregconfpersist() {
 
   local DOCKER_REGISTRY_DOMAIN_NAME=${1:-docker-registry:5000}
 
-  echo "{\"insecure-registries\":[\"$DOCKER_REGISTRY_DOMAIN_NAME\"]}"
-  echo "{\"insecure-registries\":[\"$DOCKER_REGISTRY_DOMAIN_NAME\"]}" >> $DOCKER_DAEMON_FILE
-} 
+  echo "{ \"insecure-registries\": [\"$DOCKER_REGISTRY_DOMAIN_NAME\"] }"
+  echo "{ \"insecure-registries\": [\"$DOCKER_REGISTRY_DOMAIN_NAME\"] }" >> $DOCKER_DAEMON_FILE
+}
 dckregtagpush() {
   usage $# "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"
   dckregtag $@
