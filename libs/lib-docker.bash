@@ -5,6 +5,7 @@ export DOCKER_DAEMON_FILE=/etc/docker/daemon.json
 
 dck() {
   docker version
+  docker info
 }
 dckconf() {
   cat ${DOCKER_CONFIG_FILE}
