@@ -17,6 +17,38 @@ genkeypair() {
   ll ${KEY_PRIVATE_FILE}
 }
 # https://www.golinuxcloud.com/generate-self-signed-certificate-openssl/
+gencertkeyconf() {
+  usage $# "CERT_FILE:server|server.crt" "[CONFIG_FILE:server.conf]" "[KEY_PRIVATE_FILE:server.key]" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]" "[TTL:365]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CERT_FILE=$1
+  local CONFIG_FILE=$2
+  local KEY_PRIVATE_FILE=$3
+  local KEY_SIZE=${4:-4096}
+  local KEY_TYPE=${5:-rsa}
+  local TTL=${6:-365}
+  local EXTRA_PARAMS=${@:7}
+
+  # OUTPUT : PRIVATE KEY
+  if [[ -n "${KEY_PRIVATE_FILE}" ]]; then
+      local KEY_PRIVATE_FILE_PATH=${KEY_PRIVATE_FILE}
+    else
+      local KEY_PRIVATE_FILE_PATH="${CERT_FILE}.key"
+  fi
+
+  # INPUT : CONFIG PARAM
+  if [[ -n "${CONFIG_FILE}" ]]; then
+      local CONFIG_FILE_PATH=${CONFIG_FILE}
+    else
+      local CONFIG_FILE_PATH="${CERT_FILE}.conf"
+  fi
+  if [ -f "$CONFIG_FILE_PATH" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -config ${CONFIG_FILE_PATH}"
+  fi
+
+  gencertself "${CERT_FILE}" "gen" "${TTL}" "-newkey ${KEY_TYPE}:${KEY_SIZE} -keyout ${KEY_PRIVATE_FILE_PATH} ${EXTRA_PARAMS}"
+}
 gencertkey() {
   usage $# "CERT_FILE:server|server.crt" "[KEY_PRIVATE_FILE:server.key]" "[KEY_SIZE:4096|521]" "[KEY_TYPE:rsa|ecdsa]" "[TTL:365]" "[EXTRA_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
