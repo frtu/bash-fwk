@@ -396,6 +396,9 @@ dckregmirror() {
 dckregconf() {
   cat ${DOCKER_DAEMON_FILE}
 }
+dckregconfrm() {
+  rm ${DOCKER_DAEMON_FILE}
+}
 dckregconfpersist() {
   usage $# "[DOCKER_REGISTRY_DOMAIN_NAME:docker-registry:5000]"
    # MIN NUM OF ARG

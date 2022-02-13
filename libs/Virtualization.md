@@ -102,6 +102,7 @@ Base commands :
 * Configure registry mirror : ```dckregmirror "DOCKER_REGISTRY_DOMAIN_NAME"```
 * Dislpay daemon config : ```dckregconf```
 * Persist into daemon config insecure registry : ```dckregconfpersist "[DOCKER_REGISTRY_DOMAIN_NAME:docker-registry:5000]"```
+* Remove file : ```dckregconfrm```
 * **Tag** existing local image with a registry URL : ```dckregtag "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"```
 * **Push** local image into registry URL : ```dckregpush "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"```
 * **Tag and push** existing image into registry URL : ```dckregtag "IMAGE_NAME:TAG_NAME" "[DOCKER_REGISTRY_URL:myregistry-127-0-0-1.nip.io:5000]"```
