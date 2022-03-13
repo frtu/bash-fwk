@@ -362,6 +362,17 @@ gbrmv() {
   echo "git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}"
   git branch -m ${OLD_BRANCH_NAME} ${NEW_BRANCH_NAME}
 }
+grebaseremote() {
+  usage $# "BRANCH_NAME:master" "[REMOTE_REPO_NAME:origin]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local BRANCH_NAME=$1
+  local REMOTE_REPO_NAME=$2
+
+  echo "git pull --rebase ${REMOTE_REPO_NAME} ${BRANCH_NAME}"
+  git pull --rebase ${REMOTE_REPO_NAME} ${BRANCH_NAME}
+}
 
 gfm() {
   gbrsp master
