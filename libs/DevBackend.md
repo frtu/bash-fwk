@@ -1,6 +1,23 @@
 # Dev Backend lib
 
 
+## Library 'git'
+
+* Usage ```import lib-git```
+* Install ```enablelib git```
+
+### Base commands
+
+* List all branches : ```gbrls```
+* Checkout a branch : ```gbr "BRANCH_OR_TAG_NAME"```
+* Checkout a branch (stash and pop) : ```gbrsp "BRANCH_OR_TAG_NAME"```
+* Remove a branch and checkout to another one : ```gbrrm "BRANCH_NAME" "[FALLBACK_BRANCH_AFTER_DELETE:master]"```
+
+### Remote
+
+* Rebase local branch with remote : ```grebaseremote "BRANCH_NAME" "[REMOTE_REPO_NAME:origin]"```
+
+
 ## Library 'inst-sdk'
 
 * Usage ```import lib-inst-sdk```

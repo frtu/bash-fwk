@@ -368,7 +368,7 @@ grebaseremote() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local BRANCH_NAME=$1
-  local REMOTE_REPO_NAME=$2
+  local REMOTE_REPO_NAME=${2:-origin}
 
   echo "git pull --rebase ${REMOTE_REPO_NAME} ${BRANCH_NAME}"
   git pull --rebase ${REMOTE_REPO_NAME} ${BRANCH_NAME}
