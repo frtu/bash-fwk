@@ -67,6 +67,10 @@ inst_java() {
   inst default-jdk
   inst_maven
 }
+inst_rust() {
+  upd
+  inst libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang make
+}
 
 inst_clean() {
   echo "sudo apt-get clean"
