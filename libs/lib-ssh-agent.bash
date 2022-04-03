@@ -43,6 +43,6 @@ sshagentaddfiles() {
      fi
      if [ -d "$1" ]; then
           echo "= Scan folder $SSH_ROOT for RSA files ="
-          for i in $1/*rsa; do sshagentaddfiles "$i"; done
+          for i in $1/*rsa*; do sshagentaddfiles "$i"; done
      fi
 }
