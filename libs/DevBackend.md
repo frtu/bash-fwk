@@ -45,6 +45,29 @@ Install packages :
 * Install Gradle : ```instgradle```
 * Install sbt : ```instsbt```
 
+## Library 'dev-rust'
+
+* Usage ```import lib-dev-rust ```
+* Prefix ```rt```
+
+### Install commands
+
+* Install rust : ```inst_rust```
+* Uninstall rust : ```uninst_rust```
+* Install specific rust version : ```rtinst "VERSION"```
+* Update rust : ```rtupd```
+* Get **rust** version : ```rt```
+* Add install component : ```rtadd "PACKAGE"```
+
+### Base commands
+
+* Build **version** : ```rtc```
+* **Build** project : ```rtcbuild```
+* **Run** project : ```rtcrun```
+* **Test** project : ```rtctest```
+* **Benchmark** project : ```rtcbench```
+* Build project **doc** : ```rtcdoc```
+
 
 ## Library 'dev-java'
 
