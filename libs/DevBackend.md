@@ -113,9 +113,10 @@ Install packages :
 ### Base commands
 
 * Get **gradle** version : ```gd```
-* **init** project : ```gdinit```
-* **build** project : ```gdbuild```
-* **test** project : ```gdtest```
+* **init** project : ```gdi```
+* **build** project : ```gdb```
+* **test** project : ```gdt```
+* Set gradle wrapper version : ```gdset "[VERSION:7.4.2]"```
 
 ## Library 'dev-maven'
 

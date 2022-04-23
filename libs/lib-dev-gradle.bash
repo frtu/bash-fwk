@@ -3,13 +3,13 @@
 gd() {
   gradle --version
 }
-gdinit() {
+gdi() {
   gdtpl "init" $@
 }
-gdbuild() {
+gdb() {
   gdtpl "build" $@
 }
-gdtest() {
+gdt() {
   gdtpl "test" $@
 }
 gdtpl() {
@@ -19,4 +19,11 @@ gdtpl() {
 
   echo "gradle $@"
   gradle $@
+}
+
+gdset() {
+  usage $# "[VERSION:7.4.2]"
+  local VERSION=${1:-7.4.2}
+
+  gdtpl "wrapper" "--gradle-version" ${VERSION}
 }
