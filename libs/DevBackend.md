@@ -104,6 +104,16 @@ Install packages :
 * Create a JAR standalone with kotlin runtime : ```ktjarstandalone "KOTLIN_FILE_NAME"```
 * Run kotlin in REPL (read, evaluate, print, loop) with optional classpath : ```ktrepl "[KOTLIN_JAR_FILE]"```
 
+## Library 'dev-gradle'
+
+* Usage ```import lib-dev-gradle```
+* Prefix ```gd```
+* Install Gradle : ```instgradle```
+
+### Base commands
+
+* Get **gradle** version : ```gd```
+
 ## Library 'dev-maven'
 
 * Usage ```import lib-dev-maven```

@@ -51,6 +51,7 @@ sdktpl() {
 
 instjava() {
   sdkinsttpl "java" $@
+  enablelib dev-java
 }
 instvisualvm() {
   sdkinsttpl "visualvm" $@
@@ -60,12 +61,14 @@ instscala() {
 }
 instkotlin() {
   sdkinsttpl "kotlin" $@
+  enablelib dev-kotlin
 }
 instkscript() {
   sdkinsttpl "kscript" $@
 }
 instgradle() {
   sdkinsttpl "gradle" $@
+  enablelib dev-gradle
 }
 instsbt() {
   sdkinsttpl "sbt" $@

@@ -1,7 +1,7 @@
 export JH_ROOT=/Library/Java/JavaVirtualMachines
 
-export JH8=$(/usr/libexec/java_home -v 1.8)
-export JAVA_HOME=$JH8
+export JH11=$(/usr/libexec/java_home -v 11)
+export JAVA_HOME=$JH11
 
 function setjdk() {
   if [ $# -ne 0 ]; then
@@ -38,8 +38,8 @@ jdkbin() {
 jset8() {
   jset $JH8
 }
-jset12() {
-  jset $JH12
+jset11() {
+  jset $JH11
 }
 jset() {
   usage $# "JDK_PATH"
