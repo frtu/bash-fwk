@@ -27,3 +27,13 @@ gdset() {
 
   gdtpl "wrapper" "--gradle-version" ${VERSION}
 }
+
+gddep() {
+  gdtpl "-q dependencies" $@
+}
+gddeptest() {
+  gddep "--configuration testRuntimeClasspath" $@
+}
+gddepchk() {
+  gdtpl "checkUpdates" $@
+}

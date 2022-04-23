@@ -118,6 +118,12 @@ Install packages :
 * **test** project : ```gdt```
 * Set gradle wrapper version : ```gdset "[VERSION:7.4.2]"```
 
+### Package management
+
+* Get gradle **dependencies** : ```gddep```
+* Get **dependencies** for test : ```gddeptest```
+* Check updates : ```gddepchk```
+
 ## Library 'dev-maven'
 
 * Usage ```import lib-dev-maven```
