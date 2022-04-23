@@ -113,6 +113,9 @@ Install packages :
 ### Base commands
 
 * Get **gradle** version : ```gd```
+* **init** project : ```gdinit```
+* **build** project : ```gdbuild```
+* **test** project : ```gdtest```
 
 ## Library 'dev-maven'
 
