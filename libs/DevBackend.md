@@ -116,12 +116,14 @@ Install packages :
 * **init** project : ```gdi```
 * **build** project : ```gdb```
 * **test** project : ```gdt```
-* Set gradle wrapper version : ```gdset "[VERSION:7.4.2]"```
+* Set gradle wrapper version : ```gdwrapperset "[VERSION:7.4.2]"```
 
 ### Package management
 
 * Get gradle **dependencies** : ```gddep```
-* Get **dependencies** for test : ```gddeptest```
+* Get dependencies for **compile**, **test**, : ```gddep*```
+* Generate **text report** (```./build/reports/project/dependencies.txt```) : ```gdreport```
+* Generate **html report** : ```gdreporthtml```
 * Check updates : ```gddepchk```
 
 ## Library 'dev-maven'

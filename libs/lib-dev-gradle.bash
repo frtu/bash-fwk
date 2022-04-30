@@ -21,7 +21,7 @@ gdtpl() {
   gradle $@
 }
 
-gdset() {
+gdwrapperset() {
   usage $# "[VERSION:7.4.2]"
   local VERSION=${1:-7.4.2}
 
@@ -29,11 +29,32 @@ gdset() {
 }
 
 gddep() {
-  gdtpl "-q dependencies" $@
+  usage $# "[MODULE_NAME]"
+  local MODULE_NAME=$1
+  gdtpl "-q" ${MODULE_NAME}":dependencies" ${@:2}
+}
+gddepconf() {
+  gdtpl "-q dependencies --configuration" $@
+}
+gddepimpl() {
+  gddepconf "implementation" $@
+}
+gddepcompile() {
+  gddepconf "compileClasspath" $@
+}
+gddepruntime() {
+  gddepconf "runtimeClasspath" $@
 }
 gddeptest() {
-  gddep "--configuration testRuntimeClasspath" $@
+  gddepconf "testRuntimeClasspath" $@
 }
+gdreport() {
+  gdtpl "dependencyReport" $@
+}
+gdreporthtml() {
+  gdtpl "htmlDependencyReport" $@
+}
+
 gddepchk() {
   gdtpl "checkUpdates" $@
 }
