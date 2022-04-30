@@ -63,9 +63,12 @@ Install packages :
 
 * Build **version** : ```rtc```
 * **Build** project : ```rtcbuild```
+* **Install** project : ```rtcinstall "PACKAGE"```
 * **Run** project : ```rtcrun```
 * **Test** project : ```rtctest```
 * **Benchmark** project : ```rtcbench```
+* **Lint** project code : ```rtclint ```
+* **Format** project code : ```rtcformat ```
 * Build project **doc** : ```rtcdoc```
 
 

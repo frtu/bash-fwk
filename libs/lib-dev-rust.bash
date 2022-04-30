@@ -45,30 +45,50 @@ rtadd() {
 rtaddrustfmt() {
   rtadd rustfmt
 }
+rtaddclippy() {
+  rtadd clippy
+}
+rttarpaulin() {
+  rtcinstall cargo-tarpaulin
+}
 
 # Build and package manager
 # https://www.rust-lang.org/learn/get-started
 rtc() {
-  echo "cargo --version"
-  cargo --version
+  rtctpl --version $@
 }
 rtcbuild() {
-  echo "cargo build"
-  cargo build
+  rtctpl build $@
+}
+rtcinstall() {
+  rtctpl install $@
 }
 rtcrun() {
-  echo "cargo run"
-  cargo run
+  rtctpl run $@
 }
 rtctest() {
-  echo "cargo test"
-  cargo test
+  rtctpl test $@
 }
 rtcbench() {
-  echo "cargo bench"
-  cargo bench
+  rtctpl bench $@
 }
 rtcdoc() {
-  echo "cargo doc"
-  cargo doc
+  rtctpl doc $@
+}
+# Format all code
+rtcformat() {
+  rtctpl fmt --all $@
+}
+# Lint using https://github.com/rust-lang/rust-clippy
+rtclint() {
+  rtctpl clippy --all -- -D warnings $@
+}
+
+rtctpl() {
+  usage $# "CMD" "[ADDITIONAL_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  echo "cargo $@"
+  cargo $@
 }
