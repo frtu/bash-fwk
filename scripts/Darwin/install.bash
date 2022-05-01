@@ -145,6 +145,14 @@ inst_caffe() {
 enable_nginx() {
   enablelib nginx "alias ngcd=/usr/local/etc/nginx/"
 }
+inst_protobuf() {
+  # brew tap homebrew/versions
+  # brew install protobuf241
+  inst protobuf
+}
+inst_grpc_gui() {
+  inst --cask bloomrpc
+}
 
 enable_node() {
   enablelib dev-node
