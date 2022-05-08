@@ -1,7 +1,8 @@
 #!/bin/sh
+GRADLE_WRAPPER_SCRIPT="./gradlew"
+
 ENV_GRADLE_SCRIPT=$LOCAL_SCRIPTS_FOLDER/env-GRADLE_CMD.bash
 if [[ -f "$ENV_GRADLE_SCRIPT" ]] ; then echo "source ${ENV_GRADLE_SCRIPT}" ; fi
-if [[ -z "$GRADLE_CMD" ]] ; then GRADLE_CMD="gradle" ; fi
 
 gd() {
   gradle --version
@@ -30,12 +31,25 @@ gdtpl() {
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
+  if [[ -z "$GRADLE_CMD" ]]; then
+      # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
+      if [[ -f "$GRADLE_WRAPPER_SCRIPT" ]]
+        then
+          GRADLE_CMD=$GRADLE_WRAPPER_SCRIPT
+        else
+          GRADLE_CMD="gradle"
+      fi
+  fi
+
   echo "$GRADLE_CMD $@"
   $GRADLE_CMD $@
 }
 
 gdwrapper() {
   envcreate GRADLE_CMD ./gradlew
+}
+gdwrapperrm() {
+  envrm GRADLE_CMD
 }
 gdwrapperset() {
   usage $# "[VERSION:7.4.2]"
