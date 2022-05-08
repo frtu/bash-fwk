@@ -35,9 +35,9 @@ gdtpl() {
       # Take into account PERSISTED_GITHUB_ROOT_URL for Enterprise GitHub
       if [[ -f "$GRADLE_WRAPPER_SCRIPT" ]]
         then
-          GRADLE_CMD=$GRADLE_WRAPPER_SCRIPT
+          local GRADLE_CMD=$GRADLE_WRAPPER_SCRIPT
         else
-          GRADLE_CMD="gradle"
+          local GRADLE_CMD="gradle"
       fi
   fi
 
