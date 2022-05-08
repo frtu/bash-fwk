@@ -118,8 +118,14 @@ Install packages :
 * Get **gradle** version : ```gd```
 * **init** project : ```gdi```
 * **build** project : ```gdb```
+* **build verbose** project : ```gdbverbose```
 * **test** project : ```gdt```
-* Set gradle wrapper version : ```gdwrapperset "[VERSION:7.4.2]"```
+* Run **java class** project : ```gdmain "CLASS_NAME"```
+
+### Package management
+
+* Use gradle wrapper : ```gdwrapper```
+* Set gradle wrapper **version** : ```gdwrapperset "[VERSION:7.4.2]"```
 
 ### Package management
 
