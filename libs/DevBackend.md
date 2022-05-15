@@ -116,8 +116,10 @@ Install packages :
 ### Base commands
 
 * Get **gradle** version : ```gd```
+* list all **tasks** : ```gdls```
 * **init** project : ```gdi```
 * **build** project : ```gdb```
+* **clean & build** project : ```gdbclean```
 * **build verbose** project : ```gdbverbose```
 * **test** project : ```gdt```
 * Run **java class** project : ```gdmain "CLASS_NAME"```

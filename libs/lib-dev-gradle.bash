@@ -7,11 +7,17 @@ if [[ -f "$ENV_GRADLE_SCRIPT" ]] ; then echo "source ${ENV_GRADLE_SCRIPT}" ; fi
 gd() {
   gradle --version
 }
+gdls() {
+  gdtpl "tasks" $@
+}
 gdi() {
   gdtpl "init" $@
 }
 gdb() {
   gdtpl "build" $@
+}
+gdbclean() {
+  gdtpl "clean" "build" $@
 }
 gdbverbose() {
  gdb "--warning-mode all" $@
