@@ -56,26 +56,11 @@ gsp() {
   gs pop
 }
 gadd() {
-  gtpl add $@  
-}
-gdiff() {
-  gtpl diff $@  
-}
-grb() {
-  gtpl checkout $@
-}
-gtpl() {
-  usage $# "CMD" "FILE_PATH"
+  usage $# "FILE_PATH"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then 
-    gstatus
-    return 1;
-  fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local CMD=$1
-  local FILE_PATH=$2
-  echo "git ${CMD} ${FILE_PATH}"
-  git ${CMD} ${FILE_PATH}
+  gtpl add $@  
 }
 gaddall() {
   usage $# "MESSAGE"
@@ -97,6 +82,36 @@ gcomm() {
   local MESSAGE=$1
   echo "git commit -m ${MESSAGE}"
   git commit -m ${MESSAGE}
+}
+gdiff() {
+  usage $# "FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  gtpl diff $@  
+}
+grollback() {
+  usage $# "FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  gtpl checkout $@
+}
+grb() {
+  gtpl checkout $@
+}
+gtpl() {
+  usage $# "CMD" "FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    gstatus
+    return 1;
+  fi
+
+  local CMD=$1
+  local FILE_PATH=$2
+  echo "git ${CMD} ${FILE_PATH}"
+  git ${CMD} ${FILE_PATH}
 }
 
 gf() {

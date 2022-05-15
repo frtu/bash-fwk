@@ -8,6 +8,15 @@
 
 ### Base commands
 
+* List all changes : ```gstatus```
+* **Add** file into stack : ```gadd "FILE_PATH"```
+* **Add** all files and commit with message : ```gaddall "MESSAGE"```
+* **Commit** stack with message : ```gcomm "MESSAGE"```
+* **Diff** file with committed version : ```gdiff "FILE_PATH"```
+* **Rollback** file to committed version : ```grollback "FILE_PATH"```
+
+### Branch commands
+
 * List all branches : ```gbrls```
 * Checkout a branch : ```gbr "BRANCH_OR_TAG_NAME"```
 * Checkout a branch (stash and pop) : ```gbrsp "BRANCH_OR_TAG_NAME"```
