@@ -46,6 +46,10 @@ hmsrvrm() {
 } 
 
 hmcreate() { 
+  usage $# "CHART_FOLDER"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
   hmtpl "create" $@
 }
 hmgen() { 
@@ -59,10 +63,8 @@ hmhistory() {
   hmtpl "history" $@
 }
 hmtpl() { 
-  if [ -z "$2" ]; then
-    echo "Please supply argument(s) \"CHART_FOLDER\"." >&2
-    return 1
-  fi
+  usage $# "CMD" "CHART" 
+
   echo "helm $@"
   helm $@
 }
@@ -71,54 +73,70 @@ hmls() {
   # hmtpl "ls" "--all"
   hmtpl "list"
 }
-hminst() { 
-  usage $# "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]" "[EXTRA_PARAMS]"
+hmdesc() { 
+  usage $# "CHART_FULLNAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local CHART_FOLDER=$1
-  local INSTANCE_NAME=$2
-  local CUSTOM_CONFIG_FILE=$3
+  hmtpl "show" "chart" $@
+}
+hmdescall() { 
+  usage $# "CHART_FULLNAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  hmtpl "show" "all" $@
+}
+# https://helm.sh/docs/helm/helm_install/
+hminst() { 
+  usage $# "CHART" "[NAME]" "[NAMESPACE]" "[CUSTOM_CONFIG_FILE]" "[EXTRA_PARAMS]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CHART=$1
+  local NAME=$2
+  local NAMESPACE=$3
+  local CUSTOM_CONFIG_FILE=$4
   local EXTRA_PARAMS=${@:4}
 
-  if [ -n "$INSTANCE_NAME" ]
-    then
-      local INSTANCE_NAME="--name ${INSTANCE_NAME}"
-    else
-      local INSTANCE_NAME="--generate-name"
+  if [ -z "$NAME" ]; then
+      local EXTRA_PARAMS="$EXTRA_PARAMS --generate-name"
+  fi
+  if [ -f "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -f $NAMESPACE"
   fi
   if [ -f "$CUSTOM_CONFIG_FILE" ]; then
-    local EXTRA_PARAMS="$EXTRA_PARAMS -f $CUSTOM_CONFIG_FILE"
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n $CUSTOM_CONFIG_FILE --create-namespace"
   fi
 
-  hmtpl "install" ${INSTANCE_NAME} ${CHART_FOLDER} ${EXTRA_PARAMS}
+  hmtpl "install" ${NAME} ${CHART} ${EXTRA_PARAMS}
 }
 hmupg() { 
-  usage $# "CHART_FOLDER" "INSTANCE_NAME"
+  usage $# "CHART" "NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     hmls
     return 1; 
   fi
 
-  local CHART_FOLDER=$1
-  local INSTANCE_NAME="--name $2"
+  local CHART=$1
+  local NAME="--name $2"
 
-  hmtpl "upgrade" ${INSTANCE_NAME} ${CHART_FOLDER}
+  hmtpl "upgrade" ${NAME} ${CHART}
 }
 hmrollback() { 
-  usage $# "INSTANCE_NAME"
+  usage $# "NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     hmls
     return 1; 
   fi
 
-  local INSTANCE_NAME=$1
-  hmtpl "rollback" ${INSTANCE_NAME} 1
+  local NAME=$1
+  hmtpl "rollback" ${NAME} 1
 }
 hmrm() { 
-  usage $# "INSTANCE_NAME"
+  usage $# "NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     hmls
@@ -128,11 +146,11 @@ hmrm() {
   echo "- @Deprecated : ATTENTION removed in v3 : https://helm.sh/docs/topics/v2_v3_migration/"
   echo "- Use for v3 use > hmuninst"
 
-  local INSTANCE_NAME=$1
-  hmtpl "delete" "--purge" ${INSTANCE_NAME}
+  local NAME=$1
+  hmtpl "delete" "--purge" ${NAME}
 }
 hmuninst() {
-  usage $# "INSTANCE_NAME"
+  usage $# "NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
     hmls
@@ -142,8 +160,8 @@ hmuninst() {
   echo "- ATTENTION ONLY in v3 : https://helm.sh/docs/topics/v2_v3_migration/"
   echo "- Use for v2 use > hmrm"
 
-  local INSTANCE_NAME=$1
-  hmtpl "uninstall" ${INSTANCE_NAME}
+  local NAME=$1
+  hmtpl "uninstall" ${NAME}
 }
 
 hmrepogit() {
@@ -189,7 +207,7 @@ hmrepobitnami() {
   hmrepo https://charts.bitnami.com/bitnami bitnami
 }
 hmsearchbitnami() {
-  helm search repo bitnami $@
+  hmsearch bitnami $@
 }
 
 hminit() { 
@@ -213,10 +231,10 @@ hminstelastic() {
   hmrepo https://helm.elastic.co elastic
   hmrepoupd
   hmsearch elasticsearch --version 7
-  helm install --name elasticsearch --namespace logging --wait --timeout=600 elastic/elasticsearch
+  helm install elasticsearch --namespace observability --wait --timeout=600 elastic/elasticsearch
 }
 hminstkibana() {
-  helm install elastic/kibana --name kibana --namespace logging \
+  helm install kibana elastic/kibana --namespace observability \
      --set ingress.enabled=true \
      --set ingress.hosts[0]=kibana.pv \
      --set service.externalPort=80 

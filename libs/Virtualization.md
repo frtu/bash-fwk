@@ -425,19 +425,33 @@ Create your own image :
 ### Base commands
 
 * Get Helm version : ```hm```
+* List all locally installed chart : ```hmls```
+* Install and allow to override config using YAML file : ```hminst "CHART" "[NAME]" "[NAMESPACE]" "[CUSTOM_CONFIG_FILE]"```
+* Upgrade existing chart instance : ```hmupg ""CHART"" "NAME"```
+* Rollback existing chart instance : ```hmrollback "NAME"```
+* Remove existing chart instance (v2 ONLY) : ```hmrm "NAME"```
+* Remove existing chart instance (v3 ONLY) : ```hmuninst "NAME"```
+
+### Remote repo commands
+
+* Add a new Chart repo URL & prefix : ```hmrepo "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"```
+* Add a new Chart repo URL & prefix for CN : ```hmrepo "[REPO_URL:https://apphub.aliyuncs.com/]" "[REPO_NAME:apphub]"```
+* Upgrade Chart repo index : ```hmrepoupd```
+* Search Chart repo : ```hmsearch "[REPO_NAME:stable]"```
+* Describe Chart from repo : ```hmdesc "CHART_FULLNAME"```
+* Fully describe Chart from repo : ```hmdescall "CHART_FULLNAME"```
+
+To manage locally charts repo at *~/git/helm-charts* (ONLY for fallback) :
+
+* Manually checkout stable git locally : ```hmrepogit```
+* Go to local folder : ```hmrepogitcd```
+
+### Create your own chart
+
 * Create chart template folder : ```hmcreate "CHART_FOLDER"```
 * Generate chart : ```hmgen "CHART_FOLDER"```
 * Package chart : ```hmpkg "CHART_FOLDER"```
 * Get history : ```hmhistory "CHART_FOLDER"```
-
-### With K8s commands
-
-* List all installed chart instances : ```hmls```
-* Install and allow to override config using YAML file : ```hminst "CHART_FOLDER" "[INSTANCE_NAME]" "[CUSTOM_CONFIG_FILE]"```
-* Upgrade existing chart instance : ```hmupg "CHART_FOLDER" "INSTANCE_NAME"```
-* Rollback existing chart instance : ```hmrollback "INSTANCE_NAME"```
-* Remove existing chart instance (v2 ONLY) : ```hmrm "INSTANCE_NAME"```
-* Remove existing chart instance (v3 ONLY) : ```hmuninst "INSTANCE_NAME"```
 
 ### K8S service commands
 
@@ -445,18 +459,6 @@ Create your own image :
 * Upgrade service-account tiller : ```hmsrvupg "[SERVICE_ACCOUNT:tiller]"```
 * Get Helm K8s deployment info (tiller-deploy) : ```hmsrvinfo "[NAMESPACE:kube-system]"```
 * Delete Helm K8s deployment (tiller-deploy) : ```hmsrvrm```
-
-### Remote repo commands
-
-* Add a new Chart repo URL & prefix : ```hmrepo "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"```
-* Add a new Chart repo URL & prefix for CN : ```hmrepo "[REPO_URL:https://apphub.aliyuncs.com/]" "[REPO_NAME:apphub]"```
-* Upgrade Chart repo index : ```hmrepoupd```
-* Search Chart repo : ```hmsearch "[REPO_NAME:stable?]"```
-
-To manage locally charts repo at *~/git/helm-charts* (ONLY for fallback) :
-
-* Manually checkout stable git locally : ```hmrepogit```
-* Go to local folder : ```hmrepogitcd```
 
 ### Common installation
 
