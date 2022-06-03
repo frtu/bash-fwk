@@ -158,10 +158,10 @@ hmrepogitcd() {
 }
 
 hmrepo() {
-  usage $# "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"
+  usage $# "[REPO_URL:https://charts.helm.sh/stable]" "[REPO_NAME:stable]"
 
   # https://github.com/helm/charts#how-do-i-enable-the-stable-repository-for-helm-3
-  local REPO_URL=${1:-https://kubernetes-charts.storage.googleapis.com/}
+  local REPO_URL=${1:-https://charts.helm.sh/stable}
   local REPO_NAME=${2:-stable}
 
   echo "helm repo add ${REPO_NAME} ${REPO_URL}"
