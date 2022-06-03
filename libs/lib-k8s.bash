@@ -44,8 +44,8 @@ kcls() {
   kclspvc $@
   echo "------- Ingress --------";
   kclsingress $@
-  echo "------- ConfigMaps --------";
-  kclsconfigmaps $@
+  echo "------- ConfigMap --------";
+  kclsconfigmap $@
 }
 kclsnamespaces() {
   echo "kubectl get namespaces $@"
@@ -103,9 +103,9 @@ kclsapi() {
   usage $# "[NAMESPACE]"
   kcgettpl "apiservice" $@
 }
-kclsconfigmaps() {
+kclsconfigmap() {
   usage $# "[NAMESPACE]"
-  kcgettpl "configmaps" $@
+  kcgettpl "configmap" $@
 }
 kclsresources() {
   kubectl api-resources
@@ -806,6 +806,10 @@ kcsvctpl() {
 alias kcingls='kclstpl ingress '
 alias kcingyaml='kcyaml ingress'
 alias kcingdesc='kcdesc ingress '
+
+alias kcconfigmapls='kclstpl configmap '
+alias kcconfigmapyaml='kcyaml configmap'
+alias kcconfigmapdesc='kcdesc configmap '
 
 alias kcdpls='kclstpl deployment '
 alias kcdpyaml='kcyaml deployment'

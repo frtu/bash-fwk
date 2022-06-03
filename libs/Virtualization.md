@@ -296,7 +296,7 @@ All kubectl listing commands in the current cluster and namespace :
 * List all **services**  : ```kclsservices [NAMESPACE]```
 * List all **persistent volume claim** (pvc) : ```kclspvc [NAMESPACE]```
 * List all **ingress**  : ```kclsingress [NAMESPACE]```
-* List all **configmaps**  : ```kclsconfigmaps [NAMESPACE]```
+* List all **configmap**  : ```kclsconfigmap [NAMESPACE]```
 * List all events : ```kclsevents [NAMESPACE]```
 * List all api services : ```kclsapi [NAMESPACE]```
 * List all resources types : ```kclsresources```
@@ -377,6 +377,12 @@ These commands are easier with 'kcnsset NAMESPACE' :
 * List all **ingress** : ```kcingls "[CONTAINING_TEXT]"```
 * Get **YAML** from an existing ingress : ```kcingyaml "INGRESS_NAME" "NAMESPACE"```
 * Get **describe** or info from an existing ingress : ```kcingdesc "INGRESS_NAME" "NAMESPACE"```
+
+### Deployment 'kcconfigmap' commands
+
+* List all **configmap** : ```kcconfigmapls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing configmap : ```kcconfigmapyaml "CONFIG_MAP_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing configmap : ```kcconfigmapdesc "CONFIG_MAP_NAME" "NAMESPACE"```
 
 
 ### K8s context 'kcctx' commands
