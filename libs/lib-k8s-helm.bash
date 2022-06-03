@@ -2,10 +2,16 @@ import lib-k8s
 
 CHARTS_LOCAL_FOLDER=~/git/helm-charts
 
+# https://helm.sh/docs/intro/quickstart/
 # https://www.baeldung.com/kubernetes-helm
+# https://wkrzywiec.medium.com/how-to-deploy-application-on-kubernetes-with-helm-39f545ad33b8
 hm() { 
   echo "helm version"
   helm version
+}
+hmhub() {
+  echo "== Opening browser at https://artifacthub.io/"
+  open -a "Google Chrome" "https://artifacthub.io/"
 }
 hmsrvupg() { 
   usage $# "[SERVICE_ACCOUNT:tiller]"
@@ -176,7 +182,14 @@ hmsearch() {
   usage $# "[REPO_NAME:stable?]"
 
   local REPO_NAME=$1
-  helm search repo ${REPO_NAME}
+  helm search repo ${REPO_NAME} ${@:2}
+}
+
+hmrepobitnami() {
+  hmrepo https://charts.bitnami.com/bitnami bitnami
+}
+hmsearchbitnami() {
+  helm search repo bitnami $@
 }
 
 hminit() { 
