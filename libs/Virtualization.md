@@ -426,6 +426,9 @@ Create your own image :
 ### Base commands
 
 * Get Helmfile version : ```hf```
+* Apply all your chart releases : ```hfapply```
+* Sync all your chart releases : ```hfsync```
+* Sync all your chart releases (offline) : ```hfcharts```
 
 ## Library 'k8s-[helm](https://helm.sh/docs/intro/quickstart/)'
 
