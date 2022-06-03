@@ -1,6 +1,27 @@
 import lib-k8s
 
 CHARTS_LOCAL_FOLDER=~/git/helm-charts
+CHARTS_PLUGIN_FOLDER=~/Library/helm/plugins
+
+inst_hm() {
+  inst helm
+}
+inst_hmdiff() {
+  hmplugininst https://github.com/databus23/helm-diff
+}
+hmplugin() {
+  cd $CHARTS_PLUGIN_FOLDER
+}
+hmplugininst() {
+  usage $# "PACKAGE_LOCATION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  helm plugin install $@
+}
+hmpluginls() {
+  helm plugin list
+}
 
 # https://helm.sh/docs/intro/quickstart/
 # https://www.baeldung.com/kubernetes-helm

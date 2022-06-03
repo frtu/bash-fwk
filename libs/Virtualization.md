@@ -421,7 +421,7 @@ Create your own image :
 
 * Usage ```import lib-k8s-helmfile```
 * Prefix ```hf```
-* Install ```inst_hf``` 
+* Install ```inst_hf```
 
 ### Base commands
 
@@ -431,6 +431,7 @@ Create your own image :
 
 * Usage ```import lib-k8s-helm```
 * Prefix ```hm``` 
+* Install ```inst_hm``` & ```inst_hmdiff```
 
 ### Base commands
 
