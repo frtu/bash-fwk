@@ -294,6 +294,7 @@ All kubectl listing commands in the current cluster and namespace :
 * List all **pods** : ```kclspods [NAMESPACE]```
 * List all **deployments** : ```kclsdeployments [NAMESPACE]```
 * List all **services**  : ```kclsservices [NAMESPACE]```
+* List all **persistent volume claim** (pvc) : ```kclspvc [NAMESPACE]```
 * List all **ingress**  : ```kclsingress [NAMESPACE]```
 * List all **configmaps**  : ```kclsconfigmaps [NAMESPACE]```
 * List all events : ```kclsevents [NAMESPACE]```

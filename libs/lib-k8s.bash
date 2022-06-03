@@ -40,6 +40,8 @@ kcls() {
   kclsdeployments $@
   echo "------- Services --------";
   kclsservices $@
+  echo "------- PersistentVolumeClaim --------";
+  kclspvc $@
   echo "------- Ingress --------";
   kclsingress $@
   echo "------- ConfigMaps --------";
@@ -51,7 +53,7 @@ kclsnamespaces() {
 }
 kclspods() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "pods" $@
+  kcgettpl "pods" $@
 }
 kclspodsfull() {
   usage $# "[NAMESPACE]" "[OPTION:wide|yaml]"
@@ -79,27 +81,31 @@ kclspodsfull() {
 }
 kclsservices() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "service" $@
+  kcgettpl "service" $@
 }
 kclsdeployments() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "deployment" $@
+  kcgettpl "deployment" $@
+}
+kclspvc() {
+  usage $# "[NAMESPACE]"
+  kcgettpl "pvc" $@
 }
 kclsingress() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "ingress" $@
+  kcgettpl "ingress" $@
 }
 kclsevents() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "events" $@
+  kcgettpl "events" $@
 }
 kclsapi() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "apiservice" $@
+  kcgettpl "apiservice" $@
 }
 kclsconfigmaps() {
   usage $# "[NAMESPACE]"
-  kcgettemplate "configmaps" $@
+  kcgettpl "configmaps" $@
 }
 kclsresources() {
   kubectl api-resources
@@ -126,7 +132,7 @@ kcdesc() {
   echo "kubectl describe ${RESOURCE_TYPE} ${RESOURCE_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
   kubectl describe ${RESOURCE_TYPE} ${RESOURCE_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
 }
-kcgettemplate() {
+kcgettpl() {
   usage $# "RESOURCE_TYPE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
