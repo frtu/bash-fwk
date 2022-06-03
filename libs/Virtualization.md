@@ -417,7 +417,17 @@ Create your own image :
 * Open a bash on a copied **crashed pod** : ```kccrasheddebug "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
 * Open a bash **modifying base image** to SET_IMAGE : ```kccrasheddebugsetimage "INSTANCE_NAME" "[SET_IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
 
-## Library '[helm](https://helm.sh/docs/intro/quickstart/)'
+## Library 'k8s-helmfile'
+
+* Usage ```import lib-k8s-helmfile```
+* Prefix ```hf```
+* Install ```inst_hf``` 
+
+### Base commands
+
+* Get Helmfile version : ```hf```
+
+## Library 'k8s-[helm](https://helm.sh/docs/intro/quickstart/)'
 
 * Usage ```import lib-k8s-helm```
 * Prefix ```hm``` 
