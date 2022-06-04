@@ -74,6 +74,16 @@ hmdescall() {
 
   hmtpl "show" "all" $@
 }
+# https://docs.helm.sh/docs/helm/helm_dependency/
+hmdep() {
+  rm Chart.lock
+  hmtpl "dependency" "list" $@
+}
+# https://docs.helm.sh/docs/helm/helm_dependency_update/
+hmdepupd() {
+  rm Chart.lock
+  hmtpl "dependency" "update" $@
+}
 # https://helm.sh/docs/helm/helm_install/
 hminst() { 
   usage $# "CHART" "[NAME]" "[NAMESPACE]" "[CUSTOM_CONFIG_FILE]" "[EXTRA_PARAMS]"

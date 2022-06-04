@@ -467,6 +467,8 @@ To manage locally charts repo at *~/git/helm-charts* (ONLY for fallback) :
 * Rollback existing chart instance : ```hmrollback "NAME"```
 * Remove existing chart instance (v2 ONLY) : ```hmrm "NAME"```
 * Remove existing chart instance (v3 ONLY) : ```hmuninst "NAME"```
+* List all helm dependencies : ```hmdep```
+* Refresh all helm dependencies : ```hmdepupd```
 
 ### Manage helm plugin
 
