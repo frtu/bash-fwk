@@ -32,8 +32,7 @@ hmrepo() {
   local REPO_URL=${1:-https://kubernetes-charts.storage.googleapis.com/}
   local REPO_NAME=${2:-stable}
 
-  echo "helm repo add ${REPO_NAME} ${REPO_URL}"
-  helm repo add ${REPO_NAME} ${REPO_URL}
+  hmrepotpl "add" ${REPO_NAME} ${REPO_URL}
 }
 hmrepocn() {
   # https://github.com/cloudnativeapp/charts/blob/master/README_en.md
@@ -42,15 +41,24 @@ hmrepocn() {
 
   hmrepo ${REPO_URL} ${REPO_NAME}
 }
+# Make sure we get the latest list of charts
 hmrepoupd() {
-  echo "helm repo update"
-  helm repo update              # Make sure we get the latest list of charts
+  hmrepotpl "update"
+}
+hmreporm() {
+  hmrepotpl "remove"
 }
 hmsearch() {
   usage $# "[REPO_NAME:stable?]"
 
   local REPO_NAME=$1
   helm search repo ${REPO_NAME} ${@:2}
+}
+hmrepotpl() { 
+  usage $# "CMD" "CHART" 
+
+  echo "helm repo $@"
+  helm "repo" $@
 }
 
 #-----------------------------
@@ -144,7 +152,7 @@ hmrm() {
   echo "- Use for v3 use > hmuninst"
 
   local NAME=$1
-  hmtpl "delete" "--purge" ${NAME}
+  hmtpl "delete" ${NAME}
 }
 hmuninst() {
   usage $# "NAME"

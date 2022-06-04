@@ -445,6 +445,7 @@ Create your own image :
 * Open browser to helm hub : ```hmhub```
 * Add a new Chart repo URL & prefix : ```hmrepo "[REPO_URL:https://kubernetes-charts.storage.googleapis.com/]" "[REPO_NAME:stable]"```
 * Add a new Chart repo URL & prefix for CN : ```hmrepo "[REPO_URL:https://apphub.aliyuncs.com/]" "[REPO_NAME:apphub]"```
+* Remove current Chart repo : ```hmrm```
 * Upgrade Chart repo index : ```hmrepoupd```
 * Search Chart repo : ```hmsearch "[REPO_NAME:stable]"```
 
