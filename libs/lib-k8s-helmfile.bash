@@ -6,19 +6,44 @@ inst_hf() {
 }
 
 hf() { 
-  helmfile "version"
+  helmfile "version" $@
+}
+hfls() { 
+  hftpl "list" $@
+}
+hfstatus() { 
+  hftpl "status" $@
+}
+hfdiff() { 
+  hftpl "diff" $@
 }
 # Apply all your chart releases
 hfapply() { 
-  hftpl "apply"
+  hftpl "apply" $@
 }
 # Sync all your chart releases
 hfsync() { 
-  hftpl "sync"
+  hftpl "sync" $@
 }
 # Sync all your chart releases (offline)
 hfcharts() { 
-  hftpl "charts"
+  hftpl "charts"$@
+}
+hfrepo() { 
+  hftpl "repos" $@
+}
+hfdep() { 
+  hftpl "deps" $@
+}
+hfdestroy() { 
+  hftpl "destroy" $@
+}
+
+hftest() { 
+  hftpl "test" $@
+}
+hfbuild() { 
+  hftpl "build" $@
 }
 
 hftpl() { 
