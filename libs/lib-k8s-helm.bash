@@ -9,19 +9,6 @@ inst_hm() {
 inst_hmdiff() {
   hmplugininst https://github.com/databus23/helm-diff
 }
-hmplugin() {
-  cd $CHARTS_PLUGIN_FOLDER
-}
-hmplugininst() {
-  usage $# "PACKAGE_LOCATION"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
-
-  helm plugin install $@
-}
-hmpluginls() {
-  helm plugin list
-}
 
 # https://helm.sh/docs/intro/quickstart/
 # https://www.baeldung.com/kubernetes-helm
@@ -30,66 +17,45 @@ hm() {
   echo "helm version"
   helm version
 }
+
+#-----------------------------
+# Repository
+#-----------------------------
 hmhub() {
   echo "== Opening browser at https://artifacthub.io/"
   open -a "Google Chrome" "https://artifacthub.io/"
 }
-hmsrvupg() { 
-  usage $# "[SERVICE_ACCOUNT:tiller]"
+hmrepo() {
+  usage $# "[REPO_URL:https://charts.helm.sh/stable]" "[REPO_NAME:stable]"
 
-  local SERVICE_ACCOUNT=${1:-tiller}
-  hmsrvinit ${SERVICE_ACCOUNT} --upgrade
+  # https://github.com/helm/charts#how-do-i-enable-the-stable-repository-for-helm-3
+  local REPO_URL=${1:-https://kubernetes-charts.storage.googleapis.com/}
+  local REPO_NAME=${2:-stable}
+
+  echo "helm repo add ${REPO_NAME} ${REPO_URL}"
+  helm repo add ${REPO_NAME} ${REPO_URL}
 }
-hmsrvinit() {
-  usage $# "[SERVICE_ACCOUNT:tiller]"
+hmrepocn() {
+  # https://github.com/cloudnativeapp/charts/blob/master/README_en.md
+  local REPO_URL=${1:-https://apphub.aliyuncs.com/}
+  local REPO_NAME=${2:-apphub}
 
-  echo "== ATTENTION service account MUST be created before https://github.com/helm/helm/issues/4685#issuecomment-531239132 =="
-  echo "- Attempt to get YAML from https://raw.githubusercontent.com/mspnp/microservices-reference-implementation/master/k8s/tiller-rbac.yaml"
-  kcapply https://raw.githubusercontent.com/mspnp/microservices-reference-implementation/master/k8s/tiller-rbac.yaml
-
-  local SERVICE_ACCOUNT=${1:-tiller}
-
-  echo "== Service Account : ${SERVICE_ACCOUNT} ${@:2} =="
-  hminit --service-account ${SERVICE_ACCOUNT} ${@:2}
-
-  echo "== Update charts : You need have previously run > hmrepo =="
-  hmrepoupd
+  hmrepo ${REPO_URL} ${REPO_NAME}
 }
-hmsrvinfo() {
-  usage $# "[NAMESPACE:kube-system]"
+hmrepoupd() {
+  echo "helm repo update"
+  helm repo update              # Make sure we get the latest list of charts
+}
+hmsearch() {
+  usage $# "[REPO_NAME:stable?]"
 
-  local NAMESPACE=${1:-kube-system}
-  kcdpinfo "tiller-deploy" "${NAMESPACE}"
-}
-hmsrvrm() {
-  kubectl -n kube-system delete deployment tiller-deploy
-  kubectl -n kube-system delete service/tiller-deploy
-} 
-
-hmcreate() { 
-  usage $# "CHART_FOLDER"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
-
-  hmtpl "create" $@
-}
-hmgen() { 
-  hmtpl "lint" $@
-  hmtpl "template" $@
-}
-hmpkg() { 
-  hmtpl "package" $@
-}
-hmhistory() { 
-  hmtpl "history" $@
-}
-hmtpl() { 
-  usage $# "CMD" "CHART" 
-
-  echo "helm $@"
-  helm $@
+  local REPO_NAME=$1
+  helm search repo ${REPO_NAME} ${@:2}
 }
 
+#-----------------------------
+# Describe and (un)install
+#-----------------------------
 hmls() { 
   # hmtpl "ls" "--all"
   hmtpl "list"
@@ -185,58 +151,100 @@ hmuninst() {
   hmtpl "uninstall" ${NAME}
 }
 
-hmrepogit() {
-  enablelib git
-  git clone https://github.com/helm/charts.git ${CHARTS_LOCAL_FOLDER}
-
-  echo "== Checkout chart repo locally at : ${CHARTS_LOCAL_FOLDER}. Use > hmrepogitcd"
-  hmrepogitcd 
+#-----------------------------
+# Helm plugin
+#-----------------------------
+hmplugin() {
+  cd $CHARTS_PLUGIN_FOLDER
 }
-hmrepogitcd() {
-  cd ${CHARTS_LOCAL_FOLDER}
+hmpluginls() {
+  helm plugin list
 }
+hmplugininst() {
+  usage $# "PACKAGE_LOCATION_OR_URL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
-hmrepo() {
-  usage $# "[REPO_URL:https://charts.helm.sh/stable]" "[REPO_NAME:stable]"
-
-  # https://github.com/helm/charts#how-do-i-enable-the-stable-repository-for-helm-3
-  local REPO_URL=${1:-https://charts.helm.sh/stable}
-  local REPO_NAME=${2:-stable}
-
-  echo "helm repo add ${REPO_NAME} ${REPO_URL}"
-  helm repo add ${REPO_NAME} ${REPO_URL}
-}
-hmrepocn() {
-  # https://github.com/cloudnativeapp/charts/blob/master/README_en.md
-  local REPO_URL=${1:-https://apphub.aliyuncs.com/}
-  local REPO_NAME=${2:-apphub}
-
-  hmrepo ${REPO_URL} ${REPO_NAME}
-}
-hmrepoupd() {
-  echo "helm repo update"
-  helm repo update              # Make sure we get the latest list of charts
-}
-hmsearch() {
-  usage $# "[REPO_NAME:stable?]"
-
-  local REPO_NAME=$1
-  helm search repo ${REPO_NAME} ${@:2}
+  helm plugin install $@
 }
 
-hmrepobitnami() {
-  hmrepo https://charts.bitnami.com/bitnami bitnami
-}
-hmsearchbitnami() {
-  hmsearch bitnami $@
-}
-
+#-----------------------------
+# Server and Tiller
+#-----------------------------
 hminit() { 
   echo "== Initialize Helm server (Tiller) into the current K8s context =="
   echo "- @Deprecated : ATTENTION removed in v3 : https://helm.sh/docs/topics/v2_v3_migration/"
 
   echo "helm init $@"
   helm init $@
+}
+hmsrvinit() {
+  usage $# "[SERVICE_ACCOUNT:tiller]"
+
+  echo "== ATTENTION service account MUST be created before https://github.com/helm/helm/issues/4685#issuecomment-531239132 =="
+  echo "- Attempt to get YAML from https://raw.githubusercontent.com/mspnp/microservices-reference-implementation/master/k8s/tiller-rbac.yaml"
+  kcapply https://raw.githubusercontent.com/mspnp/microservices-reference-implementation/master/k8s/tiller-rbac.yaml
+
+  local SERVICE_ACCOUNT=${1:-tiller}
+
+  echo "== Service Account : ${SERVICE_ACCOUNT} ${@:2} =="
+  hminit --service-account ${SERVICE_ACCOUNT} ${@:2}
+
+  echo "== Update charts : You need have previously run > hmrepo =="
+  hmrepoupd
+}
+hmsrvupg() { 
+  usage $# "[SERVICE_ACCOUNT:tiller]"
+
+  local SERVICE_ACCOUNT=${1:-tiller}
+  hmsrvinit ${SERVICE_ACCOUNT} --upgrade
+}
+hmsrvinfo() {
+  usage $# "[NAMESPACE:kube-system]"
+
+  local NAMESPACE=${1:-kube-system}
+  kcdpinfo "tiller-deploy" "${NAMESPACE}"
+}
+hmsrvrm() {
+  kubectl -n kube-system delete deployment tiller-deploy
+  kubectl -n kube-system delete service/tiller-deploy
+}
+
+#-----------------------------
+# Custom charts
+#-----------------------------
+hmcreate() { 
+  usage $# "CHART_FOLDER"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  hmtpl "create" $@
+}
+hmgen() { 
+  hmtpl "lint" $@
+  hmtpl "template" $@
+}
+hmpkg() { 
+  hmtpl "package" $@
+}
+hmhistory() { 
+  hmtpl "history" $@
+}
+hmtpl() { 
+  usage $# "CMD" "CHART" 
+
+  echo "helm $@"
+  helm $@
+}
+
+#-----------------------------
+# Popular repos
+#-----------------------------
+hmrepobitnami() {
+  hmrepo https://charts.bitnami.com/bitnami bitnami
+}
+hmsearchbitnami() {
+  hmsearch bitnami $@
 }
 
 hminstchartmuseum() {
@@ -248,6 +256,20 @@ hminstchartmuseum() {
   curl http://localhost:8080
 }
 
+hmrepogit() {
+  enablelib git
+  git clone https://github.com/helm/charts.git ${CHARTS_LOCAL_FOLDER}
+
+  echo "== Checkout chart repo locally at : ${CHARTS_LOCAL_FOLDER}. Use > hmrepogitcd"
+  hmrepogitcd 
+}
+hmrepogitcd() {
+  cd ${CHARTS_LOCAL_FOLDER}
+}
+
+#-----------------------------
+# Install apps
+#-----------------------------
 hminstelastic() {
   hmrepo https://helm.elastic.co elastic
   hmrepoupd
