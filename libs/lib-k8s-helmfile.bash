@@ -35,8 +35,8 @@ hfrepo() {
 hfdep() { 
   hftpl "deps" $@
 }
-hfdestroy() { 
-  hftpl "destroy" $@
+hfrm() { 
+  hftpl "destroy"
 }
 
 hftest() { 
