@@ -840,20 +840,23 @@ dcmp() {
   dcmptpl version
 }
 dcmpbuild() {
-  dcmptpl build
+  dcmptpl build $@
 }
 dcmpstart() {
-  dcmptpl up
+  dcmptpl up $@
+}
+dcmpstartrm() {
+  dcmpstart --remove-orphans $@
 }
 dcmpstartd() {
-  dcmptpl up -d
+  dcmptpl up -d $@
   dckps
 }
 dcmpstop() {
-  dcmptpl down
+  dcmptpl down $@
 }
 dcmpps() {
-  dcmptpl ps
+  dcmptpl ps $@
 }
 dcmplogs() {
   usage $# "INSTANCE_NAME"
@@ -862,7 +865,7 @@ dcmplogs() {
     dcmpps
     return 1
   fi
-  dcmptpl logs $1
+  dcmptpl logs $@
 }
 dcmptpl() {
   echo "docker-compose $@"
