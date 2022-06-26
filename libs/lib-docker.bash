@@ -594,17 +594,32 @@ dckrundaemon() {
 
   return $?
 }
-dckrunjavaenv() {
-  usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[SYS_ENV_ARRAY]"
+dckrunjavaotel() {
+  usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "INSTANCE_NAME" "OTEL_EXPORTER_OTLP_ENDPOINT=http://HOST_IP:4318"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local IMAGE_NAME=$1
+  local INSTANCE_NAME=$2
+  local OTEL_EXPORTER_OTLP_ENDPOINT=$3
+
+  dckrunjavaenv "${IMAGE_NAME}" "${INSTANCE_NAME}" "OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}" ${@:4}
+}
+dckrunjavaenv() {
+  usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "[INSTANCE_NAME]" "[SYS_ENV_ARRAY]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
+  local IMAGE_NAME=$1
+  local INSTANCE_NAME=$2
   local PORT=8080
-  local INSTANCE_NAME="${IMAGE_NAME%\:*}"
+
+  if [ -z "${INSTANCE_NAME}" ]; then
+    INSTANCE_NAME="${IMAGE_NAME%\:*}"
+  fi
 
   local OPTIONAL_ARGS=""
-  for SYS_ENV in "${@:2}"; do
+  for SYS_ENV in "${@:3}"; do
     OPTIONAL_ARGS="${OPTIONAL_ARGS} -e ${SYS_ENV}"
   done
 
