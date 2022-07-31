@@ -302,9 +302,17 @@ gbrsp() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
+  glsp $@
+}
+# git stash checkout pop
+glsp() {
+  usage $# "[BRANCH_NAME]"
+
   local BRANCH_NAME=$1
   gs
-  gbr ${BRANCH_NAME}
+  if [ -n "$BRANCH_NAME" ]; then
+    gbr ${BRANCH_NAME}
+  fi
   gl
   gsp
 }
