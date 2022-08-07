@@ -594,6 +594,7 @@ dckrundaemon() {
 
   return $?
 }
+# https://opentelemetry.io/docs/reference/specification/protocol/exporter/
 dckrunjavaotel() {
   usage $# "IMAGE_NAME:service-a:0.0.1-SNAPSHOT" "INSTANCE_NAME" "OTEL_EXPORTER_OTLP_ENDPOINT=http://HOST_IP:4318"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -644,6 +645,8 @@ dckrunjava() {
   echo "== Connect to ${INSTANCE_NAME} using http://localhost:${PORT} =="
   echo "If port not exposed (only needed once per VM) > dckmport ${PORT}"
   dckrundaemon "${IMAGE_NAME}" "${INSTANCE_NAME}" "${OPTIONAL_ARGS}"
+
+  dcklogstail "${INSTANCE_NAME}"
 }
 dckrunjenkinsnode() {
   usage $# "INSTANCE_NAME:jenkins-nodejs" "[FOLDER_PATH]" "[PORT_JENKINS:8080]" "[PORT_SONARQUBE:9000]"
