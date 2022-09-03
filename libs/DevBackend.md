@@ -124,9 +124,11 @@ Install packages :
 
 ### Base commands
 
-* Get **gradle** version : ```gd```
+* Run **gradle** commands : ```gd CMD "[ADDITIONAL_PARAMS]"```
+* Get **gradle** version : ```gdv```
 * list all **tasks** : ```gdls```
 * **init** project : ```gdi```
+* **clean** project : ```gdc```
 * **build** project : ```gdb```
 * **clean & build** project : ```gdbclean```
 * **build verbose** project : ```gdbverbose```

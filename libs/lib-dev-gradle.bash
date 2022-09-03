@@ -4,8 +4,11 @@ GRADLE_WRAPPER_SCRIPT="./gradlew"
 ENV_GRADLE_SCRIPT=$LOCAL_SCRIPTS_FOLDER/env-GRADLE_CMD.bash
 if [[ -f "$ENV_GRADLE_SCRIPT" ]] ; then echo "source ${ENV_GRADLE_SCRIPT}" ; fi
 
-gd() {
+gdv() {
   gradle --version
+}
+gd() {
+  gdtpl $@
 }
 gdls() {
   gdtpl "tasks" $@
@@ -13,11 +16,15 @@ gdls() {
 gdi() {
   gdtpl "init" $@
 }
+gdc() {
+  gdtpl "clean" $@
+}
 gdb() {
   gdtpl "build" $@
 }
 gdbclean() {
-  gdtpl "clean" "build" $@
+  gdc $@
+  gdb $@
 }
 gdbverbose() {
  gdb "--warning-mode all" $@
