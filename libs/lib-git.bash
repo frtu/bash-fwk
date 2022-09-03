@@ -126,6 +126,9 @@ gl() {
   echo "git pull $@"
   git pull $@
 }
+ghf() {
+  gh --force $@
+}
 gh() {
   usage $# "[REMOTE_REPO_NAME:origin]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

@@ -8,7 +8,10 @@
 
 ### Base commands
 
-* List all changes : ```gstatus```
+* Shortcut for `git pull` : ```gl```
+* Shortcut for `git pull` with stashing : ```glsp```
+* Shortcut for `git push` : ```gh```
+* Shortcut for `git push --force` : ```ghf```
 * **Add** file into stack : ```gadd "FILE_PATH"```
 * **Add** all files and commit with message : ```gaddall "MESSAGE"```
 * **Commit** stack with message : ```gcomm "MESSAGE"```
