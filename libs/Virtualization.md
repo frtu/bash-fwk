@@ -317,7 +317,7 @@ ATTENTION - Wildcard delete :
 * Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
 * **Tail logs** from an existing pod : ```kcpodtail "POD_NAME"```
 * **Attach to a process** that is already running inside an existing container : ```kcattach "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"```
-* Open a **tunnel** from a particular pod into localhost : ```kcportfwd "POD_NAME" "PORT_MAPPING-8080:80" "[NAMESPACE]"```
+* Open a **tunnel** from a particular pod into localhost or additionally with [EXPOSED_IP] : ```kcportfwd "POD_NAME" "PORT_MAPPING-8080:80" "[EXPOSED_IP]" "[NAMESPACE]"```
 
 Interaction with files
 

@@ -880,7 +880,7 @@ kcdptpl() {
 
 # https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward
 kcportfwd() {
-  usage $# "POD_NAME|SERVICE_NAME|DEPLOYMENT:service/xx|deployment/yy" "PORT_MAPPING-8080:80" "[NAMESPACE]" "[EXTRA_PARAMS]"
+  usage $# "POD_NAME|SERVICE_NAME|DEPLOYMENT:service/xx|deployment/yy" "PORT_MAPPING-8080:80" "[EXPOSED_IP]" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
     echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
@@ -890,9 +890,13 @@ kcportfwd() {
 
   local POD_NAME=$1
   local PORT_MAPPING=$2
-  local NAMESPACE=$3
-  local EXTRA_PARAMS=${@:4}
+  local EXPOSED_IP=$3
+  local NAMESPACE=$4
+  local EXTRA_PARAMS=${@:5}
   
+  if [ -n "$EXPOSED_IP" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --address localhost,${EXPOSED_IP}"
+  fi
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
