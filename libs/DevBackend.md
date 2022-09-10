@@ -151,6 +151,36 @@ Install packages :
 * Generate **html report** : ```gdreporthtml```
 * Check updates : ```gddepchk```
 
+### Extension
+
+#### ktlint
+
+* Run ktlint format - `ktlintFormat` : ```gdktlint```
+* Run ktlint check - `ktlintCheck` : ```gdktlintchk```
+
+If not done declare into your build gradle :
+
+```kotlin
+object Versions {
+  const val plugin_ktlint = "7.1.0"
+}
+
+// root build.gradle.kts
+plugins {
+  id("com.github.sherter.google-java-format") version Versions.plugin_google_format
+}
+
+buildscript {
+    repositories {
+        maven("https://plugins.gradle.org/m2/")
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("org.jlleitschuh.gradle:ktlint-gradle:${Versions.plugin_google_format}")
+    }
+}
+```
+
 ## Library 'dev-maven'
 
 * Usage ```import lib-dev-maven```

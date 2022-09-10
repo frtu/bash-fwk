@@ -101,3 +101,10 @@ gdreporthtml() {
 gddepchk() {
   gdtpl "checkUpdates" $@
 }
+
+gdktlint() {
+  gdtpl ktlintFormat $@
+}
+gdktlintchk() {
+  gdtpl ktlintCheck $@
+}
