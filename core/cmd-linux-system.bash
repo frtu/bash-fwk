@@ -41,6 +41,21 @@ suroot() {
   sudo -iu root
 }
 
+# PROCESS
+psowner() {
+  usage $# "PID"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
+    ps -edf
+    return 1
+  fi
+
+  local PID=$1
+
+  ps -o user= ${PID}
+}
+
 # NETWORK
 portlist() {
   netstat -ntlp | grep LISTEN

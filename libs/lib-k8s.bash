@@ -246,6 +246,42 @@ kclogs() {
   echo "kubectl logs $@"
   kubectl logs $@
 }
+# Interaction
+kccpfrom() {
+  usage $# "POD_NAME" "SOURCE_FOLDER" "DESTINATION_FOLDER"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local POD_NAME=$1
+  local SOURCE_FOLDER=$1
+  local DESTINATION_FOLDER=$2
+
+  kccp "${POD_NAME}:${SOURCE_FOLDER}" "${DESTINATION_FOLDER}"
+}
+kccpto() {
+  usage $# "POD_NAME" "SOURCE_FOLDER" "DESTINATION_FOLDER"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local POD_NAME=$1
+  local SOURCE_FOLDER=$1
+  local DESTINATION_FOLDER=$2
+
+  kccp "${SOURCE_FOLDER}" "${POD_NAME}:${DESTINATION_FOLDER}"
+}
+kccp() {
+  usage $# "SOURCE" "DESTINATION"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local SOURCE=$1
+  local DESTINATION=$2
+  local EXTRA_PARAMS=${@:3}
+
+  echo "= Please make sure tar is installed in your image ="
+  echo "kubectl cp ${SOURCE} ${DESTINATION} ${EXTRA_PARAMS}"
+  kubectl cp ${SOURCE} ${DESTINATION} ${EXTRA_PARAMS}
+}
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
 kcbash() {
   usage $# "POD_NAME" "[COMMANDS]"
@@ -261,6 +297,22 @@ kcbash() {
   local COMMANDS_ARGS=${@:3}
 
   kcinteractivetpl "exec" "${POD_NAME}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
+}
+kcbashsudo() {
+  usage $# "USER_NAME" "POD_NAME" "[COMMANDS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
+    kcpodls
+    return 1
+  fi
+
+  local USER_NAME=$1
+  local POD_NAME=$2
+  local COMMANDS=${3:-/bin/bash}
+  local COMMANDS_ARGS=${@:4}
+
+  kcinteractivetpl "exec" "${POD_NAME}" "-- gosu ${USER_NAME} ${COMMANDS} ${COMMANDS_ARGS}"
 }
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
 kcbashns() {
