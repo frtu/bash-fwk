@@ -21,7 +21,13 @@ br() {
   brew --version
 }
 brpath() {
-  brew --prefix
+  usage $# "[PACKAGE_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local PACKAGE_NAME=$1
+
+  brew --prefix ${PACKAGE_NAME}
 }
 
 brls() {
@@ -33,8 +39,35 @@ brsrh() {
 brunlk() {
   brew unlink $1
 }
+brdesc() {
+  usage $# "[PACKAGE_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
+  local PACKAGE_NAME=$1
+
+  brew info --cask ${PACKAGE_NAME}
+}
+
+# --------------------------------
+# Develop
+# --------------------------------
+inst_cmake() {
+  inst cmake
+}
+
+# Already include python & package mgmt
+inst_conda() {
+  brew install --cask anaconda
+  enablelib dev-py-conda
+}
 inst_python() {
   sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
   inst python
+}
+
+inst_protobuf() {
+  # brew tap homebrew/versions
+  # brew install protobuf241
+  inst protobuf
 }

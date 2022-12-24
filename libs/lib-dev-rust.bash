@@ -8,6 +8,7 @@ inst_rust() {
   curl https://sh.rustup.rs -sSf | sh $@
   # source $CARGO_HOME/env
   # rtaddrustfmt
+  enablelib dev-rust
 }
 uninst_rust() {
   echo "rustup self uninstall"
