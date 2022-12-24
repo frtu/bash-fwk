@@ -30,7 +30,12 @@ grmcached() {
 }
 
 gstatus() {
+  echo "git status"
   git status
+}
+gsafe() {
+  echo "git config --global --add safe.directory '*'"
+  git config --global --add safe.directory '*'
 }
 
 gbase() {
