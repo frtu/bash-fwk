@@ -1,7 +1,5 @@
-export HOMEBREW_HOME=/usr/local/Library/Homebrew
-export HOMEBREW_REPOSITORY=/usr/local/Cellar
-export HOMEBREW_OPT=/usr/local/opt
-export HOMEBREW_CACHE=/Users/$USER/Library/Caches/Homebrew
+import lib-inst
+source inst-brew.bash
 
 export SUBL_HOME=/Applications/Sublime\ Text.app
 export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
@@ -9,24 +7,12 @@ export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
 export INSTALL_TOOL=brew
 export UNINSTALL_TOOL="brew rmtree"
 export CHECK_SUDO=false
-import lib-inst
 
-inst_brew() {
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew tap caskroom/homebrew-cask
-  brew install brew-cask
-  brew tap beeftornado/rmtree
-}
-inst_update() {
-  brew upgrade
-  brew cask upgrade
-}
 inst_zlib() {
   inst zlib
   brew link zlib
 }
 
-alias brewcd='cd $HOMEBREW_REPOSITORY'
 alias sdkcd='cd $SDKMAN_DIR'
 
 lnk_subl() {
@@ -45,16 +31,6 @@ eclipseplugin() {
 
   local PLUGIN_FILEPATH=$1
   cp $PLUGIN_FILEPATH ${ECLIPSE_HOME}/plugins/
-}
-
-brew_ls() {
-  brew list --versions
-}
-brew_srh() {
-  brew search $1
-}
-brew_unlk() {
-  brew unlink $1
 }
 
 inst_git() {
