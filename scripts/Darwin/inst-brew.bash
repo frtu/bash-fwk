@@ -7,6 +7,7 @@ alias cdbr='cd $HOMEBREW_REPOSITORY'
 
 inst_brew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  sudo chown -R $(whoami) /usr/local/Homebrew/
   brew tap caskroom/homebrew-cask
   brew install brew-cask
   brew tap beeftornado/rmtree
@@ -31,4 +32,9 @@ brsrh() {
 }
 brunlk() {
   brew unlink $1
+}
+
+inst_python() {
+  sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
+  inst python
 }

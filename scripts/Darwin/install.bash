@@ -81,31 +81,6 @@ inst_helm() {
   inst kubernetes-helm
 }
 
-inst_python() {
-  usage $# "[PYTHON_VERSION]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local PYTHON_VERSION=${1:-3.7.2}
-  echo "Installation > pyenv install -v ${PYTHON_VERSION}"
-  inst pyenv
-  CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -v ${PYTHON_VERSION}
-
-  CONFIGURE_OPTS="--with-openssl=$(brew --prefix openssl)" 
-  CFLAGS="-I$(brew --prefix zlib)/include -I$(brew --prefix sqlite)/include" 
-  LDFLAGS="-L$(brew --prefix zlib)/lib -L$(brew --prefix sqlite)/lib" 
-  pyenv install ${PYTHON_VERSION}
-}
-inst_pip() {
-  local PIP_MODULE=${1:-regex}
-  echo "Type your sudo password to be able to skip Permission denied into /Library/Python/ directory"
-  echo "> curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python"
-  curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
-  echo "> easy_install pip"
-  /usr/local/bin/easy_install pip
-  echo "> pip install $PIP_MODULE"
-  pip install $PIP_MODULE
-}
 inst_caffe() {
   # http://caffe.berkeleyvision.org/install_osx.html
   brew install -vd snappy leveldb gflags glog szip lmdb
