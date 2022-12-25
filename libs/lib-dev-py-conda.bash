@@ -23,7 +23,7 @@ pcinit() {
   echo "conda init $@"
   conda init $@
 }
-pcenvcreate() {
+pccreate() {
   usage $# "ENV_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -33,6 +33,26 @@ pcenvcreate() {
   conda create --name ${ENV_NAME}
 
   pcenv ${ENV_NAME}
+}
+pcenvcreate() {
+  usage $# "[FILE_NAME]" "[ENV_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local FILE_NAME=${1:-environment.yaml}
+  local ENV_NAME=$2
+  local EXTRA_PARAMS=${@:3}
+
+  if [ -n "$ENV_NAME" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --name ${ENV_NAME}"
+  fi
+
+  if [ -f "$FILE_NAME" ]; then
+      EXTRA_PARAMS="$EXTRA_PARAMS -f ${FILE_NAME}"
+  fi
+
+  echo "conda env create ${EXTRA_PARAMS}"
+  conda env create ${EXTRA_PARAMS}
 }
 pcenv() {
   usage $# "ENV_NAME"

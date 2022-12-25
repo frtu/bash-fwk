@@ -79,7 +79,8 @@ Other optional installation :
 * Get **python** & **conda** version : ```pc```
 * Init conda env : ```pcinit```
 * Upgrade Conda : ```pcugd```
-* Create isolated environment : ```pcenvcreate "ENV_NAME"```
+* Create isolated environment : ```pccreate "ENV_NAME"```
+* Create environment based on file `environment.yaml` : ```pcenvcreate "[FILE_NAME]" "[ENV_NAME]"```
 * Use isolated environment : ```pcenv "ENV_NAME"```
 * Deactivate isolated environment : ```pcenvdeactivate```
 
