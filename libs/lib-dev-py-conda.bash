@@ -2,11 +2,14 @@ import lib-dev-py-pip
 
 CONDA_PKG=${CONDA_ROOT_FOLDER}/lib/python3.8/site-packages
 pcls() {
-  echo "conda list"
-  conda list
+  echo "conda list $@"
+  conda list $@
 }
 
 pc() {
+  echo "conda --version"
+  conda --version
+
   echo "conda info"
   conda info
 
@@ -15,6 +18,10 @@ pc() {
 
   echo "conda list --show-channel-urls"
   conda list --show-channel-urls
+}
+pcinit() {
+  echo "conda init $@"
+  conda init $@
 }
 pcenvcreate() {
   usage $# "ENV_NAME"
@@ -43,8 +50,8 @@ pcenvdeactivate() {
 }
 
 pcugd() {
-  echo "conda update conda"
-  conda update conda
+  echo "conda update conda $@"
+  conda update conda $@
 }
 pcupd() {
   echo "conda update --all"

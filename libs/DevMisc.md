@@ -66,6 +66,7 @@ Generic configuration settings
 ### Admin commands
 
 * Get **python** & **conda** version : ```pc```
+* Init conda env : ```pcinit```
 * Upgrade Conda : ```pcugd```
 * Create isolated environment : ```pcenvcreate "ENV_NAME"```
 * Use isolated environment : ```pcenv "ENV_NAME"```
