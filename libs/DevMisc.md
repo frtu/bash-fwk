@@ -63,6 +63,17 @@ Generic configuration settings
 * Usage ```import lib-dev-py-conda```
 * Prefix ```pc```
 
+### Install
+
+* Install conda : ```inst_conda```
+* Update conda : ```upd_conda```
+
+Other optional installation :
+
+* Install `python` (Optional should already come with `conda`) : `inst_python`
+* Install `protobuf` : `inst_protobuf`
+* Install `cmake` : `inst_cmake`
+
 ### Admin commands
 
 * Get **python** & **conda** version : ```pc```

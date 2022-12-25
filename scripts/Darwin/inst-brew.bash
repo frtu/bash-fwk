@@ -34,10 +34,10 @@ brls() {
   brew list --versions
 }
 brsrh() {
-  brew search $1
+  brew search $@
 }
 brunlk() {
-  brew unlink $1
+  brew unlink $@
 }
 brdesc() {
   usage $# "[PACKAGE_NAME]"
@@ -60,6 +60,10 @@ inst_cmake() {
 inst_conda() {
   brew install --cask anaconda
   enablelib dev-py-conda
+}
+upd_conda() {
+  sudo chown -R $(whoami) /Users/fred/.conda
+  conda update -n base -c defaults conda
 }
 inst_python() {
   sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
