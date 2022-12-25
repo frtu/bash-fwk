@@ -152,13 +152,17 @@ Administration :
 * Usage ```import lib-k8s-gke```
 * Prefix ```gke```
 
+Enable using ```enablegke```
+
 Make sure to install : using ```gkeinst``` or [gcloud install page](https://cloud.google.com/sdk/docs/install)
 
 ### Base commands
 
 * Get gcloud info : ```gke```
 * Login to google cloud : ```gkelogin```
+* List all accounts : ```gkeloginls```
 * Initialize configuration for GKE : ```gkeinit```
+* Component updates (to a specific version) : ```gkeupd "[VERSION:412.0.0]"```
 * Run diagnostics (may help to detect proxy) : ```gkediagnostics```
 
 ### Manage cluster
@@ -169,6 +173,7 @@ Make sure to install : using ```gkeinst``` or [gcloud install page](https://clou
 
 ### Manage project
 
+* list all projects : ```gkeprj```
 * Create gke alias to a project : ```gkeprjadd "PROJECT_ID:zeta-surf-123456" "CLUSTER_NAME:cluster-asia-east" "REGION"```
 * Switch project using previously created alias : ```gkeprj<PROJECT_NAME>```
 * Set current project to : ```gkeprjset "PROJECT_ID:zeta-surf-123456"```

@@ -7,8 +7,16 @@ gkeinst() {
   inst --cask google-cloud-sdk
 }
 gkeupd() {
-  echo "gcloud components update"
-  gcloud components update
+  usage $# "[VERSION:412.0.0]"
+  local VERSION=$1
+  local EXTRA_PARAMS=${@:2}
+
+  if [ -n "$VERSION" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --version $VERSION"
+  fi
+  
+  echo "gcloud components update $EXTRA_PARAMS"
+  gcloud components update $EXTRA_PARAMS
 }
 
 gke() {
@@ -19,6 +27,10 @@ alias gkeauth=gkelogin
 gkelogin() {
   echo "gcloud auth login"
   gcloud auth login
+}
+gkeloginls() {
+  echo "gcloud auth list"
+  gcloud auth list
 }
 gkeinit() {
   echo "gcloud init"
@@ -67,6 +79,10 @@ gkeconfset() {
 }
 
 # Manage a K8s cluster at https://console.cloud.google.com/kubernetes/
+gkeprj() {
+  echo "gcloud projects list $@"
+  gcloud projects list $@
+}
 gkeprjset() {
   usage $# "PROJECT_ID:zeta-surf-123456" "[ADDITIONAL_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

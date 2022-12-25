@@ -84,6 +84,14 @@ enablesp() {
 }
 
 # Local env
+alias enablegcp=enablegke
+enablegke() {
+  enablelib k8s-gke
+  echo "------- Help --------";
+  echo "gke : gke info"
+  echo "gkelogin : login into gke"
+  echo "gkeupd : update gke"
+}
 enablehadoop() {
   enablelib hadoop-admin
   binappend ${HADOOP_HOME}/bin
