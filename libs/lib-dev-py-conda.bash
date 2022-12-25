@@ -57,6 +57,7 @@ pcupd() {
   echo "conda update --all"
   conda update --all
 }
+
 pcinst() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -93,6 +94,12 @@ pcinstanaconda() {
 
   echo "Find doc at https://anaconda.org/anaconda/$@"
   pcinst -c anaconda $@
+}
+pcinstplotly() {
+	pcinst -c https://conda.anaconda.org/plotly plotly
+}
+pcinstinfluxdb() {
+	pcinst -c mcrot influxdb
 }
 
 pcinstbasemap() {
