@@ -79,9 +79,16 @@ Other optional installation :
 * Get **python** & **conda** version : ```pc```
 * Init conda env : ```pcinit```
 * Upgrade Conda : ```pcugd```
+* Upgrade based on conda-forge : ```pcugdbase```
+* Configure for M1 : ```pcconfm1```
+* Adding configuration : ```pcconf "CONF_NAME" "CONF_VALUE"```
+
+### Create isolated env
+
 * Create isolated environment : ```pccreate "ENV_NAME"```
 * Create environment based on file `environment.yaml` : ```pcenvcreate "[FILE_NAME]" "[ENV_NAME]"```
 * Use isolated environment : ```pcenv "ENV_NAME"```
+* Use isolated environment : ```pcenvrm "ENV_NAME"```
 * Deactivate isolated environment : ```pcenvdeactivate```
 
 ### Base commands
@@ -91,6 +98,7 @@ Other optional installation :
 * Add repo : ```pcrepo "CHANNEL_NAME"```
 * Add repo (*conda-forge*) : ```pcrepoforge```
 * Install package from (*conda-forge*) : ```pcinstforge "PACKAGE"```
+* Clean up repo : ```pcrepoclean```
 
 ## Library 'dev-py-pip'
 
@@ -99,5 +107,7 @@ Other optional installation :
 
 ### Base commands
 
-* Install package with pip (if requirements.txt exist, use it if no arg passed)  : ```ppinst "[PACKAGE]"```
+* Install package with pip (if requirements.txt exist, use it if no arg passed)  : ```ppinst "[PACKAGE]" "[VERSION]"```
 * Install mtcnn : ```ppinst_mtcnn```
+* Uninstall : ```ppuninst "[PACKAGE]"```
+* Clean up repo : ```pprepoclean```

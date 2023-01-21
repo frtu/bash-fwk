@@ -7,13 +7,19 @@ ppls() {
   pip list
 }
 ppinst() {
-  usage $# "[PACKAGE]"
+  usage $# "[PACKAGE]" "[VERSION]"
 
   local PACKAGE=$1
+  local VERSION=$2
 
   if [ -n "$PACKAGE" ]
     then
-      local INST_ARG="$@"
+      if [ -n "$VERSION" ]
+        then
+          local INST_ARG="${PACKAGE}==${VERSION}"
+        else
+          local INST_ARG="${PACKAGE}"
+      fi
     else
       if [[ -f "${REQ_FILENAME}" ]] 
         then 
@@ -27,7 +33,21 @@ ppinst() {
   echo "pip install ${INST_ARG}"
   pip install ${INST_ARG}
 }
+ppuninst() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local PACKAGE=$1
+
+  echo "pip uninstall ${PACKAGE}"
+  pip uninstall ${PACKAGE}
+}
+
+pprepoclean() {
+  echo "pip cache purge"
+  pip cache purge
+}
 ppinst_mtcnn() {
   ppinst mtcnn
 }

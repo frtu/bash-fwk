@@ -23,6 +23,24 @@ pcinit() {
   echo "conda init $@"
   conda init $@
 }
+
+## CONFIGURE ENV VARS
+pcconf() {
+  usage $# "CONF_NAME" "CONF_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local CONF_NAME=$1
+  local CONF_VALUE=$2
+
+  echo "conda env config vars set ${CONF_NAME}=${CONF_VALUE}"
+  conda env config vars set ${CONF_NAME}=${CONF_VALUE}
+}
+pcconfm1() {
+  pcconf CONDA_SUBDIR "osx-arm64"
+}
+
+## MANAGE SPECIFIC ENV
 pccreate() {
   usage $# "ENV_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -68,10 +86,24 @@ pcenvdeactivate() {
   echo "conda deactivate"
   conda deactivate
 }
+pcenvrm() {
+  usage $# "ENV_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local ENV_NAME=$1
+  
+  echo "conda env remove -n ${ENV_NAME}"
+  conda env remove -n ${ENV_NAME}
+}
+
+## ADDING REPO
+pcugdbase() {
+  pcugd -n base -c conda-forge
+}
 pcugd() {
-  echo "conda update conda $@"
-  conda update conda $@
+  echo "conda update $@ conda"
+  conda update $@ conda
 }
 pcupd() {
   echo "conda update --all"
@@ -86,6 +118,7 @@ pcinst() {
   echo "conda install $@"
   conda install $@
 }
+
 pcrepo() {
   usage $# "CHANNEL_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -96,6 +129,13 @@ pcrepo() {
   echo "conda config --add channels ${CHANNEL_NAME}"
   conda config --add channels ${CHANNEL_NAME}
 }
+pcrepoclean() {
+  pcenvdeactivate
+  
+  echo "conda clean --all --yes"
+  conda clean --all --yes
+}
+
 pcrepoforge() {
   pcrepo conda-forge
 }
@@ -115,13 +155,19 @@ pcinstanaconda() {
   echo "Find doc at https://anaconda.org/anaconda/$@"
   pcinst -c anaconda $@
 }
+
+pcinstopencv() {
+	pcinst -c conda-forge opencv torchvision omegaconf invisible-watermark einops pytorch_lightning
+}
+pcinsttransformers() {
+  pcinst transformers
+}
 pcinstplotly() {
 	pcinst -c https://conda.anaconda.org/plotly plotly
 }
 pcinstinfluxdb() {
 	pcinst -c mcrot influxdb
 }
-
 pcinstbasemap() {
   ppinst geos
   pcinstforge proj4
