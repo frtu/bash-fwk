@@ -1,5 +1,10 @@
 # Commands
 
+## First time
+
+* Enable to see hidden files in Finder : ```showFiles```
+* Use `bash` as default shell  : ```setBash```
+
 ## Install
 
 * Install node using **nvm** : ```inst_nvm "[VERSION]"```

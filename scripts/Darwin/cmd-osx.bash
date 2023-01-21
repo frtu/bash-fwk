@@ -2,6 +2,7 @@ import lib-shell
 
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles TRUE;killall Finder'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles FALSE;killall Finder'
+alias setBash='sudo chsh -s /bin/bash'
 
 tmpopen() {
 	open $TMPDIR
