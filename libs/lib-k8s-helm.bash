@@ -300,3 +300,11 @@ hminstkibana() {
      --set ingress.hosts[0]=kibana.pv \
      --set service.externalPort=80 
 }
+hminstprometheus() {
+  hmrepo https://prometheus-community.github.io/helm-charts prometheus-community
+  hmrepoupd
+  hminst prometheus-community/prometheus prometheus observability
+}
+hminstpostgres() {
+  hminst ./postgres postgres storage kanban-postgres.yaml
+}

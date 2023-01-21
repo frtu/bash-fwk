@@ -111,3 +111,22 @@ Other optional installation :
 * Install mtcnn : ```ppinst_mtcnn```
 * Uninstall : ```ppuninst "[PACKAGE]"```
 * Clean up repo : ```pprepoclean```
+
+## Library 'dev-rust'
+
+* Usage ```import lib-dev-rust```
+* Prefix ```rt```
+
+### Install
+
+* Install rust : ```inst_rust```
+* Uninstall rust : ```uninst_rust```
+* Update rust : ```rtupd```
+
+### Base commands
+
+* Get **rust** version : ```rt```
+* Install rust specific version : ```rtinst "VERSION"```
+* Add a package : ```rtadd "PACKAGE"```
+* List rust toolchain : ```rttool```
+* Set rust toolchain : ```rttoolset "TOOLCHAIN"```

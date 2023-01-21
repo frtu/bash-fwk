@@ -28,7 +28,7 @@ pcinit() {
 pcconf() {
   usage $# "CONF_NAME" "CONF_VALUE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CONF_NAME=$1
   local CONF_VALUE=$2
@@ -37,14 +37,14 @@ pcconf() {
   conda env config vars set ${CONF_NAME}=${CONF_VALUE}
 }
 pcconfm1() {
-  pcconf CONDA_SUBDIR "osx-arm64"
+  pcconf CONDA_SUBDIR "osx-arm64" $@
 }
 
-## MANAGE SPECIFIC ENV
+## MANAGE ISOLATED ENV
 pccreate() {
   usage $# "ENV_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local ENV_NAME=$1
   echo "conda create --name ${ENV_NAME}"
@@ -55,7 +55,7 @@ pccreate() {
 pcenvcreate() {
   usage $# "[FILE_NAME]" "[ENV_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local FILE_NAME=${1:-environment.yaml}
   local ENV_NAME=$2
@@ -75,7 +75,7 @@ pcenvcreate() {
 pcenv() {
   usage $# "ENV_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local ENV_NAME=$1
   
@@ -89,7 +89,7 @@ pcenvdeactivate() {
 pcenvrm() {
   usage $# "ENV_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local ENV_NAME=$1
   
@@ -113,7 +113,7 @@ pcupd() {
 pcinst() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "conda install $@"
   conda install $@
@@ -122,7 +122,7 @@ pcinst() {
 pcrepo() {
   usage $# "CHANNEL_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CHANNEL_NAME=$1
 
@@ -142,7 +142,7 @@ pcrepoforge() {
 pcinstforge() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "Find doc at https://anaconda.org/conda-forge/$@"
   pcinst -c conda-forge $@
@@ -150,7 +150,7 @@ pcinstforge() {
 pcinstanaconda() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "Find doc at https://anaconda.org/anaconda/$@"
   pcinst -c anaconda $@

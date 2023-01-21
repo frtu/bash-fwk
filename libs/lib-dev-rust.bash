@@ -38,7 +38,7 @@ rtupd() {
 rtadd() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "rustup component add $@"
   rustup component add $@
@@ -52,6 +52,24 @@ rtaddclippy() {
 rttarpaulin() {
   rtcinstall cargo-tarpaulin
 }
+
+rttool() {
+  echo "rustup toolchain list"
+  rustup toolchain list
+}
+rttoolset() {
+  usage $# "TOOLCHAIN"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "> If you don't know any names run 'rttool'" >&2
+    rttool
+    return 1
+  fi
+
+  echo "rustup set default-host $@"
+  rustup set default-host $@
+}
+
 
 # Build and package manager
 # https://www.rust-lang.org/learn/get-started
