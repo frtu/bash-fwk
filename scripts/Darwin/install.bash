@@ -166,3 +166,14 @@ inst_sbt() {
   sbt about
   enablesbt
 }
+
+# Already include python & package mgmt
+# ARM
+inst_conda_m1() {
+  ## https://docs.anaconda.com/anaconda/install/silent-mode/
+  curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda.sh
+  bash ~/miniconda.sh -b -p $HOME/miniconda
+  eval "$($HOME/miniconda/bin/conda shell.bash hook)"
+  
+  enablelib dev-py-conda
+}

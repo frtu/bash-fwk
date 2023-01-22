@@ -57,6 +57,7 @@ inst_cmake() {
 }
 
 # Already include python & package mgmt
+# x86
 inst_conda() {
   brew install --cask anaconda
   enablelib dev-py-conda
