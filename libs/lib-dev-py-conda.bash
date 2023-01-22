@@ -39,10 +39,10 @@ pcconf() {
 pcconfm1() {
   pcconf CONDA_SUBDIR "osx-arm64" $@
 }
-pcconfdeactivate(
+pcconfdeactivateauto() {
   echo "conda config --set auto_activate_base false"
   conda config --set auto_activate_base false
-)
+}
 
 ## MANAGE ISOLATED ENV
 pccreate() {
