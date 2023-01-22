@@ -75,6 +75,11 @@ pcenvcreate() {
 
   echo "conda env create ${EXTRA_PARAMS}"
   conda env create ${EXTRA_PARAMS}
+
+  if [ -n "$ENV_NAME" ]; then
+    echo "conda activate ${ENV_NAME}"
+    conda activate "${ENV_NAME}"
+  fi
 }
 pcenv() {
   usage $# "ENV_NAME"
