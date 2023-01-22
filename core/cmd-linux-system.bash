@@ -9,12 +9,18 @@ cdbin(){
   cd $USR_BIN
 }
 binln() {
-  # MIN NUM OF ARG
-  if [[ "$#" < "2" ]]; then
-    echo "Please provide a folder='$1' and a command filename='$2'" >&2
-    return 1
-  fi
+  usage $# "LOCAL_FOLDER" "CMD_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
   ln -s "$1/$2" "$USR_BIN/$2"	
+}
+binmv() {
+  usage $# "FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  sudo mv $1 $USR_BIN
 }
 binappend() {
   usage $# "NEW_PATH_FOLDER"

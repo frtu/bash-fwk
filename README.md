@@ -90,6 +90,13 @@ You can list them and activate them on needs.
 - srv_activate : activate any srv name
 - srv_deactivate : deactivate any srv name 
 
+### Linux
+
+* Describe which linux version is it : ```linuxdesc```
+* Link command line to bin folder : ```binln "LOCAL_FOLDER" "CMD_NAME"```
+* Move exec to bin folder : ```binmv "FILE_PATH"```
+* Add bin to PATH : ```binappend "NEW_PATH_FOLDER"```
+
 ## Platform specifics
 
 ### Mac OSX
