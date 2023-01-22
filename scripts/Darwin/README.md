@@ -2,8 +2,8 @@
 
 ## First time
 
-* Enable to see hidden files in Finder : ```showFiles```
-* Use `bash` as default shell  : ```setBash```
+* In Finder, enable to see hidden files : ```showFiles```
+* In Terminal, use `bash` as default shell  : ```setBash```
 
 ## Install
 
