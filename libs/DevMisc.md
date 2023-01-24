@@ -62,6 +62,7 @@ Generic configuration settings
 
 * Usage ```import lib-dev-py-conda```
 * Prefix ```pc```
+* For M1, run ```pcarchm1```
 
 ### Install
 
@@ -104,13 +105,19 @@ Other optional installation :
 
 * Usage ```import lib-dev-pip```
 * Prefix ```pp```
+* For M1, run ```pparchm1```
 
 ### Base commands
 
 * Install package with pip (if requirements.txt exist, use it if no arg passed)  : ```ppinst "[PACKAGE]" "[VERSION]"```
-* Install mtcnn : ```ppinst_mtcnn```
+* Install package without using cache  : ```ppuninstnocache "[PACKAGE]" "[VERSION]"```
 * Uninstall : ```ppuninst "[PACKAGE]"```
 * Clean up repo : ```pprepoclean```
+
+### Installs
+
+* Install mtcnn : ```ppinst_mtcnn```
+* Install tensorflow : ```ppinst_tensorflow```
 
 ## Library 'dev-rust'
 

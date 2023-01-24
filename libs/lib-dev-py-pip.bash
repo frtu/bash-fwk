@@ -43,6 +43,9 @@ ppuninst() {
   echo "pip uninstall ${PACKAGE}"
   pip uninstall ${PACKAGE}
 }
+ppuninstnocache() {
+  ppuninst --no-cache-dir $@
+}
 
 pprepoclean() {
   echo "pip cache purge"
@@ -52,5 +55,10 @@ ppinst_mtcnn() {
   ppinst mtcnn
 }
 ppinst_tensorflow() {
-  ppinst --default-timeout=1000 --no-cache-dir tensorflow
+  ppuninstnocache --default-timeout=1000 tensorflow
 }
+
+pparchm1() {
+  envcreate "ARCHFLAGS" "-arch arm64"
+}
+

@@ -102,6 +102,8 @@ pcenvrm() {
 
   local ENV_NAME=$1
   
+  pcenvdeactivate
+  
   echo "conda env remove -n ${ENV_NAME}"
   conda env remove -n ${ENV_NAME}
 }
@@ -185,4 +187,10 @@ pcinstbasemap() {
 }
 pcinstbasemap() {
   pcinstforge proj4 cartopy
+}
+
+pcarchm1() {
+  envcreate "CONDA_SUBDIR" "osx-arm64"
+  # TO BE RUN IN SPECIFIC ENV
+  pcconfm1
 }
