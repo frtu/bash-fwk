@@ -58,6 +58,25 @@ Generic configuration settings
 * Build : ```njbuild```
 * Build & deploy as server : ```njbuildNdeploy```
 
+### Repo commands
+
+* Search repo for package : ```njrepols "PKG_NAME"```
+* Set Repo URL : ```njconfsetrepo "REPO_URL"```
+* List all repo : ```njconfrepo```
+* Clean repo : ```njclean```
+* Npm audit repo & fix : ```njauditfix ```
+* Create lock file : ```njlock ```
+
+### Configuration
+
+* List configs : ````njconfls```
+* Set configs : ```njconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Remove config : ```njconfrm "CONF_PARAM_NAME"```
+* Set HTTP proxy : ```njconfsetproxy "PROXY_URL"```
+* Set HTTPS proxy : ```njconfsetproxysecured "HTTPS_PROXY_URL"```
+* Remove proxies : ```njconfcleanproxies```
+* Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
+
 ## Library 'dev-py-conda'
 
 * Usage ```import lib-dev-py-conda```

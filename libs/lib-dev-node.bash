@@ -102,3 +102,15 @@ njclean() {
   echo "npm run clean"
   npm run clean
 }
+
+njaudit() {
+  echo "npm audit $@"
+  npm audit $@
+}
+njauditfix() {
+  njaudit fix --force
+}
+njlock() {
+  echo "npm i --package-lock-only"
+  npm i --package-lock-only
+}
