@@ -77,6 +77,22 @@ Generic configuration settings
 * Remove proxies : ```njconfcleanproxies```
 * Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
 
+
+## Library 'js-rush'
+
+* Usage ```import lib-js-rush```
+* Prefix ```rh```
+* Install ```inst_rush```
+
+### Base commands
+
+* Get **rush** version : ```rh```
+* [Install all pck dep](https://rushjs.io/pages/commands/rush_install/) - READ ONLY : ```rhinst```
+* [Run update](https://rushjs.io/pages/commands/rush_update/) whenever you start working in a Rush repo, after you pull from Git, and after you modify a package.json file : ```rhupd```
+* [Build](https://rushjs.io/pages/commands/rush_build/) : ```rhbuild```
+* Build current project & dependencies : ```rhbuildfull```
+* [Invokes a shell script](https://rushjs.io/pages/commands/rushx/) that is defined in the "scripts" : ```rhx [SCRIPT_NAME]```
+
 ## Library 'dev-py-conda'
 
 * Usage ```import lib-dev-py-conda```
