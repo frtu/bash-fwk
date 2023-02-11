@@ -1,22 +1,24 @@
 KUBECONFIG_FILE=~/.kube/config
 KUBE_FOLDER=~/.kube
 
+alias k='kubectl'
+
 # https://kubernetes.io/docs/reference/kubectl/cheatsheet/
-cdkc() {
+cdk() {
   cd ${KUBE_FOLDER}
 }
 kc() {
   echo "------- CLI and Server version --------";
   kubectl version
   echo "------- List contexts (or 'clusters') --------";
-  kcctx 
+  kctx 
   echo "------- Running instances --------";
   kubectl get nodes
   echo "------- Cluster Info --------";
   kubectl cluster-info
 }
 
-kchello() {
+khello() {
   usage $# "[IMAGE_REPOSITORY:k8s.gcr.io]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -25,37 +27,37 @@ kchello() {
   kubectl create deployment hello-minikube --image=${IMAGE_REPOSITORY}/echoserver:1.10
 }
 # https://kind.sigs.k8s.io/docs/user/ingress/
-kcingress() {
+kingress() {
   echo "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml"
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 }
 # https://kubernetes.io/docs/reference/kubectl/overview/#resource-types
-kcls() {
+kls() {
   usage $# "[NAMESPACE]"
   echo "------- Namespaces --------";
-  kclsnamespaces $@
+  klsnamespaces $@
   echo "------- Pods --------";
-  kclspods $@
+  klspods $@
   echo "------- Deployment --------";
-  kclsdeployments $@
+  klsdeployments $@
   echo "------- Services --------";
-  kclsservices $@
+  klsservices $@
   echo "------- PersistentVolumeClaim --------";
-  kclspvc $@
+  klspvc $@
   echo "------- Ingress --------";
-  kclsingress $@
+  klsingress $@
   echo "------- ConfigMap --------";
-  kclsconfigmap $@
+  klsconfigmap $@
 }
-kclsnamespaces() {
+klsnamespaces() {
   echo "kubectl get namespaces $@"
   kubectl get namespaces $@
 }
-kclspods() {
+klspods() {
   usage $# "[NAMESPACE]"
-  kcgettpl "pods" $@
+  kgettpl "pods" $@
 }
-kclspodsfull() {
+klspodsfull() {
   usage $# "[NAMESPACE]" "[OPTION:wide|yaml]"
 
   local NAMESPACE=$1
@@ -79,43 +81,48 @@ kclspodsfull() {
   echo "kubectl get pods ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
   kubectl get pods ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
 }
-kclsservices() {
+klsservices() {
   usage $# "[NAMESPACE]"
-  kcgettpl "service" $@
+  kgettpl "service" $@
 }
-kclsdeployments() {
+klsdeployments() {
   usage $# "[NAMESPACE]"
-  kcgettpl "deployment" $@
+  kgettpl "deployment" $@
 }
-kclspvc() {
+klspvc() {
   usage $# "[NAMESPACE]"
-  kcgettpl "pvc" $@
+  kgettpl "pvc" $@
 }
-kclsingress() {
+klsingress() {
   usage $# "[NAMESPACE]"
-  kcgettpl "ingress" $@
+  kgettpl "ingress" $@
 }
-kclsevents() {
+# https://istio.io/latest/docs/concepts/traffic-management/
+klsvs() {
   usage $# "[NAMESPACE]"
-  kcgettpl "events" $@
+  kgettpl "ingress" $@
 }
-kclsapi() {
+klsevents() {
   usage $# "[NAMESPACE]"
-  kcgettpl "apiservice" $@
+  kgettpl "events" $@
 }
-kclsconfigmap() {
+klsapi() {
   usage $# "[NAMESPACE]"
-  kcgettpl "configmap" $@
+  kgettpl "apiservice" $@
 }
-kclsresources() {
+klsconfigmap() {
+  usage $# "[NAMESPACE]"
+  kgettpl "configmap" $@
+}
+klsresources() {
   kubectl api-resources
 }
-kclsresourcesformatted() {
+klsresourcesformatted() {
   for kind in `kubectl api-resources | tail +2 | awk '{ print $1 }'`; do kubectl explain $kind; done | grep -e "KIND:" -e "VERSION:"
 }
 
-alias kcinfo=kcdesc
-kcdesc() {
+alias kinfo=kdesc
+kdesc() {
   usage $# "RESOURCE_TYPE" "RESOURCE_NAME" "[NAMESPACE]"
   # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -132,7 +139,7 @@ kcdesc() {
   echo "kubectl describe ${RESOURCE_TYPE} ${RESOURCE_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}"
   kubectl describe ${RESOURCE_TYPE} ${RESOURCE_NAME} ${EXTRA_PARAMS} ${ADDITIONAL_PARAMS}
 }
-kcgettpl() {
+kgettpl() {
   usage $# "RESOURCE_TYPE" "[NAMESPACE]" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -156,7 +163,7 @@ kcgettpl() {
   kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}
 }
 
-kcgettpl() {
+kgettpl() {
   usage $# "RESOURCE_TYPE" "[OPTION:wide|yaml]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -172,7 +179,7 @@ kcgettpl() {
   echo "kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}"
   kubectl get ${RESOURCE_TYPE} ${ADDITIONAL_PARAMS} ${EXTRA_PARAMS}
 }
-kclstpl() {
+klstpl() {
   usage $# "RESOURCE_TYPE" "[CONTAINING_TEXT]" "[CONTAINING_TEXT]" "[NAMESPACE]"
 
   local RESOURCE_TYPE=$1
@@ -192,12 +199,12 @@ kclstpl() {
       kubectl get ${RESOURCE_TYPE} ${EXTRA_PARAMS} | grep ${CONTAINING_TEXT}
   fi
 }
-kcyaml() {
-  usage $# "[RESOURCE_TYPE:deploy,sts,svc,ingress,configmap,secret]" "[RESOURCE_NAME]" "[NAMESPACE:default]"
+kyaml() {
+  usage $# "[RESOURCE_TYPE:deploy,sts,svc,ingress,vs,configmap,secret]" "[RESOURCE_NAME]" "[NAMESPACE:default]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local RESOURCE_TYPE=${1:-pod,deploy,sts,svc,ingress,configmap,secret}
+  local RESOURCE_TYPE=${1:-pod,deploy,sts,svc,ingress,vs,configmap,secret}
   local RESOURCE_NAME=$2
   local NAMESPACE=$3
   local EXTRA_PARAMS=${@:4}
@@ -206,24 +213,24 @@ kcyaml() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kcgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
+  kgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
 }
-kcyamlns() {
-  usage $# "[NAMESPACE:default]" "[RESOURCE_TYPE:deploy,sts,svc,ingress,configmap,secret]"
+kyamlns() {
+  usage $# "[NAMESPACE:default]" "[RESOURCE_TYPE:deploy,sts,svc,ingress,vs,configmap,secret]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local NAMESPACE=$1
-  local RESOURCE_TYPE=${2:-pod,deploy,sts,svc,ingress,configmap,secret}
+  local RESOURCE_TYPE=${2:-pod,deploy,sts,svc,ingress,vs,configmap,secret}
   local EXTRA_PARAMS=${@:3}
 
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kcgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
+  kgettpl ${RESOURCE_TYPE} "yaml" ${RESOURCE_NAME} ${EXTRA_PARAMS}
 }
-kclogsns() {
+klogsns() {
   usage $# "RESOURCE_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -236,9 +243,9 @@ kclogsns() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kclogs ${EXTRA_PARAMS} ${RESOURCE_NAME}
+  klogs ${EXTRA_PARAMS} ${RESOURCE_NAME}
 }
-kclogs() {
+klogs() {
   usage $# "RESOURCE_NAME" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -247,7 +254,7 @@ kclogs() {
   kubectl logs $@
 }
 # Interaction
-kccpfrom() {
+kcpfrom() {
   usage $# "POD_NAME" "SOURCE_FOLDER" "DESTINATION_FOLDER"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -256,9 +263,9 @@ kccpfrom() {
   local SOURCE_FOLDER=$1
   local DESTINATION_FOLDER=$2
 
-  kccp "${POD_NAME}:${SOURCE_FOLDER}" "${DESTINATION_FOLDER}"
+  kcp "${POD_NAME}:${SOURCE_FOLDER}" "${DESTINATION_FOLDER}"
 }
-kccpto() {
+kcpto() {
   usage $# "POD_NAME" "SOURCE_FOLDER" "DESTINATION_FOLDER"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -267,9 +274,9 @@ kccpto() {
   local SOURCE_FOLDER=$1
   local DESTINATION_FOLDER=$2
 
-  kccp "${SOURCE_FOLDER}" "${POD_NAME}:${DESTINATION_FOLDER}"
+  kcp "${SOURCE_FOLDER}" "${POD_NAME}:${DESTINATION_FOLDER}"
 }
-kccp() {
+kcp() {
   usage $# "SOURCE" "DESTINATION"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -283,12 +290,12 @@ kccp() {
   kubectl cp ${SOURCE} ${DESTINATION} ${EXTRA_PARAMS}
 }
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
-kcbash() {
+kbash() {
   usage $# "POD_NAME" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
-    kcpodls
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodls'" >&2
+    kpodls
     return 1
   fi
 
@@ -296,14 +303,14 @@ kcbash() {
   local COMMANDS=${2:-/bin/bash}
   local COMMANDS_ARGS=${@:3}
 
-  kcinteractivetpl "exec" "${POD_NAME}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
+  kinteractivetpl "exec" "${POD_NAME}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
 }
-kcbashsudo() {
+kbashsudo() {
   usage $# "USER_NAME" "POD_NAME" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
-    kcpodls
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodls'" >&2
+    kpodls
     return 1
   fi
 
@@ -312,15 +319,15 @@ kcbashsudo() {
   local COMMANDS=${3:-/bin/bash}
   local COMMANDS_ARGS=${@:4}
 
-  kcinteractivetpl "exec" "${POD_NAME}" "-- gosu ${USER_NAME} ${COMMANDS} ${COMMANDS_ARGS}"
+  kinteractivetpl "exec" "${POD_NAME}" "-- gosu ${USER_NAME} ${COMMANDS} ${COMMANDS_ARGS}"
 }
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#container-exec
-kcbashns() {
+kbashns() {
   usage $# "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
-    kcpodls
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodls'" >&2
+    kpodls
     return 1
   fi
 
@@ -337,19 +344,19 @@ kcbashns() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kcinteractivetpl "exec" "${POD_NAME}" "${EXTRA_PARAMS}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
+  kinteractivetpl "exec" "${POD_NAME}" "${EXTRA_PARAMS}" "-- ${COMMANDS} ${COMMANDS_ARGS}"
 }
-kcbashbusybox() {
+kbashbusybox() {
   usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[COMMANDS:/bin/sh]"
 
   local INSTANCE_NAME=$1
   local NAMESPACE=${2:-default}
   local COMMANDS=${3:-/bin/sh}
 
-  kcbash "${INSTANCE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" "${COMMANDS}"
+  kbash "${INSTANCE_NAME}" "${INSTANCE_NAME}" "${NAMESPACE}" "${COMMANDS}"
 }
 # https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#copying-a-pod-while-adding-a-new-container
-kccrashedlogs() {
+kcrashedlogs() {
   usage $# "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -362,9 +369,9 @@ kccrashedlogs() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kclogs --previous ${EXTRA_PARAMS} ${INSTANCE_NAME}
+  klogs --previous ${EXTRA_PARAMS} ${INSTANCE_NAME}
 }
-kccrasheddebug() {
+kcrasheddebug() {
   usage $# "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"
 
   local INSTANCE_NAME=$1
@@ -379,9 +386,9 @@ kccrasheddebug() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kccrasheddebugtpl "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--share-processes"
+  kcrasheddebugtpl "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--share-processes"
 }
-kccrasheddebugsetimage() {
+kcrasheddebugsetimage() {
   usage $# "INSTANCE_NAME" "[SET_IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"
 
   local INSTANCE_NAME=$1
@@ -396,9 +403,9 @@ kccrasheddebugsetimage() {
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
 
-  kccrasheddebugtpl "${INSTANCE_NAME}" "${EXTRA_PARAMS}"
+  kcrasheddebugtpl "${INSTANCE_NAME}" "${EXTRA_PARAMS}"
 }
-kccrasheddebugtpl() {
+kcrasheddebugtpl() {
   usage $# "INSTANCE_NAME" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -406,9 +413,9 @@ kccrasheddebugtpl() {
   local INSTANCE_NAME=$1
   local EXTRA_PARAMS=${@:2}
 
-  kcinteractivetpl "debug" "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--copy-to=${INSTANCE_NAME}-debug"
+  kinteractivetpl "debug" "${INSTANCE_NAME}" "${EXTRA_PARAMS}" "--copy-to=${INSTANCE_NAME}-debug"
 }
-kcinteractivetpl() {
+kinteractivetpl() {
   usage $# "CMD" "POD_NAME" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -421,40 +428,40 @@ kcinteractivetpl() {
   kubectl ${CMD} -it ${POD_NAME} ${EXTRA_PARAMS}
 }
 
-kcctx() {
+kctx() {
   usage $# "[CONTEXT]"
 
   local CONTEXT=$1
   if [ -n "$CONTEXT" ]
     then
-      kcconftemplate "use-context" ${CONTEXT}
+      kconftemplate "use-context" ${CONTEXT}
     else
-      kcconftemplate "get-contexts"
+      kconftemplate "get-contexts"
   fi
 }
 # Set default namespace for this context
-kcctxnamespace() {
+kctxnamespace() {
   usage $# "NAMESPACE" "[CONTEXT]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a DEFAULT namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kclsnamespaces
+    echo "= Please select a DEFAULT namespace for the current context : If you don't know any names run 'klsnamespaces'" >&2
+    klsnamespaces
     return 1
   fi
 
   local NAMESPACE=$1
   local CONTEXT=${2:---current}
 
-  kcconftemplate "set-context ${CONTEXT} --namespace=${NAMESPACE}"
+  kconftemplate "set-context ${CONTEXT} --namespace=${NAMESPACE}"
 }
-kcconf() {
-  kcconftemplate "view"
+kconf() {
+  kconftemplate "view"
 }
-kcconfcat() {
+kconfcat() {
   echo "cat ${KUBECONFIG_FILE}"
   cat ${KUBECONFIG_FILE}
 }
-kcconftemplate() {
+kconftemplate() {
   usage $# "CMD"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -466,7 +473,7 @@ kcconftemplate() {
   kubectl config ${CMD} ${EXTRA_PARAMS}
 }
 
-kccreate() {
+kcreate() {
   usage $# "FILE_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -482,22 +489,22 @@ kccreate() {
   kubectl create -f ${FILE_NAME} ${EXTRA_PARAMS}
 
   echo "------- Help --------";
-  echo "kcctx ${NAMESPACE} : set as current namespace for all following commands"
-  echo "kcbash [POD_NAME] : attach cmd to daemons"
-  echo "kcpodtop [POD_NAME] : top this pod"
-  echo "kcpodlogs [POD_NAME] : see logs"
+  echo "kctx ${NAMESPACE} : set as current namespace for all following commands"
+  echo "kbash [POD_NAME] : attach cmd to daemons"
+  echo "kpodtop [POD_NAME] : top this pod"
+  echo "kpodlogs [POD_NAME] : see logs"
   echo "---------------------";
-  echo "kcattach [POD_NAME] : for daemons, attach"
-  echo "kcpodtail [POD_NAME] : for daemons, tail logs"
+  echo "kattach [POD_NAME] : for daemons, attach"
+  echo "kpodtail [POD_NAME] : for daemons, tail logs"
 
   echo "---------------------";
-  echo "kcpoddesc [POD_NAME] : get more info from this pod"
+  echo "kpoddesc [POD_NAME] : get more info from this pod"
 
-  echo "kcpodyaml [POD_NAME] : get more YAML from this pod"
-  echo "kcedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
-  echo "kcrm [POD_NAME] : to stop and remove"
+  echo "kpodyaml [POD_NAME] : get more YAML from this pod"
+  echo "kedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
+  echo "krm [POD_NAME] : to stop and remove"
 }
-kcapply() {
+kapply() {
   usage $# "FILE_NAME"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -509,23 +516,23 @@ kcapply() {
   kubectl apply -f ${FILE_NAME} ${EXTRA_PARAMS}
 
   echo "------- Help --------";
-  echo "kcctx ${NAMESPACE} : set as current namespace for all following commands"
-  echo "kcbash [POD_NAME] : attach cmd to daemons"
-  echo "kcpodtop [POD_NAME] : top this pod"
-  echo "kcpodlogs [POD_NAME] : see logs"
+  echo "kctx ${NAMESPACE} : set as current namespace for all following commands"
+  echo "kbash [POD_NAME] : attach cmd to daemons"
+  echo "kpodtop [POD_NAME] : top this pod"
+  echo "kpodlogs [POD_NAME] : see logs"
   echo "---------------------";
-  echo "kcattach [POD_NAME] : for daemons, attach"
-  echo "kcpodtail [POD_NAME] : for daemons, tail logs"
+  echo "kattach [POD_NAME] : for daemons, attach"
+  echo "kpodtail [POD_NAME] : for daemons, tail logs"
 
   echo "---------------------";
-  echo "kcpoddesc [POD_NAME] : get more info from this pod"
+  echo "kpoddesc [POD_NAME] : get more info from this pod"
 
-  echo "kcpodyaml [POD_NAME] : get more YAML from this pod"
-  echo "kcedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
-  echo "kcrm [POD_NAME] : to stop and remove"
+  echo "kpodyaml [POD_NAME] : get more YAML from this pod"
+  echo "kedit [POD_NAME] [SERVICE_NAME] : edit its YAML"
+  echo "krm [POD_NAME] : to stop and remove"
 }
 
-kcrunimage() {
+krunimage() {
   usage $# "INSTANCE_NAME" "[IMAGE_NAME:busybox]" "[NAMESPACE:default]" "[COMMANDS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -540,9 +547,9 @@ kcrunimage() {
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
-  kcruntpl "run" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" --restart=Never "${ADDITIONAL_PARAMS}"
+  kruntpl "run" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" --restart=Never "${ADDITIONAL_PARAMS}"
 }
-kcrunimagepause() {
+krunimagepause() {
   usage $# "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]" "[COMMANDS:sleep 1d]"
 
   local INSTANCE_NAME=$1
@@ -550,9 +557,9 @@ kcrunimagepause() {
   local NAMESPACE=${3:-default}
   local COMMANDS=${3:-sleep 1d}
 
-  kcrunimage "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${COMMANDS}"
+  krunimage "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${COMMANDS}"
 }
-kcruntpl() {
+kruntpl() {
   usage $# "CMD" "INSTANCE_NAME" "[IMAGE_NAME]" "[NAMESPACE]" "[ADDITIONAL_PARAMS:--dry-run]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -575,12 +582,12 @@ kcruntpl() {
   echo "kubectl ${CMD} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}"
   kubectl ${CMD} ${EXTRA_PARAMS} ${INSTANCE_NAME} ${ADDITIONAL_PARAMS}
 }
-kcattach() {
+kattach() {
   usage $# "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
-    kclspods
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'klspods'" >&2
+    klspods
     return 1
   fi
 
@@ -601,68 +608,68 @@ kcattach() {
   kubectl attach -it ${POD_NAME} ${EXTRA_PARAMS}
 }
 
-alias kcnsls=kclsnamespaces
-alias kcnslsfull='kclsnamespaces --show-labels'
+alias knsls=klsnamespaces
+alias knslsfull='klsnamespaces --show-labels'
 
-alias kcnsset='kcctxnamespace'
+alias knsset='kctxnamespace'
 
-kcnsyaml() {
+knsyaml() {
   usage $# "NAMESPACE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kcnspls
+    echo "= Please select a namespace for the current context : If you don't know any names run 'klsnamespaces'" >&2
+    knspls
     return 1
   fi
 
   local NAMESPACE=$1
-  kcnsdump ${NAMESPACE} yaml
+  knsdump ${NAMESPACE} yaml
 }
-kcnsjson() {
+knsjson() {
   usage $# "NAMESPACE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kcnspls
+    echo "= Please select a namespace for the current context : If you don't know any names run 'klsnamespaces'" >&2
+    knspls
     return 1
   fi
 
   local NAMESPACE=$1
-  kcnsdump ${NAMESPACE} json
+  knsdump ${NAMESPACE} json
 }
-kcnsdump() {
+knsdump() {
   usage $# "NAMESPACE" "FORMAT:json|yaml"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kcnspls
+    echo "= Please select a namespace for the current context : If you don't know any names run 'klsnamespaces'" >&2
+    knspls
     return 1
   fi
 
   local NAMESPACE=$1
   local FORMAT=$2
-  kclsnamespaces ${NAMESPACE} -o ${FORMAT}
+  klsnamespaces ${NAMESPACE} -o ${FORMAT}
 }
 
-kcnscreate() {
-  kcnstpl "create" $@
+knscreate() {
+  knstpl "create" $@
 }
-kcnsinfo() {
-  kcnstpl "describe" $@
+knsinfo() {
+  knstpl "describe" $@
 }
-kcnsvi() {
-  kcnstpl "edit" $@
+knsvi() {
+  knstpl "edit" $@
 }
-kcnsrm() {
-  kcnstpl "delete" $@
-  kcnsls
+knsrm() {
+  knstpl "delete" $@
+  knsls
 }
-kcnstpl() {
+knstpl() {
   usage $# "CMD" "NAMESPACE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a namespace for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kcnspls
+    echo "= Please select a namespace for the current context : If you don't know any names run 'klsnamespaces'" >&2
+    knspls
     return 1
   fi
 
@@ -673,25 +680,25 @@ kcnstpl() {
   kubectl ${CMD} namespace ${NAMESPACE} ${@:3}
 }
 
-alias kcpodls='kclstpl pod '
-alias kcpodyaml='kcyaml pod '
-alias kcpoddesc='kcdesc pod '
-alias kcpodinfo=kcpoddesc
+alias kpodls='klstpl pod '
+alias kpodyaml='kyaml pod '
+alias kpoddesc='kdesc pod '
+alias kpodinfo=kpoddesc
 
-kcpodid() {
+kpodid() {
   usage $# "POD_NAME" "[NAMESPACE]"
-  kcpoddesc $@ | grep 'Container ID'
+  kpoddesc $@ | grep 'Container ID'
 }
-kcpodlabel() {
+kpodlabel() {
   echo "kubectl get pods $@ --show-labels"
   kubectl get pods $@ --show-labels
 }
-kcpodenv() {
+kpodenv() {
   usage $# "POD_NAME" "[CONTAINING_TEXT]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodls'" >&2
-    kcpodls
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodls'" >&2
+    kpodls
     return 1
   fi
 
@@ -699,14 +706,14 @@ kcpodenv() {
   local CONTAINING_TEXT=${@:2}
 
   if [ -z "$CONTAINING_TEXT" ]; then
-      kcbash "${POD_NAME}" "env"
+      kbash "${POD_NAME}" "env"
     else
-      kcbash "${POD_NAME}" "env"  | grep ${CONTAINING_TEXT}
+      kbash "${POD_NAME}" "env"  | grep ${CONTAINING_TEXT}
   fi
 }
 
 # Interaction
-kcpodcp() {
+kpodcp() {
   usage $# "SOURCE" "DESTINATION"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -717,7 +724,7 @@ kcpodcp() {
   echo "kubectl cp ${SOURCE} ${DESTINATION}"
   kubectl cp ${SOURCE} ${DESTINATION}
 }
-kcpodcpfrom() {
+kpodcpfrom() {
   usage $# "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -725,9 +732,9 @@ kcpodcpfrom() {
   local SOURCE_PATH=$1
   local DESTINATION_PATH=$2
 
-  kcpodcp ${POD_NAME}:${SOURCE_PATH} ${DESTINATION_PATH}
+  kpodcp ${POD_NAME}:${SOURCE_PATH} ${DESTINATION_PATH}
 }
-kcpodcpto() {
+kpodcpto() {
   usage $# "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -735,9 +742,9 @@ kcpodcpto() {
   local SOURCE_PATH=$1
   local DESTINATION_PATH=$2
 
-  kcpodcp ${SOURCE_PATH} ${POD_NAME}:${DESTINATION_PATH}
+  kpodcp ${SOURCE_PATH} ${POD_NAME}:${DESTINATION_PATH}
 }
-kcpodrun() {
+kpodrun() {
   usage $# "IMAGE_NAME" "INSTANCE_NAME" "[NAMESPACE]" "[PORT]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -752,29 +759,29 @@ kcpodrun() {
   fi
 
   # https://kubernetes.io/docs/reference/kubectl/conventions/#generators
-  kcruntpl "run --generator=run-pod/v1" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${EXTRA_PARAMS}"
+  kruntpl "run --generator=run-pod/v1" "${INSTANCE_NAME}" "${IMAGE_NAME}" "${NAMESPACE}" "${EXTRA_PARAMS}"
 }
 
-alias kcpodlogs=kclogs
-kcpodtail() {
+alias kpodlogs=klogs
+kpodtail() {
   usage $# "POD_NAME"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kclspods'" >&2
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'klspods'" >&2
     return 1
   fi
 
-  kclogs $@ -f
+  klogs $@ -f
 }
-kcpodtop() {
+kpodtop() {
   usage $# "POD_NAME"
-  kcpodtemplate "top" $@
+  kpodtemplate "top" $@
 }
-kcpodrm() {
+kpodrm() {
   usage $# "POD_NAME" "[NAMESPACE]"
-  kcpodtemplate "delete" $@
+  kpodtemplate "delete" $@
 }
-kcpodtemplate() {
+kpodtemplate() {
   usage $# "CMD" "POD_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"
 
   local CMD=$1
@@ -785,13 +792,13 @@ kcpodtemplate() {
   if [ -n "$NAMESPACE" ]; then
     local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
   fi
-  kcpodtpl ${CMD} ${POD_NAME} ${EXTRA_PARAMS}
+  kpodtpl ${CMD} ${POD_NAME} ${EXTRA_PARAMS}
 }
-kcpodtpl() {
+kpodtpl() {
   usage $# "CMD" "POD_NAME" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodlsfull'" >&2
     return 1
   fi
 
@@ -803,10 +810,10 @@ kcpodtpl() {
   kubectl ${CMD} pod ${POD_NAME} ${EXTRA_PARAMS}
 }
 
-alias kcsvcls='kclstpl svc '
-alias kcsvcyaml='kcyaml svc '
-alias kcsvcdesc='kcdesc svc '
-kcsvschk() {
+alias ksvcls='klstpl svc '
+alias ksvcyaml='kyaml svc '
+alias ksvcdesc='kdesc svc '
+ksvcchk() {
   usage $# "SERVICE_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -822,24 +829,24 @@ kcsvschk() {
   echo "kubectl rollout status sts/${SERVICE_NAME} ${EXTRA_PARAMS}"
   kubectl rollout status sts/${SERVICE_NAME} ${EXTRA_PARAMS}
 }
-kcsvcrm() {
+ksvcrm() {
   usage $# "SERVICE_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a service name from a namespace: If you don't know any service names run 'kcsvcls'" >&2
+    echo "= Please select a service name from a namespace: If you don't know any service names run 'ksvcls'" >&2
     return 1
   fi
 
   local SERVICE_NAME=$1
   local NAMESPACE=$2
 
-  kcsvctpl "delete" "${SERVICE_NAME}" "${NAMESPACE}" ${@:3}
+  ksvctpl "delete" "${SERVICE_NAME}" "${NAMESPACE}" ${@:3}
 }
-kcsvctpl() {
+ksvctpl() {
   usage $# "CMD" "SERVICE_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a service name from a namespace: If you don't know any service names run 'kcsvcls'" >&2
+    echo "= Please select a service name from a namespace: If you don't know any service names run 'ksvcls'" >&2
     return 1
   fi
 
@@ -855,31 +862,68 @@ kcsvctpl() {
   echo "kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}"
   kubectl ${CMD} service ${SERVICE_NAME} ${EXTRA_PARAMS}
 }
-alias kcingls='kclstpl ingress '
-alias kcingyaml='kcyaml ingress'
-alias kcingdesc='kcdesc ingress '
+alias kingls='klstpl ingress '
+alias kingyaml='kyaml ingress'
+alias kingdesc='kdesc ingress '
 
-alias kcconfigmapls='kclstpl configmap '
-alias kcconfigmapyaml='kcyaml configmap'
-alias kcconfigmapdesc='kcdesc configmap '
+alias kvsls='klstpl vs '
+alias kvsyaml='kyaml vs '
+alias kvsdesc='kdesc vs '
+kvsrm() {
+  usage $# "VIRTUALSERVICE_NAME" "[NAMESPACE]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a service name from a namespace: If you don't know any service names run 'ksvcls'" >&2
+    return 1
+  fi
 
-alias kcdpls='kclstpl deployment '
-alias kcdpyaml='kcyaml deployment'
-alias kcdpdesc='kcdesc deployment '
-alias kcdpinfo=kcdpdesc
+  local VIRTUALSERVICE_NAME=$1
+  local NAMESPACE=$2
+
+  ksvctpl "delete" "${VIRTUALSERVICE_NAME}" "${NAMESPACE}" ${@:3}
+}
+kvstpl() {
+  usage $# "CMD" "VIRTUALSERVICE_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
+   # MIN NUM OF ARG
+  if [[ "$?" -ne 0 ]]; then 
+    echo "= Please select a service name from a namespace: If you don't know any service names run 'ksvcls'" >&2
+    return 1
+  fi
+
+  local CMD=$1
+  local VIRTUALSERVICE_NAME=$2
+  local NAMESPACE=$3
+  local EXTRA_PARAMS=${@:4}
+  
+  if [ -n "$NAMESPACE" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS -n ${NAMESPACE}"
+  fi
+
+  echo "kubectl ${CMD} vs ${VIRTUALSERVICE_NAME} ${EXTRA_PARAMS}"
+  kubectl ${CMD} vs ${VIRTUALSERVICE_NAME} ${EXTRA_PARAMS}
+}
+
+alias kconfigmapls='klstpl configmap '
+alias kconfigmapyaml='kyaml configmap'
+alias kconfigmapdesc='kdesc configmap '
+
+alias kdpls='klstpl deployment '
+alias kdpyaml='kyaml deployment'
+alias kdpdesc='kdesc deployment '
+alias kdpinfo=kdpdesc
 # https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
-kcdprun() {
+kdprun() {
   usage $# "DEPLOYMENT_NAME" "IMAGE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  kcruntpl "create deployment" $@
+  kruntpl "create deployment" $@
 }
-kcdpexpose() {
+kdpexpose() {
   usage $# "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'kclsdeployments'" >&2
+    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'klsdeployments'" >&2
     return 1
   fi
 
@@ -894,26 +938,26 @@ kcdpexpose() {
   fi
 
   # expose a port through a service
-  kcdptpl "expose" "${DEPLOYMENT_NAME}" "${NAMESPACE}" "--name=${SERVICE_NAME}" "${EXTRA_PARAMS}"
+  kdptpl "expose" "${DEPLOYMENT_NAME}" "${NAMESPACE}" "--name=${SERVICE_NAME}" "${EXTRA_PARAMS}"
 }
-kcdprm() {
+kdprm() {
   usage $# "DEPLOYMENT_NAME" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'kclsdeployments'" >&2
+    echo "= Please select a deployment name from a namespace: If you don't know any pod names run 'klsdeployments'" >&2
     return 1
   fi
 
   local DEPLOYMENT_NAME=$1
   local NAMESPACE=$2
   local EXTRA_PARAMS=${@:3}
-  kcdptpl "delete" "${DEPLOYMENT_NAME}" "${NAMESPACE}"
+  kdptpl "delete" "${DEPLOYMENT_NAME}" "${NAMESPACE}"
 }
-kcdptpl() {
+kdptpl() {
   usage $# "CMD" "DEPLOYMENT_NAME" "NAMESPACE" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcdpls'" >&2
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kdpls'" >&2
     return 1
   fi
 
@@ -931,12 +975,12 @@ kcdptpl() {
 }
 
 # https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward
-kcportfwd() {
+kportfwd() {
   usage $# "POD_NAME|SERVICE_NAME|DEPLOYMENT:service/xx|deployment/yy" "PORT_MAPPING-8080:80" "[EXPOSED_IP]" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
-    kcpodlsfull
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodlsfull'" >&2
+    kpodlsfull
     return 1
   fi
 
@@ -958,12 +1002,12 @@ kcportfwd() {
   kubectl port-forward ${POD_NAME} ${EXTRA_PARAMS} ${PORT_MAPPING}
 }
 # https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#proxy
-kcproxy() {
+kproxy() {
   usage $# "[POD_NAME]" "[PORT:8001]" "[NAMESPACE]" "[EXTRA_PARAMS]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kcpodlsfull'" >&2
-    kcpodlsfull
+    echo "= Please select a pod name from a namespace: If you don't know any pod names run 'kpodlsfull'" >&2
+    kpodlsfull
     return 1
   fi
 
@@ -983,14 +1027,14 @@ kcproxy() {
   kubectl proxy ${POD_NAME} ${EXTRA_PARAMS}
 }
 
-kcnetlookup() {
+knetlookup() {
   usage $# "DOMAIN_NAME"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  kcexec nslookup $@
+  kexec nslookup $@
 }
-kcexec() {
+kexec() {
   usage $# "CMD"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -999,7 +1043,7 @@ kcexec() {
   kubectl exec -ti busybox -- $@
 }
 
-kcedit() {
+kedit() {
   usage $# "RESOURCE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -1009,11 +1053,11 @@ kcedit() {
   echo "kubectl edit ${RESOURCE}"
   kubectl edit ${RESOURCE}
 }
-kcrm() {
+krm() {
   usage $# "RESOURCE" "[NAMESPACE]"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a POD or SERVICE name: If you don't know any pod names run 'kclspods' or 'kclsservices'" >&2
+    echo "= Please select a POD or SERVICE name: If you don't know any pod names run 'klspods' or 'klsservices'" >&2
     return 1
   fi
 
@@ -1028,12 +1072,12 @@ kcrm() {
   echo "kubectl delete pod,deployment,service,ingress,secret ${RESOURCE} ${EXTRA_PARAMS}"
   kubectl delete pod,deployment,service,ingress,secret ${RESOURCE} ${EXTRA_PARAMS}
 }
-kcrmall() {
+krmall() {
   usage $# "NAMESPACE"
    # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
-    echo "= Please select a NAMESPACE for the current context : If you don't know any names run 'kclsnamespaces'" >&2
-    kclsnamespaces
+    echo "= Please select a NAMESPACE for the current context : If you don't know any names run 'klsnamespaces'" >&2
+    klsnamespaces
     return 1
   fi
 

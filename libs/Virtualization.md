@@ -282,145 +282,150 @@ Base commands for **kubelet** :
 ## Library 'k8s'
 
 * Usage ```import lib-k8s```
-* Prefix ```kc``` 
+* Prefix ```k``` 
 
 TIPS : can also check [kubectl cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 
 ### Base commands
 
 * Get kubectl version, list all clusters & nodes : ```kc```
-* Go to K8S config & cache folder : ```cdkc```
-* Check k8s by running echo : ```kchello```
+* Go to K8S config & cache folder : ```cdk```
+* Check k8s by running echo : ```khello```
 
 All kubectl listing commands in the current cluster and namespace :
 
-* List all **k8s resources/objects** : ```kcls [NAMESPACE]```
-* List all **namespaces** : ```kclsnamespaces```
-* List all **pods** : ```kclspods [NAMESPACE]```
-* List all **deployments** : ```kclsdeployments [NAMESPACE]```
-* List all **services**  : ```kclsservices [NAMESPACE]```
-* List all **persistent volume claim** (pvc) : ```kclspvc [NAMESPACE]```
-* List all **ingress**  : ```kclsingress [NAMESPACE]```
-* List all **configmap**  : ```kclsconfigmap [NAMESPACE]```
-* List all events : ```kclsevents [NAMESPACE]```
-* List all api services : ```kclsapi [NAMESPACE]```
-* List all resources types : ```kclsresources```
-* List all resources YAML from this namespace : ```kcyamlns "[NAMESPACE:default]" "[RESOURCE_TYPE:all]"```
+* List all **k8s resources/objects** : ```kls [NAMESPACE]```
+* List all **namespaces** : ```klsnamespaces```
+* List all **pods** : ```klspods [NAMESPACE]```
+* List all **deployments** : ```klsdeployments [NAMESPACE]```
+* List all **services**  : ```klsservices [NAMESPACE]```
+* List all **persistent volume claim** (pvc) : ```klspvc [NAMESPACE]```
+* List all **ingress**  : ```klsingress [NAMESPACE]```
+* List all **configmap**  : ```klsconfigmap [NAMESPACE]```
+* List all events : ```klsevents [NAMESPACE]```
+* List all api services : ```klsapi [NAMESPACE]```
+* List all resources types : ```klsresources```
+* List all resources YAML from this namespace : ```kyamlns "[NAMESPACE:default]" "[RESOURCE_TYPE:all]"```
 
 ATTENTION - Wildcard delete :
 
-* **Delete** any resources (pod, service or deployment) of that name : ```kcrm "RESOURCE" "[NAMESPACE]"```
-* **Clean up ALL** resources in that namespace : ```kcrmall "NAMESPACE"```
+* **Delete** any resources (pod, service or deployment) of that name : ```krm "RESOURCE" "[NAMESPACE]"```
+* **Clean up ALL** resources in that namespace : ```krmall "NAMESPACE"```
 
 ### Working with apps
 
-* Run a **bash command** to a particular pod : ```kcbash "POD_NAME"  "[COMMANDS]"```
-* Run a **bash command** to a particular pod with container name & namespace : ```kcbashns "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"```
-* Run a **list env vars** to a particular pod : ```kcpodenv "POD_NAME" "[CONTAINING_TEXT]"```
-* Open a **http proxy** at specified port into a particular pod : ```kcproxy "POD_NAME" "[PORT:8001]" "[NAMESPACE]"```
-* **Top** from an existing pod : ```kcpodtop "POD_NAME"```
-* Get **Logs** from an existing pod : ```kcpodlogs "POD_NAME"```
-* **Tail logs** from an existing pod : ```kcpodtail "POD_NAME"```
-* **Attach to a process** that is already running inside an existing container : ```kcattach "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"```
-* Open a **tunnel** from a particular pod into localhost or additionally with [EXPOSED_IP] : ```kcportfwd "POD_NAME" "PORT_MAPPING-8080:80" "[EXPOSED_IP]" "[NAMESPACE]"```
+* Run a **bash command** to a particular pod : ```kbash "POD_NAME"  "[COMMANDS]"```
+* Run a **bash command** to a particular pod with container name & namespace : ```kbashns "POD_NAME" "[CONTAINER]" "[NAMESPACE]" "[COMMANDS]"```
+* Run a **list env vars** to a particular pod : ```kpodenv "POD_NAME" "[CONTAINING_TEXT]"```
+* Open a **http proxy** at specified port into a particular pod : ```kproxy "POD_NAME" "[PORT:8001]" "[NAMESPACE]"```
+* **Top** from an existing pod : ```kpodtop "POD_NAME"```
+* Get **Logs** from an existing pod : ```kpodlogs "POD_NAME"```
+* **Tail logs** from an existing pod : ```kpodtail "POD_NAME"```
+* **Attach to a process** that is already running inside an existing container : ```kattach "POD_NAME" "[NAMESPACE]" "[CONTAINER_NAME]"```
+* Open a **tunnel** from a particular pod into localhost or additionally with [EXPOSED_IP] : ```kportfwd "POD_NAME" "PORT_MAPPING-8080:80" "[EXPOSED_IP]" "[NAMESPACE]"```
 
 Interaction with files
 
-* **Copy** file from/to depending on the if source or destination is prefixed by pod : ```kcpodcp "SOURCE" "DESTINATION"```
-* Copy file **from pod** using file path : ```kcpodcpfrom "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"```
-* Copy file **to pod** using file path : ```kcpodcpto "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"```
+* **Copy** file from/to depending on the if source or destination is prefixed by pod : ```kpodcp "SOURCE" "DESTINATION"```
+* Copy file **from pod** using file path : ```kpodcpfrom "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"```
+* Copy file **to pod** using file path : ```kpodcpto "POD_FULL_NAME:<namespace>/<pod>" "SOURCE_PATH" "DESTINATION_PATH"```
 
-### Deployment 'kcns' commands
+### Deployment 'kns' commands
 
-* List all **namespaces** : ```kcnsls```
-* List all **namespaces** showing labels : ```kcnslsfull```
-* Set **current** namespace : ```kcnsset```
-* **Create** a new deployment : ```kcnscreate ".."```
-* Get **info** from an existing namespace : ```kcnsinfo ".."```
-* Get **YAML** from an existing namespace : ```kcnsyaml ".."```
-* Get **JSON** from an existing namespace : ```kcnsjson ".."```
-* **Edit** from an existing namespace : ```kcnsvi ".."```
-* **Remove** from an existing namespace : ```kcnsrm ".."```
+* List all **namespaces** : ```knsls```
+* List all **namespaces** showing labels : ```knslsfull```
+* Set **current** namespace : ```knsset```
+* **Create** a new deployment : ```knscreate ".."```
+* Get **info** from an existing namespace : ```knsinfo ".."```
+* Get **YAML** from an existing namespace : ```knsyaml ".."```
+* Get **JSON** from an existing namespace : ```knsjson ".."```
+* **Edit** from an existing namespace : ```knsvi ".."```
+* **Remove** from an existing namespace : ```knsrm ".."```
 
-### Deployment 'kcpod' commands
+### Deployment 'kpod' commands
 
 When discovering pods, use :
 
-* List all **pods** and IPs : ```kclspods "[CONTAINING_TEXT]"```
-* List all **pods** and IPs : ```kclspodsfull "[NAMESPACE]" "[OPTION:wide|yaml]"```
+* List all **pods** and IPs : ```klspods "[CONTAINING_TEXT]"```
+* List all **pods** and IPs : ```klspodsfull "[NAMESPACE]" "[OPTION:wide|yaml]"```
 
-These commands are easier with 'kcnsset NAMESPACE' :
+These commands are easier with 'knsset NAMESPACE' :
 
-* List all **pods** or the ones containing text : ```kcpodls "[CONTAINING_TEXT]" "[NAMESPACE]"```
-* List all **pods** showing labels : ```kcpodlabel```
-* Get **YAML** from an existing pod : ```kcpodyaml "POD_NAME" "NAMESPACE"```
-* Get **describe** or info from an existing pod : ```kcpoddesc "POD_NAME" "NAMESPACE"``` or ```kcpodinfo```
-* Get **container ID** from a pod : ```kcpodid "POD_NAME" "NAMESPACE"```
-* **Create** a new pod : ```kcpodrun "INSTANCE_NAME" "IMAGE_NAME" "[NAMESPACE]" "[PORT]"```
-* **Remove** from an existing pod : ```kcpodrm "POD_NAME" "NAMESPACE"```
+* List all **pods** or the ones containing text : ```kpodls "[CONTAINING_TEXT]" "[NAMESPACE]"```
+* List all **pods** showing labels : ```kpodlabel```
+* Get **YAML** from an existing pod : ```kpodyaml "POD_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing pod : ```kpoddesc "POD_NAME" "NAMESPACE"``` or ```kpodinfo```
+* Get **container ID** from a pod : ```kpodid "POD_NAME" "NAMESPACE"```
+* **Create** a new pod : ```kpodrun "INSTANCE_NAME" "IMAGE_NAME" "[NAMESPACE]" "[PORT]"```
+* **Remove** from an existing pod : ```kpodrm "POD_NAME" "NAMESPACE"```
 
-### Deployment 'kcdp' commands
+### Deployment 'kdp' commands
 
-* **List** all existing deployment : ```kcdpls "[CONTAINING_TEXT]"```
-* **Create** a new deployment : ```kcdprun "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
-* Get **YAML** from an existing deployment : ```kcdpyaml "DEPLOYMENT_NAME" "NAMESPACE"```
-* Get **describe** or info from an existing deployment : ```kcdpdesc "DEPLOYMENT_NAME" "NAMESPACE"``` or ```kcdpinfo```
-* **Expose** a port through a service : ```kcdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
-* **Remove** from an existing deployment : ```kcdprm "DEPLOYMENT_NAME" "[NAMESPACE]"```
+* **List** all existing deployment : ```kdpls "[CONTAINING_TEXT]"```
+* **Create** a new deployment : ```kdprun "IMAGE_NAME" "DEPLOYMENT_NAME" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
+* Get **YAML** from an existing deployment : ```kdpyaml "DEPLOYMENT_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing deployment : ```kdpdesc "DEPLOYMENT_NAME" "NAMESPACE"``` or ```kdpinfo```
+* **Expose** a port through a service : ```kdpexpose "DEPLOYMENT_NAME" "SERVICE_NAME" "PORT" "[NAMESPACE]" "[EXTRA_PARAMS:--dry-run|--env=\"DOMAIN=cluster\"]"```
+* **Remove** from an existing deployment : ```kdprm "DEPLOYMENT_NAME" "[NAMESPACE]"```
 
-### Deployment 'kcsvc' commands
+### Deployment 'ksvc' commands
 
-* List all **services** : ```kcsvcls "[CONTAINING_TEXT]"```
-* Get **YAML** from an existing service : ```kcsvcyaml "SERVICE_NAME" "NAMESPACE"```
-* Get **describe** or info from an existing service : ```kcsvcdesc "SERVICE_NAME" "NAMESPACE"``` or ```kcsvcinfo```
-* Check status for an existing **service** : ```kcsvschk "SERVICE_NAME" "[NAMESPACE]"```
-* **Remove** from an existing service : ```kcsvcrm "SERVICE_NAME" "[NAMESPACE]"```
+* List all **services** : ```ksvcls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing service : ```ksvcyaml "SERVICE_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing service : ```ksvcdesc "SERVICE_NAME" "NAMESPACE"``` or ```ksvcinfo```
+* Check status for an existing **service** : ```ksvschk "SERVICE_NAME" "[NAMESPACE]"```
+* **Remove** from an existing service : ```ksvcrm "SERVICE_NAME" "[NAMESPACE]"```
 
+### Deployment 'king' commands
 
-### Deployment 'kcing' commands
+* List all **ingress** : ```kingls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing ingress : ```kingyaml "INGRESS_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing ingress : ```kingdesc "INGRESS_NAME" "NAMESPACE"```
 
-* List all **ingress** : ```kcingls "[CONTAINING_TEXT]"```
-* Get **YAML** from an existing ingress : ```kcingyaml "INGRESS_NAME" "NAMESPACE"```
-* Get **describe** or info from an existing ingress : ```kcingdesc "INGRESS_NAME" "NAMESPACE"```
+### Deployment 'kvs' commands
 
-### Deployment 'kcconfigmap' commands
+* List all **virtual services** : ```kvsls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing virtual service : ```kvsyaml "VIRTUALSERVICE_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing virtual service : ```kvsdesc "VIRTUALSERVICE_NAME" "NAMESPACE"```
+* **Remove** from an existing virtual service : ```kvsrm "VIRTUALSERVICE_NAME" "[NAMESPACE]"```
 
-* List all **configmap** : ```kcconfigmapls "[CONTAINING_TEXT]"```
-* Get **YAML** from an existing configmap : ```kcconfigmapyaml "CONFIG_MAP_NAME" "NAMESPACE"```
-* Get **describe** or info from an existing configmap : ```kcconfigmapdesc "CONFIG_MAP_NAME" "NAMESPACE"```
+### Deployment 'kconfigmap' commands
 
+* List all **configmap** : ```kconfigmapls "[CONTAINING_TEXT]"```
+* Get **YAML** from an existing configmap : ```kconfigmapyaml "CONFIG_MAP_NAME" "NAMESPACE"```
+* Get **describe** or info from an existing configmap : ```kconfigmapdesc "CONFIG_MAP_NAME" "NAMESPACE"```
 
-### K8s context 'kcctx' commands
+### K8s context 'kctx' commands
 
-* List all **K8s context** : ```kcctx```
-* Switch to one specific **K8s context** : ```kcctx "[CONTEXT]"```
-* Set the default namespace for this context : ```kcctxnamespace "NAMESPACE" "[CONTEXT]"```
-* Print k8s context in YAML format : ```kcconf```
-* Print k8s context file : ```kcconfcat```
+* List all **K8s context** : ```kctx```
+* Switch to one specific **K8s context** : ```kctx "[CONTEXT]"```
+* Set the default namespace for this context : ```kctxnamespace "NAMESPACE" "[CONTEXT]"```
+* Print k8s context in YAML format : ```kconf```
+* Print k8s context file : ```kconfcat```
 
 ### Manage YAML commands
 
 Sample images :
 
-* Run an instance of existing image : ```kcrunimage "INSTANCE_NAME" "[IMAGE_NAME:busybox]" "[NAMESPACE:default]" "[CMD]"```
-* Create an instance and sleep 1d : ```kcrunimagepause "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"```
-* Bash into busybox : ```kcbashbusybox "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"```
+* Run an instance of existing image : ```krunimage "INSTANCE_NAME" "[IMAGE_NAME:busybox]" "[NAMESPACE:default]" "[CMD]"```
+* Create an instance and sleep 1d : ```krunimagepause "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"```
+* Bash into busybox : ```kbashbusybox "INSTANCE_NAME" "[NAMESPACE:default]" "[IMAGE_NAME:busybox]"```
 
 
 Create your own image :
 
-* Deploy to k8s cluster **YAML files** : ```kccreate "FILE_NAME" "[NAMESPACE]"```
-* Apply YAML files : ```kcapply "FILE_NAME"```
+* Deploy to k8s cluster **YAML files** : ```kcreate "FILE_NAME" "[NAMESPACE]"```
+* Apply YAML files : ```kapply "FILE_NAME"```
 
 ...
 
 
 ### Troubleshooting crashed pods
 
-* Get **describe** or info from an existing pod : ```kcpoddesc "POD_NAME" "NAMESPACE"``` or ```kcpodinfo```
-* Check logs of a **crashed pod** : ```kccrashedlogs "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"```
-* Open a bash on a copied **crashed pod** : ```kccrasheddebug "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
-* Open a bash **modifying base image** to SET_IMAGE : ```kccrasheddebugsetimage "INSTANCE_NAME" "[SET_IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
+* Get **describe** or info from an existing pod : ```kpoddesc "POD_NAME" "NAMESPACE"``` or ```kpodinfo```
+* Check logs of a **crashed pod** : ```kcrashedlogs "INSTANCE_NAME" "[NAMESPACE]" "[EXTRA_PARAMS]"```
+* Open a bash on a copied **crashed pod** : ```kcrasheddebug "INSTANCE_NAME" "[IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
+* Open a bash **modifying base image** to SET_IMAGE : ```kcrasheddebugsetimage "INSTANCE_NAME" "[SET_IMAGE:ubuntu]" "[NAMESPACE]" "[EXTRA_PARAMS]"```
 
 ## Library 'k8s-helmfile'
 
