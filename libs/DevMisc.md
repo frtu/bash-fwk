@@ -121,10 +121,11 @@ Other optional installation :
 
 ### Create isolated env
 
-* Create isolated environment : ```pccreate "ENV_NAME"```
-* Create environment based on file `environment.yaml` : ```pcenvcreate "[FILE_NAME]" "[ENV_NAME]"```
+* List all isolated environments : ```pcenv```
 * Use isolated environment : ```pcenv "ENV_NAME"```
-* Use isolated environment : ```pcenvrm "ENV_NAME"```
+* Create isolated environment : ```pcenvcreate "ENV_NAME"```
+* Create environment based on file `environment.yaml` : ```pcenvcreatefile "[FILE_NAME]" "[ENV_NAME]"```
+* Remove isolated environment : ```pcenvrm "ENV_NAME"```
 * Deactivate isolated environment : ```pcenvdeactivate```
 
 ### Base commands
@@ -132,6 +133,7 @@ Other optional installation :
 * Update metadata : ```pcupd```
 * Install package : ```pcinst "PACKAGE"```
 * Add repo : ```pcrepo "CHANNEL_NAME"```
+* Add repo (*huggingface*) : ```pcrepohuggingface```
 * Add repo (*conda-forge*) : ```pcrepoforge```
 * Install package from (*conda-forge*) : ```pcinstforge "PACKAGE"```
 * Clean up repo : ```pcrepoclean```

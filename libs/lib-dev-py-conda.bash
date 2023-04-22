@@ -45,8 +45,27 @@ pcconfdeactivateauto() {
 }
 
 ## MANAGE ISOLATED ENV
-pccreate() {
-  usage $# "ENV_NAME"
+pcenv() {
+  usage $# "[ENV_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local ENV_NAME=$1
+  if [ -n "$ENV_NAME" ]
+    then
+      echo "conda activate ${ENV_NAME}"
+      conda activate ${ENV_NAME}
+    else
+      echo "conda env list"
+      conda env list
+  fi
+}
+pcenvdeactivate() {
+  echo "conda deactivate"
+  conda deactivate
+}
+pcenvcreate() {
+  usage $# "ENV_NAME" "[PACKAGES:python=3.8 numpy=1.19.5]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
@@ -56,7 +75,7 @@ pccreate() {
 
   pcenv ${ENV_NAME}
 }
-pcenvcreate() {
+pcenvcreatefile() {
   usage $# "[FILE_NAME]" "[ENV_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -80,20 +99,6 @@ pcenvcreate() {
     echo "conda activate ${ENV_NAME}"
     conda activate "${ENV_NAME}"
   fi
-}
-pcenv() {
-  usage $# "ENV_NAME"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
-
-  local ENV_NAME=$1
-  
-  echo "conda activate ${ENV_NAME}"
-  conda activate ${ENV_NAME}
-}
-pcenvdeactivate() {
-  echo "conda deactivate"
-  conda deactivate
 }
 pcenvrm() {
   usage $# "ENV_NAME"
@@ -147,6 +152,9 @@ pcrepoclean() {
   conda clean --all --yes
 }
 
+pcrepohuggingface() {
+  pcrepo huggingface
+}
 pcrepoforge() {
   pcrepo conda-forge
 }
