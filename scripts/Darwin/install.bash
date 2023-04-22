@@ -37,6 +37,11 @@ inst_git() {
   xcode-select --install
   xcode-select --reset
 }
+# Git Large File System
+inst_git_lfs() {
+  inst git-lfs
+}
+
 inst_vagrant() {
   # brew install Caskroom/cask/virtualbox
   #brew install Caskroom/cask/virtualbox-extension-pack

@@ -673,3 +673,12 @@ gconfsetproxy() {
 
   gconfset http.proxy "$1"
 }
+
+glfs() {
+  echo "git lfs env"
+  git lfs env
+}
+glfsinst() {
+  echo "git lfs install --skip-repo"
+  git lfs install --skip-repo
+}
