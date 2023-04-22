@@ -57,6 +57,10 @@ bincp() {
   sudo cp ${EXEC_FILE_NAME} ${BIN_PATH}/${EXEC_FINAL_NAME}
 }
 
+inst_m1() {
+  inst cmake pkg-config
+}
+
 inst_wget() {
   inst wget
 }

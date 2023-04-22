@@ -25,11 +25,11 @@ ppinst() {
         then 
           local INST_ARG="-r ${REQ_FILENAME}"
         else
-          echo "[ERROR] Please pass an argument PACKAGE or create a local file : ${REQ_FILENAME}" >&2
-          return 1
+          echo "[WARN] Please pass an argument PACKAGE or create a local file : ${REQ_FILENAME}" >&2
+          local INST_ARG="-e ."
       fi      
   fi
-
+  
   echo "pip install ${INST_ARG}"
   pip install ${INST_ARG}
 }
