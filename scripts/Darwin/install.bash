@@ -33,9 +33,14 @@ eclipseplugin() {
   cp $PLUGIN_FILEPATH ${ECLIPSE_HOME}/plugins/
 }
 
-inst_git() {
+alias inst_git=inst_xcode
+inst_xcode() {
   xcode-select --install
   xcode-select --reset
+}
+uninst_xcode() {
+  echo "sudo rm -rf /Library/Developer/CommandLineTools"
+  sudo rm -rf /Library/Developer/CommandLineTools
 }
 # Git Large File System
 inst_git_lfs() {
