@@ -172,13 +172,47 @@ inst_sbt() {
   enablesbt
 }
 
+# --------------------------------
+# Develop
+# --------------------------------
+inst_cmake() {
+  inst cmake
+}
+
 # Already include python & package mgmt
 # ARM
 inst_conda_m1() {
+  ## Anaconda & Miniconda
   ## https://docs.anaconda.com/anaconda/install/silent-mode/
-  curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda.sh
-  bash ~/miniconda.sh -b -p $HOME/miniconda
-  eval "$($HOME/miniconda/bin/conda shell.bash hook)"
-  
+  # curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda.sh
+  # bash ~/miniconda.sh -b -p $HOME/miniconda
+  # eval "$($HOME/miniconda/bin/conda shell.bash hook)"
+
+  ## Miniforge3
+  curl -fsSLo Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-$(uname -m).sh"
+  bash Miniforge3.sh -b -p "${HOME}/conda"
+  source "${HOME}/conda/etc/profile.d/conda.sh"
+  conda activate
+
   enablelib dev-py-conda
+}
+# x86
+inst_conda() {
+  brew install --cask anaconda
+  enablelib dev-py-conda
+}
+
+upd_conda() {
+  sudo chown -R $(whoami) /Users/fred/.conda
+  conda update -n base -c defaults conda
+}
+inst_python() {
+  sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
+  inst python
+}
+
+inst_protobuf() {
+  # brew tap homebrew/versions
+  # brew install protobuf241
+  inst protobuf
 }

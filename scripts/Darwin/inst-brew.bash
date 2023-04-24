@@ -48,31 +48,3 @@ brdesc() {
 
   brew info --cask ${PACKAGE_NAME}
 }
-
-# --------------------------------
-# Develop
-# --------------------------------
-inst_cmake() {
-  inst cmake
-}
-
-# Already include python & package mgmt
-# x86
-inst_conda() {
-  brew install --cask anaconda
-  enablelib dev-py-conda
-}
-upd_conda() {
-  sudo chown -R $(whoami) /Users/fred/.conda
-  conda update -n base -c defaults conda
-}
-inst_python() {
-  sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
-  inst python
-}
-
-inst_protobuf() {
-  # brew tap homebrew/versions
-  # brew install protobuf241
-  inst protobuf
-}

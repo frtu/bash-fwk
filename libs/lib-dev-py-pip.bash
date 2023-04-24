@@ -6,6 +6,15 @@ ppls() {
   echo "pip list"
   pip list
 }
+
+ppdesc() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  echo "pip show $@"
+  pip show $@
+}
 ppinst() {
   usage $# "[PACKAGE]" "[VERSION]"
 
@@ -61,4 +70,8 @@ ppinst_tensorflow() {
 pparchm1() {
   envcreate "ARCHFLAGS" "-arch arm64"
 }
-
+ppinst_pytorch_m1() {
+  # From https://pytorch.org/
+  echo "conda install pytorch torchvision torchaudio -c pytorch"
+  conda install pytorch torchvision torchaudio -c pytorch
+}

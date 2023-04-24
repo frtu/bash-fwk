@@ -97,12 +97,16 @@ Generic configuration settings
 
 * Usage ```import lib-dev-py-conda```
 * Prefix ```pc```
-* For M1, run ```pcarchm1```
 
 ### Install
 
 * Install conda : ```inst_conda```
 * Update conda : ```upd_conda```
+
+For M1 :
+
+* Install [Miniforge](https://github.com/conda-forge/miniforge#miniforge3) => python 3.10
+* run ```pcarchm1```
 
 Other optional installation :
 
@@ -142,10 +146,15 @@ Other optional installation :
 
 * Usage ```import lib-dev-pip```
 * Prefix ```pp```
-* For M1, run ```pparchm1```
+
+For M1 :
+
+* Install [Miniforge](https://github.com/conda-forge/miniforge#miniforge3) => python 3.10
+* run ```pcarchm1```
 
 ### Base commands
 
+* Describe package version : ```ppdesc "PACKAGE"```
 * Install package with pip (if requirements.txt exist, use it if no arg passed)  : ```ppinst "[PACKAGE]" "[VERSION]"```
 * Install package without using cache  : ```ppuninstnocache "[PACKAGE]" "[VERSION]"```
 * Uninstall : ```ppuninst "[PACKAGE]"```
@@ -155,6 +164,10 @@ Other optional installation :
 
 * Install mtcnn : ```ppinst_mtcnn```
 * Install tensorflow : ```ppinst_tensorflow```
+
+##### For M1
+
+* Install pytorch M1 : ```ppinst_pytorch_m1```
 
 ## Library 'dev-rust'
 
