@@ -149,6 +149,11 @@ inst_android() {
   brew cask install android-sdk
 }
 
+inst_dbeaver() {
+  echo "brew install --cask dbeaver-community"
+  brew install --cask dbeaver-community
+}
+
 inst_graphviz() {
   brew install graphviz
 }
