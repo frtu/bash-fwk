@@ -45,13 +45,19 @@ If already installed, use quick fwk install copy : ```fwkcentos ```
 
 If already installed, use quick fwk install copy : ```fwkvag ```
 
-### Net tools
+### Net tools for apt
 
 ```	
 apt update && apt -y install curl telnet netcat iputils-ping net-tools 
 apt update && apt -y install nmap tcpdump iperf3 iftop iproute2 ipvsadm
 ```	
 If already installed, use quick fwk install copy : ```fwknet ```
+
+### Net tools for yum
+
+```
+yum update -y && yum install -y nc
+```
 
 ### Locally on [Busybox](https://www.busybox.net/) or [Alpine](https://alpinelinux.org/)
 
