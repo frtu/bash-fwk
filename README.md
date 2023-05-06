@@ -23,6 +23,10 @@ If already installed, use quick fwk install copy : ```fwkinst```
 
 If already installed, use quick fwk install copy : ```fwkubuntu ```
 
+Adding ytdl :
+```sudo apt-get update && sudo apt-get install git curl && echo "$(curl -fsSL https://raw.githubusercontent.com/frtu/bash-fwk/master/scripts/Linux/autoinstaller4curl-ytdl.bash)" | bash```
+
+
 ### Locally on [Debian](autoinstaller4curl-debian.bash)
 
 ```	
