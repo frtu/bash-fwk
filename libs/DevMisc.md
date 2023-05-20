@@ -122,12 +122,14 @@ Other optional installation :
 * Upgrade based on conda-forge : ```pcugdbase```
 * Configure for M1 : ```pcconfm1```
 * Adding configuration : ```pcconf "CONF_NAME" "CONF_VALUE"```
+* Configure to always respond yes : ```pcconfyes```
+* Configure to deactivate respond yes : ```pcconfno```
 
 ### Create isolated env
 
 * List all isolated environments : ```pcenv```
 * Use isolated environment : ```pcenv "ENV_NAME"```
-* Create isolated environment : ```pcenvcreate "ENV_NAME"```
+* Create isolated environment : ```pcenvcreate "ENV_NAME" "[PACKAGES:python=3.8 numpy=1.19.5 -y]"```
 * Create environment based on file `environment.yaml` : ```pcenvcreatefile "[FILE_NAME]" "[ENV_NAME]"```
 * Remove isolated environment : ```pcenvrm "ENV_NAME"```
 * Deactivate isolated environment : ```pcenvdeactivate```
@@ -135,7 +137,8 @@ Other optional installation :
 ### Base commands
 
 * Update metadata : ```pcupd```
-* Install package : ```pcinst "PACKAGE"```
+* Install package : ```pcinst [PACKAGE]" "[VERSION]```
+* Uninstall package : ```pcuninst "PACKAGE"```
 * Add repo : ```pcrepo "CHANNEL_NAME"```
 * Add repo (*huggingface*) : ```pcrepohuggingface```
 * Add repo (*conda-forge*) : ```pcrepoforge```

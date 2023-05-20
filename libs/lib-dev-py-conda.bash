@@ -1,5 +1,7 @@
 import lib-dev-py-pip
 
+REQ_FILENAME=requirements.txt
+
 CONDA_PKG=${CONDA_ROOT_FOLDER}/lib/python3.8/site-packages
 pcls() {
   echo "conda list $@"
@@ -43,6 +45,14 @@ pcconfdeactivateauto() {
   echo "conda config --set auto_activate_base false"
   conda config --set auto_activate_base false
 }
+pcconfyes() {
+  echo "conda config --env --set always_yes true"
+  conda config --env --set always_yes true
+}
+pcconfno() {
+  echo "conda config --env --remove-key always_yes"
+  conda config --env --remove-key always_yes
+}
 
 ## MANAGE ISOLATED ENV
 pcenv() {
@@ -70,8 +80,8 @@ pcenvcreate() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local ENV_NAME=$1
-  echo "conda create --name ${ENV_NAME}"
-  conda create --name ${ENV_NAME}
+  echo "conda create --name ${ENV_NAME} ${@:2}"
+  conda create --name ${ENV_NAME} ${@:2}
 
   pcenv ${ENV_NAME}
 }
@@ -127,12 +137,41 @@ pcupd() {
 }
 
 pcinst() {
+  usage $# "[PACKAGE]" "[VERSION]"
+
+  local PACKAGE=$1
+  local VERSION=$2
+
+  if [ -n "$PACKAGE" ]
+    then
+      if [ -n "$VERSION" ]
+        then
+          local INST_ARG="${PACKAGE}==${VERSION}"
+        else
+          local INST_ARG="${PACKAGE}"
+      fi
+    else
+      if [[ -f "${REQ_FILENAME}" ]] 
+        then 
+          local INST_ARG="--file ${REQ_FILENAME}"
+        else
+          echo "Please pass a PACKAGE name or run in a folder that contains ${REQ_FILENAME}" >&2
+          return 1
+      fi      
+  fi
+  
+  echo "conda install ${INST_ARG}"
+  conda install ${INST_ARG}
+}
+pcuninst() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "conda install $@"
-  conda install $@
+  local PACKAGE=$1
+
+  echo "conda uninstall ${PACKAGE}"
+  conda uninstall ${PACKAGE}
 }
 
 pcrepo() {
