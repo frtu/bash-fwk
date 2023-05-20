@@ -4,8 +4,17 @@ REQ_FILENAME=requirements.txt
 
 CONDA_PKG=${CONDA_ROOT_FOLDER}/lib/python3.8/site-packages
 pcls() {
-  echo "conda list $@"
-  conda list $@
+  usage $# "[ENV_NAME]" "[EXTRA_PARAMS]"
+
+  local ENV_NAME=$1
+  local EXTRA_PARAMS=${@:2}
+
+  if [ -n "$ENV_NAME" ]; then
+    local EXTRA_PARAMS="-n ${ENV_NAME} ${EXTRA_PARAMS}"
+  fi
+
+  echo "conda list ${EXTRA_PARAMS}"
+  conda list ${EXTRA_PARAMS}
 }
 
 pc() {

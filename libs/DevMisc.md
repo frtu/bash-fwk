@@ -136,6 +136,7 @@ Other optional installation :
 
 ### Base commands
 
+* List all installed packages in current env or the one passed : ```pcls "[ENV_NAME]"```
 * Update metadata : ```pcupd```
 * Install package : ```pcinst [PACKAGE]" "[VERSION]```
 * Uninstall package : ```pcuninst "PACKAGE"```
