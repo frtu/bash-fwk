@@ -60,6 +60,9 @@ pprepoclean() {
   echo "pip cache purge"
   pip cache purge
 }
+ppinst_pyusb() {
+  ppinst pyusb
+}
 ppinst_mtcnn() {
   ppinst mtcnn
 }

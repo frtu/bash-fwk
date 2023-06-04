@@ -166,6 +166,7 @@ For M1 :
 
 ### Installs
 
+* Install pyusb : ```ppinst_pyusb```
 * Install mtcnn : ```ppinst_mtcnn```
 * Install tensorflow : ```ppinst_tensorflow```
 
