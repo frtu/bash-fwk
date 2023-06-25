@@ -66,6 +66,11 @@ ppinst_pyusb() {
 ppinst_mtcnn() {
   ppinst mtcnn
 }
+ppinst_openllm() {
+  pcenv openllm
+  ppinst openllm
+  enablelib ai-openllm
+}
 ppinst_tensorflow() {
   ppuninstnocache --default-timeout=1000 tensorflow
 }
