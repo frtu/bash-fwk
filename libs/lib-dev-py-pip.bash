@@ -67,9 +67,19 @@ ppinst_mtcnn() {
   ppinst mtcnn
 }
 ppinst_openllm() {
-  pcenv openllm
-  ppinst openllm
+  usage $# "[MODEL_NAME:falcon at https://github.com/bentoml/OpenLLM#-supported-models]"
+
+  local MODEL_NAME=$1
+  if [ -n "$MODEL_NAME" ]; 
+    then
+      local EXTRA_PARAMS="[$MODEL_NAME]"
+    else
+      echo "Install and search for MODEL_NAME at https://github.com/bentoml/OpenLLM#-supported-models"
+  fi
+
   enablelib ai-openllm
+  pcenv openllm
+  ppinst openllm${EXTRA_PARAMS}
 }
 ppinst_tensorflow() {
   ppuninstnocache --default-timeout=1000 tensorflow
