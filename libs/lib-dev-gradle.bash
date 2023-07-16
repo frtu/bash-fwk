@@ -71,6 +71,9 @@ gdwrapperset() {
   gdtpl "wrapper" "--gradle-version" ${VERSION}
 }
 
+gddeppom() {
+  gdtpl "writeNewPom" $@
+}
 gddep() {
   usage $# "[MODULE_NAME]"
   local MODULE_NAME=$1
