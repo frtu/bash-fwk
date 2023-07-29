@@ -149,10 +149,10 @@ gcl() {
   local GITHUB_ROOT_URL=$4
 
   if [[ $REPO_NAME == http* ]] || [[ $REPO_NAME == git@* ]] || [[ $REPO_NAME == ssh@* ]] ; then
-    echo "git clone $1"
-    git clone $1
+    echo "git clone $@"
+    git clone $@
     
-    local END_URL="${1##*\/}"
+    local END_URL="${2:-$1##*\/}"
     local FOLDER_NAME="${END_URL%.*}"
     cd ${FOLDER_NAME}/
     return
