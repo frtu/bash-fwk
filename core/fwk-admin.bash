@@ -3,6 +3,9 @@ BASH_FWK_ROOT=~/git/bash-fwk
 cdfwk() {
   cd $BASH_FWK_ROOT
 }
+fwkedit() {
+  code $BASH_FWK_ROOT
+}
 fwkinst() {
   pbcopy < $BASH_FWK_ROOT/core/fwkinst-git
 }
