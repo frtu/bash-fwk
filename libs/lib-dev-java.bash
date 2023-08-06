@@ -1,16 +1,39 @@
+import lib-inst-sdk
+
 export JH_ROOT=/Library/Java/JavaVirtualMachines
 
 export JH11=$(/usr/libexec/java_home -v 11)
 export JAVA_HOME=$JH11
 
-function setjdk() {
+jsetsdk() {
+  usage $# "SDK_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "Please specify one of the VERSION here :" >&2
+    sdkinstls java
+    return 1; 
+  fi
+
+  echo "setjdk ${SDK_CANDIDATE_PATH}/$@"
+  setjdk ${SDK_CANDIDATE_PATH}/$@
+
+  java --version
+}
+jdksetoracle() {
+  usage $# "VERSION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  setjdk `/usr/libexec/java_home -v $@`
+}
+function jdkset() {
   if [ $# -ne 0 ]; then
    removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
    if [ -n "${JAVA_HOME+x}" ]; then
     removeFromPath $JAVA_HOME
    fi
    unset JAVA_HOME
-   export JAVA_HOME=`/usr/libexec/java_home -v $@`
+   export JAVA_HOME=$@
    export PATH=$JAVA_HOME/bin:$PATH
   fi
 }
@@ -19,12 +42,16 @@ function removeFromPath() {
 }
 
 jv() {
+  echo "======== ALL ========"
+  java --version
+  echo "======== JDK Oracle ========"
   /usr/libexec/java_home $@
 }
 jls() {
-  echo "======== ALL ========"
-  ll /Library/Java/JavaVirtualMachines/
-  echo "======== Active ========"
+  echo "======== Listing JDK installed by SDK ========"
+  sdkinstls java
+  echo "======== Listing JDK Oracle ========"
+  ll ${JH_ROOT}
   jv "-V"
 }
 

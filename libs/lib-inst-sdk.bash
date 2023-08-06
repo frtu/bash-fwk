@@ -1,3 +1,5 @@
+export SDK_CANDIDATE_PATH=~/.sdkman/candidates
+
 #!/bin/sh
 inst_sdk() {
   # http://sdkman.io/
@@ -19,6 +21,19 @@ sdkv() {
 sdkupd() {
   sdktpl "selfupdate" $@
 }
+sdkinstls() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "Please specify one of the PACKAGE here :" >&2
+    ll ${SDK_CANDIDATE_PATH}
+    return 1; 
+  fi
+
+  echo "Listing package at : ${SDK_CANDIDATE_PATH}/$@"
+  ll ${SDK_CANDIDATE_PATH}/$@
+}
+
 sdkls() {
   usage $# "[PACKAGE]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

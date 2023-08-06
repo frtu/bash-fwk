@@ -35,7 +35,7 @@
 * Usage ```import lib-inst-sdk```
 * Install ```enablelib inst-sdk```
 
-### Base commands
+### Admin commands
 
 * Install SDKMAN : ```inst_sdk```
 * Load sdk cmd line : ```sdkload```
@@ -46,6 +46,7 @@
 
 * List all packages : ```sdkls "[PACKAGE]"```
 * Use maven to exec a class : ```sdkinst "PACKAGE" "[VERSION]" "[PATH_TO_INSTALLATION]"```
+* List all installed packages	: ```sdkinstls "PACKAGE"```
 
 Install packages :
 
@@ -56,6 +57,25 @@ Install packages :
 * Install VisualVM : ```instvisualvm```
 * Install Gradle : ```instgradle```
 * Install sbt : ```instsbt```
+
+## Library 'dev-java'
+
+* Usage ```import lib-dev-java ```
+* Prefix ```j```
+
+### Basic commands
+
+* Verbose print : ```jv```
+* List all installed java : ```jls```
+* Init SDK path where `java` cmd is  : ```jsetsdk "SDK_PATH"```
+* Init SDK path with Oracle cmd : ```jdksetoracle "VERSION"```
+* Append JAVA_HOME to PATH : ```jdkbin```
+
+### Java keystore
+
+* List all key from keystore : ```jkeyls "[JKS_FILENAME]" "[PASSWORD]"```
+* Import key into keystore : ```jkeyimport "JKS_FILENAME" "[JKS_NAME]" "[PASSWORD]"```
+
 
 ## Library 'dev-rust'
 
