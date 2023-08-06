@@ -88,6 +88,10 @@ gcomm() {
   echo "git commit -m ${MESSAGE}"
   git commit -m ${MESSAGE}
 }
+gamend() {
+  echo "git commit --amend --no-edit"
+  git commit --amend --no-edit
+}
 gdiff() {
   usage $# "FILE_PATH"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

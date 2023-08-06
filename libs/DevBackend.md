@@ -15,8 +15,13 @@
 * **Add** file into stack : ```gadd "FILE_PATH"```
 * **Add** all files and commit with message : ```gaddall "MESSAGE"```
 * **Commit** stack with message : ```gcomm "MESSAGE"```
+* **Amend** the previous commit by adding new files : ```gamend```
 * **Diff** file with committed version : ```gdiff "FILE_PATH"```
 * **Rollback** file to committed version : ```grollback "FILE_PATH"```
+
+### Configuration commands
+
+* Edit git config from root folder of a project : ```gconfedit```
 
 ### Branch commands
 
