@@ -215,3 +215,16 @@ srvrm() {
   local SERVICE_NAME=$1
   uninst ${SERVICE_NAME}
 }
+
+syslangen() {
+  export LC_ALL=C
+}
+syslangunset() {
+  unset LC_ALL
+}
+sysupg() {
+  sudo do-release-upgrade
+}
+sysupgchk() {
+  sudo do-release-upgrade -c
+}
