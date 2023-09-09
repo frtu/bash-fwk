@@ -14,8 +14,8 @@ jsetsdk() {
     return 1; 
   fi
 
-  echo "jdkset ${SDK_CANDIDATE_PATH}/$@"
-  jdkset ${SDK_CANDIDATE_PATH}/$@
+  echo "jdkset ${SDK_CANDIDATE_PATH}/java/$@"
+  jdkset ${SDK_CANDIDATE_PATH}/java/$@
 
   java --version
 }
