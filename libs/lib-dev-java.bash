@@ -14,24 +14,25 @@ jsetsdk() {
     return 1; 
   fi
 
-  echo "setjdk ${SDK_CANDIDATE_PATH}/$@"
-  setjdk ${SDK_CANDIDATE_PATH}/$@
+  echo "jdkset ${SDK_CANDIDATE_PATH}/$@"
+  jdkset ${SDK_CANDIDATE_PATH}/$@
 
   java --version
 }
 jdksetoracle() {
   usage $# "VERSION"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  setjdk `/usr/libexec/java_home -v $@`
+  removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
+  if [ -n "${JAVA_HOME+x}" ]; then
+    removeFromPath $JAVA_HOME
+  fi
+
+  jdkset `/usr/libexec/java_home -v $@`
 }
 function jdkset() {
   if [ $# -ne 0 ]; then
-   removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
-   if [ -n "${JAVA_HOME+x}" ]; then
-    removeFromPath $JAVA_HOME
-   fi
    unset JAVA_HOME
    export JAVA_HOME=$@
    export PATH=$JAVA_HOME/bin:$PATH
@@ -71,7 +72,7 @@ jset11() {
 jset() {
   usage $# "JDK_PATH"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   export JAVA_HOME=$1
   jdkbin
@@ -79,7 +80,7 @@ jset() {
 jdeactivate() {
   usage $# "JDK_PATH"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INFO_PLIST_PATH=$(/usr/libexec/java_home -v $1)/../Info.plist
   mv ${INFO_PLIST_PATH} ${INFO_PLIST_PATH}.disabled
@@ -87,7 +88,7 @@ jdeactivate() {
 jactivate() {
   usage $# "JDK_PATH"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local INFO_PLIST_PATH=$(/usr/libexec/java_home -v $1)/../Info.plist
   mv ${INFO_PLIST_PATH}.disabled ${INFO_PLIST_PATH}
@@ -95,7 +96,7 @@ jactivate() {
 jmv() {
   usage $# "VERSION" "JDK_FOLDER"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local VERSION=$1
   local JDK_PATH=$2
@@ -127,7 +128,7 @@ jkeyls() {
 jkeyimport() {
   usage $# "JKS_FILENAME" "[JKS_NAME]" "[PASSWORD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local JKS_FILENAME=$1
   local JKS_NAME=$2
