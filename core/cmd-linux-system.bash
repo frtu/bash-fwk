@@ -22,7 +22,9 @@ binmv() {
 
   sudo mv $1 $USR_BIN
 }
-binappend() {
+
+alias binappend=pathadd
+pathadd() {
   usage $# "NEW_PATH_FOLDER"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -31,6 +33,14 @@ binappend() {
   echo "export PATH=\"$NEW_PATH_FOLDER\":\$PATH" >> ~/.bash_profile
   refresh
   echo $PATH
+}
+pathrm() {
+  usage $# "PATH_TO_REMOVE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local PATH_TO_REMOVE=$1
+  export PATH=$(echo $PATH | sed -E -e "s;:$PATH_TO_REMOVE;;" -e "s;$PATH_TO_REMOVE:?;;")
 }
 
 linuxdesc() {
@@ -121,4 +131,3 @@ envrm() {
   echo "unset $ENV_NAME_TO_REMOVE"
   unset $ENV_NAME_TO_REMOVE
 }
-

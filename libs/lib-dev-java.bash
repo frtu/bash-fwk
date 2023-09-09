@@ -24,9 +24,9 @@ jdksetoracle() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
+  pathrm '/System/Library/Frameworks/JavaVM.framework/Home/bin'
   if [ -n "${JAVA_HOME+x}" ]; then
-    removeFromPath $JAVA_HOME
+    pathrm $JAVA_HOME
   fi
 
   jdkset `/usr/libexec/java_home -v $@`
@@ -37,9 +37,6 @@ function jdkset() {
    export JAVA_HOME=$@
    export PATH=$JAVA_HOME/bin:$PATH
   fi
-}
-function removeFromPath() {
-  export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")
 }
 
 jv() {
