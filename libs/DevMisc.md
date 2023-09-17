@@ -140,6 +140,7 @@ Other optional installation :
 * Update metadata : ```pcupd```
 * Install package : ```pcinst [PACKAGE]" "[VERSION]```
 * Uninstall package : ```pcuninst "PACKAGE"```
+* List all repo : ```pcrepols```
 * Add repo : ```pcrepo "CHANNEL_NAME"```
 * Add repo (*huggingface*) : ```pcrepohuggingface```
 * Add repo (*conda-forge*) : ```pcrepoforge```

@@ -169,8 +169,8 @@ pcinst() {
       fi      
   fi
   
-  echo "conda install ${INST_ARG}"
-  conda install ${INST_ARG}
+  echo "conda install -y ${INST_ARG}"
+  conda install -y ${INST_ARG}
 }
 pcuninst() {
   usage $# "PACKAGE"
@@ -192,6 +192,10 @@ pcrepo() {
 
   echo "conda config --add channels ${CHANNEL_NAME}"
   conda config --add channels ${CHANNEL_NAME}
+}
+pcrepols() {
+  echo "conda config --show channels"
+  conda config --show channels
 }
 pcrepoclean() {
   pcenvdeactivate
