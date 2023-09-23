@@ -18,6 +18,11 @@ inst() {
 inst_curl() {
   inst curl
 }
+# apk update && apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing grpcurl
+inst_grpcurl() {
+  upd
+  inst --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing grpcurl
+}
 inst_git() {
   inst git
 }
