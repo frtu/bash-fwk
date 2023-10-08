@@ -93,6 +93,21 @@ gamend() {
   git commit --amend --no-edit
 }
 gdiff() {
+  usage $# "NUM_OF_COMMIT" "[FILE_PATH]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local NUM_OF_COMMIT=$1
+  local FILE_PATH=$2
+
+  if [ -n "$FILE_PATH" ]
+    then
+      gtpl diff HEAD~${NUM_OF_COMMIT} HEAD > $FILE_PATH
+    else
+      gtpl diff HEAD~${NUM_OF_COMMIT} HEAD
+  fi
+}
+gdifffile() {
   usage $# "FILE_PATH"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi

@@ -168,7 +168,8 @@ gremotemultimerge "REPO_NAME" "PROJECT_NAME" "BRANCH_NAME" "[GITHUB_ROOT_URL:git
 * Git status : ```gstatus``` 
 * Git add a file : ```gadd "FILE_PATH"```
 * Git add all change & commit : ```gaddall "MESSAGE"```
-* Git diff a file : ```gdiff "FILE_PATH"```
+* Create a diff file using X number of previous commit : ```gdiff "NUM_OF_COMMIT" "[FILE_PATH]"```
+* Git diff a file : ```gdifffile "FILE_PATH"```
 * Git rollback a file : ```grb "FILE_TO_ROLLBACK"```
 * Git commit with a message : ```gcomm "MESSAGE"```
 
