@@ -68,6 +68,22 @@ instjava() {
   sdkinsttpl "java" $@
   enablelib dev-java
 }
+instjava11() {
+  usage "[PATCH_VERSION:20]"
+  local PATCH_VERSION=${1:-20}
+  sdkinsttpl "java" "11.0.${PATCH_VERSION}-zulu" ${@:2}
+  enablelib dev-java
+}
+instjava17() {
+  usage "[PATCH_VERSION:8]"
+  local PATCH_VERSION=${1:-8}
+  sdkinsttpl "java" "17.0.${PATCH_VERSION}-zulu" ${@:2}
+  enablelib dev-java
+}
+instjava21() {
+  sdkinsttpl "java" "21-zulu" $@
+  enablelib dev-java
+}
 instvisualvm() {
   sdkinsttpl "visualvm" $@
 }
