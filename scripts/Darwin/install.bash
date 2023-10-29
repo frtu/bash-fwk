@@ -182,6 +182,11 @@ inst_sbt() {
   enablesbt
 }
 
+# CPU and Memory Widget
+inst_stats() {
+  inst stats
+}
+
 # --------------------------------
 # Develop
 # --------------------------------
