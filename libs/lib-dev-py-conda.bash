@@ -227,6 +227,9 @@ pcinstanaconda() {
   pcinst -c anaconda $@
 }
 
+pcinstdotenv() {
+  pcinst python-dotenv
+}
 pcinstopencv() {
 	pcinst -c conda-forge opencv torchvision omegaconf invisible-watermark einops pytorch_lightning
 }
