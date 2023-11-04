@@ -67,16 +67,87 @@ ptstart() {
 }
 
 ptconf() {
-  echo "poetry config --list "
-  poetry config --list 
+  usage $# "[CONF_NAME]" "[CONF_VALUE]"
+
+  local CMD=${@:---list}
+
+  echo "poetry config ${CMD}"
+  poetry config ${CMD}
+}
+ptconfvirtualenv() {
+  ptconf "virtualenvs.in-project" "true"
+  ptconf
+}
+ptenv() {
+  usage $# "[ENV]"
+
+  local ENV=$1
+  if [ -n "$ENV" ]
+    then
+      echo "poetry env use ${ENV}"
+      poetry env use ${ENV}
+    else
+      echo "poetry env list"
+      poetry env list
+  fi
+}
+ptenvinfo() {
+  echo "poetry env info $@"
+  poetry env info $@
+}
+ptenvinfopath() {
+  ptenvinfo "--path"
+}
+ptenvinfoexec() {
+  ptenvinfo "--executable"
+}
+ptenvrm() {
+  usage $# "ENV1" "[ENV..]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then
+    ptenv
+    return 1; 
+  fi
+
+  echo "poetry env remove $@"
+  poetry env remove $@
+}
+ptenvrmall() {
+  ptenvrm --all
+}
+
+
+ptpy() {
+  ptrun python $@
+}
+ptshell() {
+  echo "poetry shell $@"
+  poetry shell $@
+}
+ptactivate() {
+  echo ". $PWD/.venv/bin/activate"
+  . $PWD/.venv/bin/activate
+}
+
+ptdep() {
+  echo "poetry show --tree $@"
+  poetry show --tree $@
 }
 ptadd() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "poetry add $@"
   poetry add $@
+}
+ptrm() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  echo "poetry remove $@"
+  poetry remove $@
 }
 
 ptaddpg() {
@@ -91,4 +162,6 @@ ptadddotenv() {
 ptpylenium() {
   ptadd pylenium
 }
-
+ptdjango() {
+  ptadd django
+}
