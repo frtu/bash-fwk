@@ -17,6 +17,16 @@ pt() {
   echo "======================="
   poetry env info
 }
+ptinfo() {
+  usage $# "[CMD:--path]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CMD=${@:---path}
+
+  echo "poetry env info $CMD"
+  poetry env info $CMD
+}
 ptupd() {
   usage $# "[VERSION:1.6.1]"
 
@@ -32,9 +42,12 @@ ptinst() {
   echo "poetry install"
   poetry install
 }
+ptrun() {
+  echo "poetry run $@"
+  poetry run $@
+}
 ptstart() {
-  echo "poetry run start $@"
-  poetry run start $@
+  ptrun "start" "$@"
 }
 
 ptadd() {
@@ -47,11 +60,15 @@ ptadd() {
 }
 
 ptaddpg() {
-  ptinst psycopg2-binary
+  ptadd psycopg2-binary
 }
 ptaddarg() {
-  ptinst argparse
+  ptadd argparse
 }
 ptadddotenv() {
-  ptinst python-dotenv
+  ptadd python-dotenv
 }
+ptpylenium() {
+  ptadd pylenium
+}
+
