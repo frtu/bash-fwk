@@ -34,6 +34,18 @@ ptupd() {
   poetry self update $@
 }
 
+ptcreate() {
+  usage $# "[PROJECT_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local PROJECT_NAME=$1
+
+  echo "poetry new ${PROJECT_NAME}"
+  poetry new ${PROJECT_NAME}
+
+  cd ${PROJECT_NAME}
+}
 ptinit() {
   echo "poetry init $@"
   poetry init $@
@@ -41,6 +53,10 @@ ptinit() {
 ptinst() {
   echo "poetry install"
   poetry install
+}
+ptbuild() {
+  echo "poetry build $@"
+  poetry build $@
 }
 ptrun() {
   echo "poetry run $@"
@@ -50,6 +66,10 @@ ptstart() {
   ptrun "start" "$@"
 }
 
+ptconf() {
+  echo "poetry config --list "
+  poetry config --list 
+}
 ptadd() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
