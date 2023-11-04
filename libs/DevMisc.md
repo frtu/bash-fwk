@@ -176,6 +176,32 @@ For M1 :
 
 * Install pytorch M1 : ```ppinst_pytorch_m1```
 
+
+## Library 'dev-py-poetry'
+
+* Usage ```import lib-dev-poetry```
+* Prefix ```pt```
+* (Un)Install ```inst_poetry``` & ```uninst_poetry```
+
+### Base commands
+
+* Create a project : ```ptcreate "PROJECT_NAME"```
+* Initialize a project : ```ptinit```
+* Install project : ```ptinst```
+* Build project : ```ptbuild```
+* Run CMD project : ```ptrun "CMD"```
+* Start project : ```ptstart```
+
+### Configuration
+
+* Configuration : ```ptconf "[CONF_NAME]" "[CONF_VALUE]"```
+* Configure `virtualenvs` ON : ```ptconfvirtualenv```
+
+### Admin
+
+* Env info : ```ptinfo "[CMD:--path]"```
+* Upgrade poetry : ```ptupd```
+
 ## Library 'dev-rust'
 
 * Usage ```import lib-dev-rust```

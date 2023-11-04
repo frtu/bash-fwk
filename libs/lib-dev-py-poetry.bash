@@ -35,7 +35,7 @@ ptupd() {
 }
 
 ptcreate() {
-  usage $# "[PROJECT_NAME]"
+  usage $# "PROJECT_NAME"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
@@ -59,6 +59,10 @@ ptbuild() {
   poetry build $@
 }
 ptrun() {
+  usage $# "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
   echo "poetry run $@"
   poetry run $@
 }
@@ -115,7 +119,23 @@ ptenvrm() {
 ptenvrmall() {
   ptenvrm --all
 }
+ptenvactivate() {
+  usage $# "[ENV]"
 
+  local ENV=$1
+  if [ -n "$ENV" ]; then
+      echo ". $ENV/bin/activate"
+      . $ENV/bin/activate
+  elif [[ -d "$PWD/.venv" ]] ; then
+      echo "Activating local env : [$PWD/.venv]" >&2
+      ptenvactivate $PWD/.venv
+  else
+    ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+    echo "== Select the env from the list ==" >&2
+    poetry env list --full-path
+    return 1; 
+  fi
+}
 
 ptpy() {
   ptrun python $@
@@ -123,10 +143,6 @@ ptpy() {
 ptshell() {
   echo "poetry shell $@"
   poetry shell $@
-}
-ptactivate() {
-  echo ". $PWD/.venv/bin/activate"
-  . $PWD/.venv/bin/activate
 }
 
 ptdep() {
