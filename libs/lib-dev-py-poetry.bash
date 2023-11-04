@@ -138,6 +138,10 @@ ptenvactivate() {
 }
 
 ptpy() {
+  usage $# "FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
   ptrun python $@
 }
 ptshell() {

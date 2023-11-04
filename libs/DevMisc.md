@@ -192,10 +192,23 @@ For M1 :
 * Run CMD project : ```ptrun "CMD"```
 * Start project : ```ptstart```
 
-### Configuration
+### Project commands
+
+* Run python using poetry : ```ptpy "FILE_PATH"```
+* Run shell : ```ptshell```
+* Show dependencies : ```ptdep```
+* Add a dependency : ```ptadd "PACKAGE"```
+* Remove a dependency : ```ptrm "PACKAGE"```
+
+### Configuration and Env
 
 * Configuration : ```ptconf "[CONF_NAME]" "[CONF_VALUE]"```
 * Configure `virtualenvs` ON : ```ptconfvirtualenv```
+* Switch to this environment : ```ptenv "[ENV]"```
+* Activate this environment : ```ptenvactivate "[ENV]"```
+* Get env info : ```ptenvinfo "[ENV]"```
+* Remove environment : ```ptenvrm "ENV1" "[ENV..]"```
+* Remove all environment : ```ptenvrmall```
 
 ### Admin
 
