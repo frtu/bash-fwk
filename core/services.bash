@@ -123,6 +123,10 @@ enablegit() {
   gconfsetname ${USER_NAME}
   gconfsetemail ${EMAIL}
 }
+enableai() {
+  enablelib ai-openai
+  enablelib ai-ollama
+}
 
 enablessh() {
   srv_activate ssh
