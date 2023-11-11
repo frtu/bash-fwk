@@ -1,14 +1,14 @@
 # https://github.com/bentoml/OpenLLM
-ol() {
+op() {
   echo "openllm -h"
   openllm -h
 }
-olenable() {
+openable() {
   echo "pcenv openllm"
   pcenv openllm
 }
 
-olstart() {
+opstart() {
   usage $# "MODEL_NAME"
   # MIN NUM OF ARG
   if [[ "$?" -ne 0 ]]; then 
