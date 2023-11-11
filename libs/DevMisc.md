@@ -195,6 +195,7 @@ For M1 :
 ### Project commands
 
 * Run python using poetry : ```ptpy "FILE_PATH"```
+* Run poetry `main.py` : ```ptpymain "[EXTRA_PARAMS]"```
 * Run shell : ```ptshell```
 * Show dependencies : ```ptdep```
 * Add a dependency : ```ptadd "PACKAGE"```

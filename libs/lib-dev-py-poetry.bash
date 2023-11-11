@@ -144,6 +144,9 @@ ptpy() {
   
   ptrun python $@
 }
+ptpymain() {
+  ptpy main.py $@
+}
 ptshell() {
   echo "poetry shell $@"
   poetry shell $@
