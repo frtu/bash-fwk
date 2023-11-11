@@ -231,3 +231,11 @@ inst_protobuf() {
   # brew install protobuf241
   inst protobuf
 }
+
+# --------------------------------
+# AI
+# --------------------------------
+inst_ctags() {
+  inst universal-ctags
+  ctags --version
+}
