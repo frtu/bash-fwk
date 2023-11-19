@@ -64,6 +64,18 @@ sdktpl() {
   sdk ${CMD} ${MORE_ARG}
 }
 
+instkotlin() {
+  usage "[VERSION:1.7.21]"
+  local VERSION=${1:-1.7.21}
+
+  sdkinsttpl "kotlin" ${VERSION} ${@:2}
+  enablelib dev-kotlin
+}
+instkotlin190() {
+  local VERSION=${1:-1.9.20}
+  instkotlin ${VERSION} ${@:2}
+}
+
 instjava() {
   sdkinsttpl "java" $@
   enablelib dev-java
@@ -89,10 +101,6 @@ instvisualvm() {
 }
 instscala() {
   sdkinsttpl "scala" $@
-}
-instkotlin() {
-  sdkinsttpl "kotlin" $@
-  enablelib dev-kotlin
 }
 instkscript() {
   sdkinsttpl "kscript" $@
