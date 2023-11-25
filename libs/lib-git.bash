@@ -88,9 +88,21 @@ gcomm() {
   echo "git commit -m ${MESSAGE}"
   git commit -m ${MESSAGE}
 }
+# https://www.atlassian.com/git/tutorials/rewriting-history
 gamend() {
-  echo "git commit --amend --no-edit"
-  git commit --amend --no-edit
+  usage $# "[MESSAGE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local MESSAGE=$1
+  if [ -n "$MESSAGE" ]; then
+    local PARAMS="-m ${MESSAGE}"
+  else
+    local PARAMS="--no-edit"
+  fi
+
+  echo "git commit --amend ${PARAMS}"
+  git commit --amend ${PARAMS}
 }
 gdiff() {
   usage $# "NUM_OF_COMMIT" "[FILE_PATH]"
