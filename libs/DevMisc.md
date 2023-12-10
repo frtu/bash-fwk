@@ -185,6 +185,8 @@ For M1 :
 
 ### Base commands
 
+* Poetry shortcut : ```pt "CMD"```
+* Show project details : ```ptshow```
 * Create a project : ```ptcreate "PROJECT_NAME"```
 * Initialize a project : ```ptinit```
 * Install project : ```ptinst```

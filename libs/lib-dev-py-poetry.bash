@@ -11,11 +11,21 @@ uninst_poetry() {
 }
 
 pt() {
-  echo "poetry --version"
-  poetry --version
+  usage $# "[CMD:--path]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    echo "poetry --version"
+    poetry --version
 
-  echo "======================="
-  poetry env info
+    echo "======================="
+    poetry env info
+  fi
+
+  echo "poetry $@"
+  poetry $@
+}
+ptshow() {
+  pt show $@
 }
 ptinfo() {
   usage $# "[CMD:--path]"
