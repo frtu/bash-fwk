@@ -60,6 +60,15 @@ ptinit() {
   echo "poetry init $@"
   poetry init $@
 }
+ptimport() {
+  if [[ ! -f "${REQ_FILENAME}" ]]; then 
+    echo "[WARN] Please sure file '${PWD}/${REQ_FILENAME}' exist !" >&2
+    return 1
+  fi
+
+  echo "poetry add \$( cat requirements.txt )"
+  poetry add $( cat requirements.txt )
+}
 ptinst() {
   echo "poetry install"
   poetry install

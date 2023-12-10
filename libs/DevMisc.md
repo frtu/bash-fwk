@@ -189,6 +189,7 @@ For M1 :
 * Show project details : ```ptshow```
 * Create a project : ```ptcreate "PROJECT_NAME"```
 * Initialize a project : ```ptinit```
+* Import `requirements.txt` into local project : ```ptimport```
 * Install project : ```ptinst```
 * Build project : ```ptbuild```
 * Run CMD project : ```ptrun "CMD"```
