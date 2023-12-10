@@ -1,8 +1,7 @@
 import lib-dev-py-pip
 
-REQ_FILENAME=requirements.txt
-
 CONDA_PKG=${CONDA_ROOT_FOLDER}/lib/python3.8/site-packages
+
 pcls() {
   usage $# "[ENV_NAME]" "[EXTRA_PARAMS]"
 
