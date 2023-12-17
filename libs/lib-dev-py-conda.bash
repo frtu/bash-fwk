@@ -74,9 +74,12 @@ pcenv() {
       echo "conda activate ${ENV_NAME}"
       conda activate ${ENV_NAME}
     else
-      echo "conda env list"
-      conda env list
+      pcenvls
   fi
+}
+pcenvls() {
+  echo "conda env list"
+  conda env list
 }
 pcenvdeactivate() {
   echo "conda deactivate"
