@@ -11,6 +11,9 @@ oakey() {
   local OPENAI_API_KEY=$1
   scriptappend "${ENV_OPENAI_SCRIPT}" "export OPENAI_API_KEY=${OPENAI_API_KEY}"
 }
+oakeyrm() {
+  unset OPENAI_API_KEY
+}
 
 oaurl() {
   usage $# "[OPENAI_API_BASE:http://127.0.0.1:5000]"
@@ -21,8 +24,22 @@ oaurl() {
   scriptappend "${ENV_OPENAI_SCRIPT}" "export OPENAI_API_BASE=${OPENAI_API_BASE}"
   scriptappend "${ENV_OPENAI_SCRIPT}" "export BACKEND_TYPE=webui"
 }
+oaurlrm() {
+  unset OPENAI_API_BASE
+}
+
+oaconfdebug() {
+  echo "export OPENAI_LOG=debug"
+  export OPENAI_LOG=debug
+}
+oaconfdebugrm() {
+  unset OPENAI_LOG
+}
 
 oainit() {
   echo "Create new SCRIPT file : ${ENV_OPENAI_SCRIPT}"
   echo "" > ${ENV_OPENAI_SCRIPT}
+}
+oarm() {
+  rm ${ENV_OPENAI_SCRIPT}
 }

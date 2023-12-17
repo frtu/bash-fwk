@@ -14,6 +14,9 @@ aginst() {
   echo "pip install pyautogen"
   pip install pyautogen
 
+  echo "pip install openai-wrapper"
+  pip install openai-wrapper
+
   echo "pip install litellm"
   pip install litellm
 }
