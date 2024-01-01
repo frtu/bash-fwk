@@ -166,6 +166,13 @@ For M1 :
 * Uninstall : ```ppuninst "[PACKAGE]"```
 * Clean up repo : ```pprepoclean```
 
+### Configuration commands
+
+* List pip config : ```ppconf```
+* Manually edit pip config from user folder : ```ppconfedit```
+* Set pip config : ```ppconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Set pip config repository proxy : ```ppconfrepo "URL_MIRROR"```
+
 ### Installs
 
 * Install pyusb : ```ppinst_pyusb```

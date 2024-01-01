@@ -45,6 +45,24 @@ ppinst() {
   echo "pip install ${INST_ARG}"
   pip install ${INST_ARG}
 }
+ppinstpkg() {
+  usage $# "PACKAGE" "[URL]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local PACKAGE=$1
+  local URL=$2
+  
+  if [ -n "$URL" ]
+    then
+      local INST_ARG="${PACKAGE} --index-url ${URL}"
+    else
+      local INST_ARG="${PACKAGE}"
+  fi
+
+  echo "pip install ${INST_ARG}"
+  pip install ${INST_ARG}
+}
 ppuninst() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -57,6 +75,34 @@ ppuninst() {
 }
 ppuninstnocache() {
   ppuninst --no-cache-dir $@
+}
+
+ppconfedit() {
+  code ~/.config/pip/pip.conf
+}
+ppconf() {
+  local CONF_PARAM=${1:---list}
+  echo "pip config $CONF_PARAM"
+  pip config $CONF_PARAM
+}
+ppconfset() {
+  usage $# "CONF_PARAM_NAME" "CONF_PARAM_VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CONF_PARAM_NAME=$1
+  local CONF_PARAM_VALUE=$2
+
+  echo "pip config set $CONF_PARAM_NAME \"$CONF_PARAM_VALUE\""
+  pip config set $CONF_PARAM_NAME "$CONF_PARAM_VALUE"
+}
+# https://mirrors.sustech.edu.cn/help/pypi.html#_2-configure-index-url
+ppconfrepo() {
+  usage $# "URL_MIRROR"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  ppconfset global.index-url "$1"
 }
 
 pprepoclean() {
@@ -95,4 +141,6 @@ ppinst_pytorch_m1() {
   # From https://pytorch.org/
   echo "conda install pytorch torchvision torchaudio -c pytorch"
   conda install pytorch torchvision torchaudio -c pytorch
+
+  # python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 }

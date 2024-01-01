@@ -663,7 +663,7 @@ gpatchapply() {
 gconfedit() {
   code .git/config
 }
-gconfls() {
+gconf() {
   local CONF_PARAM=${1:---list}
   echo "git config $CONF_PARAM"
   git config $CONF_PARAM
