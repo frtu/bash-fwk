@@ -171,7 +171,9 @@ For M1 :
 * List pip config : ```ppconf```
 * Manually edit pip config from user folder : ```ppconfedit```
 * Set pip config : ```ppconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Remove pip config : ```ppconfrm "CONF_PARAM_NAME"```
 * Set pip config repository proxy : ```ppconfrepo "URL_MIRROR"```
+* Remove pip config repository : ```ppconfreporm```
 
 ### Installs
 

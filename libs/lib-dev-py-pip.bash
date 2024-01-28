@@ -81,7 +81,7 @@ ppconfedit() {
   code ~/.config/pip/pip.conf
 }
 ppconf() {
-  local CONF_PARAM=${1:---list}
+  local CONF_PARAM=${1:-list}
   echo "pip config $CONF_PARAM"
   pip config $CONF_PARAM
 }
@@ -96,6 +96,17 @@ ppconfset() {
   echo "pip config set $CONF_PARAM_NAME \"$CONF_PARAM_VALUE\""
   pip config set $CONF_PARAM_NAME "$CONF_PARAM_VALUE"
 }
+alias ppconfrm=ppconfunset
+ppconfunset() {
+  usage $# "CONF_PARAM_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CONF_PARAM_NAME=$1
+  
+  echo "pip config unset $CONF_PARAM_NAME"
+  pip config unset $CONF_PARAM_NAME
+}
 # https://mirrors.sustech.edu.cn/help/pypi.html#_2-configure-index-url
 ppconfrepo() {
   usage $# "URL_MIRROR"
@@ -103,6 +114,9 @@ ppconfrepo() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   ppconfset global.index-url "$1"
+}
+ppconfreporm() {
+  ppconfunset global.index-url 
 }
 
 pprepoclean() {
