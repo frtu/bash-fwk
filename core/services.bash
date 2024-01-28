@@ -127,6 +127,10 @@ enableai() {
   enablelib ai-openai
   enablelib ai-ollama
 }
+enableautogen() {
+  enablelib ai-autogen
+  echo "=> Autogen enabled with prefix 'ag'"
+}
 
 enablessh() {
   srv_activate ssh

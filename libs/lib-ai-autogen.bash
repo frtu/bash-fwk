@@ -6,19 +6,24 @@ agcreate() {
  pcenvcreate ${AUTOGEN_LIB} python=3.11
  aginst
 }
+alias agenable=agactivate
 agactivate() {
   pcenv ${AUTOGEN_LIB}
 }
 
 aginst() {
-  echo "pip install pyautogen"
-  pip install pyautogen
+  echo "pip install autogenstudio"
+  pip install autogenstudio
+}
+agstart() {
+  usage $# "[SERVER_PORT:9999]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "pip install openai-wrapper"
-  pip install openai-wrapper
+  local SERVER_PORT=${1:-9999}
 
-  echo "pip install litellm"
-  pip install litellm
+  echo "autogenstudio ui --port ${SERVER_PORT}"
+  autogenstudio ui --port ${SERVER_PORT}
 }
 agmodel() {
   usage $# "MODEL"
@@ -31,4 +36,18 @@ agmodel() {
   local MODEL=$1
   olpull ${MODEL}
   litellm --model ollama/${MODEL}
+}
+
+################################################
+# Archive
+################################################
+aginst_old() {
+  echo "pip install pyautogen"
+  pip install pyautogen
+
+  echo "pip install openai-wrapper"
+  pip install openai-wrapper
+
+  echo "pip install litellm"
+  pip install litellm
 }
