@@ -7,6 +7,10 @@ olls() {
   echo "ollama list"
   ollama list
 }
+olcd() {
+  cd ~/.ollama/models/
+  pwd
+}
 
 # Setting env for MAC
 olenvhostmac() {
@@ -23,6 +27,21 @@ olenvhostmacrm() {
   serviceenvrm OLLAMA_HOST
   echo "-- CHECK VALUE --"
   serviceenv OLLAMA_HOST
+}
+olenvhostmac() {
+  usage $# "ORIGINS"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ORIGINS=$1
+  serviceenv OLLAMA_ORIGINS "${ORIGINS}"
+  echo "-- CHECK VALUE --"
+  serviceenv OLLAMA_ORIGINS
+}
+olenvhostmacrm() {
+  serviceenvrm OLLAMA_ORIGINS
+  echo "-- CHECK VALUE --"
+  serviceenv OLLAMA_ORIGINS
 }
 
 olpull() {
