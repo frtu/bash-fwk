@@ -35,18 +35,47 @@ servicels() {
 	launchctl list	
 }
 servicestart() {
-	if [ $# -eq 0 ]; then
-      echo "Add the service name to start !"
-      return
-  	fi
-  	echo "launchctl start $1"
-	launchctl start $1	
+  usage $# "SERVICE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+	
+  echo "launchctl start $1"
+  launchctl start $1	
 }
 servicestop() {
-	if [ $# -eq 0 ]; then
-      echo "Add the service name to stop !"
-      return
-  	fi
-  	echo "launchctl stop $1"
-	launchctl stop $1	
+  usage $# "SERVICE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+	
+  echo "launchctl stop $1"
+  launchctl stop $1	
+}
+serviceenv() {
+  usage $# "ENV_NAME" "[ENV_VALUE]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ENV_NAME=$1
+  local ENV_VALUE=$2
+
+  if [ -n "$ENV_NAME" ] ; then
+	if [ -n "$ENV_VALUE" ]
+		then
+			echo "launchctl setenv $ENV_NAME \"$ENV_VALUE\""
+			launchctl setenv $ENV_NAME "$ENV_VALUE"
+		else
+			echo "launchctl getenv $ENV_NAME"
+			launchctl getenv $ENV_NAME
+	fi
+  fi
+}
+serviceenvrm() {
+  usage $# "ENV_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ENV_NAME=$1
+
+  echo "launchctl unsetenv $ENV_NAME"
+  launchctl unsetenv $ENV_NAME
 }
