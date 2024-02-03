@@ -8,6 +8,23 @@ olls() {
   ollama list
 }
 
+# Setting env for MAC
+olenvhostmac() {
+  usage $# "[HOST:0.0.0.0]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local HOST=${1:-0.0.0.0}
+  serviceenv OLLAMA_HOST "${HOST}"
+  echo "-- CHECK VALUE --"
+  serviceenv OLLAMA_HOST
+}
+olenvhostmacrm() {
+  serviceenvrm OLLAMA_HOST
+  echo "-- CHECK VALUE --"
+  serviceenv OLLAMA_HOST
+}
+
 olpull() {
   usage $# "MODEL"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
