@@ -129,6 +129,9 @@ ppinst_pyusb() {
 ppinst_mtcnn() {
   ppinst mtcnn
 }
+ppinst_ollama() {
+  ppinst ollama
+}
 ppinst_openllm() {
   usage $# "[MODEL_NAME:falcon at https://github.com/bentoml/OpenLLM#-supported-models]"
 
