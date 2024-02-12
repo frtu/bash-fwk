@@ -1,6 +1,8 @@
+import lib-dev-py-pip
 import lib-ai-ollama
 
 AUTOGEN_LIB="autogen"
+AUTOGEN_PACKAGE="autogenstudio"
 
 agcreate() {
  pcenvcreate ${AUTOGEN_LIB} python=3.11
@@ -12,8 +14,10 @@ agactivate() {
 }
 
 aginst() {
-  echo "pip install autogenstudio"
-  pip install autogenstudio
+  ppinst ${AUTOGEN_PACKAGE}
+}
+agupg() {
+  ppupg ${AUTOGEN_PACKAGE}
 }
 agstart() {
   usage $# "[SERVER_PORT:9999]"

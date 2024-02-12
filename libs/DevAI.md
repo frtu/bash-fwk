@@ -15,5 +15,6 @@
 
 * (Re)create and install an `autogen` env : ```agcreate```
 * Activate `autogen` env : ```agactivate```
-* Reinstall `autogenstudio` : ```aginst```
+* Install `autogenstudio` : ```aginst```
+* Upgrade `autogenstudio` : ```agupg```
 * Start `autogenstudio ` at port : ```agstart "[SERVER_PORT:9999]"```
