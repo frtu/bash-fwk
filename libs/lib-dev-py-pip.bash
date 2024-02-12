@@ -14,8 +14,13 @@ ppdesc() {
   pip show $@
 }
 ppupg() {
-  echo "pip install --upgrade pip"
-  pip install --upgrade pip
+  usage $# "[PACKAGE:pip]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local PACKAGE=${1:-pip}
+  echo "pip install --upgrade ${PACKAGE}"
+  pip install --upgrade ${PACKAGE}
 }
 
 ppinst() {

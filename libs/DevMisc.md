@@ -160,7 +160,7 @@ For M1 :
 ### Base commands
 
 * Describe package version : ```ppdesc "PACKAGE"```
-* Upgrade pip : ```ppupg```
+* Upgrade pip or any installed package : ```ppupg "[PACKAGE:pip]"```
 * Install package with pip (if requirements.txt exist, use it if no arg passed)  : ```ppinst "[PACKAGE]" "[VERSION]"```
 * Install package without using cache  : ```ppuninstnocache "[PACKAGE]" "[VERSION]"```
 * Uninstall : ```ppuninst "[PACKAGE]"```
