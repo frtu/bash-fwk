@@ -22,13 +22,15 @@ olenvhostmac() {
   serviceenv OLLAMA_HOST "${HOST}"
   echo "-- CHECK VALUE --"
   serviceenv OLLAMA_HOST
+
+  echo "-> Reach server using http://localhost:11434"
 }
 olenvhostmacrm() {
   serviceenvrm OLLAMA_HOST
   echo "-- CHECK VALUE --"
   serviceenv OLLAMA_HOST
 }
-olenvhostmac() {
+olenvoriginsmac() {
   usage $# "ORIGINS"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -38,7 +40,7 @@ olenvhostmac() {
   echo "-- CHECK VALUE --"
   serviceenv OLLAMA_ORIGINS
 }
-olenvhostmacrm() {
+olenvoriginsrm() {
   serviceenvrm OLLAMA_ORIGINS
   echo "-- CHECK VALUE --"
   serviceenv OLLAMA_ORIGINS
@@ -107,10 +109,4 @@ olrun() {
   
   echo "ollama run ${MODEL}"
   ollama run ${MODEL}
-}
-olrunmistral() {
-  olrun mistral
-}
-olrunllama2() {
-  olrun llama2
 }
