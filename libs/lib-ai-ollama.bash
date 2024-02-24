@@ -3,6 +3,10 @@ DEFAULT_CONFIG_PATH="Modelfile"
 # For $MODEL
 # https://github.com/jmorganca/ollama#model-library
 # https://ollama.ai/library 
+ol() {
+  echo "ollama -v"
+  ollama -v
+}
 olls() {
   echo "ollama list"
   ollama list
