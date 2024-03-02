@@ -33,32 +33,25 @@ ptinfo() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local CMD=${@:---path}
-
-  echo "poetry env info $CMD"
-  poetry env info $CMD
+  pt "env" "info" $CMD
 }
 ptupd() {
   usage $# "[VERSION:1.6.1]"
-
-  echo "poetry self update $@"
-  poetry self update $@
+  pt "self" "update" $@
 }
 
 ptcreate() {
-  usage $# "PROJECT_NAME"
+  usage $# "PROJECT_NAME:*_prj"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local PROJECT_NAME=$1
-
-  echo "poetry new ${PROJECT_NAME}"
-  poetry new ${PROJECT_NAME}
+  local PROJECT_NAME="$1_prj"
+  pt "new" ${PROJECT_NAME} ${@:2}
 
   cd ${PROJECT_NAME}
 }
 ptinit() {
-  echo "poetry init $@"
-  poetry init $@
+  pt "init" $@
 }
 ptimport() {
   if [[ ! -f "${REQ_FILENAME}" ]]; then 
@@ -70,20 +63,17 @@ ptimport() {
   poetry add $( cat requirements.txt )
 }
 ptinst() {
-  echo "poetry install"
-  poetry install
+  pt "install" $@
 }
 ptbuild() {
-  echo "poetry build $@"
-  poetry build $@
+  pt "build" $@
 }
 ptrun() {
   usage $# "CMD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "poetry run $@"
-  poetry run $@
+  pt "run" $@
 }
 ptstart() {
   ptrun "start" "$@"
@@ -94,29 +84,32 @@ ptconf() {
 
   local CMD=${@:---list}
 
-  echo "poetry config ${CMD}"
-  poetry config ${CMD}
+  pt "config" ${CMD}
 }
 ptconfvirtualenv() {
   ptconf "virtualenvs.in-project" "true"
   ptconf
 }
+# https://python-poetry.org/docs/managing-environments/
+# -> Use the shell version of python
+ptconfvirtualenvactive() {
+  ptconf "virtualenvs.prefer-active-python" "true"
+  ptconf
+}
+
 ptenv() {
   usage $# "[ENV]"
 
   local ENV=$1
   if [ -n "$ENV" ]
     then
-      echo "poetry env use ${ENV}"
-      poetry env use ${ENV}
+      pt "env" "use" ${ENV}
     else
-      echo "poetry env list"
-      poetry env list
+      pt "env" "list"
   fi
 }
 ptenvinfo() {
-  echo "poetry env info $@"
-  poetry env info $@
+  pt "env" "info" $@
 }
 ptenvinfopath() {
   ptenvinfo "--path"
@@ -132,8 +125,7 @@ ptenvrm() {
     return 1; 
   fi
 
-  echo "poetry env remove $@"
-  poetry env remove $@
+  pt env remove $@
 }
 ptenvrmall() {
   ptenvrm --all
@@ -157,39 +149,36 @@ ptenvactivate() {
 }
 
 ptpy() {
-  usage $# "FILE_PATH"
+  usage $# "[FILE_PATH:--version]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
-  ptrun python $@
+  local FILE_PATH=${1:---version}
+  ptrun python ${FILE_PATH} ${@:2}
 }
 ptpymain() {
   ptpy main.py $@
 }
 ptshell() {
-  echo "poetry shell $@"
-  poetry shell $@
+  pt "shell" $@
 }
 
 ptdep() {
-  echo "poetry show --tree $@"
-  poetry show --tree $@
+  pt show --tree $@
 }
 ptadd() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "poetry add $@"
-  poetry add $@
+  pt add $@
 }
 ptrm() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "poetry remove $@"
-  poetry remove $@
+  pt remove $@
 }
 
 ptaddpg() {

@@ -196,7 +196,7 @@ For M1 :
 
 * Poetry shortcut : ```pt "CMD"```
 * Show project details : ```ptshow```
-* Create a project : ```ptcreate "PROJECT_NAME"```
+* Create a project with suffix `_prj` : ```ptcreate "PROJECT_NAME:*_prj"```
 * Initialize a project : ```ptinit```
 * Import `requirements.txt` into local project : ```ptimport```
 * Install project : ```ptinst```
@@ -206,7 +206,7 @@ For M1 :
 
 ### Project commands
 
-* Run python using poetry : ```ptpy "FILE_PATH"```
+* Run python using poetry (default will print python version) : ```ptpy "[FILE_PATH:--version]"```
 * Run poetry `main.py` : ```ptpymain "[EXTRA_PARAMS]"```
 * Run shell : ```ptshell```
 * Show dependencies : ```ptdep```
