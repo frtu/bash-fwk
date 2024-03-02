@@ -5,93 +5,39 @@
 
 # Tech libraries
 
-## Library 'dev-nvm'
 
-* Usage ```import lib-dev-nvm```
-* Prefix ```nvm```
+## Library 'dev-python'
 
-### Base commands
+* Usage ```import lib-dev-python```
+* Prefix ```py```
 
-* Get **nvm** version : ```nvmv```
-* List all local installed version : ```nvmls```
-* Get current version : ```nvmcurrent```
-* Use a specific version : ```nvmuse "VERSION"```
-* Where is cmd version : ```nvmwhich "VERSION"```
+For M1 :
 
-### Install commands
-
-* List all remote version : ```nvmlsremote```
-* Install a specific version : ```nvminst "[VERSION:v10.13.0]"```
-* Uninstall a specific version : ```nvmuninst "VERSION"```
-
-### Configuration commands
-
-* Set http proxy to reach out repository : ```njconfsetproxy "PROXY_URL"```
-* Set https proxy to reach out repository : ```njconfsetproxysecured "HTTPS_PROXY_URL"```
-* Remove proxy settings : ```njconfcleanproxies```
-* Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
-
-Generic configuration settings
-
-* List all configurations : ```njconfls```
-* Set configuration : ```njconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
-* Remove configuration : ```njconfrm "CONF_PARAM_NAME"```
-
-
-### Repository commands
-
-* Print the current **remote repository** URL : ```njconfrepo```
-* Set **remote repository** URL : ```njconfsetrepo "REPO_URL"```
-* Search for package in **remote repository** : ```njrepols "PKG_NAME"```
-* Clean up cache : ```njclean```
-
-
-## Library 'dev-node'
-
-* Usage ```import lib-dev-node```
-* Prefix ```nj```
+* Install `inst_pyenv` (using brew)
+* Upgrade `upg_pyenv` (using brew)
 
 ### Base commands
 
-* Get **node** & **npm** version : ```nj```
-* Install & start : ```njinststart```
-* Build : ```njbuild```
-* Build & deploy as server : ```njbuildNdeploy```
+* Print python version, location and diverse info : ```py```
 
-### Repo commands
+### pyenv
 
-* Search repo for package : ```njrepols "PKG_NAME"```
-* Set Repo URL : ```njconfsetrepo "REPO_URL"```
-* List all repo : ```njconfrepo```
-* Clean repo : ```njclean```
-* Npm audit repo & fix : ```njauditfix ```
-* Create lock file : ```njlock ```
+* List python version using `pyenv` & select : ```pyv "[VERSION:3.12]" "[MODE:shell|local|global]"```
+* Shortcut for setting python only for **shell** : ```pyvs "[VERSION:3.12]"```
+* Shortcut for setting python only for **local** : ```pyvl "[VERSION:3.12]"```
+* Shortcut for setting python only for **global** : ```pyvg "[VERSION:3.12]"```
+* Uninstall : ```pyvuninst "VERSION:3.12"```
 
-### Configuration
+### Installs
 
-* List configs : ````njconfls```
-* Set configs : ```njconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
-* Remove config : ```njconfrm "CONF_PARAM_NAME"```
-* Set HTTP proxy : ```njconfsetproxy "PROXY_URL"```
-* Set HTTPS proxy : ```njconfsetproxysecured "HTTPS_PROXY_URL"```
-* Remove proxies : ```njconfcleanproxies```
-* Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
+* Install pyusb : ```ppinst_pyusb```
+* Install mtcnn : ```ppinst_mtcnn```
+* Install tensorflow : ```ppinst_tensorflow```
 
+##### For M1
 
-## Library 'js-rush'
+* Install pytorch M1 : ```ppinst_pytorch_m1```
 
-* Usage ```import lib-js-rush```
-* Prefix ```rh```
-* Install ```inst_rush```
-
-### Base commands
-
-* Get **rush** version : ```rh```
-* [Install all pck dep](https://rushjs.io/pages/commands/rush_install/) - READ ONLY : ```rhinst```
-* [Run update](https://rushjs.io/pages/commands/rush_update/) whenever you start working in a Rush repo, after you pull from Git, and after you modify a package.json file : ```rhupd```
-* [Build](https://rushjs.io/pages/commands/rush_build/) : ```rhbuild```
-* Build current project & dependencies : ```rhbuildfull```
-* [Invokes a shell script](https://rushjs.io/pages/commands/rushx/) that is defined in the "scripts" : ```rhx [SCRIPT_NAME]```
 
 ## Library 'dev-py-conda'
 
@@ -149,7 +95,7 @@ Other optional installation :
 
 ## Library 'dev-py-pip'
 
-* Usage ```import lib-dev-pip```
+* Usage ```import lib-dev-py-pip```
 * Prefix ```pp```
 
 For M1 :
@@ -227,6 +173,94 @@ For M1 :
 
 * Env info : ```ptinfo "[CMD:--path]"```
 * Upgrade poetry : ```ptupd```
+
+
+## Library 'dev-nvm'
+
+* Usage ```import lib-dev-nvm```
+* Prefix ```nvm```
+
+### Base commands
+
+* Get **nvm** version : ```nvmv```
+* List all local installed version : ```nvmls```
+* Get current version : ```nvmcurrent```
+* Use a specific version : ```nvmuse "VERSION"```
+* Where is cmd version : ```nvmwhich "VERSION"```
+
+### Install commands
+
+* List all remote version : ```nvmlsremote```
+* Install a specific version : ```nvminst "[VERSION:v10.13.0]"```
+* Uninstall a specific version : ```nvmuninst "VERSION"```
+
+### Configuration commands
+
+* Set http proxy to reach out repository : ```njconfsetproxy "PROXY_URL"```
+* Set https proxy to reach out repository : ```njconfsetproxysecured "HTTPS_PROXY_URL"```
+* Remove proxy settings : ```njconfcleanproxies```
+* Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
+
+Generic configuration settings
+
+* List all configurations : ```njconfls```
+* Set configuration : ```njconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Remove configuration : ```njconfrm "CONF_PARAM_NAME"```
+
+
+### Repository commands
+
+* Print the current **remote repository** URL : ```njconfrepo```
+* Set **remote repository** URL : ```njconfsetrepo "REPO_URL"```
+* Search for package in **remote repository** : ```njrepols "PKG_NAME"```
+* Clean up cache : ```njclean```
+
+
+## Library 'dev-node'
+
+* Usage ```import lib-dev-node```
+* Prefix ```nj```
+
+### Base commands
+
+* Get **node** & **npm** version : ```nj```
+* Install & start : ```njinststart```
+* Build : ```njbuild```
+* Build & deploy as server : ```njbuildNdeploy```
+
+### Repo commands
+
+* Search repo for package : ```njrepols "PKG_NAME"```
+* Set Repo URL : ```njconfsetrepo "REPO_URL"```
+* List all repo : ```njconfrepo```
+* Clean repo : ```njclean```
+* Npm audit repo & fix : ```njauditfix ```
+* Create lock file : ```njlock ```
+
+### Configuration
+
+* List configs : ````njconfls```
+* Set configs : ```njconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
+* Remove config : ```njconfrm "CONF_PARAM_NAME"```
+* Set HTTP proxy : ```njconfsetproxy "PROXY_URL"```
+* Set HTTPS proxy : ```njconfsetproxysecured "HTTPS_PROXY_URL"```
+* Remove proxies : ```njconfcleanproxies```
+* Set log level : ```njconfsetlog "LOG_LEVEL:warn"```
+
+## Library 'js-rush'
+
+* Usage ```import lib-js-rush```
+* Prefix ```rh```
+* Install ```inst_rush```
+
+### Base commands
+
+* Get **rush** version : ```rh```
+* [Install all pck dep](https://rushjs.io/pages/commands/rush_install/) - READ ONLY : ```rhinst```
+* [Run update](https://rushjs.io/pages/commands/rush_update/) whenever you start working in a Rush repo, after you pull from Git, and after you modify a package.json file : ```rhupd```
+* [Build](https://rushjs.io/pages/commands/rush_build/) : ```rhbuild```
+* Build current project & dependencies : ```rhbuildfull```
+* [Invokes a shell script](https://rushjs.io/pages/commands/rushx/) that is defined in the "scripts" : ```rhx [SCRIPT_NAME]```
 
 ## Library 'dev-rust'
 
