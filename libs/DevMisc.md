@@ -151,6 +151,7 @@ For M1 :
 * Build project : ```ptbuild```
 * Run CMD project : ```ptrun "CMD"```
 * Start project : ```ptstart```
+* Update lock : ```ptlock```
 
 ### Project commands
 

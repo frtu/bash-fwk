@@ -11,7 +11,7 @@ uninst_poetry() {
 }
 
 pt() {
-  usage $# "[CMD:--path]"
+  usage $# "[CMD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ -z "$1" ]]; then 
     echo "poetry --version"
@@ -77,6 +77,9 @@ ptrun() {
 }
 ptstart() {
   ptrun "start" "$@"
+}
+ptlock() {
+  ptrun "lock" "$@"
 }
 
 ptconf() {
