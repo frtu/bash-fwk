@@ -1,14 +1,5 @@
 export REQ_FILENAME=requirements.txt
 
-inst_pyenv() {
-  echo "curl https://pyenv.run | bash"
-  curl https://pyenv.run | bash
-}
-upg_pyenv() {
-  echo "brew update && brew upgrade pyenv"
-  brew update && brew upgrade pyenv
-}
-
 # https://stackoverflow.com/questions/122327/how-do-i-find-the-location-of-my-python-site-packages-directory
 py() {
   python --version

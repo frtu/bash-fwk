@@ -225,6 +225,18 @@ inst_python() {
   sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
   inst python
 }
+# https://realpython.com/intro-to-pyenv/
+inst_pyenv() {
+  echo "brew install openssl readline sqlite3 xz zlib"
+  brew install openssl readline sqlite3 xz zlib
+
+  echo "curl https://pyenv.run | bash"
+  curl https://pyenv.run | bash
+}
+upg_pyenv() {
+  echo "brew update && brew upgrade pyenv"
+  brew update && brew upgrade pyenv
+}
 
 inst_protobuf() {
   # brew tap homebrew/versions
