@@ -22,7 +22,9 @@ For M1 :
 
 ### pyenv
 
-* List python version using `pyenv` & select : ```pyv "[VERSION:3.12]" "[MODE:shell|local|global]"```
+* Show all versions : ```pyv [CMD]```
+* Go to versions folder : ```pyvcd```
+* List remote version using `pyenv` & install : ```pyvinst "[VERSION:3.12]" "[MODE:shell|local|global]"```
 * Shortcut for setting python only for **shell** : ```pyvs "[VERSION:3.12]"```
 * Shortcut for setting python only for **local** : ```pyvl "[VERSION:3.12]"```
 * Shortcut for setting python only for **global** : ```pyvg "[VERSION:3.12]"```

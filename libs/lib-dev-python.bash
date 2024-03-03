@@ -1,4 +1,5 @@
 export REQ_FILENAME=requirements.txt
+export PYENV_VERSIONS_PATH=~/.pyenv/versions/
 
 # https://stackoverflow.com/questions/122327/how-do-i-find-the-location-of-my-python-site-packages-directory
 py() {
@@ -9,8 +10,26 @@ py() {
   python -m site
 }
 
-# https://github.com/pyenv/pyenv/blob/master/COMMANDS.md
 pyv() {
+  usage $# "[CMD]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ -z "$1" ]]; then 
+    echo "pyenv -v"
+    pyenv -v
+    
+    echo "================="
+    pyv versions
+  else
+    echo "pyenv $@"
+    pyenv $@
+  fi
+}
+pyvcd() {
+  echo "cd ${PYENV_VERSIONS_PATH}"
+  cd ${PYENV_VERSIONS_PATH}
+}
+# https://github.com/pyenv/pyenv/blob/master/COMMANDS.md
+pyvinst() {
   usage $# "[VERSION:3.12]" "[MODE:shell|local|global]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -18,8 +37,7 @@ pyv() {
   local VERSION=${1:--l}
   local MODE=${2:-install}
 
-  echo "pyenv ${MODE} ${VERSION}"
-  pyenv ${MODE} ${VERSION}
+  pyv ${MODE} ${VERSION}
 }
 # https://github.com/pyenv/pyenv?tab=readme-ov-file#switch-between-python-versions
 # select just for current shell session
@@ -29,7 +47,7 @@ pyvs() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local VERSION=$1
-  pyv ${VERSION} shell
+  pyvinst ${VERSION} shell
 }
 # automatically select whenever you are in the current directory (or its subdirectories)
 pyvl() {
@@ -38,7 +56,7 @@ pyvl() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local VERSION=$1
-  pyv ${VERSION} local
+  pyvinst ${VERSION} local
 }
 # select globally for your user account
 pyvg() {
@@ -47,14 +65,14 @@ pyvg() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
   local VERSION=$1
-  pyv ${VERSION} global
+  pyvinst ${VERSION} global
 }
 
 pyvuninst() {
   usage $# "VERSION:3.12"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then 
-    pyv
+    pyvinst
     return 1; 
   fi
   
