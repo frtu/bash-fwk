@@ -194,6 +194,7 @@ inst_cmake() {
   inst cmake
 }
 
+alias inst_conda=inst_conda_m1
 # Already include python & package mgmt
 # ARM
 inst_conda_m1() {
@@ -212,7 +213,7 @@ inst_conda_m1() {
   enablelib dev-py-conda
 }
 # x86
-inst_conda() {
+inst_conda_x86() {
   brew install --cask anaconda
   enablelib dev-py-conda
 }
