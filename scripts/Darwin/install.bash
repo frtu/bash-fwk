@@ -206,7 +206,7 @@ inst_conda_m1() {
 
   ## Miniforge3
   curl -fsSLo Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-$(uname -m).sh"
-  bash Miniforge3.sh -b -p "${HOME}/conda"
+  bash Miniforge3.sh -u -b -p "${HOME}/conda"
   source "${HOME}/conda/etc/profile.d/conda.sh"
   conda activate
 
