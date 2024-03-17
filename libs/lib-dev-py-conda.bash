@@ -212,13 +212,22 @@ pcrepohuggingface() {
 pcrepoforge() {
   pcrepo conda-forge
 }
-pcinstforge() {
+pcinstrepoforge() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "Find doc at https://anaconda.org/conda-forge/$@"
-  pcinst -c conda-forge $@
+  echo "conda install -y -c conda-forge $@"
+  conda install -y -c conda-forge $@
+}
+pcinstrepopytorch() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  echo "conda install -y -c pytorch $@"
+  conda install -y -c pytorch $@
 }
 pcinstanaconda() {
   usage $# "PACKAGE"
@@ -226,32 +235,43 @@ pcinstanaconda() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   echo "Find doc at https://anaconda.org/anaconda/$@"
-  pcinst -c anaconda $@
+  echo "conda install -y -c anaconda $@"
+  conda install -y -c anaconda $@
 }
 
+pcinstjupyter() {
+  pcinst jupyter
+}
 pcinstdotenv() {
   pcinst python-dotenv
 }
-pcinstopencv() {
-	pcinst -c conda-forge opencv torchvision omegaconf invisible-watermark einops pytorch_lightning
+# https://pytorch.org/get-started/locally/
+pcinstpytorch() {
+  pcinstrepopytorch pytorch::pytorch torchvision torchaudio
 }
 pcinsttransformers() {
   pcinst transformers
 }
 pcinstplotly() {
-	pcinst -c https://conda.anaconda.org/plotly plotly
+  echo "conda install -y -c https://conda.anaconda.org/plotly plotly"
+	conda install -y -c https://conda.anaconda.org/plotly plotly
+}
+pcinstopencv() {
+  echo "conda install -y -c conda-forge opencv torchvision omegaconf invisible-watermark einops pytorch_lightning"
+	conda install -y -c conda-forge opencv torchvision omegaconf invisible-watermark einops pytorch_lightning
 }
 pcinstinfluxdb() {
-	pcinst -c mcrot influxdb
+  echo "conda install -y -c mcrot influxdb"
+	conda install -y -c mcrot influxdb
 }
 pcinstbasemap() {
   ppinst geos
-  pcinstforge proj4
-  pcinstforge basemap
-  pcinstforge basemap-data-hires
+  pcinstrepoforge proj4
+  pcinstrepoforge basemap
+  pcinstrepoforge basemap-data-hires
 }
 pcinstbasemap() {
-  pcinstforge proj4 cartopy
+  pcinstrepoforge proj4 cartopy
 }
 
 pcarchm1() {

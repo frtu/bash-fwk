@@ -124,6 +124,9 @@ ppconfreporm() {
   ppconfunset global.index-url 
 }
 
+ppinst_jupyter() {
+  ppinst jupyter
+}
 pprepoclean() {
   echo "pip cache purge"
   pip cache purge

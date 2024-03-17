@@ -5,7 +5,7 @@ export SUBL_HOME=/Applications/Sublime\ Text.app
 export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
 
 export INSTALL_TOOL=brew
-export UNINSTALL_TOOL="brew rmtree"
+export UNINSTALL_TOOL="brew uninstall"
 export CHECK_SUDO=false
 
 inst_zlib() {
@@ -251,4 +251,10 @@ inst_protobuf() {
 inst_ctags() {
   inst universal-ctags
   ctags --version
+}
+inst_jupyter() {
+  inst jupyter
+}
+inst_pytorch() {
+  inst torch torchvision torchaudio
 }
