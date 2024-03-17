@@ -1,5 +1,7 @@
+#!/bin/sh
 export REQ_FILENAME=requirements.txt
 export PYENV_VERSIONS_PATH=~/.pyenv/versions/
+export PYTHON_SCRIPT_LOCAL=$LOCAL_SCRIPTS_FOLDER/help-python.bash
 
 # https://stackoverflow.com/questions/122327/how-do-i-find-the-location-of-my-python-site-packages-directory
 py() {
@@ -8,6 +10,9 @@ py() {
   which python
   echo "================="
   python -m site
+}
+pyalias3() {
+  scriptappend "${PYTHON_SCRIPT_LOCAL}" "alias python=python3"
 }
 
 pyv() {

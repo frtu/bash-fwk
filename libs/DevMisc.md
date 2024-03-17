@@ -19,6 +19,7 @@ For M1 :
 ### Base commands
 
 * Print python version, location and diverse info : ```py```
+* Create alias for python3 -> python : ```pyalias3```
 
 ### pyenv
 
