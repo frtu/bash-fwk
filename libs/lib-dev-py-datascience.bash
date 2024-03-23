@@ -1,4 +1,12 @@
+import lib-dev-python
 import lib-dev-py-conda
+
+dstorch() {
+  pyrun "import torch;" \
+    "print('PyTorch version:', torch.__version__);" \
+    "print('Is MPS available:', torch.backends.mps.is_available());" \
+    "print('Is MPS activated in PyTorch:', torch.backends.mps.is_built());"
+}
 
 dsinstjupyter() {
   pcinst jupyter
