@@ -206,9 +206,6 @@ pcrepoclean() {
   conda clean --all --yes
 }
 
-pcrepohuggingface() {
-  pcrepo huggingface
-}
 pcrepoforge() {
   pcrepo conda-forge
 }
@@ -221,14 +218,6 @@ pcinstrepoforge() {
   echo "conda install -y -c conda-forge $@"
   conda install -y -c conda-forge $@
 }
-pcinstrepopytorch() {
-  usage $# "PACKAGE"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
-
-  echo "conda install -y -c pytorch $@"
-  conda install -y -c pytorch $@
-}
 pcinstanaconda() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -239,18 +228,8 @@ pcinstanaconda() {
   conda install -y -c anaconda $@
 }
 
-pcinstjupyter() {
-  pcinst jupyter
-}
 pcinstdotenv() {
   pcinst python-dotenv
-}
-# https://pytorch.org/get-started/locally/
-pcinstpytorch() {
-  pcinstrepopytorch pytorch::pytorch torchvision torchaudio
-}
-pcinsttransformers() {
-  pcinst transformers
 }
 pcinstplotly() {
   echo "conda install -y -c https://conda.anaconda.org/plotly plotly"

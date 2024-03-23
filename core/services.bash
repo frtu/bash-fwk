@@ -123,6 +123,9 @@ enablegit() {
   gconfsetname ${USER_NAME}
   gconfsetemail ${EMAIL}
 }
+enableds() {
+  enablelib dev-py-datascience
+}
 enableai() {
   enablelib ai-openai
   enablelib ai-ollama
