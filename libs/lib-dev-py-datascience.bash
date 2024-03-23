@@ -7,12 +7,22 @@ dstorch() {
     "print('Is MPS available:', torch.backends.mps.is_available());" \
     "print('Is MPS activated in PyTorch:', torch.backends.mps.is_built());"
 }
+dsjupyter() {
+  echo "jupyter lab"
+  jupyter lab
+}
 
+dsinstds() {
+  dsinstpytorch
+  dsinsttransformers
+  dsinstjupyter
+}
 dsinstjupyter() {
   pcinst jupyter
 }
 dsinsttransformers() {
   pcinst transformers
+  pcinst huggingface_hub
 }
 # https://pytorch.org/get-started/locally/
 dsinstpytorch() {
