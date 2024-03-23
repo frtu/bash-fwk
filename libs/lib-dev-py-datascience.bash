@@ -12,7 +12,7 @@ dsjupyter() {
   jupyter lab
 }
 
-dsinstds() {
+dsinst() {
   dsinstpytorch
   dsinsttransformers
   dsinstjupyter
