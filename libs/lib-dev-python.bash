@@ -10,13 +10,27 @@ py() {
   which python
   echo "================="
   python -m site
+  echo "================="
+  pypltfm
+}
+pypltfm() {
+  pyrun "import sys; import platform; import torch;" \
+    "print(f'Python {sys.version}');" \
+    "print(f'Python Platform: {platform.platform()}');"
+}
+pyrunv() {
+  usage $# "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  echo "> $@"
+  pyrun $@
 }
 pyrun() {
   usage $# "CMD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  echo "> $@"
   echo $@ | python
 }
 pyalias3() {

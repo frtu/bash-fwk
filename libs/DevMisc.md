@@ -19,7 +19,9 @@ For M1 :
 ### Base commands
 
 * Print python version, location and diverse info : ```py```
+* Print platform info : ```pypltfm```
 * Run a script to command line : ```pyrun "CMD"```
+* Run a script to command line (Verbose mode) : ```pyrunv "CMD"```
 * Create alias for python3 -> python : ```pyalias3```
 
 ### pyenv

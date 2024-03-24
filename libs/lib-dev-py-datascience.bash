@@ -2,10 +2,12 @@ import lib-dev-python
 import lib-dev-py-conda
 
 dstorch() {
+  pypltfm
   pyrun "import torch;" \
-    "print('PyTorch version:', torch.__version__);" \
-    "print('Is MPS available:', torch.backends.mps.is_available());" \
-    "print('Is MPS activated in PyTorch:', torch.backends.mps.is_built());"
+    "print(f'PyTorch Version: {torch.__version__}');" \
+    "print(f'Is CUDA available: {torch.cuda.is_available()}');" \
+    "print(f'Is MPS available: {torch.backends.mps.is_available()}');" \
+    "print(f'Is MPS activated in PyTorch: {torch.backends.mps.is_built()}');"
 }
 dsjupyter() {
   echo "jupyter lab"
