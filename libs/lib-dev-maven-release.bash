@@ -77,8 +77,8 @@ mvnreleasecd() {
   cd $MVN_RELEASE_REPO
 }
 mvnreleasesign() {
-  echo "mvn clean package gpg:sign $@"
-  mvn clean package gpg:sign $@
+  echo "mvnsk clean package gpg:sign $@"
+  mvnsk clean package gpg:sign $@
 }
 mvnreleasesigndeploy() {
   if [ ! -f "$1" ]; then

@@ -14,7 +14,7 @@ mvngenlocal() {
   mvngen $1 $2 ${GID} ${VERSION} -DarchetypeCatalog=local ${@:5}
 }
 mvngen() {
-  usage $# "ARCHETYPE:base|kotlin|kotlin-plt-stream|kotlin-spring-boot|spring-boot" "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
+  usage $# "ARCHETYPE:base|kotlin|kotlin-plt-stream|kotlin-spring-boot-3x|spring-boot" "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]" "[EXTRA_PARAM]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
