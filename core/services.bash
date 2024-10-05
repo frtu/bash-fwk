@@ -134,6 +134,11 @@ enableautogen() {
   enablelib ai-autogen
   echo "=> Autogen enabled with prefix 'ag'"
 }
+enablewkf() {
+  enablelib wkf-temporal
+  inst_temporal
+  echo "=> Temporal enabled with prefix 't'"
+}
 
 enablessh() {
   srv_activate ssh
