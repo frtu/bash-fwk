@@ -34,6 +34,12 @@ For M1 :
 * Shortcut for setting python only for **global** : ```pyvg "[VERSION:3.12]"```
 * Uninstall : ```pyvuninst "VERSION:3.12"```
 
+### penv
+
+* Create and activate env on local folder : ```penv```
+* Activate env on local folder : ```penvactivate```
+* AFTER activation can run [more](#base-commands-2) : ```ppinst "[PACKAGE]" "[VERSION]"```
+
 ### Installs
 
 * Install pyusb : ```ppinst_pyusb```

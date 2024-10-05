@@ -38,6 +38,15 @@ pyalias3() {
   scriptappend "${PYTHON_SCRIPT_LOCAL}" "alias pip=pip3"
 }
 
+penv() {
+  echo "python3 -m venv env"
+  python3 -m venv env
+  penvactivate
+}
+penvactivate() {
+  echo "source env/bin/activate"
+  source env/bin/activate
+}
 pyv() {
   usage $# "[CMD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

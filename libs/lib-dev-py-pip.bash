@@ -46,9 +46,13 @@ ppinst() {
           local INST_ARG="-e ."
       fi      
   fi
-  
-  echo "pip install ${INST_ARG}"
-  pip install ${INST_ARG}
+  local PP_INST="pip install"
+  if [ -n "$VERSION" ]
+    PP_INST="python -m ${PP_INST}"
+  fi
+
+  echo "${PP_INST} ${INST_ARG}"
+  ${PP_INST} ${INST_ARG}
 }
 ppinstpkg() {
   usage $# "PACKAGE" "[URL]"
