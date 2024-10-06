@@ -14,5 +14,7 @@ inst_temporal() {
   inst temporal
 }
 ppinst_temporal() {
-  ppinst temporal
+  penv
+  # ppinst temporalio pytest_asyncio
+  python -m pip install temporalio pytest_asyncio
 }

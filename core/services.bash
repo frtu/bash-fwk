@@ -134,10 +134,12 @@ enableautogen() {
   enablelib ai-autogen
   echo "=> Autogen enabled with prefix 'ag'"
 }
-enablewkf() {
+alias enablewkf=enabletemporalio
+enabletemporalio() {
   enablelib wkf-temporal
   inst_temporal
   echo "=> Temporal enabled with prefix 't'"
+  echo "= If you're on Python, run 'ppinst_temporal' ="
 }
 
 enablessh() {
