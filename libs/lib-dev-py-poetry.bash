@@ -144,10 +144,17 @@ ptenvactivate() {
       echo "Activating local env : [$PWD/.venv]" >&2
       ptenvactivate $PWD/.venv
   else
-    ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-    echo "== Select the env from the list ==" >&2
-    poetry env list --full-path
-    return 1; 
+    local ENV=$(poetry env info --path)
+    if [ -n "$ENV" ]
+      then
+        echo "Found env using \$(poetry env info --path)"
+        ptenvactivate ${ENV}
+      else
+        ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+        echo "== Select the env from the list ==" >&2
+        poetry env list --full-path
+        return 1; 
+    fi  
   fi
 }
 
@@ -184,14 +191,19 @@ ptrm() {
   pt remove $@
 }
 
+alias ptadddenv='ptadddotenv'
+alias ptadddconf='ptadddotenv'
+ptadddotenv() {
+  ptadd python-dotenv
+}
+ptaddopenai() {
+  ptadd openai
+}
 ptaddpg() {
   ptadd psycopg2-binary
 }
 ptaddarg() {
   ptadd argparse
-}
-ptadddotenv() {
-  ptadd python-dotenv
 }
 ptpylenium() {
   ptadd pylenium
