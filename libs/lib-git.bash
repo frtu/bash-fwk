@@ -96,7 +96,7 @@ gamend() {
 
   local MESSAGE=$1
   if [ -n "$MESSAGE" ]; then
-    local PARAMS="-m ${MESSAGE}"
+    local PARAMS="-m \"${MESSAGE}\""
   else
     local PARAMS="--no-edit"
   fi
