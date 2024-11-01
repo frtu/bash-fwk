@@ -26,9 +26,9 @@
 * Set git config : ```gconfset "CONF_PARAM_NAME" "CONF_PARAM_VALUE"```
 * Set git config user name : ```gconfsetname "NAME_PARAM_VALUE"```
 * Set git config email : ```gconfsetemail "EMAIL_PARAM_VALUE"```
-* Set git config pull rebase to true : ```gconfsetpullrebase "PULL_REBASE_PARAM_VALUE:true"```
 * Set git config adding http proxy : ```gconfsetproxy "PROXY_PARAM_VALUE"```
-
+* Set git config to push to origin : ```gconfsetpushsetupremote "PULL_REBASE_PARAM_VALUE:true"```
+* Set git config pull rebase to true : ```gconfsetpullrebase "PULL_REBASE_PARAM_VALUE:true"```
 
 ### Branch commands
 
