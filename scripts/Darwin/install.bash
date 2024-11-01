@@ -211,6 +211,7 @@ inst_conda_m1() {
   conda activate
 
   enablelib dev-py-conda
+  binappend ~/conda/bin/conda
 }
 # x86
 inst_conda_x86() {
@@ -225,6 +226,7 @@ upd_conda() {
 inst_python() {
   sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
   inst python
+  binappend /opt/homebrew/bin/
 }
 # https://realpython.com/intro-to-pyenv/
 inst_pyenv() {
