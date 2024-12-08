@@ -26,6 +26,18 @@ dckls() {
       docker images | grep ${CONTAINING_TEXT}
   fi
 }
+dckimgdigest() {
+  usage $# "[CONTAINING_TEXT]"
+
+  local CONTAINING_TEXT=$1
+  if [ -z "$CONTAINING_TEXT" ]; then
+      echo "List all existing docker image digests"
+      docker images --digests
+    else
+      echo "List all existing docker image digest containing ${CONTAINING_TEXT}"
+      docker images --digests | grep ${CONTAINING_TEXT}
+  fi
+}
 dckpullsk() {
   usage $# "IMAGE_NAME"
    # MIN NUM OF ARG

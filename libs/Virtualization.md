@@ -18,6 +18,7 @@
 * **Export** image to file : ```dckexport "IMAGE_NAME:TAG_NAME" "[FILENAME_TAR]"```
 * **Remove Image** from local repository : ```dckrmimage "IMAGE_NAME"```
 * **Force Remove** Image : ```dckrmimage "IMAGE_NAME"```
+* **List** all local images digest : ```dckimgdigest [CONTAINING_TEXT]```
 * **Clean up** local image from dependencies : ```dckimgclean```
 * **Clean up** all (from dep & if not used) : ```dckimgcleanall```
 * Clean up all till yesterday : ```dckimgcleanyesterday```
