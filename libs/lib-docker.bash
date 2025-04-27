@@ -898,6 +898,6 @@ dcmplogs() {
   dcmptpl logs $@
 }
 dcmptpl() {
-  echo "docker-compose $@"
-  docker-compose $@
+  echo "docker compose $@"
+  docker compose $@
 }
