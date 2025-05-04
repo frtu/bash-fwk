@@ -39,14 +39,25 @@ pyalias3() {
 }
 
 penv() {
-  echo "python3 -m venv env"
-  python3 -m venv env
+  usage $# "[ENV:.venv]"
+
+  local ENV=${1:-.venv}
+  echo "python3 -m venv ${ENV}"
+  python3 -m venv ${ENV}
   penvactivate
 }
 penvactivate() {
-  echo "source env/bin/activate"
-  source env/bin/activate
+  usage $# "[ENV:.venv]"
+
+  local ENV=${1:-.venv}
+  echo "source ${ENV}/bin/activate"
+  source ${ENV}/bin/activate
 }
+penvdeactivate() {
+  echo "deactivate"
+  deactivate
+}
+
 pyv() {
   usage $# "[CMD]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.

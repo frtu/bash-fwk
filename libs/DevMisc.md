@@ -36,8 +36,9 @@ For M1 :
 
 ### penv
 
-* Create and activate env on local folder : ```penv```
-* Activate env on local folder : ```penvactivate```
+* Create and activate env on local folder : ```penv "[ENV:.venv]"```
+* Activate env on local folder : ```penvactivate "[ENV:.venv]"```
+* Deactivate env : ```penvdeactivate``` or ```deactivate``` directly
 * AFTER activation can run [more](#base-commands-2) : ```ppinst "[PACKAGE]" "[VERSION]"```
 
 ### Installs
