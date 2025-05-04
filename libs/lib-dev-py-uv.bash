@@ -39,6 +39,18 @@ puuninst() {
   pu "python" "uninstall" $@
 }
 
+puenv() {
+  usage $# "[ENV]"
+
+  local ENV=$1
+  if [ -n "$ENV" ]
+    then
+      pu venv ${ENV}
+    else
+      pu venv
+  fi
+}
+
 pucreate() {
   usage $# "PROJECT_NAME:*_prj"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -62,4 +74,18 @@ purm() {
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   uv remove $@
+}
+
+puaddbase() {
+  puadddotenv
+  puaddrequests
+}
+puadddotenv() {
+  puadd python-dotenv
+}
+puaddrequests() {
+  puadd requests
+}
+puaddmcp() {
+  puadd "mcp[cli]" notion-client
 }
