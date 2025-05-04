@@ -1,3 +1,5 @@
+import lib-dev-python
+
 # https://python-poetry.org/docs/#installation
 inst_poetry() {
   echo "curl -sSL https://install.python-poetry.org | python3 -"
