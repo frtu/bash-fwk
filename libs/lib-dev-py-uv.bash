@@ -61,19 +61,78 @@ pucreate() {
 
   cd ${PROJECT_NAME}
 }
-puadd() {
+
+alias puimport=pudepimport
+alias puadd=pudepadd
+alias purm=pudeprm
+pudepimport() {
+  if [[ ! -f "${REQ_FILENAME}" ]]; then 
+    echo "[WARN] Please sure file '${PWD}/${REQ_FILENAME}' exist !" >&2
+    return 1
+  fi
+
+  pu "pip install -r requirements.txt"
+}
+pudepadd() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   pu add $@
 }
-purm() {
+pudeprm() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  uv remove $@
+  pu remove $@
+}
+pudepupg() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local PACKAGE=$1
+  puadd --dev ${PACKAGE} --upgrade-package ${PACKAGE} ${@:2}
+}
+
+pulint() {
+  pucheck --fix
+}
+puformat() {
+  puruff format $@
+}
+pucheck() {
+  puruff check $@
+}
+puruff() {
+  usage $# "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CMD=$1
+  purunfrozen ruff ${CMD} . ${@:2}
+}
+putypecheck() {
+  purunfrozen pyright $@
+}
+putest() {
+  purunfrozen pytest $@
+}
+purunfrozen() {
+  usage $# "MODULE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local MODULE=$1
+  pu "run --frozen" ${MODULE} ${@:2}
+}
+
+purun() {
+  usage $# "[MODULE]"
+
+  local MODULE=$1
+  pu "run --frozen" ${MODULE} ${@:2}
 }
 
 puaddbase() {
@@ -85,7 +144,4 @@ puadddotenv() {
 }
 puaddrequests() {
   puadd requests
-}
-puaddmcp() {
-  puadd "mcp[cli]" notion-client
 }
