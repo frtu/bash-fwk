@@ -51,6 +51,52 @@ For M1 :
 
 * Install pytorch M1 : ```ppinst_pytorch_m1```
 
+## Library 'dev-py-uv'
+
+* Usage ```import lib-dev-py-uv```
+* Prefix ```pu```
+
+### Install
+
+* Install conda : ```inst_uv```
+* Uninstall conda : ```uninst_uv```
+
+### Admin commands
+
+* Get **uv** version : ```pu```
+* Update uv : ```puupd```
+* List all installed python env : ```puls```
+* Install python version : ```puinst "[VERSION:latest]"```
+* Uninstall : ```puuninst```
+
+### Create isolated env
+
+* List all isolated environments : ```puenv```
+* Create & init environment : ```pucreate "PROJECT_NAME:*_prj"```
+
+### Base commands
+
+* Lint : ```pulint```
+* Format : ```puformat```
+* Check : ```pucheck```
+* Type check : ```putypecheck```
+* Test : ```putest```
+
+### Libs
+
+#### Base
+
+* Add base libs (below) : ```puaddbase```
+* Add dotenv libs : ```puadddotenv```
+* Add requests libs : ```puaddrequests```
+
+#### More
+
+* Add MCP libs : ```puaddmcp```
+
+### Dependencies
+
+* `pudep*`
 
 ## Library 'dev-py-conda'
 

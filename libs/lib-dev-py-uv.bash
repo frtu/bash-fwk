@@ -1,5 +1,7 @@
 import lib-dev-python
 
+export MCP_TOGGLE=mcp.txt
+
 # https://docs.astral.sh/uv/getting-started/features/
 # https://astral.sh/blog/uv
 inst_uv() {
@@ -100,12 +102,12 @@ pulint() {
   pucheck --fix
 }
 puformat() {
-  puruff format $@
+  purufftpl format $@
 }
 pucheck() {
-  puruff check $@
+  purufftpl check $@
 }
-puruff() {
+purufftpl() {
   usage $# "CMD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
@@ -119,6 +121,7 @@ putypecheck() {
 putest() {
   purunfrozen pytest $@
 }
+
 purunfrozen() {
   usage $# "MODULE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -127,14 +130,14 @@ purunfrozen() {
   local MODULE=$1
   pu "run --frozen" ${MODULE} ${@:2}
 }
-
 purun() {
   usage $# "[MODULE]"
 
   local MODULE=$1
-  pu "run --frozen" ${MODULE} ${@:2}
+  pu "run" ${MODULE} ${@:2}
 }
 
+alias pumcp=puaddmcp
 puaddbase() {
   puadddotenv
   puaddrequests
@@ -144,4 +147,9 @@ puadddotenv() {
 }
 puaddrequests() {
   puadd requests
+}
+puaddmcp() {
+  puadd "mcp[cli]"
+
+  echo "true" > ${MCP_TOGGLE}
 }
