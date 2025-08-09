@@ -12,13 +12,36 @@ inst_brew() {
   brew install brew-cask
   brew tap beeftornado/rmtree
 }
-inst_update() {
-  brew upgrade
-  brew cask upgrade
-}
 
 br() {
   brew --version
+}
+brupgall() {
+  brew update
+  brupg
+  brcupg
+}
+brupg() {
+  usage $# "[PACKAGE_NAME]"
+
+  echo "brew upgrade $@"
+  brew upgrade $@
+}
+
+brcls() {
+  echo "brew list --cask"
+  brew list --cask
+}
+brcupg() {
+  usage $# "[PACKAGE_NAME]"
+  
+  if [ -n "$1" ]
+    then
+      echo "brew upgrade --cask $@"
+      brew upgrade --cask $@
+    else
+      brcupg "$(brew list --cask)"
+  fi
 }
 brpath() {
   usage $# "[PACKAGE_NAME]"
