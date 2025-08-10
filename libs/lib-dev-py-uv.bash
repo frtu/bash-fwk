@@ -26,10 +26,11 @@ pu() {
     uv $@
   fi
 }
-puupd() {
+puupg() {
   pu "self" "update" $@
 }
 
+# https://docs.astral.sh/uv/guides/install-python/
 puls() {
   pu "python" "list" $@
 }
@@ -54,14 +55,18 @@ puenv() {
 }
 
 pucreate() {
-  usage $# "PROJECT_NAME:*_prj"
+  usage $# "[PROJECT_NAME:*_prj]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local PROJECT_NAME="$1_prj"
+  if [[ -n "$1" ]]; then
+    local PROJECT_NAME="$1_prj"
+  fi
   pu "init" ${PROJECT_NAME} ${@:2}
 
-  cd ${PROJECT_NAME}
+  if [[ -n "${PROJECT_NAME}" ]]; then
+    cd ${PROJECT_NAME}
+  fi
 }
 
 alias puimport=pudepimport
@@ -75,12 +80,26 @@ pudepimport() {
 
   pu "pip install -r requirements.txt"
 }
-pudepadd() {
-  usage $# "PACKAGE"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  pu add $@
+pudepadd() {
+  usage $# "[PACKAGE]"
+
+  local PACKAGE=$1
+  if [ -n "$PACKAGE" ]
+    then
+      local INST_ARG="${PACKAGE}"
+    else
+      if [[ -f "${REQ_FILENAME}" ]] 
+        then 
+          local INST_ARG="-r ${REQ_FILENAME}"
+        else
+          echo "[WARN] Please pass an argument PACKAGE or create a local file : ${REQ_FILENAME}" >&2
+          return 1
+      fi      
+  fi
+
+  echo "pu add ${INST_ARG}"
+  pu add ${INST_ARG}
 }
 pudeprm() {
   usage $# "PACKAGE"
@@ -148,6 +167,10 @@ puadddotenv() {
 puaddrequests() {
   puadd requests
 }
+puaddtest() {
+  puadd pytest --dev
+}
+
 puaddmcp() {
   puadd "mcp[cli]"
 

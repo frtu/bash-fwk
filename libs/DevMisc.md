@@ -64,28 +64,33 @@ For M1 :
 ### Admin commands
 
 * Get **uv** version : ```pu```
-* Update uv : ```puupd```
+* Upgrade uv : ```puupg```
 * List all installed python env : ```puls```
-* Install python version : ```puinst "[VERSION:latest]"```
+* Install [python version](https://docs.astral.sh/uv/guides/install-python/#installing-a-specific-version) : ```puinst "[VERSION:latest]"```
 * Uninstall : ```puuninst```
 
 ### Create isolated env
 
 * List all isolated environments : ```puenv```
-* Create & init environment : ```pucreate "PROJECT_NAME:*_prj"```
+* Create & init environment (if no name passed, use local folder) : ```pucreate "[PROJECT_NAME:*_prj]"```
 
 ### Base commands
 
+* Test : ```putest```
 * Lint : ```pulint```
 * Format : ```puformat```
 * Check : ```pucheck```
 * Type check : ```putypecheck```
-* Test : ```putest```
 
 ### Libs
 
+* Add a new package (if no param, use requirements.txt) : ```pudepadd "[PACKAGE]"```
+* Upgrade a package : ```pudepupg "PACKAGE"```
+* Remove a package : ```pudeprm "PACKAGE"```
+
 #### Base
 
+* Add pytest : ```puaddtest```
 * Add base libs (below) : ```puaddbase```
 * Add dotenv libs : ```puadddotenv```
 * Add requests libs : ```puaddrequests```
