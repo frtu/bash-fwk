@@ -14,7 +14,8 @@ gdls() {
   gdtpl "tasks" $@
 }
 gdi() {
-  gdtpl "init" $@
+  echo "gradle init $@"
+  gradle init $@
 }
 gdc() {
   gdtpl "clean" $@
