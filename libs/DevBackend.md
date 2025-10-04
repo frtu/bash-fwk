@@ -177,6 +177,8 @@ Install packages :
 
 ### Package management
 
+* Build Gradle `shadowJar` : ```gds```
+* Build Gradle `installDist` : ```gdd```
 * Get gradle **dependencies** : ```gddep```
 * Get dependencies for **compile**, **test**, : ```gddep*```
 * Generate **text report** (```./build/reports/project/dependencies.txt```) : ```gdreport```

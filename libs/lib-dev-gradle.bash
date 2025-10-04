@@ -22,6 +22,14 @@ gdc() {
 gdb() {
   gdtpl "build" $@
 }
+
+gds() {
+  gdtpl "clean shadowJar" $@
+}
+gdd() {
+  gdtpl "clean installDist" $@
+}
+
 gdbclean() {
   gdc $@
   gdb $@
