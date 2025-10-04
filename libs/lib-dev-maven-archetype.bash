@@ -26,20 +26,6 @@ mvngen() {
   mvngentpl "com.github.frtu.archetype" "${ARCHETYPE}-project-archetype" "${ARCHETYPE_VERSION}" ${OPTIONAL_ARGS}
 }
 
-# https://nightlies.apache.org/flink/flink-docs-release-2.1/docs/dev/configuration/overview/
-mvngenflink() {
-  usage $# "FLINK_ARCHETYPE_VERSION" "AID" "GID" "[VERSION:0.0.1-SNAPSHOT]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then 
-    echo "= Check version at https://search.maven.org/artifact/org.apache.flink/flink-quickstart-java =" >&2 
-    return 1
-  fi
-
-  local FLINK_ARCHETYPE_VERSION=${1:-2.1.0}
-  mvngentpl "org.apache.flink" "flink-quickstart-java" "${FLINK_ARCHETYPE_VERSION}" ${@:2}
-
-  echo "= See follow up tutorial at https://nightlies.apache.org/flink/flink-docs-release-2.1/docs/dev/configuration/overview/"
-}
 # https://github.com/openjdk/jmh
 mvngenbenchmark() {
   # https://search.maven.org/artifact/org.openjdk.jmh/jmh-kotlin-benchmark-archetype
