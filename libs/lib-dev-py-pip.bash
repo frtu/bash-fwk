@@ -47,7 +47,7 @@ ppinst() {
       fi      
   fi
   local PP_INST="pip install"
-  if [ -n "$VERSION" ]
+  if [ -n "$VERSION" ] ; then
     PP_INST="python -m ${PP_INST}"
   fi
 
