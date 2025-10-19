@@ -191,6 +191,10 @@ enablepyconda() {
   binappend ${CONDA_ROOT_FOLDER}/bin
   enablelib dev-py-conda "export CONDA_ROOT_FOLDER=${CONDA_ROOT_FOLDER}"
 }
+enablecontext() {
+  enablelib ai-context
+  spinst
+}
 
 # Dev tools
 enablesbt() {
