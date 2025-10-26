@@ -80,13 +80,14 @@ For M1 :
 
 ### Libs
 
+* List local dep : ```pudep```
 * Add a new package (if no param, use requirements.txt) : ```pudepadd "[PACKAGE]"```
 * Upgrade a package : ```pudepupg "PACKAGE"```
 * Remove a package : ```pudeprm "PACKAGE"```
 
 ### Base commands
 
-* Run : ```purun```
+* Run : ```purun "[MODULE:main.py]"```
 * Test : ```putest```
 * Lint : ```pulint```
 * Format : ```puformat```

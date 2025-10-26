@@ -1,5 +1,6 @@
 import lib-dev-python
 
+export MAIN_APP=main.py
 export MCP_TOGGLE=mcp.txt
 
 # https://docs.astral.sh/uv/getting-started/features/
@@ -7,6 +8,9 @@ export MCP_TOGGLE=mcp.txt
 inst_uv() {
   echo "curl -LsSf https://astral.sh/uv/install.sh | sh"
   curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  scriptpersist "env-uv" "eval \"\$(uv generate-shell-completion bash)\""
+  put update-shell
 }
 uninst_uv() {
   uv cache clean
@@ -81,6 +85,7 @@ puyuninst() {
 }
 
 # DEP
+alias pudep="pu tree"
 alias puimport=pudepimport
 alias puadd=pudepadd
 alias purm=pudeprm
@@ -187,10 +192,17 @@ purunfrozen() {
   pu "run --frozen" ${MODULE} ${@:2}
 }
 purun() {
-  usage $# "[MODULE]"
+  usage $# "[MODULE:main.py]"
 
   local MODULE=$1
-  pu "run" ${MODULE} ${@:2}
+  if [ -n "$MODULE" ] ; then
+      local MODULE_ARG="${MODULE}"
+    else
+      if [[ -f "${MAIN_APP}" ]] ; then 
+          local MODULE_ARG="${MAIN_APP}"
+      fi      
+  fi
+  pu "run" ${MODULE_ARG} ${@:2}
 }
 
 alias pumcp=puaddmcp
