@@ -30,18 +30,6 @@ puupg() {
   pu "self" "update" $@
 }
 
-# https://docs.astral.sh/uv/guides/install-python/
-puls() {
-  pu "python" "list" $@
-}
-puinst() {
-  usage $# "[VERSION:latest]"
-  pu "python" "install" $@
-}
-puuninst() {
-  pu "python" "uninstall" $@
-}
-
 # ENV
 puenv() {
   usage $# "[ENV]"
@@ -53,6 +41,14 @@ puenv() {
     else
       pu venv
   fi
+}
+puyversion() {
+  usage $# "VERSION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+  
+  local VERSION=$1
+  puenv --python ${VERSION}
 }
 alias pui=pucreate
 pucreate() {
@@ -70,26 +66,18 @@ pucreate() {
   fi
 }
 
-put() {
-  usage $# "[CMD]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OpuIONAL.
-  if [[ -z "$1" ]]; then 
-    put list
-  else
-    pu tool $@
-  fi  
+# PYTHON
+# https://docs.astral.sh/uv/guides/install-python/
+# https://docs.astral.sh/uv/concepts/python-versions/#viewing-available-python-versions
+puyls() {
+  pu "python" "list" $@
 }
-putinst() {
-  usage $# "PACKAGE"
-  put install $@
+puyinst() {
+  usage $# "[VERSION:latest]"
+  pu "python" "install" $@
 }
-putupg() {
-  usage $# "PACKAGE"
-  put upgrade $@
-}
-putuninst() {
-  usage $# "PACKAGE"
-  put uninstall $@
+puyuninst() {
+  pu "python" "uninstall" $@
 }
 
 # DEP
@@ -140,6 +128,32 @@ pudepupg() {
   puadd --dev ${PACKAGE} --upgrade-package ${PACKAGE} ${@:2}
 }
 
+# TOOLS
+alias putls="put list"
+put() {
+  usage $# "[CMD]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OpuIONAL.
+  if [[ -z "$1" ]]; then 
+    echo "= UV TOOL Folder ="
+    put dir
+  else
+    pu tool $@
+  fi  
+}
+putinst() {
+  usage $# "PACKAGE"
+  put install $@
+}
+putupg() {
+  usage $# "PACKAGE"
+  put upgrade $@
+}
+putuninst() {
+  usage $# "PACKAGE"
+  put uninstall $@
+}
+
+# CMD
 pulint() {
   pucheck --fix
 }

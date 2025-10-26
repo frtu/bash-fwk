@@ -65,14 +65,33 @@ For M1 :
 
 * Get **uv** version : ```pu```
 * Upgrade uv : ```puupg```
-* List all installed python env : ```puls```
-* Install [python version](https://docs.astral.sh/uv/guides/install-python/#installing-a-specific-version) : ```puinst "[VERSION:latest]"```
-* Uninstall : ```puuninst```
 
 ### Create isolated env
 
 * List all isolated environments : ```puenv```
-* Create & init environment (if no name passed, use local folder) : ```pucreate "[PROJECT_NAME:*_prj]"```
+* Create & init environment (if no name passed, use local folder) : ```pui "[PROJECT_NAME:*_prj]"``` OR ```pucreate "[PROJECT_NAME:*_prj]"```
+* Fix python version into env : ```puyversion "VERSION"```
+
+### Python version
+
+* List all installed python env : ```puyls```
+* Install [python version](https://docs.astral.sh/uv/guides/install-python/#installing-a-specific-version) : ```puyinst "[VERSION:latest]"```
+* Uninstall : ```puyuninst```
+
+### Libs
+
+* Add a new package (if no param, use requirements.txt) : ```pudepadd "[PACKAGE]"```
+* Upgrade a package : ```pudepupg "PACKAGE"```
+* Remove a package : ```pudeprm "PACKAGE"```
+
+### Base commands
+
+* Run : ```purun```
+* Test : ```putest```
+* Lint : ```pulint```
+* Format : ```puformat```
+* Check : ```pucheck```
+* Type check : ```putypecheck```
 
 ### Tool commands
 
@@ -80,20 +99,6 @@ For M1 :
 * Install tools : ```putinst "PACKAGE"```
 * Upgrade tools : ```putupg "PACKAGE"```
 * Uninstall tools : ```putuninst "PACKAGE"```
-
-### Base commands
-
-* Test : ```putest```
-* Lint : ```pulint```
-* Format : ```puformat```
-* Check : ```pucheck```
-* Type check : ```putypecheck```
-
-### Libs
-
-* Add a new package (if no param, use requirements.txt) : ```pudepadd "[PACKAGE]"```
-* Upgrade a package : ```pudepupg "PACKAGE"```
-* Remove a package : ```pudeprm "PACKAGE"```
 
 #### Base
 
