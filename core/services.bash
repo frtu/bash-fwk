@@ -254,7 +254,21 @@ envcreate() {
   local ENV_NAME=$1
   local ENV_VALUE=$2
 
-  scriptpersist "env-${ENV_NAME}" "export ${ENV_NAME}=${ENV_VALUE}"
+  scriptpersistverbose "env-${ENV_NAME}" "export ${ENV_NAME}=${ENV_VALUE}"
+}
+scriptpersistverbose() {
+  usage $# "SCRIPT_NAME" "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SCRIPT_NAME=$1
+  local CMD=${@:2}
+
+  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
+
+  echo "Create new SCRIPT file : ${OUTPUT_FILENAME}"
+  echo "" > ${OUTPUT_FILENAME}
+  scriptappendverbose "${OUTPUT_FILENAME}" "${CMD}"
 }
 scriptpersist() {
   usage $# "SCRIPT_NAME" "CMD"
@@ -270,6 +284,17 @@ scriptpersist() {
   echo "" > ${OUTPUT_FILENAME}
   scriptappend "${OUTPUT_FILENAME}" "${CMD}"
 }
+scriptappendverbose() {
+  usage $# "OUTPUT_FILENAME" "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local OUTPUT_FILENAME=$1
+  local ADDITIONAL_SETTINGS=${@:2}
+  echo "echo \"${ADDITIONAL_SETTINGS}\"" >> $OUTPUT_FILENAME
+  
+  scriptappend $@
+}
 scriptappend() {
   usage $# "OUTPUT_FILENAME" "CMD"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -279,7 +304,6 @@ scriptappend() {
   local ADDITIONAL_SETTINGS=${@:2}
 
   echo "Enabling service at ${OUTPUT_FILENAME}"
-  echo "echo \"${ADDITIONAL_SETTINGS}\"" >> $OUTPUT_FILENAME
   echo "${ADDITIONAL_SETTINGS}" >> $OUTPUT_FILENAME
 
   source $OUTPUT_FILENAME

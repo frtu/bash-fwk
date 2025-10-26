@@ -22,7 +22,7 @@ oaurl() {
 
   local OPENAI_API_BASE=${1:-http://127.0.0.1:5000}
   scriptappend "${ENV_OPENAI_SCRIPT}" "export OPENAI_API_BASE=${OPENAI_API_BASE}"
-  scriptappend "${ENV_OPENAI_SCRIPT}" "export BACKEND_TYPE=webui"
+  scriptappendverbose "${ENV_OPENAI_SCRIPT}" "export BACKEND_TYPE=webui"
 }
 oaurlrm() {
   unset OPENAI_API_BASE

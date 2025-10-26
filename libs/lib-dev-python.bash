@@ -34,8 +34,8 @@ pyrun() {
   echo $@ | python
 }
 pyalias3() {
-  scriptappend "${PYTHON_SCRIPT_LOCAL}" "alias python=python3"
-  scriptappend "${PYTHON_SCRIPT_LOCAL}" "alias pip=pip3"
+  scriptappendverbose "${PYTHON_SCRIPT_LOCAL}" "alias python=python3"
+  scriptappendverbose "${PYTHON_SCRIPT_LOCAL}" "alias pip=pip3"
 }
 
 penv() {
