@@ -1,7 +1,10 @@
 import lib-dev-py-uv
 
 spinst() {
-  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+  putinst specify-cli $@ --from git+https://github.com/github/spec-kit.git
+}
+spupd() {
+  spinst --force
 }
 
 spi() {
@@ -10,6 +13,13 @@ spi() {
   local PROJECT_NAME=${1:-.}
   sp init ${PROJECT_NAME} ${@:2}
 }
+spisk() {
+  usage $# "[PROJECT_NAME]"
+  
+  local PROJECT_NAME=${1:-.}
+  sp init ${PROJECT_NAME} --ignore-agent-tools ${@:2}
+}
+
 spcheck() {
   sp check $@
 }
