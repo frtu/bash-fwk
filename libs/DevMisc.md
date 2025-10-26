@@ -74,6 +74,13 @@ For M1 :
 * List all isolated environments : ```puenv```
 * Create & init environment (if no name passed, use local folder) : ```pucreate "[PROJECT_NAME:*_prj]"```
 
+### Tool commands
+
+* List tools : ```put```
+* Install tools : ```putinst "PACKAGE"```
+* Upgrade tools : ```putupg "PACKAGE"```
+* Uninstall tools : ```putuninst "PACKAGE"```
+
 ### Base commands
 
 * Test : ```putest```

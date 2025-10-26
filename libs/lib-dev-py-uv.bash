@@ -69,6 +69,28 @@ pucreate() {
   fi
 }
 
+put() {
+  usage $# "[CMD]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OpuIONAL.
+  if [[ -z "$1" ]]; then 
+    put list
+  else
+    pu tool $@
+  fi  
+}
+putinst() {
+  usage $# "PACKAGE"
+  put install $@
+}
+putupg() {
+  usage $# "PACKAGE"
+  put upgrade $@
+}
+putuninst() {
+  usage $# "PACKAGE"
+  put uninstall $@
+}
+
 alias puimport=pudepimport
 alias puadd=pudepadd
 alias purm=pudeprm
