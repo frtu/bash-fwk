@@ -44,7 +44,7 @@ penv() {
   local ENV=${1:-.venv}
   echo "python3 -m venv ${ENV}"
   python3 -m venv ${ENV}
-  penvactivate
+  penvactivate ${ENV} ${@:2}
 }
 penvactivate() {
   usage $# "[ENV:.venv]"

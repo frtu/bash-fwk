@@ -43,8 +43,9 @@ puenv() {
     then
       pu venv ${ENV} ${@:2}
     else
-      pu venv
+      pu venv --clear
   fi
+  penvactivate ${ENV} ${@:2}
 }
 puyversion() {
   usage $# "VERSION"
@@ -94,8 +95,7 @@ pudepimport() {
     echo "[WARN] Please sure file '${PWD}/${REQ_FILENAME}' exist !" >&2
     return 1
   fi
-
-  pu "pip install -r requirements.txt"
+  pu "add -r requirements.txt"
 }
 
 # https://docs.astral.sh/uv/concepts/projects/dependencies/#adding-dependencies
