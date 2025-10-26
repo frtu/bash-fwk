@@ -42,20 +42,21 @@ puuninst() {
   pu "python" "uninstall" $@
 }
 
+# ENV
 puenv() {
   usage $# "[ENV]"
 
   local ENV=$1
   if [ -n "$ENV" ]
     then
-      pu venv ${ENV}
+      pu venv ${ENV} ${@:2}
     else
       pu venv
   fi
 }
-
+alias pui=pucreate
 pucreate() {
-  usage $# "[PROJECT_NAME:*_prj]"
+  usage $# "[PROJECT_NAME:*_prj]" "[TYPE:--lib]" "[SUB:--no-workspace]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
@@ -91,6 +92,7 @@ putuninst() {
   put uninstall $@
 }
 
+# DEP
 alias puimport=pudepimport
 alias puadd=pudepadd
 alias purm=pudeprm
@@ -103,6 +105,7 @@ pudepimport() {
   pu "pip install -r requirements.txt"
 }
 
+# https://docs.astral.sh/uv/concepts/projects/dependencies/#adding-dependencies
 pudepadd() {
   usage $# "[PACKAGE]"
 
@@ -119,8 +122,6 @@ pudepadd() {
           return 1
       fi      
   fi
-
-  echo "pu add ${INST_ARG}"
   pu add ${INST_ARG}
 }
 pudeprm() {
@@ -188,6 +189,9 @@ puadddotenv() {
 }
 puaddrequests() {
   puadd requests
+}
+puaddfastapi() {
+  puadd fastapi
 }
 puaddtest() {
   puadd pytest --dev
