@@ -38,6 +38,7 @@ For M1 :
 
 * Create and activate env on local folder : ```penv "[ENV:.venv]"```
 * Activate env on local folder : ```penvactivate "[ENV:.venv]"```
+* Force install pip from venv : ```penvpip```
 * Deactivate env : ```penvdeactivate``` or ```deactivate``` directly
 * Clean up all env under current direction ```penvclean```
 * AFTER activation can run [more](#base-commands-2) : ```ppinst "[PACKAGE]" "[VERSION]"```

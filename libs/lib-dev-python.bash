@@ -46,6 +46,10 @@ penv() {
   python3 -m venv ${ENV}
   penvactivate ${ENV} ${@:2}
 }
+penvpip() {
+  python3 -m pip install --upgrade pip
+  python3 -m pip --version
+}
 penvactivate() {
   usage $# "[ENV:.venv]"
 
