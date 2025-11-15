@@ -57,6 +57,10 @@ penvdeactivate() {
   echo "deactivate"
   deactivate
 }
+penvclean() {
+  echo "== Clean all '.venv' folder under $PWD =="
+  find . -type d -name ".venv" -exec echo {} \; -exec rm -Rf {} \;
+}
 
 pyv() {
   usage $# "[CMD]"
