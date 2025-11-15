@@ -9,11 +9,13 @@ ppinst_vllm() {
 }
 
 pvllmrun() {
-  usage $# "MODEL:TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  usage $# "[MODEL:TinyLlama/TinyLlama-1.1B-Chat-v1.0]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local MODEL=$1
+  local MODEL=${1:-TinyLlama/TinyLlama-1.1B-Chat-v1.0}
+  
+  echo "Run VLLM API server with model : ${MODEL}"
   VLLM_USE_CUDA=0 python -m vllm.entrypoints.api_server \
     --model "${MODEL}" \
     --tensor-parallel-size 1 \
