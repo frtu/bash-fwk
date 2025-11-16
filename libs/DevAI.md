@@ -5,6 +5,32 @@
 
 # Tech libraries
 
+## Library 'ai-vllm'
+
+Starting [vLLM](https://docs.vllm.ai/en/stable/) : efficient LLM serve
+
+* Usage ```import lib-ai-vllm```
+* Enable using ```enableaivllm```
+* Prefix ```av```
+
+### Base commands
+
+* Install vLLM (fix python version, torch & vllm) : ```avcreate```
+* Run service : ```avrun "[MODEL_NAME:TinyLlama/TinyLlama-1.1B-Chat-v1.0]"```
+* Install to local project : ```ppinst_vllm```
+
+### Model commands
+
+* Going to Huggingface model folder : ```avmcd```
+* List all models : ```avmls```
+* Remove specific model : ```avmrm "MODEL_NAME"```
+
+## Library 'ai-ollama' & 'ai-openai'
+
+* Usage ```import lib-ai-ollama```
+* Enable using ```enableai```
+* Prefix ```ol```
+
 ## Library 'ai-autogen'
 
 * Usage ```import lib-ai-autogen```

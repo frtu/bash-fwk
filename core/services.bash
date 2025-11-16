@@ -130,6 +130,10 @@ enableai() {
   enablelib ai-openai
   enablelib ai-ollama
 }
+enableaivllm() {
+  enablelib ai-vllm
+  echo "=> vLLM enabled with prefix 'av'"
+}
 enableautogen() {
   enablelib ai-autogen
   echo "=> Autogen enabled with prefix 'ag'"
