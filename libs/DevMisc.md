@@ -72,18 +72,21 @@ For M1 :
 
 ### Create isolated env
 
-* List all isolated environments : ```puenv```
-* Create & init environment (if no name passed, use local folder) : ```pui "[PROJECT_NAME:*_prj]"``` OR ```pucreate "[PROJECT_NAME:*_prj]"```
-* Fix python version into env : ```puyversion "VERSION"```
+* Create isolated environments : ```puenv "[ENV:.venv]"```
+* Init environment (if no name passed, use local folder) `pui` or `pucreate` : ```pui "[PROJECT_NAME:*_prj]" "[TYPE:--lib]" "[SUB:--no-workspace]"```
+* Reset current env & cache : ```puenvreset```
+* Force remove all current env : ```puenvrm "[ENV:.venv]"```
 
 ### Python version
 
 * List all installed python env : ```puyls```
+* Fix python version into env : ```puyversion "PYTHON_VERSION"```
 * Install [python version](https://docs.astral.sh/uv/guides/install-python/#installing-a-specific-version) : ```puyinst "[VERSION:latest]"```
 * Uninstall : ```puyuninst```
 
 ### Libs
 
+* Install package with uv pip (if requirements.txt exist, use it if no arg passed)  : ```puinst "[PACKAGE==VERSION]"```
 * List local dep : ```pudep```
 * Add a new package (if no param, use requirements.txt) : ```pudepadd "[PACKAGE]"```
 * Upgrade a package : ```pudepupg "PACKAGE"```

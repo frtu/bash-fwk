@@ -1,3 +1,4 @@
+#!/bin/sh
 import lib-dev-python
 
 export MAIN_APP=main.py
@@ -36,24 +37,31 @@ puupg() {
 
 # ENV
 puenv() {
-  usage $# "[ENV]"
+  usage $# "[ENV:.venv]"
 
-  local ENV=$1
-  if [ -n "$ENV" ]
-    then
-      pu venv ${ENV} ${@:2}
-    else
-      pu venv --clear
+  local ENV=${1:-.venv}
+  pu venv ${ENV} ${@:2}
+  penvactivate
+}
+puenvreset() {
+  pu cache clean
+}
+puenvrm() {
+  usage $# "[ENV:.venv]"
+  penvdeactivate
+
+  local ENV=${1:-.venv}
+  if [ -n "$ENV" ] ; then
+    rm -rf ${ENV} ${@:2}
   fi
-  penvactivate ${ENV} ${@:2}
 }
 puyversion() {
-  usage $# "VERSION"
+  usage $# "PYTHON_VERSION"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
   
-  local VERSION=$1
-  puenv --python ${VERSION}
+  local PYTHON_VERSION=$1
+  puenv --python ${PYTHON_VERSION} ${@:2}
 }
 alias pui=pucreate
 pucreate() {
@@ -96,6 +104,28 @@ pudepimport() {
     return 1
   fi
   pu "add -r requirements.txt"
+}
+
+puinst() {
+  usage $# "[PACKAGE==VERSION]"
+
+  local PACKAGE=$1
+  if [ -n "$PACKAGE" ]
+    then
+      local INST_ARG="${PACKAGE}"
+    else
+      if [[ -f "${REQ_FILENAME}" ]] 
+        then 
+          local INST_ARG="-r ${REQ_FILENAME}"
+        else
+          echo "[WARN] Please pass an argument PACKAGE or create a local file : ${REQ_FILENAME}" >&2
+          local INST_ARG="-e ."
+      fi      
+  fi
+  
+  local PP_INST="uv pip install"
+  echo "${PP_INST} ${INST_ARG} ${@:2}"
+  ${PP_INST} ${INST_ARG} ${@:2}
 }
 
 # https://docs.astral.sh/uv/concepts/projects/dependencies/#adding-dependencies
