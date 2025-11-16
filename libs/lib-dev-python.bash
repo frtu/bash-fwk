@@ -50,6 +50,10 @@ penvpip() {
   python3 -m pip install --upgrade pip
   python3 -m pip --version
 }
+penvlslib() {
+  echo "pip list --local"
+  pip list --local
+}
 penvactivate() {
   usage $# "[ENV:.venv]"
 
@@ -61,7 +65,15 @@ penvdeactivate() {
   echo "deactivate"
   deactivate
 }
-penvclean() {
+penvreset() {
+  usage $# "[ENV:.venv]"
+  penvdeactivate
+
+  local ENV=${1:-.venv}
+  echo "virtualenv --clear ${ENV}"
+  virtualenv --clear ${ENV}
+}
+penvcleanall() {
   echo "== Clean all '.venv' folder under $PWD =="
   find . -type d -name ".venv" -exec echo {} \; -exec rm -Rf {} \;
 }

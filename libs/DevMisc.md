@@ -24,6 +24,17 @@ For M1 :
 * Run a script to command line (Verbose mode) : ```pyrunv "CMD"```
 * Create alias for python3 -> python : ```pyalias3```
 
+### penv
+
+* Create and activate env on local folder : ```penv "[ENV:.venv]"```
+* Force install pip from venv : ```penvpip```
+* List all libs from current venv : ```penvlslib```
+* Activate env on local folder : ```penvactivate "[ENV:.venv]"```
+* Deactivate env : ```penvdeactivate``` or ```deactivate``` directly
+* Reset all download from current env : ```penvreset```
+* Clean up all env under current directory : ```penvcleanall```
+* AFTER activation can run [more](#base-commands-2) : ```ppinst "[PACKAGE]" "[VERSION]"```
+
 ### pyenv
 
 * Show all versions : ```pyv [CMD]```
@@ -33,15 +44,6 @@ For M1 :
 * Shortcut for setting python only for **local** : ```pyvl "[VERSION:3.12]"```
 * Shortcut for setting python only for **global** : ```pyvg "[VERSION:3.12]"```
 * Uninstall : ```pyvuninst "VERSION:3.12"```
-
-### penv
-
-* Create and activate env on local folder : ```penv "[ENV:.venv]"```
-* Activate env on local folder : ```penvactivate "[ENV:.venv]"```
-* Force install pip from venv : ```penvpip```
-* Deactivate env : ```penvdeactivate``` or ```deactivate``` directly
-* Clean up all env under current direction ```penvclean```
-* AFTER activation can run [more](#base-commands-2) : ```ppinst "[PACKAGE]" "[VERSION]"```
 
 ### Installs
 
