@@ -51,6 +51,31 @@ avrun() {
   #   --dtype float16
 }
 
+# List available models
+avls() {
+  curl http://localhost:8000/v1/models
+}
+avchat() {
+  usage $# "CHAT" "[MODEL_NAME:TinyLlama/TinyLlama-1.1B-Chat-v1.0]" "[MAX_TOKEN:7]" "[TEMPERATURE:0]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  local CHAT=$1
+  local MODEL_NAME=${2:-TinyLlama/TinyLlama-1.1B-Chat-v1.0}
+  local MAX_TOKEN=${3:-7}
+  local TEMPERATURE=${4:-0}
+
+  echo "== Ping http://localhost:8000/v1/completions : ${MODEL_NAME} =="
+  curl http://localhost:8000/v1/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "${MODEL_NAME}",
+        "prompt": "${CHAT}",
+        "max_tokens": ${MAX_TOKEN},
+        "temperature": ${TEMPERATURE}
+    }'
+}
+
 # External install
 ppinst_vllm() {
   echo "pip install torch torchvision"

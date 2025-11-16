@@ -15,9 +15,14 @@ Starting [vLLM](https://docs.vllm.ai/en/stable/) : efficient LLM serve
 
 ### Base commands
 
-* Install vLLM (fix python version, torch & vllm) : ```avcreate```
 * Run service : ```avrun "[MODEL_NAME:TinyLlama/TinyLlama-1.1B-Chat-v1.0]"```
+* Install vLLM (fix python version, torch & vllm) : ```avcreate```
 * Install to local project : ```ppinst_vllm```
+
+### Client commands
+
+* List all models from server : ```avls```
+* Chat using service : ```avchat "CHAT" "[MODEL_NAME:TinyLlama/TinyLlama-1.1B-Chat-v1.0]" "[MAX_TOKEN:7]" "[TEMPERATURE:0]"```
 
 ### Model commands
 
