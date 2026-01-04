@@ -312,6 +312,17 @@ scriptappend() {
 
   source $OUTPUT_FILENAME
 }
+scriptdownload() {
+  usage $# "FILE_URL" "FILE_NAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local FILE_URL=$1
+  local FILE_NAME=$2
+
+  out=$(wget -qN '$FILE_URL' 2>&1)
+  [[ $? -eq 0 && $out ]] && unzip ${FILE_NAME}
+}
 
 # FILE BASED SERVICE
 SERVICE_TEMPLATE_BASH_PREFIX=$SCRIPTS_FOLDER/service-
