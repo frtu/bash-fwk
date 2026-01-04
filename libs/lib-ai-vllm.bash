@@ -65,15 +65,12 @@ avchat() {
   local MAX_TOKEN=${3:-7}
   local TEMPERATURE=${4:-0}
 
-  echo "== Ping http://localhost:8000/v1/completions : ${MODEL_NAME} =="
+  local PAYLOAD="{ \"model\": \"${MODEL_NAME}\", \"prompt\": \"${CHAT}\", \"max_tokens\": ${MAX_TOKEN}, \"temperature\": ${TEMPERATURE} }"
+
+  echo "== Ping http://localhost:8000/v1/completions : ${MODEL_NAME} '${PAYLOAD}'=="
   curl http://localhost:8000/v1/completions \
     -H "Content-Type: application/json" \
-    -d '{
-        "model": "${MODEL_NAME}",
-        "prompt": "${CHAT}",
-        "max_tokens": ${MAX_TOKEN},
-        "temperature": ${TEMPERATURE}
-    }'
+    -d '${PAYLOAD}'
 }
 
 # External install
