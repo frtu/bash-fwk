@@ -109,6 +109,11 @@ gdreport() {
 gdreporthtml() {
   gdtpl "htmlDependencyReport" $@
 }
+gddepinsight() {
+  usage $# "[DEP_NAME:spring-boot]"
+  local DEP_NAME=${1:-spring-boot}
+  gdtpl "dependencyInsight --dependency " ${DEP_NAME}
+}
 
 gddepchk() {
   gdtpl "checkUpdates" $@
