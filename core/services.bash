@@ -92,6 +92,13 @@ enablegke() {
   echo "gkelogin : login into gke"
   echo "gkeupd : update gke"
 }
+enabledckkafka() {
+  enablelib dck-kafka
+}
+enableflink() {
+  enablelib dev-flink
+  inst_flink
+}
 enablehadoop() {
   enablelib hadoop-admin
   binappend ${HADOOP_HOME}/bin
@@ -99,9 +106,6 @@ enablehadoop() {
 enablespark() {
   enablehadoop
   enablelib spark
-}
-enabledckkafka() {
-  enablelib dck-kafka
 }
 enabledckhadoop() {
   enablelib dck-hadoop
