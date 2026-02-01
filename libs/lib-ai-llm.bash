@@ -3,6 +3,10 @@ export CLAUDE_CONFIG_FILE=~/.claude/settings.json
 export CLAUDE_ROUTER_PATH=~/.claude-code-router
 export CLAUDE_ROUTER_CONFIG_FILE=${CLAUDE_ROUTER_PATH}/config.json
 
+export ANTHROPIC_SCRIPT_NAME="env-anthropic"
+export ANTHROPIC_SCRIPT_PATH=$LOCAL_SCRIPTS_FOLDER/${ANTHROPIC_SCRIPT_NAME}.bash
+
+
 lmc() {
   usage $# "[MODEL_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -49,15 +53,11 @@ lmccrsettings() {
 }
 
 # Setting up environment for Anthropic Ollama
-lmenvanthropicollama() {
-  usage $# "[ANTHROPIC_BASE_URL:http://localhost:11434]"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
-  local ANTHROPIC_BASE_URL=${1:-http://localhost:11434}
-  lmenvcreateanthropic "ollama" "${ANTHROPIC_BASE_URL}"
+lmconfanthropic() {
+  echo "ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}"
+  echo "ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN}"
 }
-lmenvcreateanthropic() {
+lmconfanthropiccreate() {
   usage $# "ANTHROPIC_AUTH_TOKEN" "[ANTHROPIC_BASE_URL]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
@@ -65,17 +65,27 @@ lmenvcreateanthropic() {
   local ANTHROPIC_AUTH_TOKEN=$1
   local ANTHROPIC_BASE_URL=${2:-https://api.anthropic.com/v1}
 
-  local SCRIPT_NAME="env-anthropic"
-  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
-  echo "Create new SCRIPT file : ${OUTPUT_FILENAME}"
-  echo "" > ${OUTPUT_FILENAME}
+  echo "Create new SCRIPT file : ${ANTHROPIC_SCRIPT_PATH}"
+  echo "" > ${ANTHROPIC_SCRIPT_PATH}
 
-  scriptappend "${OUTPUT_FILENAME}" "export ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN}"
-  scriptappendverbose "${OUTPUT_FILENAME}" "export ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}"
+  scriptappend "${ANTHROPIC_SCRIPT_PATH}" "export ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN}"
+  scriptappendverbose "${ANTHROPIC_SCRIPT_PATH}" "export ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}"
+}
+lmconfanthropicollamacreate() {
+  usage $# "[ANTHROPIC_BASE_URL:http://localhost:11434]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local ANTHROPIC_BASE_URL=${1:-http://localhost:11434}
+  lmconfanthropiccreate "ollama" "${ANTHROPIC_BASE_URL}"
+}
+lmconfanthropicrm() {
+  echo "Delete SCRIPT file : ${ANTHROPIC_SCRIPT_PATH}"
+  rm -f ${ANTHROPIC_SCRIPT_PATH}
 }
 
 # Setting up environment for Google PaLM API
-lmenvcreategoogle() {
+lmconfgooglecreate() {
   usage $# "GOOGLE_API_KEY"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi

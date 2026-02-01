@@ -5,6 +5,35 @@
 
 # Tech libraries
 
+## Library 'ai-llm'
+
+* Usage ```import lib-ai-llm```
+* Prefix ```lm```
+
+### Claude
+
+#### Base commands
+
+* Run claude with optional `MODEL_NAME` : ```lmc "[MODEL_NAME]"```
+
+#### Configuration commands
+
+* Print all Anthropic config `ANTHROPIC_*` : ```lmconfanthropic```
+* Create an env config file at path `$ANTHROPIC_SCRIPT_PATH` : ```lmconfanthropiccreate "ANTHROPIC_AUTH_TOKEN" "[ANTHROPIC_BASE_URL]"```
+* Create an env config file for Ollama ```lmconfanthropicollamacreate "[ANTHROPIC_BASE_URL:http://localhost:11434]"```
+* Remove config file at `$ANTHROPIC_SCRIPT_PATH` :  ```lmconfanthropicrm```
+
+### Google PaLM
+
+* Create an env config file `env-google.bash` : ```lmconfgooglecreate "GOOGLE_API_KEY"```
+
+
+## Library 'ai-ollama' & 'ai-openai'
+
+* Usage ```import lib-ai-ollama```
+* Enable using ```enableai```
+* Prefix ```ol```
+
 ## Library 'ai-vllm'
 
 Starting [vLLM](https://docs.vllm.ai/en/stable/) : efficient LLM serve
@@ -29,12 +58,6 @@ Starting [vLLM](https://docs.vllm.ai/en/stable/) : efficient LLM serve
 * Going to Huggingface model folder : ```avmcd```
 * List all models : ```avmls```
 * Remove specific model : ```avmrm "MODEL_NAME"```
-
-## Library 'ai-ollama' & 'ai-openai'
-
-* Usage ```import lib-ai-ollama```
-* Enable using ```enableai```
-* Prefix ```ol```
 
 ## Library 'ai-autogen'
 
