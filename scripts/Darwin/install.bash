@@ -1,5 +1,5 @@
 import lib-inst
-source inst-brew.bash
+source $SCRIPTS_FOLDER/inst-brew.bash
 
 export SUBL_HOME=/Applications/Sublime\ Text.app
 export ECLIPSE_HOME=/Applications/Eclipse.app/Contents/Eclipse
