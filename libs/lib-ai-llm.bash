@@ -8,6 +8,7 @@ export CLAUDE_ROUTER_CONFIG_FILE=${CLAUDE_ROUTER_PATH}/config.json
 export ANTHROPIC_SCRIPT_NAME="env-anthropic"
 export ANTHROPIC_SCRIPT_PATH=$LOCAL_SCRIPTS_FOLDER/${ANTHROPIC_SCRIPT_NAME}.bash
 
+export LITELLM_CONFIG_FILE=~/libs/litellm/config.yaml
 
 ####################################################################################################################
 # Claude
@@ -115,6 +116,48 @@ ppinst_ggenai() {
   # https://pypi.org/project/google-genai/
   ppinst google-genai
   ppinst_image
+}
+
+####################################################################################################################
+# LiteLLM
+####################################################################################################################
+inst_litellm() {
+  usage $# "LITELLM_MASTER_KEY"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local LITELLM_MASTER_KEY=$1
+  lmconflitellmcreate $LITELLM_MASTER_KEY
+
+  pip install 'litellm[proxy]'
+}
+lmlitellmstart() {
+  echo "Starting litellm with config : ${LITELLM_CONFIG_FILE} and param : $@"
+  litellm --config ${LITELLM_CONFIG_FILE} $@
+}
+lmlitellmstartdebug() {
+ lmlitellmstart --detailed_debug
+}
+lmlitellmping() {
+  curl -X GET http://0.0.0.0:4000/v1/models \
+     -H "Authorization: Bearer $LITELLM_MASTER_KEY" \
+     -H "Content-Type: application/json"
+}
+
+# Setting up environment for LiteLLM
+lmconflitellmcreate() {
+  usage $# "LITELLM_MASTER_KEY"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local LITELLM_MASTER_KEY=$1
+
+  local SCRIPT_NAME="env-litellm"
+  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
+  echo "== Create new SCRIPT file : ${OUTPUT_FILENAME} =="
+  echo "" > ${OUTPUT_FILENAME}
+
+  scriptappend "${OUTPUT_FILENAME}" "export LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}"
 }
 
 ####################################################################################################################

@@ -1,0 +1,6 @@
+model_list:
+  # Google Gemini
+  - model_name: gemini-flash-latest
+    litellm_params:
+      model: gemini/gemini-flash-latest
+      api_key: os.environ/GEMINI_API_KEY
