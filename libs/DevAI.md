@@ -23,8 +23,11 @@
 * Create an env config file for Ollama ```lmconfanthropicollamacreate "[ANTHROPIC_BASE_URL:http://localhost:11434]"```
 * Remove config file at `$ANTHROPIC_SCRIPT_PATH` :  ```lmconfanthropicrm```
 
-### Google PaLM
+### Google AI Studio
 
+#### Install & configuration commands
+
+* Install [google-genai](https://pypi.org/project/google-genai/) & image lib : ```ppinst_ggenai```
 * Create an env config file `env-google.bash` : ```lmconfgooglecreate "GOOGLE_API_KEY"```
 
 

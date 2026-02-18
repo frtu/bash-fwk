@@ -86,7 +86,11 @@ lmconfanthropicrm() {
   rm -f ${ANTHROPIC_SCRIPT_PATH}
 }
 
-# Setting up environment for Google PaLM API
+####################################################################################################################
+# Google AI Studio - Vertex AI
+####################################################################################################################
+# Setting up environment for Gemini
+# https://ai.google.dev/gemini-api/docs/api-key?hl=fr#set-api-env-var
 lmconfgooglecreate() {
   usage $# "GOOGLE_API_KEY"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -100,6 +104,7 @@ lmconfgooglecreate() {
   echo "" > ${OUTPUT_FILENAME}
 
   scriptappend "${OUTPUT_FILENAME}" "export GOOGLE_API_KEY=${GOOGLE_API_KEY}"
+  scriptappend "${OUTPUT_FILENAME}" "export GEMINI_API_KEY=${GOOGLE_API_KEY}"
 }
 
 # Setting up environment for Mistral Mixtral model
@@ -117,6 +122,7 @@ lmx() {
 
 # libs
 ppinst_ggenai() {
+  # https://pypi.org/project/google-genai/
   ppinst google-genai
   ppinst_image
 }
