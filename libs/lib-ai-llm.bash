@@ -18,7 +18,7 @@ lmc() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
-  local MODEL_NAME=$1
+  local MODEL_NAME=${1:-$MODEL_NAME}
   if [ -n "${MODEL_NAME}" ]; then
     OPTIONAL_ARGS="--model ${MODEL_NAME}"
   fi
@@ -62,20 +62,26 @@ lmccrsettings() {
 lmconfanthropic() {
   echo "ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}"
   echo "ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN}"
+  echo "MODEL_NAME=${MODEL_NAME}"
 }
 lmconfanthropiccreate() {
-  usage $# "ANTHROPIC_AUTH_TOKEN" "[ANTHROPIC_BASE_URL]"
+  usage $# "ANTHROPIC_AUTH_TOKEN" "[ANTHROPIC_BASE_URL]" "[MODEL_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local ANTHROPIC_AUTH_TOKEN=$1
   local ANTHROPIC_BASE_URL=${2:-https://api.anthropic.com/v1}
+  local MODEL_NAME=${3:-$MODEL_NAME}
 
   echo "Create new SCRIPT file : ${ANTHROPIC_SCRIPT_PATH}"
   echo "" > ${ANTHROPIC_SCRIPT_PATH}
 
   scriptappend "${ANTHROPIC_SCRIPT_PATH}" "export ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN}"
   scriptappendverbose "${ANTHROPIC_SCRIPT_PATH}" "export ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL}"
+
+  if [ -n "${MODEL_NAME}" ]; then
+    scriptappendverbose "${ANTHROPIC_SCRIPT_PATH}" "export MODEL_NAME=${MODEL_NAME}"
+  fi  
 }
 lmconfanthropicollamacreate() {
   usage $# "[ANTHROPIC_BASE_URL:http://localhost:11434]"
@@ -158,6 +164,17 @@ lmconflitellmcreate() {
   echo "" > ${OUTPUT_FILENAME}
 
   scriptappend "${OUTPUT_FILENAME}" "export LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}"
+}
+
+# Configure Claude to use LiteLLM
+lmconflitellmclaude() {
+  usage $# "[MODEL_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local MODEL_NAME=${1:-gemini-flash-latest}
+  lmconfanthropiccreate "$LITELLM_MASTER_KEY" "http://0.0.0.0:4000" "${MODEL_NAME}"
+  echo "== Configure Claude to use LiteLLM at ${ANTHROPIC_BASE_URL} =="
 }
 
 ####################################################################################################################

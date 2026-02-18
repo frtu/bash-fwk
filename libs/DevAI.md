@@ -14,7 +14,7 @@
 
 #### Base commands
 
-* Run claude with optional `MODEL_NAME` : ```lmc "[MODEL_NAME]"```
+* Run claude with optional `MODEL_NAME` (can set var env to define model) : ```lmc "[MODEL_NAME]"```
 
 #### Configuration commands
 
@@ -22,6 +22,15 @@
 * Create an env config file at path `$ANTHROPIC_SCRIPT_PATH` : ```lmconfanthropiccreate "ANTHROPIC_AUTH_TOKEN" "[ANTHROPIC_BASE_URL]"```
 * Create an env config file for Ollama ```lmconfanthropicollamacreate "[ANTHROPIC_BASE_URL:http://localhost:11434]"```
 * Remove config file at `$ANTHROPIC_SCRIPT_PATH` :  ```lmconfanthropicrm```
+
+#### Troubleshooting
+
+Attention when starting with a model & get this error :
+```
+Unable to connect to API (ConnectionRefused)
+```
+
+Verify the server is started and accept connection.
 
 ### Google AI Studio
 
@@ -43,6 +52,10 @@
 
 * Install [litellm](https://docs.litellm.ai/docs/tutorials/claude_non_anthropic_models) : ```inst_litellm "LITELLM_MASTER_KEY"```
 * Re/Create an env config file `env-litellm.bash` : ```lmconflitellmcreate "LITELLM_MASTER_KEY"```
+
+#### Extension
+
+* Configure Claude to use LiteLLM : `lmconflitellmclaude`
 
 ## Library 'ai-ollama' & 'ai-openai'
 
