@@ -30,6 +30,19 @@
 * Install [google-genai](https://pypi.org/project/google-genai/) & image lib : ```ppinst_ggenai```
 * Create an env config file `env-google.bash` : ```lmconfgooglecreate "GOOGLE_API_KEY"```
 
+### [LiteLLM](https://docs.litellm.ai/docs/tutorials/claude_non_anthropic_models)
+
+* Prefix `lmlitellm`
+
+#### Base commands
+
+* Run service : ```lmlitellmstart```
+* Test service is running : `lmlitellmping`
+
+#### Install & configuration commands
+
+* Install [litellm](https://docs.litellm.ai/docs/tutorials/claude_non_anthropic_models) : ```inst_litellm "LITELLM_MASTER_KEY"```
+* Re/Create an env config file `env-litellm.bash` : ```lmconflitellmcreate "LITELLM_MASTER_KEY"```
 
 ## Library 'ai-ollama' & 'ai-openai'
 
