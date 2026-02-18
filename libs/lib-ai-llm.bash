@@ -9,6 +9,9 @@ export ANTHROPIC_SCRIPT_NAME="env-anthropic"
 export ANTHROPIC_SCRIPT_PATH=$LOCAL_SCRIPTS_FOLDER/${ANTHROPIC_SCRIPT_NAME}.bash
 
 
+####################################################################################################################
+# Claude
+####################################################################################################################
 lmc() {
   usage $# "[MODEL_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -100,13 +103,23 @@ lmconfgooglecreate() {
 
   local SCRIPT_NAME="env-google"
   local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
-  echo "Create new SCRIPT file : ${OUTPUT_FILENAME}"
+  echo "== Create new SCRIPT file : ${OUTPUT_FILENAME} =="
   echo "" > ${OUTPUT_FILENAME}
 
   scriptappend "${OUTPUT_FILENAME}" "export GOOGLE_API_KEY=${GOOGLE_API_KEY}"
   scriptappend "${OUTPUT_FILENAME}" "export GEMINI_API_KEY=${GOOGLE_API_KEY}"
 }
 
+# libs
+ppinst_ggenai() {
+  # https://pypi.org/project/google-genai/
+  ppinst google-genai
+  ppinst_image
+}
+
+####################################################################################################################
+# Mistral
+####################################################################################################################
 # Setting up environment for Mistral Mixtral model
 export MIXTRAL_VERSION=v0.1
 
@@ -118,11 +131,4 @@ lmx() {
   cd $MIXTRAL_MODEL_INSTRUCT/ && \
     git lfs pull --include "consolidated.*.pt" && \
     git lfs pull --include "tokenizer.model"
-}
-
-# libs
-ppinst_ggenai() {
-  # https://pypi.org/project/google-genai/
-  ppinst google-genai
-  ppinst_image
 }
