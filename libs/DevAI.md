@@ -15,6 +15,8 @@
 #### Base commands
 
 * Run claude with optional `MODEL_NAME` (can set var env to define model) : ```lmc "[MODEL_NAME]"```
+* Run `/config` command for claude : `lmconfclaude`
+* Install Claude in native mode : `inst_claudenative`
 
 #### Configuration commands
 
@@ -33,6 +35,10 @@ Unable to connect to API (ConnectionRefused)
 Verify the server is started and accept connection.
 
 ### Google AI Studio
+
+#### Base commands
+
+* List all models available for your Google AI Studio : ```lmgls ```
 
 #### Install & configuration commands
 

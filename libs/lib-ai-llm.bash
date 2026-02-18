@@ -27,6 +27,14 @@ lmc() {
   claude ${OPTIONAL_ARGS}
 }
 
+lmconfclaude() {
+  echo "claude config"
+  claude config
+}
+inst_claudenative() {
+  claude install
+}
+
 inst_clauderouter() {
   echo "npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router"
   npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router
@@ -115,6 +123,16 @@ lmconfgooglecreate() {
 
   scriptappend "${OUTPUT_FILENAME}" "export GOOGLE_API_KEY=${GOOGLE_API_KEY}"
   scriptappend "${OUTPUT_FILENAME}" "export GEMINI_API_KEY=${GOOGLE_API_KEY}"
+}
+# List all available models
+lmgls() {
+  usage $# "[GOOGLE_API_KEY]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local GOOGLE_API_KEY=${1:-$GOOGLE_API_KEY}
+  echo "== Curl https://generativelanguage.googleapis.com/v1beta/models?key=XXX =="
+  curl "https://generativelanguage.googleapis.com/v1beta/models?key=${GOOGLE_API_KEY}"
 }
 
 # libs
