@@ -135,6 +135,9 @@ pprepoclean() {
   echo "pip cache purge"
   pip cache purge
 }
+ppinst_image() {
+  ppinst Pillow
+}
 ppinst_pyusb() {
   ppinst pyusb
 }

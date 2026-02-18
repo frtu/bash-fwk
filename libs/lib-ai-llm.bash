@@ -1,3 +1,5 @@
+import lib-dev-py-pip
+
 # Setting up environment for Claude
 export CLAUDE_CONFIG_FILE=~/.claude/settings.json
 export CLAUDE_ROUTER_PATH=~/.claude-code-router
@@ -111,4 +113,10 @@ lmx() {
   cd $MIXTRAL_MODEL_INSTRUCT/ && \
     git lfs pull --include "consolidated.*.pt" && \
     git lfs pull --include "tokenizer.model"
+}
+
+# libs
+ppinst_ggenai() {
+  ppinst google-genai
+  ppinst_image
 }
