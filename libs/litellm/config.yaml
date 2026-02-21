@@ -1,6 +1,10 @@
 model_list:
   # Google Gemini
-  - model_name: gemini-flash-latest
+  - model_name: gemini-flash-latest # The name you will use to call the model via LiteLLM
     litellm_params:
-      model: gemini/gemini-flash-latest
+      model: gemini/gemini-flash-latest # The actual model string for LiteLLM to use PREFIXED with type (e.g. "gemini/")
       api_key: os.environ/GEMINI_API_KEY
+  # Ollama
+  # - model_name: llama3
+  #   litellm_params:
+  #     model: ollama/llama3.2 # The actual model string in ollama, PREFIXED with type (e.g. "ollama/")
