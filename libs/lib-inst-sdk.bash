@@ -48,6 +48,17 @@ sdkinst() {
 
   sdktpl "install" $@
 }
+sdkuninst() {
+  usage $# "PACKAGE" "IDENTIFIER"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    sdkinstls $1
+    return 1
+  fi
+
+  sdktpl "uninstall" $@
+  sdkinstls $1
+}
 sdktpl() {
   local CMD=$1
   local MORE_ARG=${@:2}
