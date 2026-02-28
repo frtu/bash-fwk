@@ -18,3 +18,15 @@ export SYS_INFO="cat /etc/debian_version"
 updf() {
   upd --allow-insecure-repositories
 }
+
+# Edit system
+piconf() {
+  ${SUDO_CONDITIONAL} nano /boot/firmware/config.txt
+}
+
+# https://pibenchmarks.com/
+inst_pibenchmarks() {
+  ${SUDO_CONDITIONAL} curl https://raw.githubusercontent.com/TheRemote/PiBenchmarks/master/Storage.sh | ${SUDO_CONDITIONAL} bash
+}
+# Perofrmance testing
+alias inst_sysbench=inst sysbench

@@ -26,6 +26,21 @@ sysdisk() {
   echo "lsblk $@"
   lsblk "$@"
 }
+# view and tune SATA/IDE hard disk drive (HDD) and solid-state drive (SSD) parameters, including cache settings, sleep modes, 
+# power management, and DMA settings
+sysbenchdisk() {
+  usage $# "DISK_NAME:nvme0n1" "[ZOOKEEPER_HOSTNAME:zookeeper]" "[FILENAME_TO_PERSIST]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    # List block devices
+    sysdisk
+    return 1
+  fi
+
+  local DISK_NAME=$1
+  echo "sudo hdparm -t --direct /dev/${DISK_NAME}"
+  sudo hdparm -t --direct /dev/${DISK_NAME}
+}
 # Displaying information about PCI buses in the system and devices connected to them.
 # See disk speed (lnkstat 5GT/downgraded or 8GT))
 syspcibus() {
