@@ -13,6 +13,32 @@ if [ -f /etc/alpine-release ]; then
   source $SCRIPTS_FOLDER/ext_alpine
 fi
 
+# System metrics
+syscpu() {
+  echo "lscpu $@"
+  lscpu "$@"
+}
+sysmem() {
+  echo "free -m $@"
+  free -m "$@"
+}
+sysdisk() {
+  echo "lsblk $@"
+  lsblk "$@"
+}
+# Displaying information about PCI buses in the system and devices connected to them.
+# See disk speed (lnkstat 5GT/downgraded or 8GT))
+syspcibus() {
+  echo "sudo lspci -vvvv"
+  sudo lspci -vvvv
+}
+# displays system startup messages, hardware detection, device driver messages, and critical errors,
+# making it essential for troubleshooting.
+syslog() {
+  echo "dmesg --follow $@"
+  dmesg --follow $@
+}
+
 inst_net() {
   inst curl net-tools nmap tcpdump ${NET_PKG_EXTRA}
 }

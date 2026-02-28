@@ -137,10 +137,6 @@ inst_preload() {
 }
 
 # https://linoxide.com/linux-how-to/few-command-helps-to-get-linux-hardware-details/
-hdcpu() {
-  echo "sudo lscpu ${OPTIONAL_ARGS}"
-  sudo lscpu ${OPTIONAL_ARGS}
-}
 hdmemory() {
   hd memory
 }
@@ -178,12 +174,6 @@ hd() {
 instgraphics() {
   sudo ubuntu-drivers devices
   inst nvidia-340 nvidia-modprobe
-}
-
-# System metrics
-mem() {
-  echo "free -m"
-  free -m
 }
 
 # Services

@@ -26,8 +26,12 @@ uninst() {
   echo "$UNINSTALL_TOOL $@"
   $UNINSTALL_TOOL $@
 
-  $CLEANUP_TOOL
+  cleanup
 }
+cleanup() {
+  $CLEANUP_TOOL $@
+}
+
 upd() {
   $INSTALL_TOOL update $@
 }
