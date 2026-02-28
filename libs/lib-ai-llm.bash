@@ -167,6 +167,16 @@ lmlitellmping() {
      -H "Authorization: Bearer $LITELLM_MASTER_KEY" \
      -H "Content-Type: application/json"
 }
+lmlitellmtest() {
+  curl -X POST http://0.0.0.0:4000/v1/messages \
+     -H "Authorization: Bearer $LITELLM_MASTER_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{
+            "model": "gemini-flash-latest",
+            "max_tokens": 1000,
+            "messages": [{"role": "user", "content": "What is the capital of France?"}]
+          }'
+}
 
 # Setting up environment for LiteLLM
 lmconflitellmcreate() {
