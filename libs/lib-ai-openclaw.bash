@@ -1,3 +1,17 @@
+export OPENCLAW_CONFIG_FILE=~/.openclaw/openclaw.json
+
+####################################################################################################################
+# OpenClaw
+##################################################################################################################
+lmoconf() {
+  lmotpl onboard --install-daemon
+}
+lmoconfvi() {
+  ${SUDO_CONDITIONAL} vi ${OPENCLAW_CONFIG_FILE}
+}
+lmoconfweb() {
+  lmotpl configure --section web
+}
 lmofix() {
   lmotpl doctor --fix
 }
