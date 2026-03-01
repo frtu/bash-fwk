@@ -61,17 +61,18 @@ sshkeyscp() {
 sshkeyspush() {
   usage $# "SSH_HOSTNAME" "[KEY_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then 
-    echo "-- To list all key names run 'sshkeysls' --" >&2
-    sshkeysls
-    return -1
-  fi
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local SSH_HOSTNAME=$1
   local KEY_NAME=${2:-$DEFAULT_KEY_NAME}
 
   KEY_PUB="${SSH_ROOT}/${KEY_NAME}.pub"
 
+  if [ ! -f "${KEY_PUB}" ]; then
+      echo "File $KEY_PUB does not exist. make sure to pass the correct KEY_NAME and that the key pair is generated with sshkeysgen command." >&2
+      sshkeysls
+      return 1
+  fi
   echo "ssh -o StrictHostKeyChecking=no ${SSH_HOSTNAME} 'mkdir -p ~/.ssh/'"
   ssh -o StrictHostKeyChecking=no ${SSH_HOSTNAME} 'mkdir -p ~/.ssh/'
 
@@ -81,15 +82,16 @@ sshkeyspush() {
 sshkeyspushpair() {
   usage $# "SSH_HOSTNAME" "[KEY_NAME]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then 
-    echo "-- To list all key names run 'sshkeysls' --" >&2
-    sshkeysls
-    return -1
-  fi
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
   local SSH_HOSTNAME=$1
   local KEY_NAME=${2:-$DEFAULT_KEY_NAME}
 
+  if [ ! -f "${SSH_ROOT}/${KEY_NAME}.pub" ]; then
+    echo "-- To list all key names run 'sshkeysls' --" >&2
+    sshkeysls
+    return 1
+  fi
   sshkeyspush ${SSH_HOSTNAME} ${KEY_NAME}
 
   KEY_PRI="${SSH_ROOT}/${KEY_NAME}"
