@@ -1,3 +1,8 @@
+if [[ $(type -t load_folder) != "function" ]]; then
+    echo "Function 'load_folder' does not exist. Loading ~/.bash_profile"  >&2
+    source ~/.bash_profile
+fi
+
 #load_folder $LIBS_FOLDER
 load_folder $CORE_FOLDER
 load_folder $SCRIPTS_FOLDER
