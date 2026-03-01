@@ -4,6 +4,9 @@ export OPENCLAW_CONFIG_FILE=${OPENCLAW_CONFIG_PATH}/openclaw.json
 ####################################################################################################################
 # OpenClaw
 ##################################################################################################################
+lmostop() {
+  lmotpl node stop
+}
 lmocd() {
   cd ${OPENCLAW_CONFIG_PATH}
 }
@@ -37,4 +40,7 @@ inst_openclaw() {
 upd_openclaw() {
   echo "npm update -g openclaw"
   npm i -g openclaw@latest
+}
+uninst_openclaw() {
+  lmotpl uninstall
 }
