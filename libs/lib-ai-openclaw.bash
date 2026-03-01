@@ -1,8 +1,18 @@
-export OPENCLAW_CONFIG_FILE=~/.openclaw/openclaw.json
+export OPENCLAW_CONFIG_PATH=~/.openclaw
+export OPENCLAW_CONFIG_FILE=${OPENCLAW_CONFIG_PATH}/openclaw.json
 
 ####################################################################################################################
 # OpenClaw
 ##################################################################################################################
+lmocd() {
+  cd ${OPENCLAW_CONFIG_PATH}
+}
+lmocdw() {
+  cd ${OPENCLAW_CONFIG_PATH}/workspace
+}
+lmocds() {
+  cd ${OPENCLAW_CONFIG_PATH}/agents/main/sessions
+}
 lmoconf() {
   lmotpl onboard --install-daemon
 }

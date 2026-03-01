@@ -21,7 +21,7 @@ updf() {
 
 # Edit system
 piconf() {
-  ${SUDO_CONDITIONAL} nano /boot/firmware/config.txt
+  ${SUDO_CONDITIONAL} vi /boot/firmware/config.txt
 }
 
 # https://pibenchmarks.com/
