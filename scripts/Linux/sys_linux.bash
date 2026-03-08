@@ -55,10 +55,44 @@ syslog() {
 }
 
 inst_net() {
-  inst curl net-tools nmap tcpdump ${NET_PKG_EXTRA}
+  inst curl wget net-tools nmap tcpdump ${NET_PKG_EXTRA}
+}
+# some basics for file manipulation, build processes, version control
+inst_tools() {
+  inst vim git jq ripgrep build-essential
+}
+inst_desktop() {
+  inst gh ffmpeg chromium
+}
+inst_full() {
+  inst_net
+  inst_tools
+  inst_desktop
+}
+
+inst_zsh() {
+  # switch to zsh to mirror Mac (optional)
+  inst zsh
+  # change default shell
+  chsh -s $(which zsh)
+
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 inst_proc() {
   inst procps
+}
+inst_node() {
+  # get Node22 and install it globally
+  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+  sudo apt install nodejs -y
+
+  # make a global npm directory that your user can have access
+  # to rather than in /lib where the default is.
+  mkdir ~/.npm-global
+  npm config set prefix '~/.npm-global'
+  
+  # update path to ensure you can install and run npm modules from CLI
+  echo "export PATH=$HOME/.npm-global/bin:$PATH" >> ~/.zshrc
 }
 inst_pip() {
   inst python3-pip
@@ -68,4 +102,11 @@ inst_youtube() {
 }
 inst_vlc() {
   inst vlc
+}
+inst_docker() {
+  sh -c "$(curl -fsSL https://get.docker.com)"
+}
+inst_ollama() {
+  curl -fsSL https://ollama.com/install.sh | sh
+  enablelib ai-ollama
 }
