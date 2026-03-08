@@ -44,3 +44,7 @@ upd_openclaw() {
 uninst_openclaw() {
   lmotpl uninstall
 }
+cleanup_openclaw() {
+  rm -rf ~/.openclaw
+  npm rm -g openclaw
+}
