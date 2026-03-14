@@ -63,6 +63,27 @@ Verify the server is started and accept connection.
 
 * Configure Claude to use LiteLLM : `lmconflitellmclaude`
 
+## Library 'ai-openclaw'
+
+* Usage ```import lib-ai-openclaw```
+* Prefix ```lmo```
+
+### Base commands
+
+* Open dashboard : ```lmo```
+* Stop openclaw : ```lmostop```
+
+### Admin commands
+
+* Configure & onboard OpenClaw : ```lmoconf```
+* Fix config : ```lmofix```
+
+#### Admin UI - Gateway commands
+
+* Gateway status : ```lmog``` 
+* Gateway start : ```lmogstart``` 
+* Gateway stop : ```lmogstop``` 
+
 ## Library 'ai-ollama' & 'ai-openai'
 
 * Usage ```import lib-ai-ollama```
