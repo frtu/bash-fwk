@@ -117,6 +117,7 @@ Verify the server is started and accept connection.
 
 * Start OpenClaw with Ollama : ```olclaw "MODEL"```
 * Check logs : `ollog`
+* Start Ollama : `olstart`
 * Stop Ollama : `olstop`
 
 ### Admin commands

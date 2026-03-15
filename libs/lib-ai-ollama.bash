@@ -1,3 +1,5 @@
+import lib-systemctl
+
 DEFAULT_CONFIG_PATH="Modelfile"
 
 # For $MODEL
@@ -21,16 +23,18 @@ ollog() {
   echo "journalctl -e -u ollama"
   journalctl -e -u ollama
 }
+olstart() {
+  srvrestart ollama
+}
 olstop() {
-  echo "sudo systemctl stop ollama"
-  sudo systemctl stop ollama
+  srvstop ollama
 }
 oluninst() {
-  olstop
-
-  sudo systemctl disable ollama
+  srvstop ollama
+  srvdeactivate ollama
   sudo rm /etc/systemd/system/ollama.service
-  sudo systemctl daemon-reload
+  srvreload
+  
   sudo rm $(which ollama)
 }
 

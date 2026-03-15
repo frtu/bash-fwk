@@ -13,6 +13,13 @@ srvactivate() {
 
   systemctl enable $@
 }
+srvdeactivate() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  systemctl disable $@
+}
 srvstatus() {
   usage $# "PACKAGE"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
@@ -50,13 +57,8 @@ srvedit() {
   if [[ "$?" -ne 0 ]]; then return -1; fi
 
   systemctl edit "$1.service" ${@:2}
-  # srvreload "$1"
+  # srvreload
 }
 srvreload() {
-  usage $# "PACKAGE:xx"
-  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
-
   systemctl daemon-reload
-  srvrestart "$1"
 }
