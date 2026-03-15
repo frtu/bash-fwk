@@ -154,3 +154,19 @@ oltpl() {
   echo "ollama $@"
   ollama $@
 }
+
+olpullmistral() {
+  olpull mistral
+}
+olpullllama3() {
+  olpull llama3
+}
+olpullqwen() {
+  olpull qwen3.5
+}
+olpullphi3() {
+  olpull phi3
+}
+olpullgemma() {
+  olpull gemma
+}
