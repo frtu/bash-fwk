@@ -78,6 +78,11 @@ Verify the server is started and accept connection.
 * Configure & onboard OpenClaw : ```lmoconf```
 * Fix config : ```lmofix```
 
+#### Introspection
+
+* Describe OpenClaw public persona & user : ```lmodesc```
+* Describe OpenClaw's SOUL (inner philosophy) : ```lmodescfull```
+
 #### Admin UI - Gateway commands
 
 * Gateway status : ```lmog``` 

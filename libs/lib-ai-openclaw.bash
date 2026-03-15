@@ -12,6 +12,19 @@ lmostop() {
   lmotpl node stop
 }
 
+# Describe himself
+lmodesc() {
+  echo "=== OpenClaw Identity ==="
+  cat ${OPENCLAW_WORKSPACE}/IDENTITY.md
+
+  echo "=== OpenClaw User (you) ==="
+  cat ${OPENCLAW_WORKSPACE}/USER.md
+}
+lmodescfull() {
+  echo "=== OpenClaw Identity ==="
+  cat ${OPENCLAW_WORKSPACE}/SOUL.md
+}
+
 # Gateway commands
 lmog() {
   usage $# "[CMD:status]"
