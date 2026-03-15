@@ -1,5 +1,6 @@
-export OPENCLAW_CONFIG_PATH=~/.openclaw
-export OPENCLAW_CONFIG_FILE=${OPENCLAW_CONFIG_PATH}/openclaw.json
+export OPENCLAW_CONFIG_DIR=~/.openclaw
+export OPENCLAW_CONFIG_PATH=${OPENCLAW_CONFIG_DIR}/openclaw.json
+export OPENCLAW_WORKSPACE=${OPENCLAW_CONFIG_DIR}/workspace
 
 ####################################################################################################################
 # OpenClaw
@@ -39,16 +40,16 @@ lmoconfweb() {
   lmotpl configure --section web
 }
 lmoconfvi() {
-  ${SUDO_CONDITIONAL} vi ${OPENCLAW_CONFIG_FILE}
+  ${SUDO_CONDITIONAL} vi ${OPENCLAW_CONFIG_PATH}
 }
 lmocd() {
-  cd ${OPENCLAW_CONFIG_PATH}
+  cd ${OPENCLAW_CONFIG_DIR}
 }
 lmocdw() {
-  cd ${OPENCLAW_CONFIG_PATH}/workspace
+  cd ${OPENCLAW_WORKSPACE}
 }
 lmocds() {
-  cd ${OPENCLAW_CONFIG_PATH}/agents/main/sessions
+  cd ${OPENCLAW_CONFIG_DIR}/agents/main/sessions
 }
 
 lmotpl() {
