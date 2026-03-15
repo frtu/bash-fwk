@@ -16,6 +16,16 @@ olcd() {
   pwd
 }
 
+# Setting env for OpenClaw
+olclaw() {
+  usage $# "MODEL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MODEL=$1
+  oltpl launch openclaw --model ${MODEL}
+}
+
 # Setting env for MAC
 olenvhostmac() {
   usage $# "[HOST:0.0.0.0]"
@@ -113,4 +123,12 @@ olrun() {
   
   echo "ollama run ${MODEL}"
   ollama run ${MODEL}
+}
+oltpl() {
+  usage $# "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+  echo "ollama $@"
+  ollama $@
 }

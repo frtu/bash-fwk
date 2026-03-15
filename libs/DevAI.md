@@ -71,29 +71,50 @@ Verify the server is started and accept connection.
 ### Base commands
 
 * Open dashboard : ```lmo```
-* Stop openclaw : ```lmostop```
+* Display Openclaw version : ```lmov```
+* Display Openclaw log : ```lmolog```
+* Stop Openclaw : ```lmostop```
 
 ### Admin commands
 
 * Configure & onboard OpenClaw : ```lmoconf```
 * Fix config : ```lmofix```
 
-#### Introspection
-
-* Describe OpenClaw public persona & user : ```lmodesc```
-* Describe OpenClaw's SOUL (inner philosophy) : ```lmodescfull```
-
 #### Admin UI - Gateway commands
 
-* Gateway status : ```lmog``` 
-* Gateway start : ```lmogstart``` 
-* Gateway stop : ```lmogstop``` 
+* Gateway status : ```lmog```
+* Gateway start : ```lmogstart```
+* Gateway stop : ```lmogstop```
+* Gateway restart : ```lmogrestart```
+
+#### Security commands
+
+* Run Security audit : ```lmosec```
+* Run Security audit in JSON : ```lmosecjson```
+* Run Security fixes : ```lmosecfix```
+
+### Configuration commands
+
+#### Model usage
+
+* List all models : ```lmomodel```
+* Use model : ```lmomodelset "MODEL"```
+* Display model status : ```lmomodelstatus```
+
+#### Introspection
+
+* Describe OpenClaw public persona IDENTITY & USER : ```lmodesc```
+* Describe OpenClaw's SOUL (inner philosophy) : ```lmodescfull```
 
 ## Library 'ai-ollama' & 'ai-openai'
 
 * Usage ```import lib-ai-ollama```
 * Enable using ```enableai```
 * Prefix ```ol```
+
+### Base commands
+
+* Start OpenClaw with Ollama : ```olclaw "MODEL"```
 
 ## Library 'ai-vllm'
 

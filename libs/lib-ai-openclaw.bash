@@ -1,4 +1,5 @@
 export OPENCLAW_CONFIG_DIR=~/.openclaw
+# OPENCLAW_CONFIG_PATH also used by OpenClaw directly
 export OPENCLAW_CONFIG_PATH=${OPENCLAW_CONFIG_DIR}/openclaw.json
 export OPENCLAW_WORKSPACE=${OPENCLAW_CONFIG_DIR}/workspace
 
@@ -8,8 +9,29 @@ export OPENCLAW_WORKSPACE=${OPENCLAW_CONFIG_DIR}/workspace
 lmo() {
   lmotpl dashboard
 }
+lmov() {
+  lmotpl --version
+}
+lmolog() {
+  lmotpl logs --follow $@
+}
 lmostop() {
   lmotpl node stop
+}
+# Usage status
+lmomodel() {
+  lmotpl models list
+}
+lmomodelset() {
+  usage $# "MODEL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local MODEL=$1
+  lmotpl models set ${MODEL}
+}
+lmomodelstatus() {
+  lmotpl models status
 }
 
 # Describe himself
@@ -40,6 +62,9 @@ lmogstart() {
 lmogstop() {
   lmog stop $@
 }
+lmogrestart() {
+  lmog restart $@
+}
 
 # Admin commands
 # https://docs.openclaw.ai/start/getting-started#
@@ -49,6 +74,24 @@ lmoconf() {
 lmofix() {
   lmotpl doctor --fix
 }
+
+# Security
+# https://docs.openclaw.ai/gateway/security
+lmosec() {
+  usage $# "[MODE:--deep]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MODE=${1:---deep}
+  lmotpl security audit ${MODE} ${@:2}  
+}
+lmosecjson() {
+  lmosec "--json"
+}
+lmosecfix() {
+  lmosec "--fix"
+}
+
 lmoconfweb() {
   lmotpl configure --section web
 }
