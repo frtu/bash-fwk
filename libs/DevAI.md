@@ -74,6 +74,7 @@ Verify the server is started and accept connection.
 * Display Openclaw version : ```lmov```
 * Display Openclaw log : ```lmolog```
 * Stop Openclaw : ```lmostop```
+* Restart Openclaw : ```lmorestart```
 
 ### Admin commands
 
@@ -109,12 +110,18 @@ Verify the server is started and accept connection.
 ## Library 'ai-ollama' & 'ai-openai'
 
 * Usage ```import lib-ai-ollama```
-* Enable using ```enableai```
+* Enable using ```enableai``` OR `inst_ollama`
 * Prefix ```ol```
 
 ### Base commands
 
 * Start OpenClaw with Ollama : ```olclaw "MODEL"```
+* Check logs : `ollog`
+* Stop Ollama : `olstop`
+
+### Admin commands
+
+* Uninstall : `oluninst`
 
 ## Library 'ai-vllm'
 

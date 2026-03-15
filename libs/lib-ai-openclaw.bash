@@ -18,6 +18,9 @@ lmolog() {
 lmostop() {
   lmotpl node stop
 }
+lmorestart() {
+  lmotpl node restart
+}
 # Usage status
 lmomodel() {
   lmotpl models list

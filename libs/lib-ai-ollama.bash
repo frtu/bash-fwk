@@ -16,6 +16,24 @@ olcd() {
   pwd
 }
 
+# Admin commands
+ollog() {
+  echo "journalctl -e -u ollama"
+  journalctl -e -u ollama
+}
+olstop() {
+  echo "sudo systemctl stop ollama"
+  sudo systemctl stop ollama
+}
+oluninst() {
+  olstop
+
+  sudo systemctl disable ollama
+  sudo rm /etc/systemd/system/ollama.service
+  sudo systemctl daemon-reload
+  sudo rm $(which ollama)
+}
+
 # Setting env for OpenClaw
 olclaw() {
   usage $# "MODEL"
