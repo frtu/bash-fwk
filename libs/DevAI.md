@@ -63,6 +63,12 @@ Verify the server is started and accept connection.
 
 * Configure Claude to use LiteLLM : `lmconflitellmclaude`
 
+### [Brave](https://api-dashboard.search.brave.com/app/dashboard)
+
+#### Base commands
+
+* Configure BRAVE_SEARCH_API_KEY into sys env : ```lmconfbravecreate "BRAVE_SEARCH_API_KEY"```
+
 ## Library 'ai-openclaw'
 
 * Usage ```import lib-ai-openclaw```

@@ -143,6 +143,26 @@ ppinst_ggenai() {
 }
 
 ####################################################################################################################
+# Brave
+####################################################################################################################
+lmconfbravecreate() {
+  usage $# "BRAVE_SEARCH_API_KEY"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local BRAVE_SEARCH_API_KEY=$1
+  
+  # Create new SCRIPT file
+  local BRAVE_SCRIPT_NAME="env-brave"
+  local BRAVE_SCRIPT_PATH=$LOCAL_SCRIPTS_FOLDER/${BRAVE_SCRIPT_NAME}.bash
+  echo "Create new SCRIPT file : ${BRAVE_SCRIPT_PATH}"
+  echo "" > ${BRAVE_SCRIPT_PATH}  
+
+  # Set environment variables
+  scriptappend "${BRAVE_SCRIPT_PATH}" "export BRAVE_SEARCH_API_KEY=${BRAVE_SEARCH_API_KEY}"
+}
+
+####################################################################################################################
 # LiteLLM
 ####################################################################################################################
 inst_litellm() {
