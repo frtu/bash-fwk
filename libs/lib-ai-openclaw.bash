@@ -2,10 +2,29 @@ export OPENCLAW_CONFIG_DIR=~/.openclaw
 # OPENCLAW_CONFIG_PATH also used by OpenClaw directly
 export OPENCLAW_CONFIG_PATH=${OPENCLAW_CONFIG_DIR}/openclaw.json
 export OPENCLAW_WORKSPACE=${OPENCLAW_CONFIG_DIR}/workspace
+export OPENCLAW_CRON=${OPENCLAW_CONFIG_DIR}/cron
 
 ####################################################################################################################
 # OpenClaw
 ##################################################################################################################
+# Time triggered Job using cron https://docs.openclaw.ai/automation/cron-jobs
+lmoj() {
+  usage $# "[JOB_ID]"
+
+  local JOB_ID=$1
+
+  # If LOCAL_PORT is set, add extra parameters to open on a local port for distant forward
+  if [ -n "${JOB_ID}" ]; then
+    # Job definition is stored in ~/.openclaw/cron/JOB_ID.jsonl
+    local EXTRA_PARAMS="runs --id ${JOB_ID}"
+  fi
+
+  lmotpl cron ${EXTRA_PARAMS}
+}
+lmojcd() {
+  cd ${OPENCLAW_CRON}
+}
+
 lmo() {
   lmotpl dashboard
 }

@@ -74,6 +74,11 @@ Verify the server is started and accept connection.
 * Usage ```import lib-ai-openclaw```
 * Prefix ```lmo```
 
+### Cron Job commands
+
+* List all cron jobs : ```lmoj```
+* List cron job execution by ID : ```lmoj "JOB_ID"```
+
 ### Base commands
 
 * Open dashboard : ```lmo```
