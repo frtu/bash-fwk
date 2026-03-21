@@ -70,6 +70,30 @@ inst_full() {
   inst_desktop
 }
 
+## Samba
+inst_samba() {
+  inst samba samba-common-bin
+}
+smbrestart() {
+  srvrestart smbd
+}
+smbconf() {
+  sudo vi /etc/samba/smb.conf
+}
+smbadduser() {
+  usage $# "USERNAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local USERNAME=$1
+  echo "sudo smbpasswd -a ${USERNAME}"
+  sudo smbpasswd -a ${USERNAME}
+}
+
+inst_brew() {
+  echo "Install Homebrew on Linux : https://docs.brew.sh/Homebrew-on-Linux"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
 inst_zsh() {
   # switch to zsh to mirror Mac (optional)
   inst zsh
