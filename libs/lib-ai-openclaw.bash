@@ -102,6 +102,21 @@ lmofix() {
   lmotpl doctor --fix
 }
 
+# Channel : https://docs.openclaw.ai/cli/channels
+lmochannel() {
+  lmotpl channels list
+}
+lmochanneladd() {
+  usage $# "CHANNEL_TYPE:telegram|discord|slack|custom" "CHANNEL_BOT_TOKEN"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local CHANNEL_TYPE=$1
+  local CHANNEL_BOT_TOKEN=$2
+
+  lmotpl channels add --channel ${CHANNEL_TYPE} --token ${CHANNEL_BOT_TOKEN}
+}
+
 # Security
 # https://docs.openclaw.ai/gateway/security
 lmosec() {

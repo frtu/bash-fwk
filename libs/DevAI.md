@@ -96,6 +96,11 @@ Verify the server is started and accept connection.
 * Display Openclaw version : ```lmov```
 * Upgrade current version : ```lmoupd```
 
+#### Channel commands
+
+* List all channels : ```lmochannel```
+* Add a new channel (type : telegram | discord | slack | custom) : `lmochanneladd "CHANNEL_TYPE" "CHANNEL_BOT_TOKEN"`
+
 #### Admin UI - Gateway commands
 
 * Gateway status : ```lmog```
