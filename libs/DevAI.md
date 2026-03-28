@@ -82,7 +82,6 @@ Verify the server is started and accept connection.
 ### Base commands
 
 * Open dashboard : ```lmo```
-* Display Openclaw version : ```lmov```
 * Display Openclaw log : ```lmolog```
 * Stop Openclaw : ```lmostop```
 * Restart Openclaw : ```lmorestart```
@@ -91,6 +90,11 @@ Verify the server is started and accept connection.
 
 * Configure & onboard OpenClaw : ```lmoconf```
 * Fix config : ```lmofix```
+
+#### Admin version & upgrade
+
+* Display Openclaw version : ```lmov```
+* Upgrade current version : ```lmoupd```
 
 #### Admin UI - Gateway commands
 

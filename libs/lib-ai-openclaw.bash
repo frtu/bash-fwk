@@ -31,6 +31,11 @@ lmo() {
 lmov() {
   lmotpl --version
 }
+# https://docs.openclaw.ai/install/updating
+lmoupd() {
+  lmotpl update
+  lmov
+}
 lmolog() {
   lmotpl logs --follow $@
 }
