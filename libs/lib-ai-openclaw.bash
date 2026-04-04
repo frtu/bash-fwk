@@ -31,6 +31,12 @@ lmomstatus() {
 }
 
 lmo() {
+  lmotpl status $@
+}
+lmoall() {
+  lmo --all
+}
+lmoui() {
   lmotpl dashboard
 }
 lmov() {
@@ -50,20 +56,40 @@ lmostop() {
 lmorestart() {
   lmotpl node restart
 }
-# Usage status
+
+# Model management
 lmomodel() {
-  lmotpl models list
+  usage $# "CMD"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local CMD=${1:-list}
+  lmotpl models ${CMD} ${@:2}
 }
 lmomodelset() {
   usage $# "MODEL"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; 
+    lmomodel
+    return 1
+  fi
   
   local MODEL=$1
-  lmotpl models set ${MODEL}
+  lmomodel set ${MODEL}
+}
+lmomodelsetfallback() {
+  usage $# "MODEL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; 
+    lmomodel
+    return 1
+  fi
+  
+  local MODEL=$1
+  lmomodel fallback add ${MODEL}
 }
 lmomodelstatus() {
-  lmotpl models status
+  lmomodel status
 }
 
 # Describe himself
@@ -120,6 +146,9 @@ lmochanneladd() {
   local CHANNEL_BOT_TOKEN=$2
 
   lmotpl channels add --channel ${CHANNEL_TYPE} --token ${CHANNEL_BOT_TOKEN}
+}
+lmochannelrm() {
+  lmotpl channels remove
 }
 
 # Security

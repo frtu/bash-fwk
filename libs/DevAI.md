@@ -81,7 +81,9 @@ Verify the server is started and accept connection.
 
 ### Base commands
 
-* Open dashboard : ```lmo```
+* OpenClaw status : ```lmo```
+* Full OpenClaw status : ```lmoall```
+* Open dashboard : ```lmoui```
 * Display Openclaw log : ```lmolog```
 * Stop Openclaw : ```lmostop```
 * Restart Openclaw : ```lmorestart```
@@ -102,6 +104,7 @@ Verify the server is started and accept connection.
 
 * List all channels : ```lmochannel```
 * Add a new channel (type : telegram | discord | slack | custom) : `lmochanneladd "CHANNEL_TYPE" "CHANNEL_BOT_TOKEN"`
+* Open remove channel menu : ```lmochannelrm```
 
 #### Admin UI - Gateway commands
 
@@ -122,6 +125,7 @@ Verify the server is started and accept connection.
 
 * List all models : ```lmomodel```
 * Use model : ```lmomodelset "MODEL"```
+* Set fallback model : ```lmomodelsetfallback "MODEL"```
 * Display model status : ```lmomodelstatus```
 
 #### Introspection
