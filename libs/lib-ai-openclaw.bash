@@ -1,8 +1,8 @@
 export OPENCLAW_CONFIG_DIR=~/.openclaw
 # OPENCLAW_CONFIG_PATH also used by OpenClaw directly
 export OPENCLAW_CONFIG_PATH=${OPENCLAW_CONFIG_DIR}/openclaw.json
-export OPENCLAW_WORKSPACE=${OPENCLAW_CONFIG_DIR}/workspace
 export OPENCLAW_CRON=${OPENCLAW_CONFIG_DIR}/cron
+export OPENCLAW_WORKSPACE_DEFAULT=${OPENCLAW_CONFIG_DIR}/workspace
 
 ####################################################################################################################
 # OpenClaw
@@ -95,6 +95,7 @@ lmomodelstatus() {
 # Describe himself
 lmodesc() {
   echo "=== OpenClaw Identity ==="
+  local OPENCLAW_WORKSPACE=${OPENCLAW_WORKSPACE:-${OPENCLAW_WORKSPACE_DEFAULT}}
   cat ${OPENCLAW_WORKSPACE}/IDENTITY.md
 
   echo "=== OpenClaw User (you) ==="
@@ -102,6 +103,7 @@ lmodesc() {
 }
 lmodescfull() {
   echo "=== OpenClaw Identity ==="
+  local OPENCLAW_WORKSPACE=${OPENCLAW_WORKSPACE:-${OPENCLAW_WORKSPACE_DEFAULT}}
   cat ${OPENCLAW_WORKSPACE}/SOUL.md
 }
 
@@ -190,6 +192,26 @@ lmoconfsetworkspace() {
     return -1
   fi
   lmoconfset "agents.defaults.workspace" ${WORKSPACE_PATH}
+  lmconfworkspaceenv ${WORKSPACE_PATH}
+}
+lmconfworkspaceenv() {
+  usage $# "WORKSPACE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local WORKSPACE_PATH=$1
+  # Check if WORKSPACE_PATH is a valid directory
+  if [ ! -d "${WORKSPACE_PATH}" ]; then
+    echo "Error: ${WORKSPACE_PATH} is not a valid directory."
+    return -1
+  fi
+  
+  local SCRIPT_NAME="env-openclaw-workspace"
+  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
+  echo "== Create new SCRIPT file : ${OUTPUT_FILENAME} =="
+  echo "" > ${OUTPUT_FILENAME}
+
+  scriptappend "${OUTPUT_FILENAME}" "export OPENCLAW_WORKSPACE=${WORKSPACE_PATH}"
 }
 lmoconfsettimeout() {
   usage $# "TIMEOUT_SECONDS:600"
@@ -218,6 +240,7 @@ lmocd() {
   cd ${OPENCLAW_CONFIG_DIR}
 }
 lmocdw() {
+  local OPENCLAW_WORKSPACE=${OPENCLAW_WORKSPACE:-${OPENCLAW_WORKSPACE_DEFAULT}}
   cd ${OPENCLAW_WORKSPACE}
 }
 lmocds() {
