@@ -96,12 +96,12 @@ Verify the server is started and accept connection.
 
 #### Skill usage
 
-* `cd` to skills folder : ```lmocds```
-* List all skills : ```lmoskill```
+* List all skills : ```lmoskillls "[CONTAINING_TEXT]"```
 * Search skill : ```lmoskillsearch```
 * Install skill : ```lmoskillinstall "SKILL_SLUG"```
 * Update skill : ```lmoskillupdate "[SKILL_SLUG:all]"```
 * Create skill : ```lmoskillcreate "skill-name"```
+* `cd` to skills folder : ```lmocds```
 
 #### Model usage
 

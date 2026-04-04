@@ -107,6 +107,18 @@ lmomodelstatus() {
 lmoskill() {
   lmotpl skills $@
 }
+lmoskillls() {
+  usage $# "[CONTAINING_TEXT]"
+
+  local CONTAINING_TEXT=$1
+  if [ -z "$CONTAINING_TEXT" ]; then
+      echo "List all skills"
+      lmoskill list
+    else
+      echo "List all existing skills containing ${CONTAINING_TEXT}"
+      lmoskill list | grep ${CONTAINING_TEXT}
+  fi
+}
 lmoskillsearch() {
   usage $# "[SKILL_SLUG]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
