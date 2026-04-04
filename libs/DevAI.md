@@ -105,7 +105,7 @@ Verify the server is started and accept connection.
 
 #### Model usage
 
-* List all models : ```lmomodel```
+* List all models : ```lmomodells```
 * Use model : ```lmomodelset "MODEL"```
 * Set fallback model : ```lmomodelsetfallback "MODEL"```
 * Display model status : ```lmomodelstatus```
