@@ -25,6 +25,11 @@ lmojcd() {
   cd ${OPENCLAW_CRON}
 }
 
+# Memory
+lmomstatus() {
+  lmotpl memory status --deep
+}
+
 lmo() {
   lmotpl dashboard
 }
@@ -157,6 +162,23 @@ lmoconfsetworkspace() {
   fi
   lmoconfset "agents.defaults.workspace" ${WORKSPACE_PATH}
 }
+lmoconfsettimeout() {
+  usage $# "TIMEOUT_SECONDS:600"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local TIMEOUT_SECONDS=$1
+  lmoconfset "agents.defaults.timeoutSeconds" ${TIMEOUT_SECONDS}
+}
+lmoconfsetollama() {
+  usage $# "OLLAMA_BASE_URL:http://localhost:11434"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local OLLAMA_BASE_URL=${1:-http://localhost:11434}
+  lmoconfset "models.providers.ollama.baseUrl" ${OLLAMA_BASE_URL}
+}
+
 lmoconfweb() {
   lmotpl configure --section web
 }
