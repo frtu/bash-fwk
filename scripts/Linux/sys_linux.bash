@@ -55,6 +55,10 @@ syslog() {
   dmesg --follow $@
 }
 
+inst_flak() {
+  inst flatpak
+  enablelib flatpak
+}
 inst_net() {
   inst curl wget net-tools nmap tcpdump ${NET_PKG_EXTRA}
 }
