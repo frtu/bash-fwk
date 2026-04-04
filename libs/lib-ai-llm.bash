@@ -105,6 +105,24 @@ lmconfanthropicrm() {
 }
 
 ####################################################################################################################
+# Moonshot AI (Kimi K2.5)
+####################################################################################################################
+lmconfmoonshotcreate() {
+  usage $# "MOONSHOT_API_KEY"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MOONSHOT_API_KEY=$1
+
+  local SCRIPT_NAME="env-moonshot"
+  local OUTPUT_FILENAME=$LOCAL_SCRIPTS_FOLDER/${SCRIPT_NAME}.bash
+  echo "== Create new SCRIPT file : ${OUTPUT_FILENAME} =="
+  echo "" > ${OUTPUT_FILENAME}
+
+  scriptappend "${OUTPUT_FILENAME}" "export MOONSHOT_API_KEY=${MOONSHOT_API_KEY}"
+}
+
+####################################################################################################################
 # Google AI Studio - Vertex AI
 ####################################################################################################################
 # Setting up environment for Gemini
