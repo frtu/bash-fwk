@@ -89,6 +89,8 @@ Verify the server is started and accept connection.
 ### Admin commands
 
 * Configure & onboard OpenClaw : ```lmoconf```
+* Set config : ```lmoconfset "KEY" "VALUE"```
+* Set config workspace : ```lmoconfsetworkspace "WORKSPACE_PATH"```
 * Fix config : ```lmofix```
 
 #### Admin version & upgrade

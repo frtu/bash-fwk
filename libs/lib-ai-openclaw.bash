@@ -134,6 +134,29 @@ lmosecfix() {
   lmosec "--fix"
 }
 
+lmoconfset() {
+  usage $# "KEY" "VALUE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local KEY=$1
+  local VALUE=$2
+
+  lmotpl config set ${KEY} ${VALUE}
+}
+lmoconfsetworkspace() {
+  usage $# "WORKSPACE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local WORKSPACE_PATH=$1
+  # Check if WORKSPACE_PATH is a valid directory
+  if [ ! -d "${WORKSPACE_PATH}" ]; then
+    echo "Error: ${WORKSPACE_PATH} is not a valid directory."
+    return -1
+  fi
+  lmoconfset "agents.defaults.workspace" ${WORKSPACE_PATH}
+}
 lmoconfweb() {
   lmotpl configure --section web
 }
