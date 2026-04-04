@@ -69,7 +69,7 @@ lmomodel() {
 lmomodelset() {
   usage $# "MODEL"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; 
+  if [[ "$?" -ne 0 ]]; then
     lmomodel
     return 1
   fi
@@ -80,7 +80,7 @@ lmomodelset() {
 lmomodelsetfallback() {
   usage $# "MODEL"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; 
+  if [[ "$?" -ne 0 ]]; then
     lmomodel
     return 1
   fi

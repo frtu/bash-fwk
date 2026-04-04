@@ -88,6 +88,20 @@ Verify the server is started and accept connection.
 * Stop Openclaw : ```lmostop```
 * Restart Openclaw : ```lmorestart```
 
+### Configuration commands
+
+#### Model usage
+
+* List all models : ```lmomodel```
+* Use model : ```lmomodelset "MODEL"```
+* Set fallback model : ```lmomodelsetfallback "MODEL"```
+* Display model status : ```lmomodelstatus```
+
+#### Introspection
+
+* Describe OpenClaw public persona IDENTITY & USER : ```lmodesc```
+* Describe OpenClaw's SOUL (inner philosophy) : ```lmodescfull```
+
 ### Admin commands
 
 * Configure & onboard OpenClaw : ```lmoconf```
@@ -118,20 +132,6 @@ Verify the server is started and accept connection.
 * Run Security audit : ```lmosec```
 * Run Security audit in JSON : ```lmosecjson```
 * Run Security fixes : ```lmosecfix```
-
-### Configuration commands
-
-#### Model usage
-
-* List all models : ```lmomodel```
-* Use model : ```lmomodelset "MODEL"```
-* Set fallback model : ```lmomodelsetfallback "MODEL"```
-* Display model status : ```lmomodelstatus```
-
-#### Introspection
-
-* Describe OpenClaw public persona IDENTITY & USER : ```lmodesc```
-* Describe OpenClaw's SOUL (inner philosophy) : ```lmodescfull```
 
 ## Library 'ai-ollama' & 'ai-openai'
 
