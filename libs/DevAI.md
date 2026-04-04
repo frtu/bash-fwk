@@ -74,6 +74,10 @@ Verify the server is started and accept connection.
 * Usage ```import lib-ai-openclaw```
 * Prefix ```lmo```
 
+### Chat commands
+
+* Chat with agent (can be used to test skill) : ```lmochat "MESSAGE"```
+
 ### Cron Job commands
 
 * List all cron jobs : ```lmoj```
@@ -89,6 +93,15 @@ Verify the server is started and accept connection.
 * Restart Openclaw : ```lmorestart```
 
 ### Configuration commands
+
+#### Skill usage
+
+* `cd` to skills folder : ```lmocds```
+* List all skills : ```lmoskill```
+* Search skill : ```lmoskillsearch```
+* Install skill : ```lmoskillinstall "SKILL_SLUG"```
+* Update skill : ```lmoskillupdate "[SKILL_SLUG:all]"```
+* Create skill : ```lmoskillcreate "skill-name"```
 
 #### Model usage
 
@@ -107,6 +120,7 @@ Verify the server is started and accept connection.
 * Configure & onboard OpenClaw : ```lmoconf```
 * Set config : ```lmoconfset "KEY" "VALUE"```
 * Set config workspace : ```lmoconfsetworkspace "WORKSPACE_PATH"```
+* Set sys env : ```lmconfworkspaceenv "WORKSPACE_PATH"```
 * Fix config : ```lmofix```
 
 #### Admin version & upgrade

@@ -21,6 +21,16 @@ lmoj() {
 
   lmotpl cron ${EXTRA_PARAMS}
 }
+# Chat with OpenClaw using OpenClaw Code Agent (OCC) : https://docs.openclaw.ai/cli/agent#openclaw-code-agent
+lmochat() {
+  usage $# "MESSAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MESSAGE=$1
+  openclaw agent --message "${MESSAGE}"
+}
+
 lmojcd() {
   cd ${OPENCLAW_CRON}
 }
@@ -90,6 +100,54 @@ lmomodelsetfallback() {
 }
 lmomodelstatus() {
   lmomodel status
+}
+
+# Skill management
+# https://docs.openclaw.ai/cli/skills
+lmoskill() {
+  lmotpl skills $@
+}
+lmoskillsearch() {
+  usage $# "[SKILL_SLUG]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  lmoskill search $@
+}
+lmoskillinstall() {
+  usage $# "SKILL_SLUG"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  lmoskill install $@
+}
+lmoskillupdate() {
+  usage $# "[SKILL_SLUG:all]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local SKILL_SLUG=${1:-all}
+  lmoskill update ${SKILL_SLUG} ${@:2}
+}
+lmoskillcreate() {
+  usage $# "skill-name"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local SKILL_NAME=$1
+  local SKILL_PATH=${OPENCLAW_WORKSPACE}/skills/${SKILL_NAME}
+  mkdir -p ${SKILL_PATH}
+
+  local OUTPUT_FILENAME=${SKILL_PATH}/SKILL.md
+  echo "== Create new SCRIPT file : ${OUTPUT_FILENAME} =="
+  echo "---"                                  > $OUTPUT_FILENAME
+  echo "name: ${SKILL_NAME}"                  >> $OUTPUT_FILENAME
+  echo "description: Skill for ${SKILL_NAME}" >> $OUTPUT_FILENAME
+  echo "---"                                  >> $OUTPUT_FILENAME
+  echo ""                                     >> $OUTPUT_FILENAME
+  echo "# ${SKILL_NAME} Skill"                >> $OUTPUT_FILENAME
+
+  cat ${OUTPUT_FILENAME}
 }
 
 # Describe himself
@@ -244,7 +302,8 @@ lmocdw() {
   cd ${OPENCLAW_WORKSPACE}
 }
 lmocds() {
-  cd ${OPENCLAW_CONFIG_DIR}/agents/main/sessions
+  local OPENCLAW_WORKSPACE=${OPENCLAW_WORKSPACE:-${OPENCLAW_WORKSPACE_DEFAULT}}
+  cd ${OPENCLAW_WORKSPACE}/skills/
 }
 
 lmotpl() {
