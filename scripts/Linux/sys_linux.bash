@@ -70,6 +70,11 @@ inst_full() {
   inst_desktop
 }
 
+## Google Drive
+inst_gdrive() {
+  inst rclone
+  enablelib sys-rclone
+}
 ## Samba
 inst_samba() {
   inst samba samba-common-bin
