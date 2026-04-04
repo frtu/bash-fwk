@@ -13,6 +13,7 @@ if [ -f /etc/alpine-release ]; then
   source $SCRIPTS_FOLDER/ext_alpine
 fi
 
+alias sys=linuxdesc
 # System metrics
 syscpu() {
   echo "lscpu $@"
