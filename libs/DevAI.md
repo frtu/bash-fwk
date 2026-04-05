@@ -132,6 +132,7 @@ Verify the server is started and accept connection.
 
 * List all channels : ```lmochannel```
 * Add a new channel (type : telegram | discord | slack | custom) : `lmochanneladd "CHANNEL_TYPE" "CHANNEL_BOT_TOKEN"`
+* Pairing approve : ```lmochannelpair "PAIRING_CODE" "[CHANNEL_TYPE:telegram]"```
 * Open remove channel menu : ```lmochannelrm```
 
 #### Admin UI - Gateway commands

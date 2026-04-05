@@ -222,6 +222,16 @@ lmochanneladd() {
 
   lmotpl channels add --channel ${CHANNEL_TYPE} --token ${CHANNEL_BOT_TOKEN}
 }
+lmochannelpair() {
+  usage $# "PAIRING_CODE" "[CHANNEL_TYPE:telegram]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  
+  local PAIRING_CODE=$1
+  local CHANNEL_TYPE=${2:-telegram}
+
+  lmotpl pairing approve ${CHANNEL_TYPE} ${PAIRING_CODE}
+}
 lmochannelrm() {
   lmotpl channels remove
 }
