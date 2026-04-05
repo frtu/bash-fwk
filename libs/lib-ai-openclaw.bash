@@ -341,3 +341,9 @@ cleanup_openclaw() {
   rm -rf ~/.openclaw
   npm rm -g openclaw
 }
+cleanup_npm() {
+  npm cache clean --force
+  rm -Rf .npmrc
+  rm -Rf .npm-global
+  rm -Rf .npm
+}
