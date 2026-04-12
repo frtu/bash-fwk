@@ -308,7 +308,7 @@ lmsup() {
 lmsdown() {
   lmstpl daemon down
 }
-lmstart() {
+lmsstart() {
   usage $# "[PORT]"
 
   local PORT=$1
@@ -316,6 +316,15 @@ lmstart() {
     local EXTRA_PARAMS="$EXTRA_PARAMS --port $PORT"
   fi
   lmstpl server start ${EXTRA_PARAMS} ${@:2}
+}
+lmsping() {
+  usage $# "[PORT:1234]"
+
+  local PORT=${1:-1234}
+  curl -X GET http://localhost:${PORT}/v1/models
+}
+lmsstop() {
+  lmstpl server stop
 }
 lmslog() {
   lmstpl log stream
