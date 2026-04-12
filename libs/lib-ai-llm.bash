@@ -258,3 +258,27 @@ lmx() {
     git lfs pull --include "consolidated.*.pt" && \
     git lfs pull --include "tokenizer.model"
 }
+
+
+####################################################################################################################
+# LM Studio
+####################################################################################################################
+inst_lms() {
+  curl -fsSL https://lmstudio.ai/install.sh | bash
+}
+
+lmsls() {
+  lms list
+}
+lmsget() {
+  usage $# "[MODEL_NAME:gemma-4-e2b]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MODEL_NAME=${1:-gemma-4-e2b}
+  lmstpl get "$MODEL_NAME"
+} 
+lmstpl() {
+  echo "lms $@"
+  lms $@
+}
