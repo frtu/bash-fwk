@@ -265,10 +265,11 @@ lmx() {
 ####################################################################################################################
 inst_lms() {
   curl -fsSL https://lmstudio.ai/install.sh | bash
+  pathadd ~/.lmstudio/bin
 }
 
 lmsls() {
-  lms list
+  lms ls
 }
 lmsget() {
   usage $# "[MODEL_NAME:gemma-4-e2b]"
@@ -277,7 +278,45 @@ lmsget() {
 
   local MODEL_NAME=${1:-gemma-4-e2b}
   lmstpl get "$MODEL_NAME"
-} 
+}
+alias lmsload=lmsrun
+lmsrun() {
+  usage $# "[MODEL_NAME:gemma-4-e2b]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MODEL_NAME=${1:-gemma-4-e2b}
+  lmstpl load "$MODEL_NAME"
+}
+
+lmsps() {
+  usage $# "[CONTAINING_TEXT]"
+
+  local CONTAINING_TEXT=$1
+  if [ -z "$CONTAINING_TEXT" ]; then
+      echo "List all LLM instances"
+      lms ps
+    else
+      echo "List all LLM instances containing ${CONTAINING_TEXT}"
+      lms ps | grep ${CONTAINING_TEXT}
+  fi
+}
+lmsup() {
+  lmstpl daemon up
+}
+lmstart() {
+  usage $# "[PORT]"
+
+  local PORT=$1
+  if [ -n "$PORT" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --port $PORT"
+  fi
+  lmstpl server start ${EXTRA_PARAMS} ${@:2}
+}
+lmslog() {
+  lmstpl log stream
+}
+
 lmstpl() {
   echo "lms $@"
   lms $@
