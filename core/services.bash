@@ -130,6 +130,9 @@ enablegit() {
 enableds() {
   enablelib dev-py-datascience
 }
+enablellm() {
+  enablelib ai-llm
+}
 enableai() {
   enablelib ai-openai
   enablelib ai-ollama
@@ -150,6 +153,9 @@ enabletemporalio() {
   echo "= If you're on Python, run 'ppinst_temporal' ="
 }
 
+enablepy() {
+  enablelib dev-py-uv
+}
 enablessh() {
   srv_activate ssh
   refresh
