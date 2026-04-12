@@ -104,6 +104,16 @@ gamend() {
   echo "git commit --amend ${PARAMS}"
   git commit --amend ${PARAMS}
 }
+gunstage() {
+  usage $# "FILE_PATH"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then 
+    gstatus
+    return 1;
+  fi
+
+  gtpl restore --staged $@
+}
 gdiff() {
   usage $# "NUM_OF_COMMIT" "[FILE_PATH]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
