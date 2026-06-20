@@ -137,6 +137,9 @@ enableai() {
   enablelib ai-openai
   enablelib ai-ollama
 }
+enableaivoice() {
+  enablelib ai-voice
+}
 enableaivllm() {
   enablelib ai-vllm
   echo "=> vLLM enabled with prefix 'av'"
