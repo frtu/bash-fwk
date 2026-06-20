@@ -13,6 +13,9 @@ reccd() {
 recopen() {
   open ~/"$REC_PATH"
 }
+recls() {
+  python3 ~/scripts/python/rec_list_voice_memos.py
+}
 
 tmpopen() {
 	open $TMPDIR
