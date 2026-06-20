@@ -1,9 +1,18 @@
 import lib-shell
 
+export REC_PATH="Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
+
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles TRUE;killall Finder'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles FALSE;killall Finder'
 alias setBash='sudo chsh -s /bin/bash'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+
+reccd() {
+  cd ~/"$REC_PATH"
+}
+recopen() {
+  open ~/"$REC_PATH"
+}
 
 tmpopen() {
 	open $TMPDIR
