@@ -8,6 +8,13 @@ export INSTALL_TOOL=brew
 export UNINSTALL_TOOL="brew uninstall"
 export CHECK_SUDO=false
 
+uninstforce() {
+  usage $# "PACKAGE"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+  uninst $@ --ignore-dependencies
+}
+
 inst_zlib() {
   inst zlib
   brew link zlib
@@ -228,6 +235,7 @@ inst_python() {
   inst python
   binappend /opt/homebrew/bin/
 }
+
 # https://realpython.com/intro-to-pyenv/
 inst_pyenv() {
   echo "brew install openssl readline sqlite3 xz zlib"
