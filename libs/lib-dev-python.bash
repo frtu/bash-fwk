@@ -42,13 +42,13 @@ penv() {
   usage $# "[ENV:.venv]"
 
   local ENV=${1:-.venv}
-  echo "python3 -m venv ${ENV}"
-  python3 -m venv ${ENV}
+  echo "python -m venv ${ENV}"
+  python -m venv ${ENV}
   penvactivate ${ENV} ${@:2}
 }
 penvpip() {
-  python3 -m pip install --upgrade pip
-  python3 -m pip --version
+  python -m pip install --upgrade pip
+  python -m pip --version
 }
 penvlslib() {
   echo "pip list --local"

@@ -69,6 +69,30 @@ Verify the server is started and accept connection.
 
 * Configure BRAVE_SEARCH_API_KEY into sys env : ```lmconfbravecreate "BRAVE_SEARCH_API_KEY"```
 
+## Library 'ai-voice'
+
+* Usage `import lib-ai-voice`
+* Enable using `enableaivoice`
+* Prefix `whp`
+
+### Base commands
+
+* Check `whisper` help : `whp`
+* Transcript voice : `whp "VOICE_SOURCE_PATH" "TXT_TARGET_PATH" "[LANGUAGE:English]"`
+* Transcript voice : `whpfr "VOICE_SOURCE_PATH" "TXT_TARGET_PATH"`
+
+### Admin commands
+
+* Install : `inst_whisper`
+
+#### Mac cmd
+
+Mac voice record :
+
+* Open in Finder : `recopen`
+* Go to folder : `reccd`
+* List all files & titles : `recls`
+
 ## Library 'ai-openclaw'
 
 * Usage ```import lib-ai-openclaw```

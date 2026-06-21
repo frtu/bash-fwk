@@ -1,7 +1,10 @@
 whp() {
   usage $# "VOICE_SOURCE_PATH" "TXT_TARGET_PATH" "[LANGUAGE:English]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
-  if [[ "$?" -ne 0 ]]; then return -1; fi
+  if [[ "$?" -ne 0 ]]; then 
+    whisper --help
+    return 1
+  fi
 
   local VOICE_SOURCE_PATH=$1
   local TXT_TARGET_PATH=$2
@@ -24,7 +27,7 @@ whpfr() {
 }
 
 inst_whisper() {
-  echo "=Installing whisper="
+  echo "=Installing whisper - Attention need python 3.10+ ="
   inst ffmpeg
   pip install -U openai-whisper
 }

@@ -36,6 +36,7 @@ upd() {
   $INSTALL_TOOL update $@
 }
 upg() {
+  usage $# "[PACKAGE:python@3.13]"  
   $INSTALL_TOOL upgrade $@
 }
 inst_dl_bin() {

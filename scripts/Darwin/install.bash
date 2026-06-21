@@ -231,9 +231,25 @@ upd_conda() {
   conda update -n base -c defaults conda
 }
 inst_python() {
+  usage $# "[VERSION:3.13]"  
+
+  local VERSION=$1
+  if [ -n "${VERSION}" ]; then
+    OPTIONAL_ARGS="@${VERSION}"
+  fi
+
   sudo chown -R $(whoami) /usr/local/Frameworks/Python.framework
-  inst python
-  binappend /opt/homebrew/bin/
+  inst python${OPTIONAL_ARGS}
+  binappend $(brew --prefix python@3.11)/libexec/bin
+}
+pyswitch() {
+  usage $# "VERSION"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local VERSION=$1
+  brew unlink python
+  brew link python@${VERSION} --force
 }
 
 # https://realpython.com/intro-to-pyenv/
