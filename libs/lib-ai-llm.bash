@@ -5,6 +5,8 @@ export CLAUDE_CONFIG_FILE=~/.claude/settings.json
 export CLAUDE_ROUTER_PATH=~/.claude-code-router
 export CLAUDE_ROUTER_CONFIG_FILE=${CLAUDE_ROUTER_PATH}/config.json
 
+export OPENCODE_CONFIG_FILE=~/.config/opencode/opencode.json
+
 export ANTHROPIC_SCRIPT_NAME="env-anthropic"
 export ANTHROPIC_SCRIPT_PATH=$LOCAL_SCRIPTS_FOLDER/${ANTHROPIC_SCRIPT_NAME}.bash
 
@@ -102,6 +104,28 @@ lmconfanthropicollamacreate() {
 lmconfanthropicrm() {
   echo "Delete SCRIPT file : ${ANTHROPIC_SCRIPT_PATH}"
   rm -f ${ANTHROPIC_SCRIPT_PATH}
+}
+
+####################################################################################################################
+# OpenCode AI
+####################################################################################################################
+inst_opencode() {
+  echo "Installing OpenCode AI"
+  brew install anomalyco/tap/opencode
+}
+
+lconfopencode() {
+  echo "Open OpenCode AI config file : ${OPENCODE_CONFIG_FILE}"
+  code "${OPENCODE_CONFIG_FILE}"
+}
+lconfopencodeollamacreate() {
+  usage $# "[MODEL_NAME:gemma-4:e4b]"
+
+  local MODEL_NAME=${1:-gemma-4:e4b}
+  if [ -n "$MODEL_NAME" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS --model $MODEL_NAME"
+  fi
+  ollama launch opencode ${EXTRA_PARAMS} ${@:2}
 }
 
 ####################################################################################################################

@@ -171,5 +171,11 @@ olpullphi3() {
   olpull phi3
 }
 olpullgemma() {
-  olpull gemma
+  usage $# "[MODEL_VERSION:e4b]"
+
+  local MODEL_VERSION=${1:-e4b}
+  if [ -n "$MODEL_VERSION" ]; then
+    local EXTRA_PARAMS="$EXTRA_PARAMS:$MODEL_VERSION"
+  fi
+  olpull gemma4${EXTRA_PARAMS}
 }
