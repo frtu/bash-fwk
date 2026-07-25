@@ -29,6 +29,9 @@ olstart() {
 olstop() {
   srvstop ollama
 }
+olupg() {
+  upg_ollama
+}
 oluninst() {
   srvstop ollama
   srvdeactivate ollama

@@ -141,6 +141,9 @@ inst_docker() {
   sh -c "$(curl -fsSL https://get.docker.com)"
 }
 inst_ollama() {
-  curl -fsSL https://ollama.com/install.sh | sh
+  upg_ollama
   enablelib ai-ollama
+}
+upg_ollama() {
+  curl -fsSL https://ollama.com/install.sh | sh
 }

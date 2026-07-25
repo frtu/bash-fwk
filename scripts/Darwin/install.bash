@@ -274,6 +274,14 @@ inst_protobuf() {
 # --------------------------------
 # AI
 # --------------------------------
+inst_ollama() {
+  upg_ollama
+  enablelib ai-ollama
+}
+upg_ollama() {
+  curl -fsSL https://ollama.com/install.sh | sh
+}
+
 inst_ctags() {
   inst universal-ctags
   ctags --version
