@@ -28,6 +28,14 @@ lmc() {
   echo "claude ${OPTIONAL_ARGS}"
   claude ${OPTIONAL_ARGS}
 }
+lmco() {
+  usage $# "[OPUS_MODEL_VERSION:4-5]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local OPUS_MODEL_VERSION=${1:-4-5}
+  lmc "claude-opus-${OPUS_MODEL_VERSION}"
+}
 
 lmconfclaude() {
   echo "claude config"
