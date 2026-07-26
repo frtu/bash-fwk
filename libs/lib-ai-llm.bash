@@ -37,6 +37,19 @@ lmco() {
   lmc "claude-opus-${OPUS_MODEL_VERSION}"
 }
 
+# Adding MCP service to Claude
+lmcmcpadd() {
+  usage $# "MCP_NAME" "MCP_URL"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
+
+  local MCP_NAME=$1
+  local MCP_URL=${2:-https://search-mcp.tp.blue.gcp-sg.dev.awx.im/mcp}
+
+  echo "claude mcp add ${MCP_NAME} --transport sse ${MCP_URL}"
+  claude mcp add ${MCP_NAME} --transport sse ${MCP_URL}
+}
+
 lmconfclaude() {
   echo "claude config"
   claude config
