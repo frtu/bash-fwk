@@ -46,8 +46,8 @@ agmodel() {
 # Archive
 ################################################
 aginst_old() {
-  echo "pip install pyautogen"
-  pip install pyautogen
+  echo "pip install ag2"
+  pip install ag2
 
   echo "pip install openai-wrapper"
   pip install openai-wrapper
