@@ -24,9 +24,18 @@ piconf() {
   ${SUDO_CONDITIONAL} vi /boot/firmware/config.txt
 }
 
+smbmount() {
+  ${SUDO_CONDITIONAL} mount -t cifs //192.168.1.5/Multimedia /mnt/smb/Multimedia -o username=YOUR_USERNAME,uid=korben,gid=korben
+  ${SUDO_CONDITIONAL} mount -t cifs -o username=$1,password=$2 //$3/$4 $5
+}
+
 # https://pibenchmarks.com/
 inst_pibenchmarks() {
   ${SUDO_CONDITIONAL} curl https://raw.githubusercontent.com/TheRemote/PiBenchmarks/master/Storage.sh | ${SUDO_CONDITIONAL} bash
 }
 # Perofrmance testing
 alias inst_sysbench=inst sysbench
+
+inst_samba() {
+  ${SUDO_CONDITIONAL} inst samba samba-common-bin cifs-utils -y
+}
