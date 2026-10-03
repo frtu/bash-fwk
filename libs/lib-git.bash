@@ -647,13 +647,20 @@ greset() {
 }
 
 gpatch() {
-  usage $# "DIFF_FILENAME"
+  usage $# "DIFF_FILENAME" "[OPTIONAL_PARAMS]"
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
   local DIFF_FILENAME=${1:-diff}
-	echo "git diff > $DIFF_FILENAME.patch"
-	git diff > $DIFF_FILENAME.patch
+	echo "git diff ${@:2}> $DIFF_FILENAME.patch"
+	git diff ${@:2} > $DIFF_FILENAME.patch
+}
+gpatchstaged() {
+  usage $# "DIFF_FILENAME"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return 1; fi
+
+	gpatch $1 "--staged"
 }
 gpatchapply() {
   usage $# "DIFF_FILENAME"
