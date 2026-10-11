@@ -5,7 +5,8 @@ export CLAUDE_CONFIG_FILE=~/.claude/settings.json
 export CLAUDE_ROUTER_PATH=~/.claude-code-router
 export CLAUDE_ROUTER_CONFIG_FILE=${CLAUDE_ROUTER_PATH}/config.json
 
-export OPENCODE_CONFIG_FILE=~/.config/opencode/opencode.json
+export OPENCODE_CONF_PATH=~/.config/opencode
+export OPENCODE_CONFIG_FILE=${OPENCODE_CONF_PATH}/opencode.json
 
 export ANTHROPIC_SCRIPT_NAME="env-anthropic"
 export ANTHROPIC_SCRIPT_PATH=$LOCAL_SCRIPTS_FOLDER/${ANTHROPIC_SCRIPT_NAME}.bash
@@ -134,7 +135,22 @@ inst_opencode() {
   echo "Installing OpenCode AI"
   brew install anomalyco/tap/opencode
 }
+lmo() {
+  usage $# "[MODEL_NAME]"
+  ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
+  if [[ "$?" -ne 0 ]]; then return -1; fi
 
+  local MODEL_NAME=${1:-$MODEL_NAME}
+  if [ -n "${MODEL_NAME}" ]; then
+    OPTIONAL_ARGS="--model ${MODEL_NAME}"
+  fi
+
+  opencode $@
+}
+lmocd() {
+  cd ${OPENCODE_CONF_PATH}
+}
+alias lmoconf=lconfopencode
 lconfopencode() {
   echo "Open OpenCode AI config file : ${OPENCODE_CONFIG_FILE}"
   code "${OPENCODE_CONFIG_FILE}"
