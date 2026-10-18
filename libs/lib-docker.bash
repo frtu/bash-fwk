@@ -877,7 +877,7 @@ dcmpstart() {
   ## Display Usage and exit if insufficient parameters. Parameters prefix with [ are OPTIONAL.
   if [[ "$?" -ne 0 ]]; then return 1; fi
 
-  local DCK_COMPOSE_FILENAME=$1
+  local DCK_COMPOSE_FILENAME=${1:-docker-compose.yml}
   # If the local file doesn't exist
   if [ -f ${DCK_COMPOSE_FILENAME} ]; then
     # Add folder VM_ARCHIVE_FOLDER
