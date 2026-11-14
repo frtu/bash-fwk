@@ -46,9 +46,12 @@ lmo() {
 lmoall() {
   lmo --all
 }
-lmoui() {
-  lmotpl dashboard
+alias lmoui='lmodashboard'
+alias lmodashboardd='lmodashboard --no-open'
+lmodashboard() {
+  lmotpl dashboard $@
 }
+
 lmov() {
   lmotpl --version
 }
@@ -198,11 +201,20 @@ lmogstop() {
 lmogrestart() {
   lmog restart $@
 }
+lmogtoken() {
+  lmotpl config get gateway.auth.token $@
+}
+lmogtokengen() {
+  lmotpl doctor --generate-gateway-token $@
+}
 
 # Admin commands
 # https://docs.openclaw.ai/start/getting-started#
 lmoconf() {
   lmotpl onboard --install-daemon
+}
+lmoconfvalidate() {
+  lmotpl config validate
 }
 lmofix() {
   lmotpl doctor --fix
