@@ -107,6 +107,9 @@ lmomodelsetfallback() {
 lmomodelstatus() {
   lmomodel status
 }
+lmomodelconfig() {
+  lmotpl configure --section model
+}
 
 # Skill management
 # https://docs.openclaw.ai/cli/skills
