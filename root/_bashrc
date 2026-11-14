@@ -1,9 +1,18 @@
-if [[ $(type -t load_folder) != "function" ]]; then
-    echo "Function 'load_folder' does not exist. Loading ~/.bash_profile"  >&2
-    source ~/.bash_profile
+# Ensure base.bash is loaded (portable: bash + zsh), without recursion or double loading.
+# `typeset -f` works in both shells; `type -t` is bash-only and made zsh loop forever.
+if ! typeset -f load_folder >/dev/null 2>&1; then
+  if [ -n "${BASH_FWK_LOADING:-}" ]; then
+    echo "bash-fwk: load_folder still missing after loading ~/.bash_profile (is ~/core linked?)" >&2
+    return 1
+  fi
+  echo "Function 'load_folder' does not exist. Loading ~/.bash_profile" >&2
+  export BASH_FWK_LOADING=1
+  source ~/.bash_profile    # loads base.bash, then sources this file again, which does the loading
+  unset BASH_FWK_LOADING
+  return
 fi
 
-#load_folder $LIBS_FOLDER
-load_folder $CORE_FOLDER
-load_folder $SCRIPTS_FOLDER
-load_folder $LOCAL_SCRIPTS_FOLDER
+#load_folder "$LIBS_FOLDER"
+load_folder "$CORE_FOLDER"
+load_folder "$SCRIPTS_FOLDER"
+load_folder "$LOCAL_SCRIPTS_FOLDER"

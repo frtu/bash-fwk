@@ -6,17 +6,22 @@ load_file() {
   	echo "File '$1' does not exists!"
   fi
 }
+# Source every *.bash file of a folder. Files loaded this way must only define
+# functions, aliases and variables (see README > Auto-loaded files).
 load_folder() {
-	if [ -d $1 ]; then
-	  echo "------- Loading $1 --------";
-    for i in $1/*.bash; 
-    do 
-      echo "source $i"
-      source "$i"
-    done
-	else
-	  echo "Director '$1' does not exists!"
-	fi
+  if [ ! -d "$1" ]; then
+    echo "Directory '$1' does not exists!" >&2
+    return 1
+  fi
+  # zsh aborts on an unmatched glob ("no matches found"): make it expand to nothing
+  [ -n "${ZSH_VERSION:-}" ] && setopt local_options null_glob
+  echo "------- Loading $1 --------"
+  local i
+  for i in "$1"/*.bash; do
+    [ -f "$i" ] || continue   # bash leaves an unmatched glob as a literal string
+    echo "source $i"
+    source "$i"
+  done
 }
 import() {
   load_file "$LIBS_FOLDER/$1.bash"

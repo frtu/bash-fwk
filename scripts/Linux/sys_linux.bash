@@ -147,3 +147,7 @@ inst_ollama() {
 upg_ollama() {
   curl -fsSL https://ollama.com/install.sh | sh
 }
+# Install yt-dlp (was autoinstaller4curl-ytdl.bash, which ran on every shell start from this folder)
+instytdl() {
+  sudo apt-get update && sudo apt-get -y install curl git python3-pip && pip3 install yt-dlp
+}
