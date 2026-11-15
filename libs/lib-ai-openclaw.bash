@@ -110,6 +110,17 @@ lmomodelstatus() {
 lmomodelconfig() {
   lmotpl configure --section model
 }
+lmomodelauth() {
+  usage $# "[PROVIDER_NAME]"
+
+  local PROVIDER_NAME=$1
+  if [ -n "${PROVIDER_NAME}" ]; then
+    local EXTRA_PARAMS="--provider ${PROVIDER_NAME}"
+  fi
+
+  lmotpl models auth login ${EXTRA_PARAMS}
+}
+
 
 # Skill management
 # https://docs.openclaw.ai/cli/skills
